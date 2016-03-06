@@ -1,10 +1,10 @@
 # TV Series API
-An Objectivly better TV series API for Popcorn Time.
+An objectivly better TV series API for Popcorn Time.
 
 # Installation
 1. Install MongoDB
 2. Install NodeJS
-3. install dependencies `cd tvseries-api` and `npm install`
+3. install dependencies `cd popcorn-api` and `npm install`
 4. Start the API with `npm start` or `node --harmony --armony_destructuring --use_strict index.js`
 
 # Example output
@@ -23,6 +23,7 @@ An Objectivly better TV series API for Popcorn Time.
     "hated": ​100,
     "loved": ​100,
     "votes": ​34059,
+    "watching": 65,
     "percentage": ​85
   },
   "country": "us",
@@ -74,7 +75,6 @@ An Objectivly better TV series API for Popcorn Time.
 
 # Known Issues
 The issues are listed in the code with a 'TODO'.
-- In the client, sorting my trending (Go ask the .sh developers).
 - Kat scraping gets stuck if kat.cr times out at getting the 'totalPages'.
 
 # Versioning
@@ -97,4 +97,4 @@ If you distribute a copy or make a fork of the project, you have to credit this 
 
 --------------------------------------------------------------------------------
 
-Copyright (c) 2016 - TV Series API - Released under the [GPL v3 license](LICENSE.txt).
+Copyright (c) 2016 - Popcorn API - Released under the [GPL v3 license](LICENSE.txt).

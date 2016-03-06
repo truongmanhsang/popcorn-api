@@ -1,3 +1,9 @@
+1.0.1 - What's trening? - 6 March 2016
+======================================
+
+Bug fixes:
+ - Sort by trending
+
 1.0.0 - Let's kick some ass! -  1 March 2016
 ============================================
 

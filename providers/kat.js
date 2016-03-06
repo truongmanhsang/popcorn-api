@@ -6,7 +6,7 @@ let helper, name;
 
 /* Get all the shows competable with Popcorn Time. */
 const getShow = function*(katShow) {
-  const newShow = yield helper.getTraktInfo(katShow.slug)
+  const newShow = yield util.spawn(helper.getTraktInfo(katShow.slug));
   if (typeof(newShow) != "undefined" && newShow._id && !katShow.dateBased) {
     const slug = katShow.slug;
 

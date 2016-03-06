@@ -96,42 +96,43 @@ const Helper = (_name) => {
     },
 
     /* Get info from Trakt and make a new show object. */
-    getTraktInfo: (slug) => {
-      return trakt.getShow(slug).then((traktShow) => {
-        if (traktShow.ids["imdb"]) {
-          return {
-            _id: traktShow.ids["imdb"],
-            imdb_id: traktShow.ids["imdb"],
-            tvdb_id: traktShow.ids["tvdb"],
-            title: traktShow.title,
-            year: traktShow.year,
-            slug: slug,
-            synopsis: traktShow.overview,
-            runtime: traktShow.runtime,
-            rating: {
-              hated: 100,
-              loved: 100,
-              votes: traktShow.votes,
-              percentage: Math.round(traktShow.rating * 10)
-            },
-            country: traktShow.country,
-            network: traktShow.network,
-            air_day: traktShow.airs.day,
-            air_time: traktShow.airs.time,
-            status: traktShow.status,
-            num_seasons: 0,
-            last_updated: Number(new Date()),
-            images: {
-              /* TODO: have the failed image on localhost. */
-              fanart: traktShow.images.fanart.full != null ? traktShow.images.fanart.full : "https://raw.githubusercontent.com/PTCE-Public/popcorn-desktop/master/src/app/images/posterholder.png",
-              poster: traktShow.images.poster.full != null ? traktShow.images.poster.full : "https://raw.githubusercontent.com/PTCE-Public/popcorn-desktop/master/src/app/images/posterholder.png",
-              banner: traktShow.images.banner.full != null ? traktShow.images.banner.full : "https://raw.githubusercontent.com/PTCE-Public/popcorn-desktop/master/src/app/images/posterholder.png"
-            },
-            genres: traktShow.genres.length != 0 ? traktShow.genres : ["Unknown"],
-            episodes: []
-          }
+    getTraktInfo: function*(slug) {
+      const traktShow = yield trakt.getShow(slug);
+      const traktWatchers = yield trakt.getShowWatching(slug);
+      if (traktShow.ids["imdb"]) {
+        return {
+          _id: traktShow.ids["imdb"],
+          imdb_id: traktShow.ids["imdb"],
+          tvdb_id: traktShow.ids["tvdb"],
+          title: traktShow.title,
+          year: traktShow.year,
+          slug: slug,
+          synopsis: traktShow.overview,
+          runtime: traktShow.runtime,
+          rating: {
+            hated: 100,
+            loved: 100,
+            votes: traktShow.votes,
+            watching: traktWatchers.length,
+            percentage: Math.round(traktShow.rating * 10)
+          },
+          country: traktShow.country,
+          network: traktShow.network,
+          air_day: traktShow.airs.day,
+          air_time: traktShow.airs.time,
+          status: traktShow.status,
+          num_seasons: 0,
+          last_updated: Number(new Date()),
+          images: {
+            /* TODO: have the failed image on localhost. */
+            fanart: traktShow.images.fanart.full != null ? traktShow.images.fanart.full : "https://raw.githubusercontent.com/PTCE-Public/popcorn-desktop/master/src/app/images/posterholder.png",
+            poster: traktShow.images.poster.full != null ? traktShow.images.poster.full : "https://raw.githubusercontent.com/PTCE-Public/popcorn-desktop/master/src/app/images/posterholder.png",
+            banner: traktShow.images.banner.full != null ? traktShow.images.banner.full : "https://raw.githubusercontent.com/PTCE-Public/popcorn-desktop/master/src/app/images/posterholder.png"
+          },
+          genres: traktShow.genres.length != 0 ? traktShow.genres : ["Unknown"],
+          episodes: []
         }
-      });
+      }
     }
 
   };
