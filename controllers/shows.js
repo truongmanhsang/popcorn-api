@@ -52,7 +52,8 @@ module.exports = {
 
       let sort = {
         "rating.votes": data.order,
-        "rating.percentage": data.order
+        "rating.percentage": data.order,
+        "rating.watching": data.order
       };
 
       if (data.keywords) {
@@ -82,6 +83,12 @@ module.exports = {
         };
         if (data.sort === "name") sort = {
           title: (data.order * -1)
+        };
+        if (data.sort == "rating") sort = {
+          "rating.percentage": data.order
+        };
+        if (data.sort == "trending") sort = {
+          "rating.watching": data.order
         };
       }
 

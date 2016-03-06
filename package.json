@@ -1,7 +1,7 @@
 {
-  "name": "tvseries-api",
+  "name": "popcorn-api",
   "version": "1.0.0",
-  "description": "An Objectivly better TV series API for Popcorn Time.",
+  "description": "An objectivly better TV series API for Popcorn Time.",
   "dependencies": {
     "async-q": "^0.3.1",
     "body-parser": "^1.15.0",

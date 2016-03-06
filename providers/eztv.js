@@ -8,7 +8,7 @@ let helper;
 const getShow = function*(eztvShow) {
   if (eztvShow) {
     const imdb = yield eztv.getShowDetails(eztvShow);
-    const newShow = yield helper.getTraktInfo(imdb);
+    const newShow = yield util.spawn(helper.getTraktInfo(imdb));
     const episodes = yield eztv.getAllEpisodes(eztvShow);
 
     if (typeof(newShow) !== "undefined" && newShow._id && !episodes.dateBased) {
