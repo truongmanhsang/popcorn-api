@@ -125,9 +125,9 @@ const Helper = (_name) => {
           last_updated: Number(new Date()),
           images: {
             /* TODO: have the failed image on localhost. */
-            fanart: traktShow.images.fanart.full != null ? traktShow.images.fanart.full : "https://raw.githubusercontent.com/PTCE-Public/popcorn-desktop/master/src/app/images/posterholder.png",
-            poster: traktShow.images.poster.full != null ? traktShow.images.poster.full : "https://raw.githubusercontent.com/PTCE-Public/popcorn-desktop/master/src/app/images/posterholder.png",
-            banner: traktShow.images.banner.full != null ? traktShow.images.banner.full : "https://raw.githubusercontent.com/PTCE-Public/popcorn-desktop/master/src/app/images/posterholder.png"
+            fanart: traktShow.images.fanart.full != null ? traktShow.images.fanart.full : "images/posterholder.png",
+            poster: traktShow.images.poster.full != null ? traktShow.images.poster.full : "images/posterholder.png",
+            banner: traktShow.images.banner.full != null ? traktShow.images.banner.full : "images/posterholder.png"
           },
           genres: traktShow.genres.length != 0 ? traktShow.genres : ["Unknown"],
           episodes: []
