@@ -188,6 +188,11 @@
     query: {
       query: "x264-2HD "
     }
+  },{
+    name: "ettv",
+    query: {
+      query: "x264 seeds:2"
+    }
   }, {
     name: "Brasse0",
     query: {
