@@ -1,4 +1,4 @@
-const config = {
+ const config = {
   master: true,
   port: 5000,
   workers: 2,
@@ -13,9 +13,20 @@ const config = {
     "localhost"
   ],
   maxWebRequest: 2,
-  webRequestTimeout: 2,
+  webRequestTimeout: 10,
   traktKey: "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907",
   katMap: {
+    "the-comedians-us" : "the-comedians-2015",
+    "proof-us" : "proof",
+    "resurrection-us" : "resurrection-2014",
+    "the-bridge-us" : "the-bridge-2013",
+    "intelligence-us" : "intelligence-2014",
+    "kitchen-nightmares-us" : "kitchen-nightmares",
+    "perception" : "perception-2012",
+    "revolution-2012" : "revolution",
+    "reckless" : "reckless-2014",
+    "sanctuary-us" : "sanctuary",
+    "60-minutes-us" : "60-minutes",
     "american-crime": "american-crime-1969",
     "bachelor-live": "the-bachelor-live",
     "ballers-2015": "ballers",
@@ -59,6 +70,7 @@ const config = {
     "teen-wolf": "teen-wolf-2011",
     "the-kennedys-uk": "the-kennedys-2015",
     "the-league": "the-league-2009",
+    "house-of-cards-2013" : "house-of-cards",
     "the-librarians-us": "the-librarians-2014",
     "the-magicians-us": "the-magicians",
     "this-is-england-90": "this-is-england-90-2015",
@@ -70,6 +82,7 @@ const config = {
   eztvMap: {
     "10-oclock-live": "10-o-clock-live",
     "battlestar-galactica": "battlestar-galactica-2003",
+    "house-of-cards-2013" : "house-of-cards",
     "black-box": "the-black-box",
     "brooklyn-nine-nine": "brooklyn-ninenine",
     "cracked": "cracked-2013",
@@ -95,40 +108,85 @@ const config = {
     "vikings-us": "vikings"
   },
   providers: [{
-    name: "LOL_ETTV",
+    name: "ZonerLOL",
     query: {
-      query: "LOL",
-      uploader: "ettv"
+      query: "x264-LOL seeds:3"
     }
-  }, {
-    name: "LOL_EZTV",
+  },{
+    name: "ZonerLOL2",
     query: {
-      query: "LOL",
-      uploader: "eztv"
-    }
-  }, {
-    name: "KILLERS_ETTV",
-    query: {
-      query: "KILLERS",
-      uploader: "ettv"
-    }
-  }, {
-    name: "KILLERS_RARTV",
-    query: {
-      query: "KILLERS",
+      query: "x264-LOL",
       uploader: "z0n321"
     }
-  }, {
-    name: "2HD_ETTV",
+  },{
+    name: "ZonerLOL3",
     query: {
-      query: "2HD",
-      uploader: "ettv"
+      query: "x264-LOL",
+      uploader: "z0n321"
     }
-  }, {
-    name: "2HD_EZTV",
+  },{
+    name: "Zonerw4f",
     query: {
-      query: "2HD",
-      uploader: "eztv"
+      query: "x264 w4f"
+    }
+  },{
+    name: "Zonerfleet",
+    query: {
+      query: "x264 FLEET"
+    }
+  },{
+    name: "Zoner720p",
+    query: {
+      query: "x264 720p",
+      uploader: "z0n321"
+    }
+  },{
+    name: "ZonerHDTV",
+    query: {
+      query: "x264 HDTV",
+      uploader: "z0n321"
+    }
+  },{
+    name: "x264HDTV",
+    query: {
+      query: "x264 720p HDTV",
+      uploader: "z0n321"
+    }
+  },{
+    name: "Zoner1080p",
+    query: {
+      query: "x264 1080p",
+      uploader: "z0n321"
+    }
+  },{
+    name: "Zoneravs",
+    query: {
+      query: "X264-AVS"
+    }
+  },{
+    name: "ZonerDeflate",
+    query: {
+      query: "X264-DEFLATE"
+    }
+  },{
+    name: "Zonerdimension",
+    query: {
+      query: "X264-Dimension"
+    }
+  },{
+    name: "Zoneravs",
+    query: {
+      query: "X264-AVS"
+    }
+  },{
+    name: "KILLERS",
+    query: {
+      query: "x264 KILLERS seeds:3"
+    }
+  },{
+    name: "2HD_x264",
+    query: {
+      query: "x264-2HD "
     }
   }, {
     name: "Brasse0",
@@ -148,7 +206,7 @@ const config = {
   }, {
     name: "FUM",
     query: {
-      query: "FUM"
+      query: "X264-FUM"
     }
   }, {
     name: "CRiMSON",
