@@ -73,10 +73,6 @@ An objectivly better TV series API for Popcorn Time.
 }
 ```
 
-# Known Issues
-The issues are listed in the code with a 'TODO'.
-- Kat scraping gets stuck if kat.cr times out at getting the 'totalPages'.
-
 # Versioning
 For transparency and insight into our release cycle, and for striving to maintain backward compatibility, this project will be maintained according to the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
 
