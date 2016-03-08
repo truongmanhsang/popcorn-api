@@ -110,24 +110,14 @@
   providers: [{
     name: "ZonerLOL",
     query: {
-      query: "x264-LOL seeds:3"
-    }
-  },{
-    name: "ZonerLOL2",
-    query: {
       query: "x264-LOL",
-      uploader: "z0n321"
-    }
-  },{
-    name: "ZonerLOL3",
-    query: {
-      query: "x264-LOL",
-      uploader: "z0n321"
+      min_seeds: 3
     }
   },{
     name: "Zonerw4f",
     query: {
-      query: "x264 w4f"
+      query: "x264 w4f",
+      min_seeds: 1
     }
   },{
     name: "Zonerfleet",
@@ -138,12 +128,14 @@
     name: "Zoner720p",
     query: {
       query: "x264 720p",
+      min_seeds: 1,
       uploader: "z0n321"
     }
   },{
     name: "ZonerHDTV",
     query: {
       query: "x264 HDTV",
+      min_seeds: 3,
       uploader: "z0n321"
     }
   },{
@@ -171,7 +163,8 @@
   },{
     name: "Zonerdimension",
     query: {
-      query: "X264-Dimension"
+      query: "X264-Dimension",
+      min_seeds: 1
     }
   },{
     name: "Zoneravs",
@@ -181,17 +174,21 @@
   },{
     name: "KILLERS",
     query: {
-      query: "x264 KILLERS seeds:3"
+      query: "x264 KILLERS",
+      min_seeds: 3
     }
   },{
     name: "2HD_x264",
     query: {
-      query: "x264-2HD "
+      query: "x264-2HD",
+      min_seeds: 1
     }
   },{
     name: "ettv",
     query: {
-      query: "x264 seeds:2"
+      query: "x264",
+      min_seeds: 3,
+      uploader: "ettv"
     }
   }, {
     name: "Brasse0",
