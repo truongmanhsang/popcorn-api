@@ -19,6 +19,7 @@
   "scripts": {
     "start": "node --harmony --harmony_destructuring --use_strict index.js"
   },
+  "engines": { "node" : ">=4.0.0" },
   "main": "index.js",
   "repository": {
     "type": "git",
