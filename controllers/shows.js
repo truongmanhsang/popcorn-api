@@ -2,7 +2,6 @@ const config = require("../config.js"),
   Show = require("../models/Show"),
   util = require("../util");
 
-/* TODO: Fix sort by trending. */
 module.exports = {
 
   /* Get all the pages. */

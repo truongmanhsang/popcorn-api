@@ -145,7 +145,6 @@ const KAT = (_name) => {
       provider.query.verified = 1;
       provider.query.adult_filter = 1;
 
-      // TODO: Fix timeout on getting total pages.
       const getTotalPages = yield kat.search(provider.query);
       const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
       // totalPages = 3; // For testing purposes only.
