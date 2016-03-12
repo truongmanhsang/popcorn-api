@@ -12,38 +12,42 @@ const updateEpisodes = function*(doc) {
   if (found) {
     console.log(name + ": '" + found.title + "' is an existing show.");
     for (let i = 0; i < doc.episodes.length; i++) {
-      let matching = found.episodes.filter((foundEpisode) => {
-        return foundEpisode.season === doc.episodes[i].season && foundEpisode.episode === doc.episodes[i].episode
+      let matching = doc.episodes.filter((foundEpisode) => {
+        return foundEpisode.season === found.episodes[i].season && foundEpisode.episode === found.episodes[i].episode
       });
 
       if (matching.length != 0) {
-        let index = found.episodes.indexOf(matching[0]);
-        if (!matching[0][doc.episodes[i].season]) matching[0][doc.episodes[i].season] = {};
-        if (!matching[0][doc.episodes[i].season][doc.episodes[i].episode]) matching[0][doc.episodes[i].season][doc.episodes[i].episode] = {};
+        let index = doc.episodes.indexOf(matching[0]);
+        if (!matching[0][found.episodes[i].season]) matching[0][found.episodes[i].season] = {};
+        if (!matching[0][found.episodes[i].season][found.episodes[i].episode]) matching[0][found.episodes[i].season][found.episodes[i].episode] = {};
 
-        if ((!matching[0].torrents["480p"] && doc.episodes[i].torrents["480p"]) || (matching[0].torrents["480p"] && doc.episodes[i].torrents["480p"] && matching[0].torrents["480p"].seeds < doc.episodes[i].torrents["480p"].seeds)) {
-          matching[0].torrents["480p"] = doc.episodes[i].torrents["480p"];
-          matching[0].torrents["0"] = doc.episodes[i].torrents["480p"];
+        if ((!matching[0].torrents["480p"] && doc.episodes[i].torrents["480p"]) || (matching[0].torrents["480p"] && found.episodes[i].torrents["480p"] && matching[0].torrents["480p"].seeds < found.episodes[i].torrents["480p"].seeds)) {
+          matching[0].torrents["480p"] = found.episodes[i].torrents["480p"];
+          matching[0].torrents["0"] = found.episodes[i].torrents["480p"];
         }
-        if ((!matching[0].torrents["720p"] && doc.episodes[i].torrents["720p"]) || (matching[0].torrents["720p"] && doc.episodes[i].torrents["720p"] && matching[0].torrents["720p"].seeds < doc.episodes[i].torrents["720p"].seeds)) {
-          matching[0].torrents["720p"] = doc.episodes[i].torrents["720p"];
+        if ((!matching[0].torrents["720p"] && found.episodes[i].torrents["720p"]) || (matching[0].torrents["720p"] && found.episodes[i].torrents["720p"] && matching[0].torrents["720p"].seeds < found.episodes[i].torrents["720p"].seeds)) {
+          matching[0].torrents["720p"] = found.episodes[i].torrents["720p"];
         }
-        if ((!matching[0].torrents["1080p"] && doc.episodes[i].torrents["1080p"]) || (matching[0].torrents["1080p"] && doc.episodes[i].torrents["1080p"] && matching[0].torrents["1080p"].seeds < doc.episodes[i].torrents["1080p"].seeds)) {
-          matching[0].torrents["1080p"] = doc.episodes[i].torrents["1080p"];
+        if ((!matching[0].torrents["1080p"] && found.episodes[i].torrents["1080p"]) || (matching[0].torrents["1080p"] && found.episodes[i].torrents["1080p"] && matching[0].torrents["1080p"].seeds < found.episodes[i].torrents["1080p"].seeds)) {
+          matching[0].torrents["1080p"] = found.episodes[i].torrents["1080p"];
         }
 
-        found.episodes.splice(index, 1, matching[0]);
+        doc.episodes.splice(index, 1, matching[0]);
       } else {
-        found.episodes.push(doc.episodes[i]);
+        doc.episodes.push(found.episodes[i]);
       }
     }
 
-    const saved = yield found.save();
+    const saved = yield Show.update({
+      _id: doc._id
+    }, doc).exec();
     const distinct = yield Show.distinct("episodes.season", {
-      _id: saved._id
+      _id: doc._id
     }).exec();
-    saved.num_seasons = distinct.length;
-    return yield saved.save();
+    doc.num_seasons = distinct.length;
+    return yield Show.update({
+      _id: doc._id
+    }, doc).exec();
   } else {
     console.log(name + ": '" + doc.title + "' is a new show!");
     return yield new Show(doc).save();
@@ -124,7 +128,6 @@ const Helper = (_name) => {
           num_seasons: 0,
           last_updated: Number(new Date()),
           images: {
-            /* TODO: have the failed image on localhost. */
             fanart: traktShow.images.fanart.full != null ? traktShow.images.fanart.full : "images/posterholder.png",
             poster: traktShow.images.poster.full != null ? traktShow.images.poster.full : "images/posterholder.png",
             banner: traktShow.images.banner.full != null ? traktShow.images.banner.full : "images/posterholder.png"

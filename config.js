@@ -13,7 +13,7 @@
     "localhost"
   ],
   maxWebRequest: 2,
-  webRequestTimeout: 10,
+  webRequestTimeout: 2,
   traktKey: "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907",
   katMap: {
     "the-comedians-us" : "the-comedians-2015",
