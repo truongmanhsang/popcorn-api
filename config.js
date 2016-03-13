@@ -1,4 +1,4 @@
- const config = {
+const config = {
   master: true,
   port: 5000,
   workers: 2,
@@ -6,27 +6,15 @@
   pageSize: 50,
   serverName: "serv01",
   tempDir: "./tmp",
-  errorLog: "tvseries-api.log",
+  errorLog: "popcorn-api.log",
   statusFile: "status.json",
   updatedFile: "lastUpdated.json",
-  dbHosts: [
-    "localhost"
-  ],
+  dbHosts: ["localhost"],
   maxWebRequest: 2,
   webRequestTimeout: 2,
   traktKey: "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907",
   katMap: {
-    "the-comedians-us" : "the-comedians-2015",
-    "proof-us" : "proof",
-    "resurrection-us" : "resurrection-2014",
-    "the-bridge-us" : "the-bridge-2013",
-    "intelligence-us" : "intelligence-2014",
-    "kitchen-nightmares-us" : "kitchen-nightmares",
-    "perception" : "perception-2012",
-    "revolution-2012" : "revolution",
-    "reckless" : "reckless-2014",
-    "sanctuary-us" : "sanctuary",
-    "60-minutes-us" : "60-minutes",
+    "60-minutes-us": "60-minutes",
     "american-crime": "american-crime-1969",
     "bachelor-live": "the-bachelor-live",
     "ballers-2015": "ballers",
@@ -46,11 +34,14 @@
     "hawaii-five-0-2010": "hawaii-five-0",
     "heartland-ca": "heartland-2007-ca",
     "hells-kitchen-us": "hell-s-kitchen-2005",
+    "house-of-cards-2013": "house-of-cards",
     "how-its-made-dream-cars": "how-it-s-made-dream-cars",
     "how-its-made": "how-it-s-made",
+    "intelligence-us": "intelligence-2014",
     "its-always-sunny-in-philadelphia": "it-s-always-sunny-in-philadelphia",
     "james-mays-cars-of-the-people": "james-may-s-cars-of-the-people",
     "jericho-2016": "jericho-1969",
+    "kitchen-nightmares-us": "kitchen-nightmares",
     "last-man-standing-us": "last-man-standing-2011",
     "law-and-order-svu": "law-order-special-victims-unit",
     "marvels-agent-carter": "marvel-s-agent-carter",
@@ -58,9 +49,15 @@
     "marvels-daredevil": "marvel-s-daredevil",
     "marvels-jessica-jones": "marvel-s-jessica-jones",
     "mike-and-molly": "mike-molly",
+    "perception": "perception-2012",
     "power-2014": "power",
     "prey-uk": "prey-2014",
+    "proof-us": "proof",
+    "reckless": "reckless-2014",
+    "resurrection-us": "resurrection-2014",
+    "revolution-2012": "revolution",
     "rush-us": "rush-2014",
+    "sanctuary-us": "sanctuary",
     "satisfaction-us": "satisfaction-2014",
     "scandal-us": "scandal",
     "schitts-creek": "schitt-s-creek",
@@ -68,9 +65,10 @@
     "stan-lees-lucky-man": "stan-lee-s-lucky-man",
     "survivors-remorse": "survivor-s-remorse",
     "teen-wolf": "teen-wolf-2011",
+    "the-bridge-us": "the-bridge-2013",
+    "the-comedians-us": "the-comedians-2015",
     "the-kennedys-uk": "the-kennedys-2015",
     "the-league": "the-league-2009",
-    "house-of-cards-2013" : "house-of-cards",
     "the-librarians-us": "the-librarians-2014",
     "the-magicians-us": "the-magicians",
     "this-is-england-90": "this-is-england-90-2015",
@@ -82,7 +80,7 @@
   eztvMap: {
     "10-oclock-live": "10-o-clock-live",
     "battlestar-galactica": "battlestar-galactica-2003",
-    "house-of-cards-2013" : "house-of-cards",
+    "house-of-cards-2013": "house-of-cards",
     "black-box": "the-black-box",
     "brooklyn-nine-nine": "brooklyn-ninenine",
     "cracked": "cracked-2013",
@@ -113,77 +111,77 @@
       query: "x264-LOL",
       min_seeds: 3
     }
-  },{
+  }, {
     name: "Zonerw4f",
     query: {
       query: "x264 w4f",
       min_seeds: 1
     }
-  },{
+  }, {
     name: "Zonerfleet",
     query: {
       query: "x264 FLEET"
     }
-  },{
+  }, {
     name: "Zoner720p",
     query: {
       query: "x264 720p",
       min_seeds: 1,
       uploader: "z0n321"
     }
-  },{
+  }, {
     name: "ZonerHDTV",
     query: {
       query: "x264 HDTV",
       min_seeds: 3,
       uploader: "z0n321"
     }
-  },{
+  }, {
     name: "x264HDTV",
     query: {
       query: "x264 720p HDTV",
       uploader: "z0n321"
     }
-  },{
+  }, {
     name: "Zoner1080p",
     query: {
       query: "x264 1080p",
       uploader: "z0n321"
     }
-  },{
+  }, {
     name: "Zoneravs",
     query: {
       query: "X264-AVS"
     }
-  },{
+  }, {
     name: "ZonerDeflate",
     query: {
       query: "X264-DEFLATE"
     }
-  },{
+  }, {
     name: "Zonerdimension",
     query: {
       query: "X264-Dimension",
       min_seeds: 1
     }
-  },{
+  }, {
     name: "Zoneravs",
     query: {
       query: "X264-AVS"
     }
-  },{
+  }, {
     name: "KILLERS",
     query: {
       query: "x264 KILLERS",
       min_seeds: 3
     }
-  },{
+  }, {
     name: "2HD_x264",
     query: {
       query: "x264-2HD",
       min_seeds: 1
     }
-  },{
+  }, {
     name: "ettv",
     query: {
       query: "x264",

@@ -5,7 +5,7 @@ An objectivly better TV series API for Popcorn Time.
 1. Install MongoDB
 2. Install NodeJS (atleast Node v4.0.0 or greater)
 3. install dependencies `cd popcorn-api` and `npm install`
-4. Start the API with `npm start` or `node --harmony --harmony_destructuring --use_strict index.js`
+4. Start the API with `npm start` or `node --harmony --harmony_destructuring --harmony_default_parameters --use_strict index.js`
 
 # Example output
 

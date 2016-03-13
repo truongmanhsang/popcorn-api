@@ -7,15 +7,15 @@ let helper;
 /* Get a complete show. */
 const getShow = function*(eztvShow) {
   if (eztvShow) {
-    const imdb = yield eztv.getShowDetails(eztvShow);
-    const newShow = yield util.spawn(helper.getTraktInfo(imdb));
+    eztvShow = yield eztv.getShowDetails(eztvShow);
+    const newShow = yield util.spawn(helper.getTraktInfo(eztvShow.imdb));
     const episodes = yield eztv.getAllEpisodes(eztvShow);
 
     if (typeof(newShow) !== "undefined" && newShow._id && !episodes.dateBased) {
       delete episodes.dateBased;
       delete episodes[0];
       newShow.num_seasons = Object.keys(episodes).length;
-      return yield helper.addEpisodes(newShow, episodes, eztvShow.slug);
+      return yield helper.addEpisodes(newShow, episodes, eztvShow.imdb);
     }
   }
 };

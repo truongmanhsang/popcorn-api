@@ -147,7 +147,7 @@ const KAT = (_name) => {
 
       const getTotalPages = yield kat.search(provider.query);
       const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
-      // totalPages = 3; // For testing purposes only.
+      //totalPages = 3; // For testing purposes only.
       console.log(name + ": Total pages " + totalPages);
 
       const katTorrents = yield getAllTorrents(totalPages, provider);

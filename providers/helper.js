@@ -11,24 +11,21 @@ const updateEpisodes = function*(doc) {
   }).exec();
   if (found) {
     console.log(name + ": '" + found.title + "' is an existing show.");
-    for (let i = 0; i < doc.episodes.length; i++) {
-      let matching = doc.episodes.filter((foundEpisode) => {
-        return foundEpisode.season === found.episodes[i].season && foundEpisode.episode === found.episodes[i].episode
+    for (let i = 0; i < found.episodes.length; i++) {
+      let matching = doc.episodes.filter((docEpisode) => {
+        return docEpisode.season === found.episodes[i].season && docEpisode.episode === found.episodes[i].episode;
       });
 
       if (matching.length != 0) {
         let index = doc.episodes.indexOf(matching[0]);
-        if (!matching[0][found.episodes[i].season]) matching[0][found.episodes[i].season] = {};
-        if (!matching[0][found.episodes[i].season][found.episodes[i].episode]) matching[0][found.episodes[i].season][found.episodes[i].episode] = {};
-
-        if ((!matching[0].torrents["480p"] && doc.episodes[i].torrents["480p"]) || (matching[0].torrents["480p"] && found.episodes[i].torrents["480p"] && matching[0].torrents["480p"].seeds < found.episodes[i].torrents["480p"].seeds)) {
-          matching[0].torrents["480p"] = found.episodes[i].torrents["480p"];
+        if ((!matching[0].torrents["480p"] && found.episodes[i].torrents["480p"]) || (matching[0].torrents["480p"] && found.episodes[i].torrents["480p"] && matching[0].torrents["480p"].seeds < found.episodes[i].torrents["480p"].seeds) || (matching[0].torrents["480p"] && found.episodes[i].torrents["480p"] && matching[0].torrents["480p"].magnet === found.episodes[i].torrents["480p"].magnet)) {
           matching[0].torrents["0"] = found.episodes[i].torrents["480p"];
+          matching[0].torrents["480p"] = found.episodes[i].torrents["480p"];
         }
-        if ((!matching[0].torrents["720p"] && found.episodes[i].torrents["720p"]) || (matching[0].torrents["720p"] && found.episodes[i].torrents["720p"] && matching[0].torrents["720p"].seeds < found.episodes[i].torrents["720p"].seeds)) {
+        if ((!matching[0].torrents["720p"] && found.episodes[i].torrents["720p"]) || (matching[0].torrents["720p"] && found.episodes[i].torrents["720p"] && matching[0].torrents["720p"].seeds < found.episodes[i].torrents["720p"].seeds) || (matching[0].torrents["720p"] && found.episodes[i].torrents["720p"] && matching[0].torrents["720p"].magnet === found.episodes[i].torrents["720p"].magnet)) {
           matching[0].torrents["720p"] = found.episodes[i].torrents["720p"];
         }
-        if ((!matching[0].torrents["1080p"] && found.episodes[i].torrents["1080p"]) || (matching[0].torrents["1080p"] && found.episodes[i].torrents["1080p"] && matching[0].torrents["1080p"].seeds < found.episodes[i].torrents["1080p"].seeds)) {
+        if ((!matching[0].torrents["1080p"] && found.episodes[i].torrents["1080p"]) || (matching[0].torrents["1080p"] && found.episodes[i].torrents["1080p"] && matching[0].torrents["1080p"].seeds < found.episodes[i].torrents["1080p"].seeds) || (matching[0].torrents["1080p"] && found.episodes[i].torrents["1080p"] && matching[0].torrents["1080p"].magnet === found.episodes[i].torrents["1080p"].magnet)) {
           matching[0].torrents["1080p"] = found.episodes[i].torrents["1080p"];
         }
 
@@ -38,16 +35,14 @@ const updateEpisodes = function*(doc) {
       }
     }
 
-    const saved = yield Show.update({
+    const saved = yield Show.findOneAndUpdate({
       _id: doc._id
     }, doc).exec();
     const distinct = yield Show.distinct("episodes.season", {
-      _id: doc._id
+      _id: saved._id
     }).exec();
-    doc.num_seasons = distinct.length;
-    return yield Show.update({
-      _id: doc._id
-    }, doc).exec();
+    saved.num_seasons = distinct.length;
+    return yield saved.save();
   } else {
     console.log(name + ": '" + doc.title + "' is a new show!");
     return yield new Show(doc).save();
