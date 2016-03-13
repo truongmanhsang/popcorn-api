@@ -39,16 +39,13 @@ if (cluster.isMaster) {
     cluster.fork();
   }
 
+  util.makeTemp();
+  util.setStatus("Starting up");
+
   cluster.on("exit", (worker, code, signal) => {
     util.onError("Worker '" + worker.process.pid + "' died, spinning up another!");
     cluster.fork();
   });
-
-  if (!fs.existsSync(config.tempDir)) {
-    fs.mkdirSync(config.tempDir);
-  }
-
-  util.setStatus("Starting up");
 
   if (config.master) {
     const scope = domain.create();

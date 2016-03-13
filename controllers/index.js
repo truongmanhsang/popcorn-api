@@ -13,6 +13,7 @@ module.exports = {
 
     return Show.count({}).then((count) => {
       return res.json({
+        repo: packageJSON.repository.url,
         server: config.serverName,
         status: statusJSON.status != null ? statusJSON.status : "Idle",
         totalShows: count,

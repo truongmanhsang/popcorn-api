@@ -1,7 +1,16 @@
 const fs = require("fs"),
   config = require("./config");
 
+/* Makes the temporary directory. */
+const makeTemp = () => {
+  if (!fs.existsSync(config.tempDir)) {
+    fs.mkdirSync(config.tempDir);
+  }
+};
+
 module.exports = {
+
+  makeTemp: makeTemp,
 
   /* Error logger function. */
   onError: (errorMessage) => {
@@ -29,7 +38,8 @@ module.exports = {
     return new Promise((resolve, reject) => {
       let onResult = (lastPromiseResult) => {
         let {
-          value, done
+          value,
+          done
         } = generator.next(lastPromiseResult);
         if (!done) {
           value.then(onResult, reject)
@@ -39,6 +49,20 @@ module.exports = {
       };
       onResult();
     });
+  },
+
+  /* Removes all the files in the temporary directory. */
+  resetTemp: (path = config.tempDir) => {
+    const files = fs.readdirSync(path);
+    files.forEach((file) => {
+      const stats = fs.statSync(path + "/" + file);
+      if (stats.isDirectory()) {
+        resetTemp(file);
+      } else if (stats.isFile()) {
+        fs.unlinkSync(path + "/" + file);
+      }
+    });
+    makeTemp();
   }
 
 };
