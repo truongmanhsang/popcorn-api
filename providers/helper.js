@@ -42,7 +42,7 @@ const updateEpisodes = function*(doc) {
       _id: saved._id
     }).exec();
     saved.num_seasons = distinct.length;
-    return yield saved.save();
+    return saved.save();
   } else {
     console.log(name + ": '" + doc.title + "' is a new show!");
     return yield new Show(doc).save();
