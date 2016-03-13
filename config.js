@@ -112,6 +112,20 @@ const config = {
       min_seeds: 3
     }
   }, {
+    name: "SRIGGA",
+    query: {
+      query: "x264",
+      uploader: "SRIGGA",
+      min_seeds: 1
+    }
+  },{
+    name: "EZTV",
+    query: {
+      query: "x264",
+      uploader: "eztv",
+      min_seeds: 1
+    }
+  },{
     name: "Zonerw4f",
     query: {
       query: "x264 w4f",
