@@ -1,3 +1,19 @@
+1.0.3 - It went unnoticed = 16 March 2016
+=========================================
+
+New features:
+ - Added `/logs/change` to see the CHANGELOG.md
+ - Added `/logs/error` to see the error log
+
+Bug fixes:
+ - Fixed issue where some season based episodes from EZTV where not added (Including [Last Week Tonight with John Oliver](https://eztv.ag/shows/1025/last-week-tonight-with-john-oliver/))
+ - Fixed issue with MongoDB limitations to sorting
+ - Status will now be set to `Idle` after scraping is done
+
+Notes:
+ - Removed `/shows/last_updated` routes as they did not work, nor did they work on the previous API
+ - Made scraping EZTV faster by merging the `getShowDetails` and `getAllEpisodes` functions
+
 1.0.2 - Wanna retry? - 14 March 2016
 ====================================
 
@@ -7,10 +23,10 @@ New features:
 
 Bug fixes:
  - Now properly updates metadata
- - Some fixes to prevent ETIMEDOUT
+ - Some fixes to prevent `ETIMEDOUT`
 
 Notes:
- - Removed dependency on Q
+ - Removed dependency on `Q`
  - Replaced `slug` with `imdb` for getting seasonal metadata from trakt.tv
 
 1.0.1 - What's trening? - 6 March 2016
