@@ -33,6 +33,8 @@ module.exports = {
 
     async.eachSeries([scrapeEZTV, scrapeKAT], (scraper) => {
       return scraper();
+    }).then((value) => {
+      return util.setStatus("Idle");
     }).catch((err) => {
       util.onError("Error while scraping: " + err);
       return err;
