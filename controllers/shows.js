@@ -15,17 +15,15 @@ const projection = {
   rating: 1
 };
 
-let query = {
-  num_seasons: {
-    $gt: 0
-  }
-};
-
 module.exports = {
 
   /* Get all the pages. */
   getShows: (req, res) => {
-    return Show.count(query).exec().then((count) => {
+    return Show.count({
+      num_seasons: {
+        $gt: 0
+      }
+    }).exec().then((count) => {
       const pages = Math.round(count / config.pageSize);
       const docs = [];
 
@@ -43,15 +41,21 @@ module.exports = {
   getPage: (req, res) => {
     const page = req.params.page - 1;
     const offset = page * config.pageSize;
+
+    let query = {
+      num_seasons: {
+        $gt: 0
+      }
+    };
     const data = req.query;
 
     if (!data.order)
       data.order = -1;
 
     let sort = {
-      "rating.votes": parseInt(data.order, 10),
-      "rating.percentage": parseInt(data.order, 10),
-      "rating.watching": parseInt(data.order, 10),
+      "rating.votes": data.order,
+      "rating.percentage": data.order,
+      "rating.watching": data.order
     };
 
     if (data.keywords) {
@@ -74,19 +78,19 @@ module.exports = {
 
     if (data.sort) {
       if (data.sort === "year") sort = {
-        year: parseInt(data.order, 10)
+        year: data.order
       };
       if (data.sort === "updated") sort = {
-        "episodes.first_aired": parseInt(data.order, 10)
+        "episodes.first_aired": data.order
       };
       if (data.sort === "name") sort = {
-        title: (parseInt(data.order, 10) * -1)
+        title: (data.order * -1)
       };
       if (data.sort == "rating") sort = {
-        "rating.percentage": parseInt(data.order, 10)
+        "rating.percentage": data.order
       };
       if (data.sort == "trending") sort = {
-        "rating.watching": parseInt(data.order, 10),
+        "rating.watching": data.order
       };
     }
 
@@ -149,7 +153,11 @@ module.exports = {
   search: (req, res) => {
     const keywords = new RegExp(RegExp.escape(req.params.search.toLowerCase()), "gi");
     return Show.aggregate([{
-      $match: query
+      $match: {
+        num_seasons: {
+          $gt: 0
+        }
+      }
     }, {
       $sort: {
         title: -1
