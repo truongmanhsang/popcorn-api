@@ -11,7 +11,7 @@ Bug fixes:
  - Status will now be set to `Idle` after scraping is done
 
 Notes:
- - Removed `/shows/last_updated` routes as they did not work
+ - Disabled `/shows/search/`, `/shows/update/`, `/shows/last_updated` routes as they don't seem to be used by the 
  - Made scraping EZTV faster by merging the `getShowDetails` and `getAllEpisodes` functions
  - Required NodeJS version was changed in 1.0.2 to NodeJS v.5.0.0
 

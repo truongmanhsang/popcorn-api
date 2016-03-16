@@ -155,130 +155,173 @@ module.exports = {
     });
   },
 
-  /* Search. */
-  search: (req, res) => {
-    const keywords = new RegExp(RegExp.escape(req.params.search.toLowerCase()), "gi");
-    return Show.aggregate([{
-      $match: {
-        num_seasons: {
-          $gt: 0
-        }
-      }
-    }, {
-      $sort: {
-        title: -1
-      }
-    }, {
-      $limit: config.pageSize
-    }]).exec().then((docs) => {
-      return res.json(docs);
-    }).catch((err) => {
-      util.onError(err);
-      return res.json(err);
-    });
-  },
-
-  /* Get search page. */
-  searchPage: (req, res) => {
-    const page = req.params.page - 1;
-    const offset = page * config.pageSize;
-    const keywords = new RegExp(RegExp.escape(req.params.search.toLowerCase()), "gi");
-
-    return Show.aggregate([{
-      $match: {
-        title: keywords,
-        num_seasons: {
-          $gt: 0
-        }
-      }
-    }, {
-      $sort: {
-        title: -1
-      }
-    }, {
-      $skip: offset
-    }, {
-      $limit: config.pageSize
-    }]).exec().then((docs) => {
-      return res.json(docs);
-    }).catch((err) => {
-      util.onError(err);
-      return res.json(err);
-    });
-  },
-
-  /* Get since pages. */
-  getSince: (req, res) => {
-    const since = req.params.since;
-    if (req.query.full) {
-      return Show.find({
-        last_updated: {
-          $gt: parseInt(since)
-        },
-        num_seasons: {
-          $gt: 0
-        }
-      }).then((docs) => {
-        return res.json(docs);
-      }).catch((err) => {
-        util.onError(err);
-        return res.json(err);
-      });
-    } else {
-      console.log(since);
-      return Show.count({
-        last_updated: {
-          $gt: parseInt(since)
-        },
-        num_seasons: {
-          $gt: 0
-        }
-      }).then((count) => {
-        const pages = Math.round(count / config.pageSize);
-        const docs = [];
-
-        for (let i = 1; i < pages + 1; i++)
-          docs.push("shows/update/" + since + "/" + i);
-
-        return res.json(docs);
-      }).catch((err) => {
-        util.onError(err);
-        return res.json(err);
-      });
-    }
-  },
-
-  /* Get a page, ordered by a date. */
-  getSincePage: (req, res) => {
-    const page = req.params.page - 1;
-    const offset = page * config.pageSize;
-    const since = req.params.since;
-
-    return Show.aggregate([{
-      $match: {
-        last_updated: {
-          $gt: parseInt(since)
-        },
-        num_seasons: {
-          $gt: 0
-        }
-      }
-    }, {
-      $project: projection
-    }, {
-      $sort: {
-        title: -1
-      }
-    }, {
-      $skip: offset
-    }, {
-      $limit: config.pageSize
-    }]).exec().then((docs) => {
-      return res.json(docs);
-    }).catch((err) => {
-      util.onError(err);
-      return res.json(err);
-    });
-  }
+  // /* Search. */
+  // search: (req, res) => {
+  //   const keywords = new RegExp(RegExp.escape(req.params.search.toLowerCase()), "gi");
+  //   return Show.aggregate([{
+  //     $match: {
+  //       num_seasons: {
+  //         $gt: 0
+  //       }
+  //     }
+  //   }, {
+  //     $sort: {
+  //       title: -1
+  //     }
+  //   }, {
+  //     $limit: config.pageSize
+  //   }]).exec().then((docs) => {
+  //     return res.json(docs);
+  //   }).catch((err) => {
+  //     util.onError(err);
+  //     return res.json(err);
+  //   });
+  // },
+  //
+  // /* Get search page. */
+  // searchPage: (req, res) => {
+  //   const page = req.params.page - 1;
+  //   const offset = page * config.pageSize;
+  //   const keywords = new RegExp(RegExp.escape(req.params.search.toLowerCase()), "gi");
+  //
+  //   return Show.aggregate([{
+  //     $match: {
+  //       title: keywords,
+  //       num_seasons: {
+  //         $gt: 0
+  //       }
+  //     }
+  //   }, {
+  //     $sort: {
+  //       title: -1
+  //     }
+  //   }, {
+  //     $skip: offset
+  //   }, {
+  //     $limit: config.pageSize
+  //   }]).exec().then((docs) => {
+  //     return res.json(docs);
+  //   }).catch((err) => {
+  //     util.onError(err);
+  //     return res.json(err);
+  //   });
+  // },
+  //
+  // /* Get since pages. */
+  // getSince: (req, res) => {
+  //   const since = req.params.since;
+  //   if (req.query.full) {
+  //     return Show.find({
+  //       last_updated: {
+  //         $gt: parseInt(since)
+  //       },
+  //       num_seasons: {
+  //         $gt: 0
+  //       }
+  //     }).then((docs) => {
+  //       return res.json(docs);
+  //     }).catch((err) => {
+  //       util.onError(err);
+  //       return res.json(err);
+  //     });
+  //   } else {
+  //     console.log(since);
+  //     return Show.count({
+  //       last_updated: {
+  //         $gt: parseInt(since)
+  //       },
+  //       num_seasons: {
+  //         $gt: 0
+  //       }
+  //     }).then((count) => {
+  //       const pages = Math.round(count / config.pageSize);
+  //       const docs = [];
+  //
+  //       for (let i = 1; i < pages + 1; i++)
+  //         docs.push("shows/update/" + since + "/" + i);
+  //
+  //       return res.json(docs);
+  //     }).catch((err) => {
+  //       util.onError(err);
+  //       return res.json(err);
+  //     });
+  //   }
+  // },
+  //
+  // /* Get a page, ordered by a date. */
+  // getSincePage: (req, res) => {
+  //   const page = req.params.page - 1;
+  //   const offset = page * config.pageSize;
+  //   const since = req.params.since;
+  //
+  //   return Show.aggregate([{
+  //     $match: {
+  //       last_updated: {
+  //         $gt: parseInt(since)
+  //       },
+  //       num_seasons: {
+  //         $gt: 0
+  //       }
+  //     }
+  //   }, {
+  //     $project: projection
+  //   }, {
+  //     $sort: {
+  //       title: -1
+  //     }
+  //   }, {
+  //     $skip: offset
+  //   }, {
+  //     $limit: config.pageSize
+  //   }]).exec().then((docs) => {
+  //     return res.json(docs);
+  //   }).catch((err) => {
+  //     util.onError(err);
+  //     return res.json(err);
+  //   });
+  // },
+  //
+  // /* Get last updated pages. */
+  // getLastUpdated: (req, res) => {
+  //   return Show.find({
+  //     num_seasons: {
+  //       $gt: 0
+  //     }
+  //   }).sort({
+  //     last_updated: -1
+  //   }).limit(config.pageSize).exec().then((docs) => {
+  //     return res.json(docs);
+  //   }).catch((err) => {
+  //     util.onError(err);
+  //     return res.json(err);
+  //   });
+  // },
+  //
+  // /* Get a page, ordered by last updated. */
+  // getLastUpdatedPage: (req, res) => {
+  //   const page = req.params.page - 1;
+  //   const offset = page * config.pageSize;
+  //
+  //   return Show.aggregate([{
+  //     $match: {
+  //       num_seasons: {
+  //         $gt: 0
+  //       }
+  //     }
+  //   }, {
+  //     $project: projection
+  //   }, {
+  //     $sort: last_updated: -1
+  //   }, {
+  //     $skip: offset
+  //   }, {
+  //     $limit: config.pageSize
+  //   }]).exec().then((docs) => {
+  //     return res.json(docs);
+  //   }).catch((err) => {
+  //     util.onError(err);
+  //     return res.json(err);
+  //   });
+  // }
 
 };
