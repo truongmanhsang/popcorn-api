@@ -3,7 +3,6 @@ const controllers = require("./controllers/load.js");
 /* Express Routing. */
 module.exports = (app) => {
   app.get("/", controllers.index.getIndex);
-  app.get("/logs/change", controllers.index.getChangeLog);
   app.get("/logs/error", controllers.index.getErrorLog);
 
   app.get("/show/:id", controllers.shows.getShow);

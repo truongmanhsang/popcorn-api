@@ -49,11 +49,6 @@ module.exports = {
     });
   },
 
-  /* Displays the 'CHANGELOG.md' file. */
-  getChangeLog: (req, res) => {
-    return displayFile(req, res, appDir, "/CHANGELOG.md");
-  },
-
   /* Displays the 'popcorn-api.log' file. */
   getErrorLog: (req, res) => {
     return displayFile(req, res, config.tempDir + "/", config.errorLog);
