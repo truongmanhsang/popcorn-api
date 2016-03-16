@@ -42,74 +42,19 @@ module.exports = {
     const page = req.params.page - 1;
     const offset = page * config.pageSize;
 
-    let query = {
-      num_seasons: {
-        $gt: 0
-      }
-    };
-    const data = req.query;
-
-    if (!data.order)
-      data.order = -1;
-
-    let sort = {
-      "rating.votes": data.order,
-      "rating.percentage": data.order,
-      "rating.watching": data.order
-    };
-
-    if (data.keywords) {
-      const words = data.keywords.split(" ");
-      let regex = data.keywords.toLowerCase();
-      if (words.length > 1) {
-        regex = "^";
-        for (let w in words) {
-          regex += "(?=.*\\b" + RegExp.escape(words[w].toLowerCase()) + "\\b)";
-        }
-        regex += ".+";
-      }
-      query = {
-        title: new RegExp(regex, "gi"),
-        num_seasons: {
-          $gt: 0
-        }
-      };
-    }
-
-    if (data.sort) {
-      if (data.sort === "year") sort = {
-        year: data.order
-      };
-      if (data.sort === "updated") sort = {
-        "episodes.first_aired": data.order
-      };
-      if (data.sort === "name") sort = {
-        title: (data.order * -1)
-      };
-      if (data.sort == "rating") sort = {
-        "rating.percentage": data.order
-      };
-      if (data.sort == "trending") sort = {
-        "rating.watching": data.order
-      };
-    }
-
-    if (data.genre && data.genre != "All") {
-      query = {
-        genres: data.genre.toLowerCase(),
-        num_seasons: {
-          $gt: 0
-        }
-      }
-    }
-
     if (req.params.page === "all") {
-      aggregate([{
-        $match: query
+      return Show.aggregate([{
+        $match: {
+          num_seasons: {
+            $gt: 0
+          }
+        }
       }, {
         $project: projection
       }, {
-        $sort: sort
+        $sort: {
+          title: -1
+        }
       }]).exec().then((docs) => {
         return res.json(docs);
       }).catch((err) => {
@@ -117,6 +62,67 @@ module.exports = {
         return res.json(err);
       });
     } else {
+      let query = {
+        num_seasons: {
+          $gt: 0
+        }
+      };
+      const data = req.query;
+
+      if (!data.order)
+        data.order = -1;
+
+      let sort = {
+        "rating.votes": parseInt(data.order, 10),
+        "rating.percentage": parseInt(data.order, 10),
+        "rating.watching": parseInt(data.order, 10)
+      };
+
+      if (data.keywords) {
+        const words = data.keywords.split(" ");
+        let regex = data.keywords.toLowerCase();
+        if (words.length > 1) {
+          regex = "^";
+          for (let w in words) {
+            regex += "(?=.*\\b" + RegExp.escape(words[w].toLowerCase()) + "\\b)";
+          }
+          regex += ".+";
+        }
+        query = {
+          title: new RegExp(regex, "gi"),
+          num_seasons: {
+            $gt: 0
+          }
+        };
+      }
+
+      if (data.sort) {
+        if (data.sort === "year") sort = {
+          year: parseInt(data.order, 10)
+        };
+        if (data.sort === "updated") sort = {
+          "episodes.first_aired": parseInt(data.order, 10)
+        };
+        if (data.sort === "name") sort = {
+          title: (parseInt(data.order, 10) * -1)
+        };
+        if (data.sort == "rating") sort = {
+          "rating.percentage": parseInt(data.order, 10)
+        };
+        if (data.sort == "trending") sort = {
+          "rating.watching": parseInt(data.order, 10)
+        };
+      }
+
+      if (data.genre && data.genre != "All") {
+        query = {
+          genres: data.genre.toLowerCase(),
+          num_seasons: {
+            $gt: 0
+          }
+        }
+      }
+
       return Show.aggregate([{
         $match: query
       }, {
