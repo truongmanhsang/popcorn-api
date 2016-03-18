@@ -1,3 +1,20 @@
+1.0.3 - It went unnoticed = 16 March 2016
+=========================================
+
+New features:
+ - Added `/logs/error` to see the error log
+ - Added `imdbMap` in `config.js` for correcting imdb ids.
+
+Bug fixes:
+ - Fixed issue where some season based episodes from EZTV where not added (Including [Last Week Tonight with John Oliver](https://eztv.ag/shows/1025/last-week-tonight-with-john-oliver/))
+ - Fixed issue with MongoDB limitations to sorting
+ - Status will now be set to `Idle` after scraping is done
+
+Notes:
+ - Disabled `/shows/search/`, `/shows/update/`, `/shows/last_updated` routes as they don't seem to be used by the
+ - Made scraping EZTV faster by merging the `getShowDetails` and `getAllEpisodes` functions
+ - Required NodeJS version was changed in 1.0.2 to NodeJS v.5.0.0
+
 1.0.2 - Wanna retry? - 14 March 2016
 ====================================
 
