@@ -45,7 +45,7 @@ const updateEpisodes = function*(doc) {
     return saved.save();
   } else {
     console.log(name + ": '" + doc.title + "' is a new show!");
-    return yield new Show(doc).save();
+    return new Show(doc).save();
   }
 };
 

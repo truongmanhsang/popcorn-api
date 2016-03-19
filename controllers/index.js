@@ -23,17 +23,17 @@ const displayFile = (req, res, path, file) => {
 module.exports = {
 
   /* Display server info. */
-  getIndex: function*(req, res) {
+  getIndex: (req, res) => {
     const lastUpdatedJSON = JSON.parse(fs.readFileSync(config.tempDir + "/" + config.updatedFile, "utf8")),
       packageJSON = JSON.parse(fs.readFileSync("package.json", "utf8")),
       statusJSON = JSON.parse(fs.readFileSync(config.tempDir + "/" + config.statusFile, "utf8"));
 
-    return Show.count({
-      num_seasons: {
-        $gt: 0
-      }
-    }).exec().then((showCount) => {
-      return Movie.count({}).exec().then((movieCount) => {
+    return Movie.count({}).exec().then((movieCount) => {
+      return Show.count({
+        num_seasons: {
+          $gt: 0
+        }
+      }).exec().then((showCount) => {
         return res.json({
           repo: packageJSON.repository.url,
           server: config.serverName,
@@ -44,7 +44,7 @@ module.exports = {
           uptime: process.uptime() | 0,
           version: packageJSON.version != null ? packageJSON.version : "Unknown"
         });
-      })
+      });
     }).catch((err) => {
       util.onError(err);
       return res.json(err);

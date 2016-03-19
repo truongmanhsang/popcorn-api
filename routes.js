@@ -2,6 +2,7 @@ const controllers = require("./controllers/load.js");
 
 /* Express Routing. */
 module.exports = (app) => {
+  
   app.get("/", controllers.index.getIndex);
   app.get("/logs/error", controllers.index.getErrorLog);
 
@@ -9,9 +10,9 @@ module.exports = (app) => {
   app.get("/shows", controllers.shows.getShows);
   app.get("/shows/:page", controllers.shows.getPage);
 
-  // app.get("/movie/:id", controllers.movies.getMovie);
-  // app.get("/movies", controllers.movies.getMovies);
-  // app.get("/movies/:page", controllers.movies.getPage);
+  app.get("/movie/:id", controllers.movies.getMovie);
+  app.get("/movies", controllers.movies.getMovies);
+  app.get("/movies/:page", controllers.movies.getPage);
 
   // app.get("/shows/search/:search", controllers.shows.search);
   // app.get("/shows/search/:search/:page", controllers.shows.searchPage);

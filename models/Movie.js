@@ -16,7 +16,6 @@ module.exports = mongoose.model("Movie", {
   runtime: String,
   rating: {},
   country: String,
-  status: String,
   last_updated: Number,
   images: {},
   genres: [],

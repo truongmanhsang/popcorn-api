@@ -3,11 +3,9 @@ const bodyParser = require("body-parser"),
   express = require("express"),
   join = require("path").join,
   logger = require("morgan"),
+  mongoose = require("mongoose"),
   responseTime = require("response-time"),
   config = require("./config");
-
-const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
 
 RegExp.escape = (text) => {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
