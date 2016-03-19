@@ -98,9 +98,9 @@ module.exports = {
       }
 
       return Movie.aggregate([{
-        $match: query
-      }, {
         $sort: sort
+      }, {
+        $match: query
       }, {
         $project: projection
       }, {

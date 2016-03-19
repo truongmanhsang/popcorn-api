@@ -34,7 +34,10 @@ module.exports = {
     }), (err) => {});
   },
 
-  /* Function for resolving generators. */
+  /*
+   * Function for resolving generators.
+   * Method from: https://www.youtube.com/watch?v=lil4YCCXRYc
+   */
   spawn: (generator) => {
     return new Promise((resolve, reject) => {
       let onResult = (lastPromiseResult) => {

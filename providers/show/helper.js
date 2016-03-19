@@ -64,7 +64,7 @@ const addSeason = function*(doc, episodes, seasonNumber, slug) {
           title: episodeData.title,
           overview: episodeData.overview,
           date_based: false,
-          first_aired: new Date(episodeData.first_aired).getTime() / 1000.0,
+          first_aired: Number(new Date(episodeData.first_aired)),
           watched: {
             watched: false
           },
