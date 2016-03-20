@@ -16,6 +16,11 @@ Installation
 3. install dependencies `cd popcorn-api` and `npm install`
 4. Start the API with `npm start` or `node --harmony --harmony_destructuring --harmony_default_parameters --use_strict index.js`
 
+Providers
+=========
+
+Content from kat.cr is grabbed with so called `providers` which can be configured in the `config.js` file. Providers will be converted to a search query for kat.cr so each provider can get a maximum of 10.000 torrents (or 400 pages). You can read more on how to make providers [here](https://github.com/team-pct/kat-api).
+
 Routes
 ======
 

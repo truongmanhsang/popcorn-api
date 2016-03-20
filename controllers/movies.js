@@ -76,20 +76,21 @@ module.exports = {
       }
 
       if (data.sort) {
-        if (data.sort === "year") sort = {
-          "year": parseInt(data.order, 10)
-        };
-        if (data.sort === "updated") sort = {
-          "released": parseInt(data.order, 10)
-        };
         if (data.sort === "name") sort = {
           "title": (parseInt(data.order, 10) * -1)
         };
         if (data.sort == "rating") sort = {
-          "rating.percentage": parseInt(data.order, 10)
+          "rating.percentage": parseInt(data.order, 10),
+          "rating.votes": parseInt(data.order, 10)
         };
         if (data.sort == "trending") sort = {
           "rating.watching": parseInt(data.order, 10)
+        };
+        if (data.sort === "updated") sort = {
+          "released": parseInt(data.order, 10)
+        };
+        if (data.sort === "year") sort = {
+          "year": parseInt(data.order, 10)
         };
       }
 

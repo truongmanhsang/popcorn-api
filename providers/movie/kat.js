@@ -7,12 +7,14 @@ let helper, name;
 
 /* Get all the movies competable with Popcorn Time. */
 const getMovie = function*(katMovie) {
-  const newMovie = yield util.spawn(helper.getTraktInfo(katMovie.slug));
+  const newMovie = yield util.spawn(helper.getTraktInfo(katMovie.slugYear));
   if (typeof(newMovie) != "undefined" && newMovie._id) {
     delete katMovie.movieTitle;
     delete katMovie.slug;
+    delete katMovie.slugYear;
     delete katMovie.torrentLink;
     delete katMovie.quality;
+    delete katMovie.year;
 
     return yield helper.addTorrents(newMovie, katMovie);
   }
@@ -20,15 +22,22 @@ const getMovie = function*(katMovie) {
 
 /* Extract movie information based on a regex. */
 const extractMovie = (torrent, regex) => {
-  const movieTitle = torrent.title.match(regex)[1].replace(/\./g, " ");
+  let movieTitle = torrent.title.match(regex)[1];
+  if(movieTitle.endsWith(" ")) {
+    movieTitle = movieTitle.substring(0, movieTitle.length - 1);
+  }
+  movieTitle = movieTitle.replace(/\./g, " ");
   let slug = movieTitle.replace(/\s+/g, "-").toLowerCase();
   slug = slug in config.katMap ? config.katMap[slug] : slug;
-  const quality = torrent.title.match(/(\d{3,4})p/) != null ? torrent.title.match(/(\d{3,4})p/)[0] : "480p";
+  const year = torrent.title.match(regex)[2];
+  const quality = torrent.title.match(regex)[3];
 
   const movie = {
     movieTitle: movieTitle,
     slug: slug,
+    slugYear: slug + "-" + year,
     torrentLink: torrent.link,
+    year: year,
     quality: quality
   };
 
@@ -44,9 +53,11 @@ const extractMovie = (torrent, regex) => {
 
 /* Get mocie info from a given torrent. */
 const getMovieData = (torrent) => {
-  const regex = /(.*).(\d{3,4})p/;
+  const regex = /(.*).(\d{4})\D+(\d{3,4}p)/;
   if (torrent.title.match(regex)) {
     return extractMovie(torrent, regex);
+  } else {
+    util.onError(name + ": Could not find data from torrent: '" + torrent.title + "'");
   }
 };
 
@@ -116,8 +127,8 @@ const KAT = (_name) => {
       provider.query.adult_filter = 1;
 
       const getTotalPages = yield kat.search(provider.query);
-      let totalPages = getTotalPages.totalPages; // Change to 'const' for production.
-      totalPages = 3; // For testing purposes only.
+      const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
+      // totalPages = 3; // For testing purposes only.
       console.log(name + ": Total pages " + totalPages);
 
       const katTorrents = yield getAllTorrents(totalPages, provider);

@@ -75,7 +75,7 @@ const Helper = (_name) => {
             banner: traktMovie.images.banner.full != null ? traktMovie.images.banner.full : "images/posterholder.png"
           },
           genres: traktMovie.genres.length != 0 ? traktMovie.genres : ["Unknown"],
-          released: Number(new Date(traktMovie.released)),
+          released: new Date(traktMovie.released).getTime() / 1000.0,
           trailer: traktMovie.trailer,
           certification: traktMovie.certification,
           torrents: {}

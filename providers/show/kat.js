@@ -25,7 +25,11 @@ const getShow = function*(katShow) {
 
 /* Extract show information based on a regex. */
 const extractShow = (torrent, regex, dateBased) => {
-  const showTitle = torrent.title.match(regex)[1].replace(/\./g, " ");
+  let showTitle = torrent.title.match(regex)[1];
+  if(showTitle.endsWith(" ")) {
+    showTitle = showTitle.substring(0, showTitle.length - 1);
+  }
+  showTitle = showTitle.replace(/\./g, " ");
   let slug = showTitle.replace(/\s+/g, "-").toLowerCase();
   slug = slug in config.katMap ? config.katMap[slug] : slug;
   let season = torrent.title.match(regex)[2];
