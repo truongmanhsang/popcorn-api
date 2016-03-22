@@ -20,7 +20,7 @@ Known Issues
 
 Know issues are indicated in the code with the `TODO` tag.
 
- - Sorting shows by updated can go over the 32MB limit set by MongoDB. More info here: #
+ - Sorting shows by updated can go over the 32MB limit set by MongoDB. More info here: #25
 
 Providers
 =========
