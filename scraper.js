@@ -45,7 +45,7 @@ module.exports = {
     util.resetTemp();
     util.setlastUpdate();
 
-    async.eachSeries([scrapeKatMovies, scrapeEZTV, scrapeKATShows], (scraper) => {
+    async.eachSeries([scrapeEZTV, scrapeKATShows, scrapeKatMovies], (scraper) => {
       return scraper();
     }).catch((err) => {
       util.onError("Error while scraping: " + err);

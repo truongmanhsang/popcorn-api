@@ -23,7 +23,7 @@ const getMovie = function*(katMovie) {
 /* Extract movie information based on a regex. */
 const extractMovie = (torrent, regex) => {
   let movieTitle = torrent.title.match(regex)[1];
-  if(movieTitle.endsWith(" ")) {
+  if (movieTitle.endsWith(" ")) {
     movieTitle = movieTitle.substring(0, movieTitle.length - 1);
   }
   movieTitle = movieTitle.replace(/\./g, " ");
@@ -53,9 +53,15 @@ const extractMovie = (torrent, regex) => {
 
 /* Get mocie info from a given torrent. */
 const getMovieData = (torrent) => {
-  const regex = /(.*).(\d{4})\D+(\d{3,4}p)/;
-  if (torrent.title.match(regex)) {
-    return extractMovie(torrent, regex);
+  const threeDimensions = /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/;
+  const fourKay = /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/;
+  const withYear = /(.*).(\d{4})\D+(\d{3,4}p)/;
+  if (torrent.title.match(threeDimensions)) {
+    return extractMovie(torrent, threeDimensions);
+  } else if (torrent.title.match(fourKay)) {
+    return extractMovie(torrent, fourKay);
+  } else if (torrent.title.match(withYear)) {
+    return extractMovie(torrent, withYear);
   } else {
     util.onError(name + ": Could not find data from torrent: '" + torrent.title + "'");
   }
@@ -125,6 +131,7 @@ const KAT = (_name) => {
       provider.query.category = "movies";
       provider.query.verified = 1;
       provider.query.adult_filter = 1;
+      provider.query.language = "en";
 
       const getTotalPages = yield kat.search(provider.query);
       const totalPages = getTotalPages.totalPages; // Change to 'const' for production.

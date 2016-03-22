@@ -118,22 +118,32 @@ module.exports = {
         };
       }
 
-      return Show.aggregate([ {
-        $sort: sort
-      }, {
-        $match: query
-      }, {
-        $project: projection
-      }, {
-        $skip: offset
-      }, {
-        $limit: config.pageSize
-      }]).exec().then((docs) => {
-        return res.json(docs);
-      }).catch((err) => {
-        util.onError(err);
-        return res.json(err);
-      });
+      // TODO: Do updated also with 'aggregate'.
+      if (data.sort === "updated") {
+        return Show.find(query, projection).sort(sort).skip(offset).limit(config.pageSize).exec().then((docs) => {
+          return res.json(docs);
+        }).catch((err) => {
+          util.onError(err);
+          return res.json(err);
+        });
+      } else {
+        return Show.aggregate([{
+          $sort: sort
+        }, {
+          $match: query
+        }, {
+          $project: projection
+        }, {
+          $skip: offset
+        }, {
+          $limit: config.pageSize
+        }]).exec().then((docs) => {
+          return res.json(docs);
+        }).catch((err) => {
+          util.onError(err);
+          return res.json(err);
+        });
+      }
     }
   },
 

@@ -8,13 +8,19 @@ Popcorn Time API is developed to make it easier for anyone to create their own v
  - Multiple quality magnet links for every episode
  - Ability to easily filter content to the users' content
 
-
 Installation
 ============
 1. Install MongoDB
 2. Install NodeJS (atleast Node v5.0.0 or greater)
 3. install dependencies `cd popcorn-api` and `npm install`
 4. Start the API with `npm start` or `node --harmony --harmony_destructuring --harmony_default_parameters --use_strict index.js`
+
+Known Issues
+============
+
+Know issues are indicated in the code with the `TODO` tag.
+
+ - Sorting shows by updated can go over the 32MB limit set by MongoDB. More info here: #
 
 Providers
 =========
@@ -26,7 +32,7 @@ Routes
 
 The API contains the following 'routes' which produce the example output:
 
-`show/:imdb_id` - This returns all info and episodes for a particular show. Useful for the "show details" page in your app. The same can be done with movies by the following route: `movie/:imdb_id`
+`show/:imdb_id` This returns all info and episodes for a particular show. Useful for the "show details" page in your app. The same can be done with movies by the following route: `movie/:imdb_id`
 
 **Example**
 
@@ -106,7 +112,7 @@ The API contains the following 'routes' which produce the example output:
 ```
 
 `shows/` and `movies/` This returns the number of pages available to list 50 movies/shows at a time (used for pagination etc).
-`shows/:page` and `movies/:page` this retuns a list of 50 movies/shows with part of the metadata.
+`shows/:page` and `movies/:page` this returns a list of 50 movies/shows with part of the metadata.
 
 **Example**
 
@@ -209,6 +215,7 @@ These filters can be used separately or together.
 
 Versioning
 ==========
+
 For transparency and insight into our release cycle, and for striving to maintain backward compatibility, this project will be maintained according to the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
 
 Releases will be numbered with the following format: `<major>.<minor>.<patch>-<build>`

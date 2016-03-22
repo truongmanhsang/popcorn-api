@@ -10,7 +10,7 @@ New features:
 
 Bug fixes:
  - Fixed issue where some season based episodes from EZTV where not added (Including [Last Week Tonight with John Oliver](https://eztv.ag/shows/1025/last-week-tonight-with-john-oliver/))
- - Fixed issue with MongoDB limitations to sorting
+ - Partially fixed issue with MongoDB limitations to sorting
  - Status will now be set to `Idle` after scraping is done
 
 Notes:
