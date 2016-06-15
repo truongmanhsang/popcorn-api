@@ -1,3 +1,29 @@
+2.0.0 - Whatcha Babbling about? - 18 May 2016
+===============================================
+
+New features:
+ - Get a random movie at `/random/movie`
+ - Added YTS as a movie provider.
+ - Movies now support multiple languages.
+ - Moved the entire project to ES6 with [Babel](https://babeljs.io/).
+ - Added a command line interface to the API ([See CLI](README.md#cli)).
+ - The API can now be installed globally.
+ - Added support for the Gulp build system ([See Gulp](README.md#gulp)).
+ - Documentation can be generated with the `npm run docs`.
+ - Added option to start with the forever module (`npm run forever`).
+
+Bug fixes:
+ - Fixed bug where the cron job was not working.
+ - Fixed bug where better movie and show torrents did not update.
+
+Notes:
+ - Changed the projection of movies so it can be used with a [popcorntime provider](https://github.com/ChrisAlderson/butter-provider-movies).
+ - (HTTP) Logging is done with the Winston library.
+ - Added configuration for JSCS linter.
+ - Changed license from GPLv3 to MIT.
+ - Moved the library for eztv scraping to its own module over [here](https://github.com/ChrisAlderson/eztv-api-pt).
+ - Moved the library for kat scraping to its own module over [here](https://github.com/ChrisAlderson/kat-api-pt).
+
 1.1.0 - Wanna catch a movie? - 20 March 2016
 ============================================
 
