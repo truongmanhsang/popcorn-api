@@ -28,11 +28,6 @@ const showProviders = [
 
   // Zoner providers
   {name: "ZonerSD", query: {query: "x264 LOL | FLEET | KILLERS | W4F", uploader: "z0n321"}}
-
-  // Test providers
-  // {name: "480p", query: {query: "x264 rartv LOL The Big Bang Theory", uploader: "z0n321"}},
-  // {name: "720p", query: {query: "x264 rartv 720p DIMENSION The Big Bang Theory", uploader: "z0n321"}},
-  // {name: "1080p", query: {query: "x264 rartv 1080p DIMENSION The Big Bang Theory", uploader: "z0n321"}}
 ];
 
 /**

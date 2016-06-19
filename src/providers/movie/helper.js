@@ -25,30 +25,31 @@ const Helper = name => {
    * @param {String} language - The language of the torrent.
    * @param {String} quality - The quality of the torrent.
    */
-  const updateTorrent = (movie, found, language, quality) => {
-    if (found.torrents[language] && movie.torrents[language]) {
-      let update = false;
+   const updateTorrent = (movie, found, language, quality) => {
+     let update = false;
 
-      if (found.torrents[language][quality] && movie.torrents[language][quality]) {
-        if (found.torrents[language][quality].seed > movie.torrents[language][quality].seed) {
-          update = true;
-        } else if (movie.torrents[language][quality].seed > found.torrents[language][quality].seed) {
-          update = false;
-        } else if (found.torrents[language][quality].url === movie.torrents[language][quality].url) {
-          update = true;
-        }
-      } else if (found.torrents[language][quality] && !movie.torrents[language][quality]) {
-        update = true;
-      }
+     if (found.torrents[language] && movie.torrents[language]) {
+       if (found.torrents[language][quality] && movie.torrents[language][quality]) {
+         if (found.torrents[language][quality].seed > movie.torrents[language][quality].seed) {
+           update = true;
+         } else if (movie.torrents[language][quality].seed > found.torrents[language][quality].seed) {
+           update = false;
+         } else if (found.torrents[language][quality].url === movie.torrents[language][quality].url) {
+           update = true;
+         }
+       } else if (found.torrents[language][quality] && !movie.torrents[language][quality]) {
+         update = true;
+       }
+     } else if (found.torrents[language] && !movie.torrents[language]) {
+       if (found.torrents[language][quality]) {
+         movie.torrents[language] = {};
+         update = true;
+       }
+     }
 
-      if (update) movie.torrents[language][quality] = found.torrents[language][quality];
-    } else {
-      movie.torrents[language] = {};
-      movie.torrents[language][quality] = found.torrents[language][quality];
-    }
-
-    return movie
-  };
+     if (update) movie.torrents[language][quality] = found.torrents[language][quality];
+     return movie;
+   };
 
   /**
    * @description Update a given movie.

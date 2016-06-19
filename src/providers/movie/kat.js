@@ -193,7 +193,7 @@ const KAT = name => {
 
       const getTotalPages = await kat.search(provider.query);
       const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
-      if (!totalPages) return util.onError(`${name}: totalPages returned; '${totalPages}'`);
+      if (!totalPages) return util.onError(`${name}: totalPages returned: '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
       console.log(`${name}: Total pages ${totalPages}`);
 

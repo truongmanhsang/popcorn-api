@@ -5,7 +5,7 @@ Popcorn API is developed to make it easier for anyone to create their own versio
 - Metadata about movies (taken from Trakt).
 - Metadata about TV Shows and individual episodes (taken from Trakt).
 - Multiple quality magnet links for every episode.
-- Ability to easily filter content to the users' content.
+- Ability to easily filter content to the user's content.
 - Add content manually through the CLI.
 
 # Installation
