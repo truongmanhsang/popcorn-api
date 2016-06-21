@@ -83,15 +83,12 @@ const Movies = () => {
 
       if (data.keywords) {
         const words = data.keywords.split(" ");
-        let regex = data.keywords.toLowerCase();
-        if (words.length > 1) {
-          regex = "^";
-          for (let w in words) {
-            regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-          }
-          regex += ".+";
+        let regex = "^";
+        for (let w in words) {
+          regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
         }
-        query.title = new RegExp(regex, "gi");
+
+        query.title = { $regex: new RegExp(`${regex}.*`), $options: "gi" };
       }
 
       if (data.sort) {

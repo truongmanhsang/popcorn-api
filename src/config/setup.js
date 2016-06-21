@@ -52,7 +52,7 @@ const Setup = () => {
   const setup = (app, logger) => {
 
     // Used to extract data from query strings.
-    RegExp.escape = text =>  text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 
     // Connection and configuration of the MongoDB database.
     connectMongoDB();
