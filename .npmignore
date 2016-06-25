@@ -34,5 +34,5 @@ tmp
 # Generated documentation.
 docs
 
-# Transpiled ES5 code
-build
+# untranspiled ES6 code
+src
