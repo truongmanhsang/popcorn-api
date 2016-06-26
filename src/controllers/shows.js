@@ -11,16 +11,15 @@ import Show from "../models/Show";
 const Shows = () => {
 
   const projection = {
-    "_id": 1,
-    "imdb_id": 1,
-    "tvdb_id": 1,
-    "title": 1,
-    "year": 1,
-    "images": 1,
-    "slug": 1,
-    "num_seasons": 1,
-    "rating": 1,
-    //"episodes.first_aired": 1
+    _id: 1,
+    imdb_id: 1,
+    tvdb_id: 1,
+    title: 1,
+    year: 1,
+    images: 1,
+    slug: 1,
+    num_seasons: 1,
+    rating: 1
   };
 
   /**

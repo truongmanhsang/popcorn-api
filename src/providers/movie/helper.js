@@ -66,11 +66,13 @@ const Helper = name => {
       if (found) {
         console.log(`${name}: '${found.title}' is an existing movie.`);
 
-        Object.keys(found.torrents).forEach(language => {
-          movie = updateTorrent(movie, found, language, "720p");
-          movie = updateTorrent(movie, found, language, "1080p");
-        });
-
+        if (found.torrents) {
+          Object.keys(found.torrents).forEach(language => {
+            movie = updateTorrent(movie, found, language, "720p");
+            movie = updateTorrent(movie, found, language, "1080p");
+          });
+        }
+        
         return await Movie.findOneAndUpdate({
           _id: movie._id
         }, movie).exec();
