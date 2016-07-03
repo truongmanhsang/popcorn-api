@@ -1,4 +1,5 @@
 // Import the neccesary modules.
+import childProcess from "child_process";
 import fs from "fs";
 import path from "path";
 import Trakt from "trakt.tv";
@@ -13,6 +14,23 @@ import { global } from "./config/global";
 const Util = () => {
 
   const trakt = new Trakt({client_id: global.traktKey});
+
+  /**
+   * @description Execute a command from within the root folder.
+   * @function Util#executeCommand
+   * @memberof module:global/util
+   * @param {String} cmd - The command to execute.
+   * @returns {String} - The output of the command.
+   */
+  const executeCommand = cmd => {
+    const exec = childProcess.exec;
+    return new Promise((resolve, reject) => {
+      exec(cmd, { cwd: __dirname }, (err, stdout, stderr) => {
+        if (err) return reject(err);
+        return resolve(stdout.split("\n").join(""));
+      });
+    });
+  };
 
   /**
    * @description Create an emty file.
@@ -103,7 +121,7 @@ const Util = () => {
   const search = (key, value) => element => element[key] === value;
 
   // Return the public functions.
-  return { createTemp, setLastUpdated, setStatus, onError, search, trakt };
+  return { executeCommand, createTemp, setLastUpdated, setStatus, onError, search, trakt };
 
 };
 

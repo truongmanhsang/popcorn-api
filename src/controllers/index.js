@@ -4,6 +4,7 @@ import { global } from "../config/global";
 import Movie from "../models/Movie";
 import packageJSON from "../../package.json";
 import Show from "../models/Show";
+import Util from "../util";
 
 /**
  * @class
@@ -12,6 +13,8 @@ import Show from "../models/Show";
  * @memberof module:controllers/index
  */
 const Index = () => {
+
+  const util = Util();
 
   /**
    * @description Displays a given file.
@@ -51,6 +54,7 @@ const Index = () => {
     try {
       const lastUpdatedJSON = JSON.parse(fs.readFileSync(`${global.tempDir}/${global.updatedFile}`, "utf8")),
         statusJSON = JSON.parse(fs.readFileSync(`${global.tempDir}/${global.statusFile}`, "utf8")),
+        commit = await util.executeCommand("git rev-parse --short HEAD"),
         movieCount = await Movie.count().exec(),
         showCount = await Show.count({
           num_seasons: {
@@ -66,7 +70,8 @@ const Index = () => {
         totalShows: showCount,
         updated: lastUpdatedJSON.lastUpdated,
         uptime: process.uptime() | 0,
-        version: packageJSON.version
+        version: packageJSON.version,
+        commit
       });
     } catch (err) {
       return res.json(err);

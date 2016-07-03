@@ -81,8 +81,7 @@ const Shows = () => {
       };
       const data = req.query;
 
-      if (!data.order)
-        data.order = -1;
+      if (!data.order) data.order = -1;
 
       let sort = {
         "rating.votes": parseInt(data.order, 10),
@@ -123,7 +122,7 @@ const Shows = () => {
       }
 
       if (data.genre && data.genre !== "All") {
-        if (data.genre.match(/sci-fi/i)) data.genre = "science-fiction";
+        if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i)) data.genre = "science-fiction";
         query.genres = data.genre.toLowerCase();
       }
 
