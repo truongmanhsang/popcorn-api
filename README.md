@@ -1,5 +1,9 @@
 # Popcorn API
 
+[![Build Status](https://travis-ci.org/popcorn-official/popcorn-api.svg?branch=master)]()
+[![Dependency Status](https://david-dm.org/popcorn-official/popcorn-api.svg)](https://david-dm.org/popcorn-official/popcorn-api)
+[![devDependency Status](https://david-dm.org/popcorn-official/popcorn-api/dev-status.svg)](https://david-dm.org/popcorn-official/popcorn-api#info=devDependencies)
+
 Popcorn API is developed to make it easier for anyone to create their own version of [Popcorn Time](http://popcorntime.sh). It contains:
 
 - Metadata about movies (taken from Trakt).
