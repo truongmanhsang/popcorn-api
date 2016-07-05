@@ -18,7 +18,7 @@ import Util from "../../util";
 const KAT = name => {
 
   const helper = Helper(name);
-  const kat = katApi();
+  const kat = new katApi();
   const util = Util();
 
   /**

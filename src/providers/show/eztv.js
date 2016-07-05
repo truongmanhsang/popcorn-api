@@ -15,7 +15,7 @@ import Util from "../../util";
  */
 const EZTV = name => {
 
-  const eztv = eztvApi();
+  const eztv = new eztvApi();
   const helper = Helper(name);
   const util = Util();
 
