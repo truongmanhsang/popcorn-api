@@ -1,6 +1,6 @@
 // Import the neccesary modules.
 import fs from "fs";
-import { global } from "../config/global";
+import { global } from "../config/constants";
 import Movie from "../models/Movie";
 import packageJSON from "../../package.json";
 import Show from "../models/Show";
@@ -12,9 +12,11 @@ import Util from "../util";
  * server the API is running on.
  * @memberof module:controllers/index
  */
-const Index = () => {
+export default class Index {
 
-  const util = Util();
+  constructor() {
+    Index.util = new Util();
+  };
 
   /**
    * @description Displays a given file.
@@ -26,7 +28,7 @@ const Index = () => {
    * @param {String} file - The name of the file.
    * @returns {File} - A file to display in the browser.
    */
-  const displayFile = (req, res, path, file) => {
+  displayFile(req, res, path, file) {
     if (fs.existsSync(`${path}/${file}`)) {
       return res.sendFile(file, {
         root: path,
@@ -50,11 +52,11 @@ const Index = () => {
    * @param {Response} res - The express response object.
    * @returns {Object} - General information about the server.
    */
-  const getIndex = async(req, res) => {
+  async getIndex(req, res) {
     try {
       const lastUpdatedJSON = JSON.parse(fs.readFileSync(`${global.tempDir}/${global.updatedFile}`, "utf8")),
         statusJSON = JSON.parse(fs.readFileSync(`${global.tempDir}/${global.statusFile}`, "utf8")),
-        commit = await util.executeCommand("git rev-parse --short HEAD"),
+        commit = await Index.util.executeCommand("git rev-parse --short HEAD"),
         movieCount = await Movie.count().exec(),
         showCount = await Show.count({
           num_seasons: {
@@ -86,14 +88,8 @@ const Index = () => {
    * @param {Response} res - The express response object.
    * @returns {File} - The content of the log file.
    */
-  const getErrorLog = (req, res) => {
+  getErrorLog(req, res) {
     return displayFile(req, res, `${global.tempDir}`, `${packageJSON.name}.log`);
   };
 
-  // Return the public functions.
-  return { getIndex, getErrorLog };
-
-};
-
-// Export the index factory function.
-export default Index;
+}

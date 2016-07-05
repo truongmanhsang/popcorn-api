@@ -1,5 +1,5 @@
 // Import the neccesary modules.
-import { global } from "../config/global";
+import { global } from "../config/constants";
 import Show from "../models/Show";
 
 /**
@@ -8,18 +8,20 @@ import Show from "../models/Show";
  * @memberof module:controllers/shows
  * @property {Object} projection - Object used for the projection of shows.
  */
-const Shows = () => {
+export default class Shows {
 
-  const projection = {
-    _id: 1,
-    imdb_id: 1,
-    tvdb_id: 1,
-    title: 1,
-    year: 1,
-    images: 1,
-    slug: 1,
-    num_seasons: 1,
-    rating: 1
+  constructor() {
+    this.projection = {
+      _id: 1,
+      imdb_id: 1,
+      tvdb_id: 1,
+      title: 1,
+      year: 1,
+      images: 1,
+      slug: 1,
+      num_seasons: 1,
+      rating: 1
+    };
   };
 
   /**
@@ -30,7 +32,7 @@ const Shows = () => {
    * @param {Response} res - The express response object.
    * @returns {Array} - A list of pages which are available.
    */
-  const getShows = (req, res) => {
+  getShows(req, res) {
     return Show.count({
       num_seasons: {
         $gt: 0
@@ -54,7 +56,7 @@ const Shows = () => {
    * @param {Response} res - The express response object.
    * @returns {Array} - The contents of one page.
    */
-  const getPage = (req, res) => {
+  getPage(req, res) {
     const page = req.params.page - 1;
     const offset = page * global.pageSize;
 
@@ -147,18 +149,12 @@ const Shows = () => {
    * @param {Response} res - The express response object.
    * @returns {Show} - The details of a single show.
    */
-  const getShow = (req, res) => {
+  getShow(req, res) {
     return Show.findOne({
       _id: req.params.id
-    }).exec()
+    }, {latest_episode: 0}).exec()
     .then(docs => res.json(docs))
     .catch(err => res.json(err));
   };
 
-  // Return the public functions.
-  return { getShows, getPage, getShow };
-
 };
-
-// Export the shows factory function.
-export default Shows;
