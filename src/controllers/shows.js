@@ -136,8 +136,8 @@ export default class Shows {
         }, {
           $limit: global.pageSize
         }]).exec()
-          .then(docs => res.json(docs))
-          .catch(err => res.json(err));
+        .then(docs => res.json(docs))
+        .catch(err => res.json(err));
     }
   };
 
