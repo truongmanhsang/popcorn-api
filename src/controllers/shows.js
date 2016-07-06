@@ -11,7 +11,7 @@ import Show from "../models/Show";
 export default class Shows {
 
   constructor() {
-    this.projection = {
+    Shows.projection = {
       _id: 1,
       imdb_id: 1,
       tvdb_id: 1,
@@ -68,7 +68,7 @@ export default class Shows {
             }
           }
         }, {
-          $project: projection
+          $project: Shows.projection
         }, {
           $sort: {
             title: -1
@@ -130,7 +130,7 @@ export default class Shows {
         }, {
           $match: query
         }, {
-          $project: projection
+          $project: Shows.projection
         }, {
           $skip: offset
         }, {

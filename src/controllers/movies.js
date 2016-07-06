@@ -6,12 +6,12 @@ import Movie from "../models/Movie";
  * @class
  * @classdesc The factory function for getting movie data from the MongoDB.
  * @memberof module:controllers/movies
- * @property {Object} this.projection - Object used for the this.projection of movies.
+ * @property {Object} projection - Object used for the projection of movies.
  */
 export default class Movies {
 
   constructor() {
-    this.projection = {
+    Movies.projection = {
       _id: 1,
       imdb_id: 1,
       title: 1,
@@ -62,7 +62,7 @@ export default class Movies {
 
     if (req.params.page === "all") {
       return Movie.aggregate([{
-          $project: this.projection
+          $project: Movies.projection
         }, {
           $sort: {
             title: -1
@@ -121,7 +121,7 @@ export default class Movies {
         }, {
           $match: query
         }, {
-          $project: this.projection
+          $project: Movies.projection
         }, {
           $skip: offset
         }, {
@@ -146,7 +146,7 @@ export default class Movies {
           _id: req.params.id
         }
       }, {
-        $project: this.projection
+        $project: Movies.projection
       }, {
         $limit: 1
       }]).exec()
@@ -164,7 +164,7 @@ export default class Movies {
    */
   getRandomMovie(req, res) {
     return Movie.aggregate([{
-        $project: this.projection
+        $project: Movies.projection
       }, {
         $sample: {
           size: 1
