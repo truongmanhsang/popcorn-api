@@ -112,6 +112,12 @@ const showProviders = [
   {name: "ZonerSD", query: {query: "x264 LOL | FLEET | KILLERS | W4F", uploader: "z0n321"}}
 ];
 
+const animeProviders = [
+  {name: "HorribleSubs480p", query: {query: "480p", uploader: "HorribleSubs"}},
+  {name: "HorribleSubs720p", query: {query: "720p", uploader: "HorribleSubs"}},
+  {name: "HorribleSubs1080p", query: {query: "1080p", uploader: "HorribleSubs"}},
+];
+
 /**
  * @class Global
  * @classdesc Holder to export all the global configuration objects.
@@ -120,9 +126,11 @@ const showProviders = [
  * used over the whole API.
  * @property {Object} katMap - The configuration object with the correct
  * slugs for {@link https://kat.cr/}.
- * @property {Object} movieProviders - Providers used for scraping shows
- * from {@link https://kat.cr/}.
- * @property {Object} showProviders - // Providers used for scraping
- * movies from {@link https://kat.cr/}.
+ * @property {Object} animeProviders - Providers used for scraping anime from
+ * {@link https://kat.cr/}.
+ * @property {Object} movieProviders - Providers used for scraping shows from
+ * {@link https://kat.cr/}.
+ * @property {Object} showProviders - Providers used for scraping movies from
+ * {@link https://kat.cr/}.
  */
-export { global, katMap, movieProviders, showProviders };
+export { global, katMap, animeProviders, movieProviders, showProviders };

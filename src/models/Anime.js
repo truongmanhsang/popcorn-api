@@ -1,8 +1,8 @@
 // Import the neccesary modules.
 import mongoose from "mongoose";
 
-// The show schema used by mongoose.
-const ShowSchema = new mongoose.Schema({
+// The anime schema used by mongoose.
+const AnimeSchema = new mongoose.Schema({
   _id: {
     type: String,
     required: true,
@@ -10,8 +10,6 @@ const ShowSchema = new mongoose.Schema({
       unique: true
     }
   },
-  imdb_id: String,
-  tvdb_id: String,
   title: String,
   year: String,
   slug: String,
@@ -24,12 +22,8 @@ const ShowSchema = new mongoose.Schema({
     loved: Number,
     hated: Number
   },
-  country: String,
-  network: String,
-  air_day: String,
-  air_time: String,
-  status: String,
-  num_seasons: Number,
+  type: String,
+  num_episodes: Number,
   last_updated: Number,
   latest_episode: {type: Number, default: 0},
   images: {
@@ -42,11 +36,11 @@ const ShowSchema = new mongoose.Schema({
 });
 
 /**
- * @class Show
- * @classdesc A model object for shows.
- * @memberof module:models/show
+ * @class Anime
+ * @classdesc A model object for animes.
+ * @memberof module:models/anime
  */
-const Show = mongoose.model("Show", ShowSchema);
+const Anime = mongoose.model("Anime", AnimeSchema);
 
 // Export the user model.
-export default Show;
+export default Anime;

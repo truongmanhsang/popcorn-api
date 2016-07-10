@@ -1,7 +1,8 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
-import { movieProviders, showProviders } from "./config/constants";
+import { animeProviders, movieProviders, showProviders } from "./config/constants";
 import EZTV from "./providers/show/eztv";
+import katAnime from "./providers/anime/kat";
 import katMovie from "./providers/movie/kat";
 import katShow from "./providers/show/kat";
 import Util from "./util";
@@ -95,6 +96,20 @@ export default class Scraper {
     }
   };
 
+  async scrapeKATAnime() {
+    return asyncq.eachSeries(animeProviders, async provider => {
+      try {
+        Scraper.util.setStatus(`Scraping ${provider.name}`);
+        const katProvider = new katAnime(provider.name);
+        const katAnimes = await katProvider.search(provider);
+        console.log(`${provider.name}: Done.`);
+        return katAnimes;
+      } catch (err) {
+        return Scraper.util.onError(err);
+      }
+    });
+  }
+
   /**
    * @description Initiate the scraping for EZTV and KAT.
    * @function Scraper#scrape
@@ -103,7 +118,8 @@ export default class Scraper {
   scrape() {
     Scraper.util.setLastUpdated();
 
-    asyncq.eachSeries([this.scrapeEZTVShows, this.scrapeKATShows, this.scrapeYTSMovies, this.scrapeKATMovies],
+    asyncq.eachSeries([this.scrapeKATAnime],
+    // asyncq.eachSeries([this.scrapeKATShows, this.scrapeEZTVShows, this.scrapeKATShows, this.scrapeYTSMovies, this.scrapeKATMovies],
         scraper => scraper())
       .then(value => Scraper.util.setStatus())
       .catch(err => Scraper.util.onError(`Error while scraping: ${err}`));

@@ -46,7 +46,7 @@ export default class Index {
     if (cluster.isMaster) { // Check is the cluster is the master
       // Override the console object with Winston.
       const winston = logger.getLogger();
-      logger.overrideConsole(winston);
+      // logger.overrideConsole(winston);
 
       // Clear the log files from the temp directory.
       logger.reset();

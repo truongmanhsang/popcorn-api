@@ -25,7 +25,6 @@ const MovieSchema = new mongoose.Schema({
   },
   country: String,
   last_updated: Number,
-  latest_episode: {type: Number, default: 0},
   images: {
     banner: String,
     fanart: String,
