@@ -32,6 +32,7 @@ export default class Routes {
     app.get("/animes", this.animes.getAnimes);
     app.get("/animes/:page", this.animes.getPage);
     app.get("/anime/:id", this.animes.getAnime);
+    app.get("/random/anime", this.animes.getRandomAnime);
 
     app.get("/movies", this.movies.getMovies);
     app.get("/movies/:page", this.movies.getPage);
@@ -41,6 +42,7 @@ export default class Routes {
     app.get("/shows", this.shows.getShows);
     app.get("/shows/:page", this.shows.getPage);
     app.get("/show/:id", this.shows.getShow);
+    app.get("/random/show", this.shows.getRandomShow);
   };
 
 };

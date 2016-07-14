@@ -118,8 +118,7 @@ export default class Scraper {
   scrape() {
     Scraper.util.setLastUpdated();
 
-    asyncq.eachSeries([this.scrapeKATAnime],
-    // asyncq.eachSeries([this.scrapeKATShows, this.scrapeEZTVShows, this.scrapeKATShows, this.scrapeYTSMovies, this.scrapeKATMovies],
+    asyncq.eachSeries([this.scrapeKATShows, this.scrapeEZTVShows, this.scrapeKATShows, this.scrapeYTSMovies, this.scrapeKATMovies, this.scrapeKATAnime],
         scraper => scraper())
       .then(value => Scraper.util.setStatus())
       .catch(err => Scraper.util.onError(`Error while scraping: ${err}`));

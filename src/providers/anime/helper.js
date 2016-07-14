@@ -82,7 +82,6 @@ export default class Helper {
    */
   async updateEpisodes(anime) {
     try {
-
       const found = await Anime.findOne({
           _id: anime._id
         }).exec();
@@ -112,10 +111,35 @@ export default class Helper {
     }
   };
 
+  /**
+   * @description Adds one season to a anime.
+   * @function Helper#addSeason
+   * @memberof module:providers/anime/helper
+   * @param {Show} show - The anime to add the torrents to.
+   * @param {Object} episodes - The episodes containing the torrents.
+   * @param {Integer} seasonNumber - The season number.
+   * @param {String} slug - The slug of the anime.
+   * @returns {Show} - A new anime with seasons.
+   */
+  async addSeason(anime, episodes, seasonNumber, slug) {
+    try {
+      await asyncq.each(Object.keys(episodes[seasonNumber]), episode => {
+        anime.episodes.push({
+          title: `Episode ${episode}`,
+          torrents: episodes[seasonNumber][episode],
+          season: seasonNumber, episode,
+          overview: `We still don't have single episode overviews for anime… Sorry`,
+          tvdb_id: `${anime._id}-1-${episode}`
+        });
+      });
+    } catch (err) {
+      return this.util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+    }
+  };
+
   async getHummingbirdInfo(slug) {
     try {
-      const hummingbird = await this.hummingbirdAPI.Anime.getAnime(slug);
-      const hummingbirdAnime = hummingbird.anime;
+      const hummingbirdAnime = await this.hummingbirdAPI.Anime.getAnime(slug);
 
       let type;
       if (hummingbirdAnime.show_type === "TV") {
@@ -124,30 +148,34 @@ export default class Helper {
         type = "show";
       }
 
+      const genres = hummingbirdAnime.genres.map(genre => genre.name);
+
       if (hummingbirdAnime && hummingbirdAnime.id) {
         return {
           _id: hummingbirdAnime.id,
-          title: hummingbirdAnime.titles["canonical"],
-          year: new Date(hummingbirdAnime.started_airing_date).getFullYear(),
+          mal_id: hummingbirdAnime.mal_id,
+          title: hummingbirdAnime.title,
+          year: new Date(hummingbirdAnime.started_airing).getFullYear(),
           slug: hummingbirdAnime.slug,
           synopsis: hummingbirdAnime.synopsis,
           runtime: hummingbirdAnime.episode_length,
+          status: hummingbirdAnime.status,
           rating: {
             hated: 100,
             loved: 100,
             votes: 0,
             watching: 0,
-            percentage: (Math.round(hummingbirdAnime.community_rating * 10) / 10) * 2,
+            percentage: (Math.round(hummingbirdAnime.community_rating * 10)) * 2,
           },
           type,
           num_episodes: 0,
           last_updated: Number(new Date()),
           images: {
             banner: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : "images/posterholder.png",
-            fanart: hummingbirdAnime.poster_image !== null ? hummingbirdAnime.poster_image : "images/posterholder.png",
-            poster: hummingbirdAnime.poster_image !== null ? hummingbirdAnime.poster_image : "images/posterholder.png"
+            fanart: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : "images/posterholder.png",
+            poster: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : "images/posterholder.png"
           },
-          genres: hummingbirdAnime.genres !== null ? hummingbirdAnime.genres : ["unknown"],
+          genres: genres !== null ? genres : ["unknown"],
           episodes: []
         };
       }
@@ -167,16 +195,7 @@ export default class Helper {
    */
   async addEpisodes(anime, episodes, slug) {
     try {
-      await asyncq.each(Object.keys(episodes), episode => {
-        anime.episodes.push({
-          title: `Episode ${episode}`,
-          torrents: episodes[episode],
-          season: 1,
-          episode,
-          overview: `We still don't have single episode overviews for anime… Sorry`,
-        });
-      });
-
+      await asyncq.each(Object.keys(episodes), seasonNumber => this.addSeason(anime, episodes, seasonNumber, slug));
       return await this.updateEpisodes(anime);
     } catch (err) {
       return this.util.onError(err);

@@ -9,6 +9,22 @@ import Anime from "../models/Anime";
  */
 export default class Animes {
 
+  constructor() {
+    Animes.projection = {
+      images: 1,
+      mal_id: 1,
+      haru_id: 1,
+      tvdb_id: 1,
+      imdb_id: 1,
+      slug: 1,
+      title: 1,
+      year: 1,
+      type: 1,
+      item_data: 1,
+      rating: 1
+    };
+  };
+
   /**
    * @description Get all the pages.
    * @function Animes#getAnimes
@@ -52,6 +68,8 @@ export default class Animes {
             }
           }
         }, {
+          $project: Animes.projection
+        }, {
           $sort: {
             title: -1
           }
@@ -91,12 +109,12 @@ export default class Animes {
           "rating.percentage": parseInt(data.order, 10),
           "rating.votes": parseInt(data.order, 10)
         };
-        if (data.sort === "trending") sort = {
-          "rating.watching": parseInt(data.order, 10)
-        };
-        if (data.sort === "updated") sort = {
-          "latest_episode": parseInt(data.order, 10)
-        };
+        // if (data.sort === "trending") sort = {
+        //   "rating.watching": parseInt(data.order, 10)
+        // };
+        // if (data.sort === "updated") sort = {
+        //   "latest_episode": parseInt(data.order, 10)
+        // };
         if (data.sort === "year") sort = {
           "year": parseInt(data.order, 10)
         };
@@ -111,6 +129,8 @@ export default class Animes {
           $sort: sort
         }, {
           $match: query
+        }, {
+          $project: Animes.projection
         }, {
           $skip: offset
         }, {
@@ -135,6 +155,28 @@ export default class Animes {
     }, {latest_episode: 0}).exec()
     .then(docs => res.json(docs))
     .catch(err => res.json(err));
+  };
+
+  /**
+   * @description Get a random anime.
+   * @function Movies#getRandomAnime
+   * @memberof module:controllers/anime
+   * @param {Request} req - The express request object.
+   * @param {Response} res - The express response object.
+   * @returns {Anime} - A random movie.
+   */
+  getRandomAnime(req, res) {
+    return Anime.aggregate([{
+        $project: Animes.projection
+      }, {
+        $sample: {
+          size: 1
+        }
+      }, {
+        $limit: 1
+      }]).exec()
+      .then(docs => res.json(docs[0]))
+      .catch(err => res.json(err));
   };
 
 };

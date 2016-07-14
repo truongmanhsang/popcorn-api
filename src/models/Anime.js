@@ -10,11 +10,13 @@ const AnimeSchema = new mongoose.Schema({
       unique: true
     }
   },
+  mal_id: String,
   title: String,
   year: String,
   slug: String,
   synopsis: String,
   runtime: String,
+  status: String,
   rating: {
     percentage: Number,
     watching: Number,
@@ -34,6 +36,9 @@ const AnimeSchema = new mongoose.Schema({
   genres: [],
   episodes: []
 });
+
+
+
 
 /**
  * @class Anime

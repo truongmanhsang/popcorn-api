@@ -157,4 +157,26 @@ export default class Shows {
     .catch(err => res.json(err));
   };
 
+  /**
+   * @description Get a random show.
+   * @function Movies#getRandomShow
+   * @memberof module:controllers/shows
+   * @param {Request} req - The express request object.
+   * @param {Response} res - The express response object.
+   * @returns {Show} - A random show.
+   */
+  getRandomShow(req, res) {
+    return Show.aggregate([{
+        $project: Shows.projection
+      }, {
+        $sample: {
+          size: 1
+        }
+      }, {
+        $limit: 1
+      }]).exec()
+      .then(docs => res.json(docs[0]))
+      .catch(err => res.json(err));
+  };
+
 };

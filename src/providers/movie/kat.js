@@ -195,9 +195,9 @@ export default class KAT {
       provider.query.adult_filter = 1;
 
       const getTotalPages = await this.kat.search(provider.query);
-      let totalPages = getTotalPages.totalPages; // Change to 'const' for production.
+      const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
       if (!totalPages) return this.util.onError(`${this.name}: totalPages returned: '${totalPages}'`);
-      totalPages = 3; // For testing purposes only.
+      // totalPages = 3; // For testing purposes only.
       console.log(`${this.name}: Total pages ${totalPages}`);
 
       const katTorrents = await this.getAllTorrents(totalPages, provider);

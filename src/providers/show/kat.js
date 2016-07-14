@@ -1,7 +1,7 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 import katApi from "kat-api-pt";
-import { global, katMap } from "../../config/constants";
+import { global, katShowMap } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
@@ -66,7 +66,7 @@ export default class KAT {
     if (showTitle.endsWith(" ")) showTitle = showTitle.substring(0, showTitle.length - 1);
     showTitle = showTitle.replace(/\./g, " ");
     let slug = showTitle.replace(/\s+/g, "-").toLowerCase();
-    slug = slug in katMap ? katMap[slug] : slug;
+    slug = slug in katShowMap ? katShowMap[slug] : slug;
     let season = torrent.title.match(regex)[2];
     let episode = torrent.title.match(regex)[3];
     if (!dateBased) {
