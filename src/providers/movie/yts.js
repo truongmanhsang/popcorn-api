@@ -51,8 +51,8 @@ export default class YTS {
           return reject(`YTS: Could not find data on '${url}'.`);
         } else {
           body = JSON.parse(body);
-          const totalPages = Math.ceil(body.data.movie_count / 50); // Change to 'const' for production.
-          // totalPages = 3; // For testing purposes only.
+          let totalPages = Math.ceil(body.data.movie_count / 50); // Change to 'const' for production.
+          totalPages = 3; // For testing purposes only.
           return resolve(totalPages);
         }
       });

@@ -95,9 +95,12 @@ export default class KAT {
    */
   getAnimeData(torrent) {
     const secondSeason = /\[horriblesubs\].(.*).S(\d)...(\d{2,3}).\[(\d{3,4}p)\]/i;
-    const horribleSubs = /\[horriblesubs\].(.*)...(\d{2,3}).\[(\d{3,4}p)\]/i;
+    const popularOnes = /\[horriblesubs\].(.*)...(\d{3}).\[(\d{3,4}p)\]/i;
+    const horribleSubs = /\[horriblesubs\].(.*)...(\d{2}).\[(\d{3,4}p)\]/i;
     if (torrent.title.match(secondSeason)) {
       return this.extractAnime(torrent, secondSeason);
+    } else if (torrent.title.match(popularOnes)) {
+      return this.extractAnime(torrent, popularOnes);
     } else if (torrent.title.match(horribleSubs)) {
       return this.extractAnime(torrent, horribleSubs);
     } else {
@@ -193,9 +196,9 @@ export default class KAT {
       provider.query.adult_filter = 1;
 
       const getTotalPages = await this.kat.search(provider.query);
-      const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
+      let totalPages = getTotalPages.totalPages; // Change to 'const' for production.
       if (!totalPages) return this.util.onError(`${this.name}: totalPages returned: '${totalPages}'`);
-      // totalPages = 3; // For testing purposes only.
+      totalPages = 3; // For testing purposes only.
       console.log(`${this.name}: Total pages ${totalPages}`);
 
       const katTorrents = await this.getAllTorrents(totalPages, provider);
