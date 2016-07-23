@@ -35,7 +35,7 @@ export default class KAT {
         delete katAnime.episode;
         delete katAnime.quality;
 
-        if (newAnime.type.toLowerCase() === "show") return await this.helper.addEpisodes(newAnime, katAnime, slug);
+        return await this.helper.addEpisodes(newAnime, katAnime, slug);
       }
     } catch (err) {
       return this.util.onError(err);
@@ -79,7 +79,7 @@ export default class KAT {
 
     if (!anime[season]) anime[season] = {};
     if (!anime[season][episode]) anime[season][episode] = {};
-    if ((!anime[season][episode][quality] || anime.animeTitle.toLowerCase().indexOf("repack") > -1) || (anime[season][episode][quality] && anime[season][episode][quality].seed < episodeTorrent.seed))
+    if (!anime[season][episode][quality] || (anime[season][episode][quality] && anime[season][episode][quality].seed < episodeTorrent.seed))
       anime[season][episode][quality] = episodeTorrent;
 
     return anime;
@@ -95,14 +95,8 @@ export default class KAT {
    */
   getAnimeData(torrent) {
     const secondSeason = /\[horriblesubs\].(.*).S(\d)...(\d{2,3}).\[(\d{3,4}p)\]/i;
-    const popularOnes = /\[horriblesubs\].(.*)...(\d{3}).\[(\d{3,4}p)\]/i;
-    const horribleSubs = /\[horriblesubs\].(.*)...(\d{2}).\[(\d{3,4}p)\]/i;
     if (torrent.title.match(secondSeason)) {
       return this.extractAnime(torrent, secondSeason);
-    } else if (torrent.title.match(popularOnes)) {
-      return this.extractAnime(torrent, popularOnes);
-    } else if (torrent.title.match(horribleSubs)) {
-      return this.extractAnime(torrent, horribleSubs);
     } else {
       console.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
@@ -133,7 +127,7 @@ export default class KAT {
                 const index = animes.indexOf(matching[0]);
                 if (!matching[0][season]) matching[0][season] = {};
                 if (!matching[0][season][episode]) matching[0][season][episode] = {};
-                if ((!matching[0][season][episode][quality] || matching[0].animeTitle.toLowerCase().indexOf("repack") > -1) || (matching[0][season][episode][quality] && matching[0][season][episode][quality].seed < anime[season][episode][quality].seed))
+                if (!matching[0][season][episode][quality] || (matching[0][season][episode][quality] && matching[0][season][episode][quality].seed < anime[season][episode][quality].seed))
                   matching[0][season][episode][quality] = anime[season][episode][quality];
 
                 animes.splice(index, 1, matching[0]);

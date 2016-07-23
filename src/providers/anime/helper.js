@@ -9,7 +9,7 @@ import Util from "../../util";
  * @memberof module:providers/show/helper
  * @param {String} name - The name of the helper.
  * @property {Object} util - The util object with general functions.
- * @property {Object} trakt - A configured trakt api.
+ * @property {Object} hummingbirdAPI - A configured Hummingbird api.
  */
 export default class Helper {
 
@@ -123,17 +123,22 @@ export default class Helper {
    */
   async addSeason(anime, episodes, seasonNumber, slug) {
     try {
-      await asyncq.each(Object.keys(episodes[seasonNumber]), episode => {
-        anime.episodes.push({
-          title: `Episode ${episode}`,
-          torrents: episodes[seasonNumber][episode],
-          season: seasonNumber, episode,
+      await asyncq.each(Object.keys(episodes[seasonNumber]), episodeNumber => {
+        const episode = {
+          title: `Episode ${episodeNumber}`,
+          torrents: {},
+          season: seasonNumber,
+          episode: episodeNumber,
           overview: `We still don't have single episode overviews for anime… Sorry`,
-          tvdb_id: `${anime._id}-1-${episode}`
-        });
+          tvdb_id: `${anime._id}-1-${episodeNumber}`
+        };
+
+        episode.torrents = episodes[seasonNumber][episodeNumber];
+        episode.torrents[0] = episodes[seasonNumber][episodeNumber]["480p"] ? episodes[seasonNumber][episodeNumber]["480p"] : episodes[seasonNumber][episodeNumber]["720p"];
+        anime.episodes.push(episode);
       });
     } catch (err) {
-      return this.util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this.util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 
@@ -145,7 +150,7 @@ export default class Helper {
       if (hummingbirdAnime.show_type === "TV") {
         type = "show";
       } else {
-        type = "show";
+        type = "movie";
       }
 
       const genres = hummingbirdAnime.genres.map(genre => genre.name);

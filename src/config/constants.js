@@ -124,9 +124,7 @@ const showProviders = [
 ];
 
 const animeProviders = [
-  {name: "HorribleSubs480p", query: {query: "480p", uploader: "HorribleSubs"}},
-  {name: "HorribleSubs720p", query: {query: "720p", uploader: "HorribleSubs"}},
-  {name: "HorribleSubs1080p", query: {query: "1080p", uploader: "HorribleSubs"}}
+  
 ];
 
 /**

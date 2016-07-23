@@ -138,10 +138,10 @@ export default class Scraper {
     Scraper.util.setLastUpdated();
 
     asyncq.eachSeries([
-      // this.scrapeEZTVShows,
-      // this.scrapeKATShows,
-      // this.scrapeYTSMovies,
-      // this.scrapeKATMovies,
+      this.scrapeEZTVShows,
+      this.scrapeKATShows,
+      this.scrapeYTSMovies,
+      this.scrapeKATMovies,
       this.scrapeHorribelSubsAnime,
       // this.scrapeKATAnime
     ], scraper => scraper())
