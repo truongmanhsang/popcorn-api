@@ -1,6 +1,7 @@
 // Import the neccesary modules.
 import expressWinston from "express-winston";
 import fs from "fs";
+import path from "path";
 import sprintf from "sprintf";
 import winston from "winston";
 import { global } from "./constants";
@@ -96,7 +97,7 @@ export default class Logger {
           prettyPrint: true
         }),
         new winston.transports.File({
-          filename: `${global.tempDir}/${packageJSON.name}.log`,
+          filename: path.join(global.tempDir, `${packageJSON.name}.log`),
           level: "warn",
           json: false,
           formatter: this.fileFormatter,
@@ -127,8 +128,8 @@ export default class Logger {
    * @memberof module:config/logger
    */
   reset() {
-    if (fs.existsSync(`${global.tempDir}/${packageJSON.name}.log`))
-      fs.unlinkSync(`${global.tempDir}/${packageJSON.name}.log`);
+    const logFile = path.join(global.tempDir, `${packageJSON.name}.log`);
+    if (fs.existsSync(logFile)) fs.unlinkSync(logFile);
   };
 
 };

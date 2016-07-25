@@ -1,3 +1,5 @@
+import path from "path";
+
 const global = {
   master: true,
   port: 5000,
@@ -5,7 +7,7 @@ const global = {
   scrapeTime: "0 0 */6 * * *",
   pageSize: 50,
   serverName: "serv01",
-  tempDir: `${process.cwd()}/tmp`,
+  tempDir: path.join(process.cwd(), "tmp"),
   statusFile: "status.json",
   updatedFile: "lastUpdated.json",
   dbHosts: ["localhost"],
@@ -15,7 +17,16 @@ const global = {
   Promise
 };
 
-const katMap = {
+const katAnimeMap = {
+  "kabaneri-of-the-iron-fortress": "koutetsujou-no-kabaneri",
+  "luck-&-logic": "luck-logic",
+  "naruto-shippuuden": "naruto-shippuden",
+  "norn9norn+nonet": "norn9-norn-nonet",
+  "sailor-moon-crystal": "bishoujo-senshi-sailor-moon-crystal",
+  "yuruyuri": "yuru-yuri"
+};
+
+const katShowMap = {
   "60-minutes-us": "60-minutes",
   "american-crime": "american-crime-1969",
   "bachelor-live": "the-bachelor-live",
@@ -112,6 +123,10 @@ const showProviders = [
   {name: "ZonerSD", query: {query: "x264 LOL | FLEET | KILLERS | W4F", uploader: "z0n321"}}
 ];
 
+const animeProviders = [
+  
+];
+
 /**
  * @class Global
  * @classdesc Holder to export all the global configuration objects.
@@ -120,9 +135,11 @@ const showProviders = [
  * used over the whole API.
  * @property {Object} katMap - The configuration object with the correct
  * slugs for {@link https://kat.cr/}.
- * @property {Object} movieProviders - Providers used for scraping shows
- * from {@link https://kat.cr/}.
- * @property {Object} showProviders - // Providers used for scraping
- * movies from {@link https://kat.cr/}.
+ * @property {Object} animeProviders - Providers used for scraping anime from
+ * {@link https://kat.cr/}.
+ * @property {Object} movieProviders - Providers used for scraping shows from
+ * {@link https://kat.cr/}.
+ * @property {Object} showProviders - Providers used for scraping movies from
+ * {@link https://kat.cr/}.
  */
-export { global, katMap, movieProviders, showProviders };
+export { global, katAnimeMap, katShowMap, animeProviders, movieProviders, showProviders };

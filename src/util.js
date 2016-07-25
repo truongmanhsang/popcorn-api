@@ -1,6 +1,7 @@
 // Import the neccesary modules.
 import childProcess from "child_process";
 import fs from "fs";
+import HummingbirdAPI from "hummingbird-api";
 import path from "path";
 import Trakt from "trakt.tv";
 import { global } from "./config/constants";
@@ -15,6 +16,7 @@ export default class Util {
 
   constructor() {
     this.trakt = new Trakt({client_id: global.traktKey});
+    this.hummingbirdAPI = new HummingbirdAPI();
   };
 
   /**
