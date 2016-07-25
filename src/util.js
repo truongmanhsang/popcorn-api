@@ -16,7 +16,7 @@ export default class Util {
 
   constructor() {
     this.trakt = new Trakt({client_id: global.traktKey});
-    this.hummingbirdAPI = new HummingbirdAPI("4754a09739965e02660a", 1);
+    this.hummingbirdAPI = new HummingbirdAPI();
   };
 
   /**

@@ -51,8 +51,7 @@ export default class YTS {
           return reject(`YTS: Could not find data on '${url}'.`);
         } else {
           body = JSON.parse(body);
-          let totalPages = Math.ceil(body.data.movie_count / 50); // Change to 'const' for production.
-          totalPages = 3; // For testing purposes only.
+          const totalPages = Math.ceil(body.data.movie_count / 50); // Change to 'const' for production.
           return resolve(totalPages);
         }
       });
@@ -102,7 +101,7 @@ export default class YTS {
     return new Promise((resolve, reject) => {
       this.request(url, (err, res, body) => {
         if (err && retry) {
-          return resolve(this,getOnePage(page, false));
+          return resolve(this.getOnePage(page, false));
         } else if (err) {
           return reject(`YTS: ${err} with link: '?limit=50&page=${page + 1}'`);
         } else if (!body || res.statusCode >= 400) {
@@ -129,7 +128,7 @@ export default class YTS {
       let movies = [];
       return await asyncq.timesSeries(totalPages, async page => {
         try {
-          console.log(`${this.name}: Starting searching kat on page ${page + 1} out of ${totalPages}`);
+          console.log(`${this.name}: Starting searching YTS on page ${page + 1} out of ${totalPages}`);
           const onePage = await this.getOnePage(page);
           movies = movies.concat(onePage);
         } catch (err) {

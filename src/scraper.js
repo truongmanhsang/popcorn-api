@@ -115,6 +115,12 @@ export default class Scraper {
     }
   };
 
+  /**
+   * @description Start scraping from KAT.
+   * @function Scraper#scrapeKATAnime
+   * @memberof module:global/scraper
+   * @returns {Array} A list of all the scraped anime.
+   */
   async scrapeKATAnime() {
     return asyncq.eachSeries(animeProviders, async provider => {
       try {
@@ -139,9 +145,9 @@ export default class Scraper {
 
     asyncq.eachSeries([
       this.scrapeEZTVShows,
-      this.scrapeKATShows,
+      // this.scrapeKATShows,
       this.scrapeYTSMovies,
-      this.scrapeKATMovies,
+      // this.scrapeKATMovies,
       this.scrapeHorribelSubsAnime,
       // this.scrapeKATAnime
     ], scraper => scraper())

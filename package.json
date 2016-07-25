@@ -14,6 +14,7 @@
     "express": "^4.14.0",
     "express-winston": "^1.4.2",
     "eztv-api-pt": "^1.0.7",
+    "horriblesubs-api": "^1.0.1",
     "hummingbird-api": "^1.0.7",
     "kat-api-pt": "^1.0.9",
     "mongoose": "^4.5.3",
