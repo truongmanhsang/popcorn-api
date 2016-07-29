@@ -1,23 +1,22 @@
 import path from "path";
 
-const global = {
-  master: true,
-  port: 5000,
-  workers: 2,
-  scrapeTime: "0 0 */6 * * *",
-  pageSize: 50,
-  serverName: "serv01",
-  tempDir: path.join(process.cwd(), "tmp"),
-  statusFile: "status.json",
-  updatedFile: "lastUpdated.json",
-  dbHosts: ["localhost"],
-  maxWebRequest: 2,
-  webRequestTimeout: 2,
-  traktKey: "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907",
-  Promise
-};
+export const cronTime = "0 0 */6 * * *";
+export const dbHosts = ["localhost"];
+export const master = true;
+export const maxWebRequest = 2;
+export const pageSize = 50;
+export const port = 5000;
+export const Promise = global.Promise;
+export const server = "serv01";
+export const statusFile = "status.json";
+export const tempDir = path.join(process.cwd(), "tmp");
+export const timeZone = "America/Los_Angeles";
+export const traktKey = "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907";
+export const updatedFile = "lastUpdated.json";
+export const webRequestTimeout = 2;
+export const workers = 2;
 
-const katAnimeMap = {
+export const katAnimeMap = {
   "kabaneri-of-the-iron-fortress": "koutetsujou-no-kabaneri",
   "luck-&-logic": "luck-logic",
   "naruto-shippuuden": "naruto-shippuden",
@@ -26,7 +25,7 @@ const katAnimeMap = {
   "yuruyuri": "yuru-yuri"
 };
 
-const katShowMap = {
+export const katShowMap = {
   "60-minutes-us": "60-minutes",
   "american-crime": "american-crime-1969",
   "bachelor-live": "the-bachelor-live",
@@ -91,7 +90,7 @@ const katShowMap = {
   "youre-the-worst": "you-re-the-worst"
 };
 
-const movieProviders = [
+export const movieProviders = [
   // English providers
   {name: "Megaradon", query: {query: "x264 720p | 1080p", uploader: "megaradon", language: "en"}},
   {name: "Z0n321", query: {query: "x264 720p | 1080p", uploader: "z0n321", language: "en"}},
@@ -106,7 +105,7 @@ const movieProviders = [
   {name: "Dutch", query: {query: "720p | 1080p", language: "nl"}}
 ];
 
-const showProviders = [
+export const showProviders = [
   // 720p and 1080p providers
   {name: "Zoner720p", query: {query: "x264 720p", uploader: "z0n321"}},
   {name: "Zoner1080p", query: {query: "x264 1080p", uploader: "z0n321"}},
@@ -123,23 +122,23 @@ const showProviders = [
   {name: "ZonerSD", query: {query: "x264 LOL | FLEET | KILLERS | W4F", uploader: "z0n321"}}
 ];
 
-const animeProviders = [
-  
+export const animeProviders = [
+
 ];
 
-/**
- * @class Global
- * @classdesc Holder to export all the global configuration objects.
- * @memberof module:config/global
- * @property {Object} global - The configuration object with properties
- * used over the whole API.
- * @property {Object} katMap - The configuration object with the correct
- * slugs for {@link https://kat.cr/}.
- * @property {Object} animeProviders - Providers used for scraping anime from
- * {@link https://kat.cr/}.
- * @property {Object} movieProviders - Providers used for scraping shows from
- * {@link https://kat.cr/}.
- * @property {Object} showProviders - Providers used for scraping movies from
- * {@link https://kat.cr/}.
- */
-export { global, katAnimeMap, katShowMap, animeProviders, movieProviders, showProviders };
+// /**
+//  * @class Global
+//  * @classdesc Holder to export all the global configuration objects.
+//  * @memberof module:config/global
+//  * @property {Object} global - The configuration object with properties
+//  * used over the whole API.
+//  * @property {Object} katMap - The configuration object with the correct
+//  * slugs for {@link https://kat.cr/}.
+//  * @property {Object} animeProviders - Providers used for scraping anime from
+//  * {@link https://kat.cr/}.
+//  * @property {Object} movieProviders - Providers used for scraping shows from
+//  * {@link https://kat.cr/}.
+//  * @property {Object} showProviders - Providers used for scraping movies from
+//  * {@link https://kat.cr/}.
+//  */
+// export { global, katAnimeMap, katShowMap, animeProviders, movieProviders, showProviders };

@@ -37,9 +37,6 @@ const AnimeSchema = new mongoose.Schema({
   episodes: []
 });
 
-
-
-
 /**
  * @class Anime
  * @classdesc A model object for animes.

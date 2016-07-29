@@ -25,7 +25,6 @@ import Util from "./util";
 export default class CLI {
 
   constructor(providerName = "CLI") {
-    this.index = new Index();
     this.util = new Util();
 
     // Setup the CLI program.
@@ -257,9 +256,9 @@ export default class CLI {
    */
   run() {
     if (program.run) {
-      this.index.startAPI(true);
+      new Index({start: true, pretty: false, debug: false});
     } else if (program.server) {
-      this.index.startAPI(false);
+      new Index({start: false, pretty: false, debug: false});
     } else if (program.content) {
       prompt.start();
       Setup.connectMongoDB();

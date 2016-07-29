@@ -1,7 +1,7 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 import HorribleSubsAPI from "horriblesubs-api";
-import { global } from "../../config/constants";
+import { maxWebRequest } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
@@ -15,10 +15,10 @@ import Util from "../../util";
  */
 export default class HorribleSubs {
 
-  constructor(name) {
+  constructor(name, debug) {
     this.name = name;
-    this.horriblesubsAPI = new HorribleSubsAPI();
-    this.helper = new Helper(this.name);
+    this.horriblesubsAPI = new HorribleSubsAPI({ debug });
+    this.helper = new Helper(this.name, debug);
     this.util = new Util();
   };
 
@@ -56,7 +56,7 @@ export default class HorribleSubs {
       console.log(`${this.name}: Starting scraping...`);
       const horribleSubsAnimes = await this.horriblesubsAPI.getAllAnime();
       console.log(`${this.name}: Found ${horribleSubsAnimes.length} anime shows.`);
-      return await asyncq.mapLimit(horribleSubsAnimes, global.maxWebRequest, async horribleSubsAnime => {
+      return await asyncq.mapLimit(horribleSubsAnimes, maxWebRequest, async horribleSubsAnime => {
         try {
           return await this.getAnime(horribleSubsAnime);
         } catch (err) {

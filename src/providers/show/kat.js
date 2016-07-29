@@ -1,7 +1,7 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 import katApi from "kat-api-pt";
-import { global, katShowMap } from "../../config/constants";
+import { maxWebRequest, katShowMap } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
@@ -16,11 +16,11 @@ import Util from "../../util";
  */
 export default class KAT {
 
-  constructor(name) {
+  constructor(name, debug) {
     this.name = name;
 
     this.helper = new Helper(this.name);
-    this.kat = new katApi();
+    this.kat = new katApi({ debug });
     this.util = new Util();
   };
 
@@ -215,7 +215,7 @@ export default class KAT {
 
       const katTorrents = await this.getAllTorrents(totalPages, provider);
       const katShows = await this.getAllKATShows(katTorrents);
-      return await asyncq.mapLimit(katShows, global.maxWebRequest, async katShow => {
+      return await asyncq.mapLimit(katShows, maxWebRequest, async katShow => {
         try {
           return await this.getShow(katShow);
         } catch (err) {

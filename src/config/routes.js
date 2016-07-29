@@ -11,12 +11,13 @@ import Shows from "../controllers/shows";
  */
 export default class Routes {
 
-  constructor() {
-    this.index = new Index();
+  constructor(app) {
+    Routes.index = new Index();
+    Routes.animes = new Animes();
+    Routes.movies = new Movies();
+    Routes.shows = new Shows();
 
-    this.animes = new Animes();
-    this.movies = new Movies();
-    this.shows = new Shows();
+    Routes.setupRoutes(app);
   };
 
   /**
@@ -25,24 +26,24 @@ export default class Routes {
    * @memberof module:config/routes
    * @param {ExpressJS} app - The ExpresssJS application.
    */
-  routes(app) {
-    app.get("/", this.index.getIndex);
-    app.get("/logs/error", this.index.getErrorLog);
+  static setupRoutes(app) {
+    app.get("/", Routes.index.getIndex);
+    app.get("/logs/error", Routes.index.getErrorLog);
 
-    app.get("/animes", this.animes.getAnimes);
-    app.get("/animes/:page", this.animes.getPage);
-    app.get("/anime/:id", this.animes.getAnime);
-    app.get("/random/anime", this.animes.getRandomAnime);
+    app.get("/animes", Routes.animes.getAnimes);
+    app.get("/animes/:page", Routes.animes.getPage);
+    app.get("/anime/:id", Routes.animes.getAnime);
+    app.get("/random/anime", Routes.animes.getRandomAnime);
 
-    app.get("/movies", this.movies.getMovies);
-    app.get("/movies/:page", this.movies.getPage);
-    app.get("/movie/:id", this.movies.getMovie);
-    app.get("/random/movie", this.movies.getRandomMovie);
+    app.get("/movies", Routes.movies.getMovies);
+    app.get("/movies/:page", Routes.movies.getPage);
+    app.get("/movie/:id", Routes.movies.getMovie);
+    app.get("/random/movie", Routes.movies.getRandomMovie);
 
-    app.get("/shows", this.shows.getShows);
-    app.get("/shows/:page", this.shows.getPage);
-    app.get("/show/:id", this.shows.getShow);
-    app.get("/random/show", this.shows.getRandomShow);
+    app.get("/shows", Routes.shows.getShows);
+    app.get("/shows/:page", Routes.shows.getPage);
+    app.get("/show/:id", Routes.shows.getShow);
+    app.get("/random/show", Routes.shows.getRandomShow);
   };
 
 };

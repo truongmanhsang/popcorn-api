@@ -1,12 +1,14 @@
 // Import the neccesary modules.
 import fs from "fs";
 import path from "path";
+
 import Anime from "../models/Anime";
-import { global } from "../config/constants";
 import Movie from "../models/Movie";
-import packageJSON from "../../package.json";
 import Show from "../models/Show";
 import Util from "../util";
+
+import { server, statusFile, tempDir, updatedFile } from "../config/constants";
+import { name, repository, version } from "../../package.json";
 
 /**
  * @class
@@ -39,10 +41,7 @@ export default class Index {
         }
       });
     } else {
-      const errorMsg = `Could not find file: '${root}'`;
-      return res.json({
-        error: errorMsg
-      });
+      return res.json({error: `Could not find file: '${root}'`});
     }
   };
 
@@ -54,29 +53,23 @@ export default class Index {
    * @param {Response} res - The express response object.
    * @returns {Object} - General information about the server.
    */
-  async getIndex(req, res) {
+  async getIndex(req, res, next) {
     try {
-      const lastUpdatedJSON = JSON.parse(fs.readFileSync(`${global.tempDir}/${global.updatedFile}`, "utf8")),
-        statusJSON = JSON.parse(fs.readFileSync(`${global.tempDir}/${global.statusFile}`, "utf8")),
+      const { updated } = JSON.parse(fs.readFileSync(path.join(tempDir, updatedFile), "utf8")),
+        { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), "utf8")),
         commit = await Index.util.executeCommand("git rev-parse --short HEAD"),
-        animeCount = await Anime.count({num_episodes: {$gt: 0}}).exec(),
-        movieCount = await Movie.count().exec(),
-        showCount = await Show.count({num_seasons: {$gt: 0}}).exec();
+        totalAnimes = await Anime.count({num_episodes: {$gt: 0}}).exec(),
+        totalMovies = await Movie.count().exec(),
+        totalShows = await Show.count({num_seasons: {$gt: 0}}).exec();
 
       return res.json({
-        repo: packageJSON.repository.url,
-        server: global.serverName,
-        status: statusJSON.status,
-        totalAnimes: animeCount,
-        totalMovies: movieCount,
-        totalShows: showCount,
-        updated: lastUpdatedJSON.lastUpdated,
-        uptime: process.uptime() | 0,
-        version: packageJSON.version,
-        commit
+        repo: repository.url, server, status,
+        totalAnimes, totalMovies, totalShows,
+        updated, uptime: process.uptime() | 0,
+        version, commit
       });
     } catch (err) {
-      return res.json(err);
+      return next(err);
     }
   };
 
@@ -89,7 +82,7 @@ export default class Index {
    * @returns {File} - The content of the log file.
    */
   getErrorLog(req, res) {
-    return Index.displayFile(req, res, `${global.tempDir}`, `${packageJSON.name}.log`);
+    return Index.displayFile(req, res, tempDir, `${name}.log`);
   };
 
 };

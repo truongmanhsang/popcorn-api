@@ -4,8 +4,9 @@ import fs from "fs";
 import path from "path";
 import sprintf from "sprintf";
 import winston from "winston";
-import { global } from "./constants";
-import packageJSON from "../../package.json";
+
+import { tempDir } from "./constants";
+import { name } from "../../package.json";
 
 /**
  * @class
@@ -18,17 +19,36 @@ import packageJSON from "../../package.json";
 export default class Logger {
 
   constructor() {
-    // Create the temp directory if it does not exists.
-    if (!fs.existsSync(global.tempDir)) fs.mkdirSync(global.tempDir);
+    if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
+
+    Logger.logger = new winston.Logger({
+      transports: [
+        new winston.transports.Console({
+          name,
+          formatter: Logger.consoleFormatter,
+          handleExceptions: true,
+          prettyPrint: true
+        }),
+        new winston.transports.File({
+          filename: path.join(tempDir, `${name}.log`),
+          level: "warn",
+          json: false,
+          formatter: Logger.fileFormatter,
+          maxsize: 5242880,
+          handleExceptions: true
+        })
+      ],
+      exitOnError: false
+    });
+    Logger.expressLogger = new expressWinston.logger({winstonInstance: Logger.logger, expressFormat: true});
+
+    console.log = msg => Logger.logger.info(msg);
+    console.error = msg => Logger.logger.error(msg);
+    console.warn = msg => Logger.logger.warn(msg);
+    console.info = msg => Logger.logger.info(msg);
+    console.debug = msg => Logger.logger.debug(msg);
   };
 
-  /**
-   * @description Check if the message is empty and replace it with the meta.
-   * @function Logger#checkEmptyMessage
-   * @memberof module:config/logger
-   * @param {Object} args - Arguments passed by Winston.
-   * @returns {Object} - Formatter arguments passed by Winston.
-   */
   static checkEmptyMessage(args) {
     if (args.message === "" && Object.keys(args.meta).length !== 0)
       args.message = JSON.stringify(args.meta);
@@ -36,100 +56,44 @@ export default class Logger {
     return args;
   };
 
-  /**
-   * @description Formatter function which formats the output to the console.
-   * @function Logger#consoleFormatter
-   * @memberof module:config/logger
-   * @param {Object} args - Arguments passed by Winston.
-   * @returns {String} - The formatted message.
-   */
-  consoleFormatter(args) {
-    let levelColor = "";
-    switch (args.level) {
+  static getLevelColor(level) {
+    switch (level) {
     case "error":
-      levelColor = "\x1b[31m";
+      return "\x1b[31m";
       break;
     case "warn":
-      levelColor = "\x1b[33m";
+      return "\x1b[33m";
       break;
     case "info":
-      levelColor = "\x1b[36m";
+      return "\x1b[36m";
       break;
     case "debug":
-      levelColor = "\x1b[34m";
+      return "\x1b[34m";
       break;
     default:
-      levelColor = "\x1b[36m";
+      return "\x1b[36m";
       break;
     }
+  };
 
+  static consoleFormatter(args) {
     args = Logger.checkEmptyMessage(args);
-    return sprintf(`\x1b[0m[%s] ${levelColor}%5s:\x1b[0m %2s/%d: \x1b[36m%s\x1b[0m`,
-      new Date().toISOString(), args.level.toUpperCase(), packageJSON.name,
+    const color = Logger.getLevelColor(args.level);
+
+    return sprintf(`\x1b[0m[%s] ${color}%5s:\x1b[0m %2s/%d: \x1b[36m%s\x1b[0m`,
+      new Date().toISOString(), args.level.toUpperCase(), name,
       process.pid, args.message);
   };
 
-  /**
-   * @description Formatter function which formate the output to the log file.
-   * @function Logger#fileFormatter
-   * @memberof module:config/logger
-   * @param {Object} args - Arguments passed by Winston.
-   * @returns {String} - The formatted message.
-   */
-  fileFormatter(args) {
+  static fileFormatter(args) {
     args = Logger.checkEmptyMessage(args);
     return JSON.stringify({
-      name: packageJSON.name,
+      name,
       pid: process.pid,
       level: args.level,
       msg: args.message,
       time: new Date().toISOString()
     });
-  };
-
-  getLogger() {
-    return new winston.Logger({
-      transports: [
-        new winston.transports.Console({
-          name: packageJSON.name,
-          formatter: this.consoleFormatter,
-          handleExceptions: true,
-          prettyPrint: true
-        }),
-        new winston.transports.File({
-          filename: path.join(global.tempDir, `${packageJSON.name}.log`),
-          level: "warn",
-          json: false,
-          formatter: this.fileFormatter,
-          maxsize: 5242880,
-          handleExceptions: true
-        })
-      ],
-      exitOnError: false
-    });
-  };
-
-  getExpressLogger() {
-    return new expressWinston.logger({winstonInstance: this.getLogger(), expressFormat: true});
-  };
-
-  overrideConsole(logger) {
-    // Override the console functions.
-    console.log = msg => logger.info(msg);
-    console.error = msg => logger.error(msg);
-    console.warn = msg => logger.warn(msg);
-    console.info = msg => logger.info(msg);
-    console.debug = msg => logger.debug(msg);
-  };
-
-  /**
-   * @description Reset the default log file.
-   * @function Logger#reset
-   * @memberof module:config/logger
-   */
-  reset() {
-    const logFile = path.join(global.tempDir, `${packageJSON.name}.log`);
-    if (fs.existsSync(logFile)) fs.unlinkSync(logFile);
   };
 
 };

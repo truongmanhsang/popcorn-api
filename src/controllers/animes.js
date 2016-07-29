@@ -1,6 +1,6 @@
 // Import the neccesary modules.
-import { global } from "../config/constants";
 import Anime from "../models/Anime";
+import { pageSize } from "../config/constants";
 
 /**
  * @class
@@ -21,7 +21,8 @@ export default class Animes {
       year: 1,
       type: 1,
       item_data: 1,
-      rating: 1
+      rating: 1,
+      genres: 1
     };
   };
 
@@ -33,19 +34,19 @@ export default class Animes {
    * @param {Response} res - The express response object.
    * @returns {Array} - A list of pages which are available.
    */
-  getAnimes(req, res) {
+  getAnimes(req, res, next) {
     return Anime.count({
       num_episodes: {
         $gt: 0
       }
     }).exec().then(count => {
-      const pages = Math.round(count / global.pageSize);
+      const pages = Math.round(count / pageSize);
       const docs = [];
 
-      for (let i = 1; i < pages + 1; i++) docs.push(`anime/${i}`);
+      for (let i = 1; i < pages + 1; i++) docs.push(`animes/${i}`);
 
       return res.json(docs);
-    }).catch(err => res.json(err));
+    }).catch(err => next(err));
   };
 
   /**
@@ -56,11 +57,11 @@ export default class Animes {
    * @param {Response} res - The express response object.
    * @returns {Array} - The contents of one page.
    */
-  getPage(req, res) {
+  getPage(req, res, next) {
     const page = req.params.page - 1;
-    const offset = page * global.pageSize;
+    const offset = page * pageSize;
 
-    if (req.params.page === "all") {
+    if (req.params.page.match(/all/i)) {
       return Anime.aggregate([{
           $match: {
             num_episodes: {
@@ -75,12 +76,9 @@ export default class Animes {
           }
         }]).exec()
         .then(docs => res.json(docs))
-        .catch(err => res.json(err));
+        .catch(err => next(err));
     } else {
-      let query = {};
-      query.num_episodes = {
-        $gt: 0
-      };
+      const query = {num_episodes: {$gt: 0}};
       const data = req.query;
 
       if (!data.order) data.order = -1;
@@ -94,18 +92,15 @@ export default class Animes {
       if (data.keywords) {
         const words = data.keywords.split(" ");
         let regex = "^";
-        for (let w in words) {
-          regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        }
-
-        query.title = { $regex: new RegExp(`${regex}.*`), $options: "gi" };
+        for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+        query.title = {$regex: new RegExp(`${regex}.*`),$options: "gi"};
       }
 
       if (data.sort) {
-        if (data.sort === "name") sort = {
+        if (data.sort.match(/name/i)) sort = {
           "title": (parseInt(data.order, 10) * -1)
         };
-        if (data.sort === "rating") sort = {
+        if (data.sort.match(/rating/i)) sort = {
           "rating.percentage": parseInt(data.order, 10),
           "rating.votes": parseInt(data.order, 10)
         };
@@ -115,15 +110,12 @@ export default class Animes {
         // if (data.sort === "updated") sort = {
         //   "latest_episode": parseInt(data.order, 10)
         // };
-        if (data.sort === "year") sort = {
+        if (data.sort.match(/year/i)) sort = {
           "year": parseInt(data.order, 10)
         };
       }
 
-      if (data.genre && data.genre !== "All") {
-        if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i)) data.genre = "science-fiction";
-        query.genres = data.genre.toLowerCase();
-      }
+      if (data.genre && !data.genre.match(/all/i)) query.genres = data.genre;
 
       return Anime.aggregate([{
           $sort: sort
@@ -134,10 +126,10 @@ export default class Animes {
         }, {
           $skip: offset
         }, {
-          $limit: global.pageSize
+          $limit: pageSize
         }]).exec()
-        .then(docs => res.json(docs))
-        .catch(err => res.json(err));
+        .then(docs => next(docs))
+        .catch(err => next(err));
     }
   };
 
@@ -149,12 +141,10 @@ export default class Animes {
    * @param {Response} res - The express response object.
    * @returns {Anime} - The details of a single anime.
    */
-  getAnime(req, res) {
-    return Anime.findOne({
-      _id: req.params.id
-    }, {latest_episode: 0}).exec()
-    .then(docs => res.json(docs))
-    .catch(err => res.json(err));
+  getAnime(req, res, next) {
+    return Anime.findOne({_id: req.params.id}, {latest_episode: 0}).exec()
+      .then(docs => res.json(docs))
+      .catch(err => next(err));
   };
 
   /**
@@ -165,7 +155,7 @@ export default class Animes {
    * @param {Response} res - The express response object.
    * @returns {Anime} - A random movie.
    */
-  getRandomAnime(req, res) {
+  getRandomAnime(req, res, next) {
     return Anime.aggregate([{
         $project: Animes.projection
       }, {
@@ -176,7 +166,7 @@ export default class Animes {
         $limit: 1
       }]).exec()
       .then(docs => res.json(docs[0]))
-      .catch(err => res.json(err));
+      .catch(err => next(err));
   };
 
 };

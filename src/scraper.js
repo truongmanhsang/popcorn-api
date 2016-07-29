@@ -17,8 +17,9 @@ import YTS from "./providers/movie/yts";
  */
 export default class Scraper {
 
-  constructor() {
+  constructor(debug) {
     Scraper.util = new Util();
+    Scraper.debug = debug
   };
 
   /**
@@ -29,7 +30,7 @@ export default class Scraper {
    */
   async scrapeEZTVShows() {
     try {
-      const eztv = new EZTV("EZTV");
+      const eztv = new EZTV("EZTV", Scraper.debug);
       Scraper.util.setStatus(`Scraping ${eztv.name}`);
       const eztvShows = await eztv.search();
       console.log(`${eztv.name}: Done.`);
@@ -49,7 +50,7 @@ export default class Scraper {
     return asyncq.eachSeries(movieProviders, async provider => {
       try {
         Scraper.util.setStatus(`Scraping ${provider.name}`);
-        const katProvider = new katMovie(provider.name);
+        const katProvider = new katMovie(provider.name, Scraper.debug);
         const katShows = await katProvider.search(provider);
         console.log(`${provider.name}: Done.`);
         return katShows;
@@ -69,7 +70,7 @@ export default class Scraper {
     return asyncq.eachSeries(showProviders, async provider => {
       try {
         Scraper.util.setStatus(`Scraping ${provider.name}`);
-        const katProvider = new katShow(provider.name);
+        const katProvider = new katShow(provider.name, Scraper.debug);
         const katShows = await katProvider.search(provider);
         console.log(`${provider.name}: Done.`);
         return katShows;
@@ -105,7 +106,7 @@ export default class Scraper {
    */
   async scrapeHorribelSubsAnime() {
     try {
-      const horribleSubs = new HorribleSubs("HorribleSubs");
+      const horribleSubs = new HorribleSubs("HorribleSubs", Scraper.debug);
       Scraper.util.setStatus(`Scraping ${horribleSubs.name}`);
       const horribleSubsAnime = await horribleSubs.search();
       console.log(`${horribleSubs.name}: Done.`);
@@ -125,7 +126,7 @@ export default class Scraper {
     return asyncq.eachSeries(animeProviders, async provider => {
       try {
         Scraper.util.setStatus(`Scraping ${provider.name}`);
-        const katProvider = new katAnime(provider.name);
+        const katProvider = new katAnime(provider.name, Scraper.debug);
         const katAnimes = await katProvider.search(provider);
         console.log(`${provider.name}: Done.`);
         return katAnimes;
@@ -150,8 +151,7 @@ export default class Scraper {
       // this.scrapeKATMovies,
       this.scrapeHorribelSubsAnime,
       // this.scrapeKATAnime
-    ], scraper => scraper())
-      .then(value => Scraper.util.setStatus())
+    ], scraper => scraper()).then(value => Scraper.util.setStatus())
       .catch(err => Scraper.util.onError(`Error while scraping: ${err}`));
   };
 

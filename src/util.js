@@ -1,10 +1,11 @@
 // Import the neccesary modules.
 import childProcess from "child_process";
 import fs from "fs";
-import HummingbirdAPI from "hummingbird-api";
 import path from "path";
 import Trakt from "trakt.tv";
-import { global } from "./config/constants";
+
+import { statusFile, tempDir, traktKey, updatedFile } from "./config/constants";
+import { name } from "../package.json";
 
 /**
  * @class
@@ -15,8 +16,7 @@ import { global } from "./config/constants";
 export default class Util {
 
   constructor() {
-    this.trakt = new Trakt({client_id: global.traktKey});
-    this.hummingbirdAPI = new HummingbirdAPI();
+    this.trakt = new Trakt({client_id: traktKey});
   };
 
   /**
@@ -51,11 +51,11 @@ export default class Util {
    * @memberof module:global/util
    */
   createTemp() {
-    if (!fs.existsSync(global.tempDir)) fs.mkdirSync(global.tempDir);
-    if (fs.existsSync(global.tempDir)) this.resetTemp();
+    if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
+    if (fs.existsSync(tempDir)) this.resetTemp();
 
-    this.createEmptyFile(path.join(global.tempDir, global.statusFile));
-    this.createEmptyFile(path.join(global.tempDir, global.updatedFile));
+    this.createEmptyFile(path.join(tempDir, statusFile));
+    this.createEmptyFile(path.join(tempDir, updatedFile));
   };
 
   /**
@@ -65,7 +65,7 @@ export default class Util {
    * @param {String} [tmpPath=popcorn-api/tmp] - The path to remove all the files within
    * (Default is set in the `global.js`).
    */
-  resetTemp(tmpPath = global.tempDir) {
+  resetTemp(tmpPath = tempDir) {
     const files = fs.readdirSync(tmpPath);
     files.forEach(file => {
       const stats = fs.statSync(path.join(tmpPath, file));
@@ -81,13 +81,11 @@ export default class Util {
    * @description Updates the `lastUpdated.json` file.
    * @function Util#setLastUpdated
    * @memberof module:global/util
-   * @param {String} [lastUpdated=Date.now()] - The epoch time when the API last started
+   * @param {String} [updated=Date.now()] - The epoch time when the API last started
    * scraping.
    */
-  setLastUpdated(lastUpdated = (Math.floor(new Date().getTime() / 1000))) {
-    fs.writeFile(path.join(global.tempDir, global.updatedFile), JSON.stringify({
-      lastUpdated: lastUpdated
-    }));
+  setLastUpdated(updated = (Math.floor(new Date().getTime() / 1000))) {
+    fs.writeFile(path.join(tempDir, updatedFile), JSON.stringify({ updated }));
   };
 
   /**
@@ -98,9 +96,7 @@ export default class Util {
    * `status.json` file (default `Idle`).
    */
   setStatus(status = "Idle") {
-    fs.writeFile(path.join(global.tempDir, global.statusFile), JSON.stringify({
-      "status": status
-    }));
+    fs.writeFile(path.join(tempDir, statusFile), JSON.stringify({ status }));
   };
 
   /**
@@ -125,6 +121,11 @@ export default class Util {
    */
   search(key, value) {
     return element => element[key] === value;
+  };
+
+  resetLog() {
+    const logFile = path.join(tempDir, `${name}.log`);
+    if (fs.existsSync(logFile)) fs.unlinkSync(logFile);
   };
 
 };

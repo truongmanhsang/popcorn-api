@@ -2,7 +2,7 @@
 import asyncq from "async-q";
 import req from "request";
 import Movie from "../../models/Movie";
-import { global } from "../../config/constants";
+import { maxWebRequest, webRequestTimeout } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
@@ -25,7 +25,7 @@ export default class YTS {
         "Content-Type": "application/json"
       },
       "baseUrl": "https://yts.ag/api/v2/list_movies.json",
-      "timeout": global.webRequestTimeout * 1000
+      "timeout": webRequestTimeout * 1000
     });
 
     this.helper = new Helper(this.name);
@@ -150,7 +150,7 @@ export default class YTS {
     try {
       console.log(`${this.name}: Starting scraping...`);
       const movies = await this.getMovies();
-      return await asyncq.eachLimit(movies, global.maxWebRequest, async ytsMovie => {
+      return await asyncq.eachLimit(movies, maxWebRequest, async ytsMovie => {
         if (ytsMovie && ytsMovie.imdb_id) {
           const newMovie = await this.helper.getTraktInfo(ytsMovie.imdb_id);
           if (newMovie && newMovie._id) {

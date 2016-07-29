@@ -1,7 +1,7 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 import eztvApi from "eztv-api-pt";
-import { global } from "../../config/constants";
+import { maxWebRequest } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
@@ -15,9 +15,10 @@ import Util from "../../util";
  */
 export default class EZTV {
 
-  constructor(name) {
+  constructor(name, debug) {
     this.name = name;
-    this.eztv = new eztvApi();
+
+    this.eztv = new eztvApi({ debug });
     this.helper = new Helper(this.name);
     this.util = new Util();
   };
@@ -57,7 +58,7 @@ export default class EZTV {
       console.log(`${this.name}: Starting scraping...`);
       const eztvShows = await this.eztv.getAllShows();
       console.log(`${this.name}: Found ${eztvShows.length} shows.`);
-      return await asyncq.mapLimit(eztvShows, global.maxWebRequest, async eztvShow => {
+      return await asyncq.mapLimit(eztvShows, maxWebRequest, async eztvShow => {
         try {
           return await this.getShow(eztvShow);
         } catch (err) {

@@ -1,6 +1,8 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
+
 import Anime from "../../models/Anime";
+import HummingbirdAPI from "hummingbird-api";
 import Util from "../../util";
 
 /**
@@ -13,11 +15,11 @@ import Util from "../../util";
  */
 export default class Helper {
 
-  constructor(name) {
+  constructor(name, debug) {
     this.name = name;
 
     this.util = new Util();
-    this.hummingbirdAPI = this.util.hummingbirdAPI;
+    this.hummingbirdAPI = new HummingbirdAPI({ debug });
   };
 
   /**
