@@ -1,3 +1,6 @@
 [submodule "docs2"]
 	path = docs2
 	url = https://github.com/ChrisAlderson/ChrisAlderson.github.io.git
+[submodule "docs"]
+	path = docs
+	url = https://github.com/ChrisAlderson/ChrisAlderson.github.io.git
