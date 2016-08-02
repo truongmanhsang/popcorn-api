@@ -43,6 +43,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeMap">katAnimeMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowMap">katShowMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-master">master</a></span></span></li>
@@ -60,6 +61,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webRequestTimeout">webRequestTimeout</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-workers">workers</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">controllers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/animes.js~Animes.html">Animes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/exports.js~Exports.html">Exports</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/movies.js~Movies.html">Movies</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/shows.js~Shows.html">Shows</a></span></span></li>
@@ -85,7 +87,7 @@ import childProcess from &quot;child_process&quot;;
 import fs from &quot;fs&quot;;
 import path from &quot;path&quot;;
 
-import { statusFile, tempDir, traktKey, updatedFile } from &quot;./config/constants&quot;;
+import { dbName, statusFile, tempDir, traktKey, updatedFile } from &quot;./config/constants&quot;;
 import { name } from &quot;../package.json&quot;;
 
 /** Class holding the frequently used functions. */
@@ -120,6 +122,28 @@ export default class Util {
         return resolve(stdout.split(&quot;\n&quot;).join(&quot;&quot;));
       });
     });
+  };
+
+  /**
+   * Export a collection to a JSON file.
+   * @param {String} collection - The collection to export.
+   * @returns {String} - The output of the mongoexport command.
+   */
+  exportCollection(collection) {
+    const jsonFile = path.join(tempDir, `${collection}s`);
+    return this.executeCommand(`mongoexport --db ${dbName} --collection ${collection}s --out &quot;${jsonFile}.json&quot;`);
+  };
+
+  /**
+   * Import a json file to a collection.
+   * @param {String} collection - The collection to import.
+   * @param {String} jsonFile - The json file to import..
+   * @returns {String} - The output of the mongoimport command.
+   */
+  importCollection(collection, jsonFile) {
+    jsonFile = path.join(process.cwd(), jsonFile);
+    if (!fs.existsSync(jsonFile)) return this.onError(`Error: no such file found for &apos;${jsonFile}&apos;`);
+    return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection}s --file &quot;${jsonFile}&quot; --upsert`);
   };
 
   /**

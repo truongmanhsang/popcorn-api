@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">src/controllers/shows.js | Popcorn API API Document</title>
+  <title data-ice="title">src/controllers/exports.js | Popcorn API API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -81,177 +81,49 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/controllers/shows.js</h1>
+<div class="content" data-ice="content"><h1 data-ice="title">src/controllers/exports.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
-import Show from &quot;../models/Show&quot;;
-import { pageSize } from &quot;../config/constants&quot;;
+import fs from &quot;fs&quot;;
+import mime from &quot;mime&quot;;
+import path from &quot;path&quot;;
 
-/** class for getting show data from the MongoDB. */
-export default class Shows {
+import Util from &quot;../util&quot;;
+import { tempDir } from &quot;../config/constants&quot;;
 
-  /**
-   * Create a shows object.
-   */
+/** Class for getting anime data from the MongoDB. */
+export default class Exports {
+
+  /** Create an exports object. */
   constructor() {
     /**
-     * Object used for the projections of shows.
-     * @type {Object}
+     * The util object with general functions.
+     * @type {Util}
      */
-    Shows._projections = {
-      _id: 1,
-      imdb_id: 1,
-      tvdb_id: 1,
-      title: 1,
-      year: 1,
-      images: 1,
-      slug: 1,
-      num_seasons: 1,
-      rating: 1
-    };
+    this._util = new Util();
   };
 
   /**
-   * Get all the pages.
+   * Download the export of a collection.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Array} - A list of pages which are available.
+   * @returns {Download} - The download of an export of a collection.
    */
-  getShows(req, res, next) {
-    return Show.count({
-      num_seasons: {
-        $gt: 0
+  getExport(req, res, next) {
+    const collection = req.params.collection;
+    let err;
+    if (collection.match(/(anime)$|(movie)$|(show)$/i)) {
+      const jsonFile = path.join(tempDir, `${collection}s.json`);
+      if (!fs.existsSync(jsonFile)) {
+        err = {error: `Error: no such file found for &apos;${jsonFile}&apos;`};
+        return res.status(500).json(err);
+      } else {
+        return res.download(jsonFile);
       }
-    }).exec().then(count =&gt; {
-      const pages = Math.round(count / pageSize);
-      const docs = [];
-
-      for (let i = 1; i &lt; pages + 1; i++) docs.push(`shows/${i}`);
-
-      return res.json(docs);
-    }).catch(err =&gt; next(err));
-  };
-
-  /**
-   * Get one page.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
-   * @param {Function} next - The next function for Express.
-   * @returns {Array} - The contents of one page.
-   */
-  getPage(req, res, next) {
-    const page = req.params.page - 1;
-    const offset = page * pageSize;
-
-    if (req.params.page.match(/all/i)) {
-      return Show.aggregate([{
-          $match: {
-            num_seasons: {
-              $gt: 0
-            }
-          }
-        }, {
-          $project: Shows._projections
-        }, {
-          $sort: {
-            title: -1
-          }
-        }]).exec()
-        .then(docs =&gt; res.json(docs))
-        .catch(err =&gt; next(err));
     } else {
-      const query = {num_seasons: {$gt: 0}};
-      const data = req.query;
-
-      if (!data.order) data.order = -1;
-
-      let sort = {
-        &quot;rating.votes&quot;: parseInt(data.order, 10),
-        &quot;rating.percentage&quot;: parseInt(data.order, 10),
-        &quot;rating.watching&quot;: parseInt(data.order, 10)
-      };
-
-      if (data.keywords) {
-        const words = data.keywords.split(&quot; &quot;);
-        let regex = &quot;^&quot;;
-        for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        query.title = { $regex: new RegExp(`${regex}.*`), $options: &quot;gi&quot; };
-      }
-
-      if (data.sort) {
-        if (data.sort.match(/name/i)) sort = {
-          &quot;title&quot;: (parseInt(data.order, 10) * -1)
-        };
-        if (data.sort.match(/rating/i)) sort = {
-          &quot;rating.percentage&quot;: parseInt(data.order, 10),
-          &quot;rating.votes&quot;: parseInt(data.order, 10)
-        };
-        if (data.sort.match(/trending/i)) sort = {
-          &quot;rating.watching&quot;: parseInt(data.order, 10)
-        };
-        if (data.sort.match(/updated/i)) sort = {
-          &quot;latest_episode&quot;: parseInt(data.order, 10)
-        };
-        if (data.sort.match(/year/i)) sort = {
-          &quot;year&quot;: parseInt(data.order, 10)
-        };
-      }
-
-      if (data.genre &amp;&amp; !data.genre.match(/all/i)) {
-        if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i)) data.genre = &quot;science-fiction&quot;;
-        query.genres = data.genre.toLowerCase();
-      }
-
-      return Show.aggregate([{
-          $sort: sort
-        }, {
-          $match: query
-        }, {
-          $project: Shows._projections
-        }, {
-          $skip: offset
-        }, {
-          $limit: pageSize
-        }]).exec()
-        .then(docs =&gt; res.json(docs))
-        .catch(err =&gt; res.jfson(err));
+      err = {error: `Error: &apos;${collection}&apos; is not a valid collection to export.`};
+      res.status(500).json(err);
     }
-  };
-
-  /**
-   * Get info from one show.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
-   * @param {Function} next - The next function for Express.
-   * @returns {Show} - The details of a single show.
-   */
-  getShow(req, res, next) {
-    return Show.findOne({
-      _id: req.params.id
-    }, {latest_episode: 0}).exec()
-    .then(docs =&gt; res.json(docs))
-    .catch(err =&gt; next(err));
-  };
-
-  /**
-   * Get a random show.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
-   * @param {Function} next - The next function for Express.
-   * @returns {Show} - A random show.
-   */
-  getRandomShow(req, res, next) {
-    return Show.aggregate([{
-        $project: Shows._projections
-      }, {
-        $sample: {
-          size: 1
-        }
-      }, {
-        $limit: 1
-      }]).exec()
-      .then(docs =&gt; res.json(docs[0]))
-      .catch(err =&gt; next(err));
   };
 
 };

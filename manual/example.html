@@ -75,6 +75,8 @@
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/example.html#example" data-ice="link">Example</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#index" data-ice="link">Index</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#logs" data-ice="link">Logs</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#export" data-ice="link">Export</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#anime" data-ice="link">Anime</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#movie" data-ice="link">Movie</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#show" data-ice="link">Show</a></li>
@@ -82,7 +84,7 @@
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#sorting" data-ice="link">Sorting</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#ordering" data-ice="link">Ordering</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#genres" data-ice="link">Genres</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#tv-shows-movies" data-ice="link">TV shows &amp; movies</a></li>
+<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#shows-movies" data-ice="link">shows &amp; movies</a></li>
 <li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#anime" data-ice="link">Anime</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#keywords" data-ice="link">Keywords</a></li>
 </ul>
@@ -132,6 +134,17 @@
   &quot;version&quot;: &quot;2.0.0&quot;
 }</code>
 </code></pre>
+<h2 id="logs">Logs</h2>
+<p><strong>GET - <code>http://localhost:5000/logs/error</code></strong></p>
+<p>Display the error log. Each message will be in JSON format.</p>
+<h2 id="export">Export</h2>
+<p><strong>GET - <code>http://localhost:5000/exports/{collection}</code></strong></p>
+<p>Download the contents a collection in a json file. Possible collections are:</p>
+<ul>
+<li>anime</li>
+<li>movie</li>
+<li>shows</li>
+</ul>
 <h2 id="anime">Anime</h2>
 <p><strong>GET - <code>http://localhost:5000/animes/{page}</code></strong></p>
 <p>Gives an array of anime shows. The array has a has a maximum length of 50 anime shows per page.</p>
@@ -237,8 +250,6 @@
 <p><strong>GET - <code>http://localhost:5000/random/anime</code></strong></p>
 <p>Gives a random show from the database. The output will be similar to the on directly above.</p>
 <h2 id="movie">Movie</h2>
-<p><strong>GET - <code>http://localhost:5000/logs/error</code></strong></p>
-<p>Display the error log. Each message will be in JSON format.</p>
 <p><strong>GET - <code>http://localhost:5000/movies/{page}</code></strong></p>
 <p>Gives an array of movies. The array has a has a maximum length of 50 movies per page.</p>
 <p><strong>Example output:</strong></p>
@@ -462,12 +473,19 @@
 <h1 id="query-strings">Query strings</h1>
 <p>The following routes support query strings:</p>
 <ul>
+<li><strong>GET - <code>http://localhost:5000/animes/{page}</code></strong></li>
 <li><strong>GET - <code>http://localhost:5000/movies/{page}</code></strong></li>
 <li><strong>GET - <code>http://localhost:5000/shows/{page}</code></strong></li>
 </ul>
 <h2 id="sorting">Sorting</h2>
 <p><code>sort=</code></p>
-<p>Possible options for movies are:</p>
+<p>Possible options for <strong>anime</strong> are:</p>
+<ul>
+<li><code>name</code>: sort by the release date of the movies.</li>
+<li><code>rating</code>: sort by the highest rated anime.</li>
+<li><code>year</code>: sort by the release year of the anime.</li>
+</ul>
+<p>Possible options for <strong>movies</strong> are:</p>
 <ul>
 <li><code>last added</code>: sort by the release date of the movies.</li>
 <li><code>rating</code>: sort by the highest rated movies.</li>
@@ -475,7 +493,7 @@
 <li><code>trending</code>: sort by trending movies.</li>
 <li><code>year</code>: sort by the release year of the movies.</li>
 </ul>
-<p>Possible options for shows are:</p>
+<p>Possible options for <strong>shows</strong> are:</p>
 <ul>
 <li><code>name</code>: sort by the title of the shows.</li>
 <li><code>rating</code>: sort by the highest rated shows.</li>
@@ -489,8 +507,8 @@
 <p>To order descending: <code>-1</code></p>
 <h2 id="genres">Genres</h2>
 <p><code>genre=</code></p>
-<h5 id="tv-shows-movies">TV shows &amp; movies</h5>
-<p>The API supports the following genres for <strong>TV shows</strong> and <strong>movies</strong>:</p>
+<h5 id="shows-movies">shows &amp; movies</h5>
+<p>The API supports the following genres for <strong>shows</strong> and <strong>movies</strong>:</p>
 <ul>
 <li>action</li>
 <li>adventure</li>

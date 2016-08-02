@@ -24,6 +24,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "popcorn-api/src/controllers/exports.js~exports",
+    "class/src/controllers/exports.js~Exports.html",
+    "<span>Exports</span> <span class=\"search-result-import-path\">popcorn-api/src/controllers/exports.js</span>",
+    "class"
+  ],
+  [
     "popcorn-api/src/providers/anime/helper.js~helper",
     "class/src/providers/anime/helper.js~Helper.html",
     "<span>Helper</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/anime/helper.js</span>",
@@ -159,6 +165,12 @@ window.esdocSearchIndex = [
     "popcorn-api/src/config/constants.js~dbhosts",
     "variable/index.html#static-variable-dbHosts",
     "<span>dbHosts</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
+    "popcorn-api/src/config/constants.js~dbname",
+    "variable/index.html#static-variable-dbName",
+    "<span>dbName</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
     "variable"
   ],
   [
@@ -594,6 +606,18 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/cli.js~cli#_animeprompt",
+    "class/src/cli.js~CLI.html#instance-method-_animePrompt",
+    "src/cli.js~CLI#_animePrompt",
+    "method"
+  ],
+  [
+    "src/cli.js~cli#_animeschema",
+    "class/src/cli.js~CLI.html#instance-member-_animeSchema",
+    "src/cli.js~CLI#_animeSchema",
+    "member"
+  ],
+  [
     "src/cli.js~cli#_getmovietorrentdataremote",
     "class/src/cli.js~CLI.html#instance-method-_getMovieTorrentDataRemote",
     "src/cli.js~CLI#_getMovieTorrentDataRemote",
@@ -759,6 +783,30 @@ window.esdocSearchIndex = [
     "src/controllers/animes.js~animes#getrandomanime",
     "class/src/controllers/animes.js~Animes.html#instance-method-getRandomAnime",
     "src/controllers/animes.js~Animes#getRandomAnime",
+    "method"
+  ],
+  [
+    "src/controllers/exports.js",
+    "file/src/controllers/exports.js.html",
+    "src/controllers/exports.js",
+    "file"
+  ],
+  [
+    "src/controllers/exports.js~exports#_util",
+    "class/src/controllers/exports.js~Exports.html#instance-member-_util",
+    "src/controllers/exports.js~Exports#_util",
+    "member"
+  ],
+  [
+    "src/controllers/exports.js~exports#constructor",
+    "class/src/controllers/exports.js~Exports.html#instance-constructor-constructor",
+    "src/controllers/exports.js~Exports#constructor",
+    "method"
+  ],
+  [
+    "src/controllers/exports.js~exports#getexport",
+    "class/src/controllers/exports.js~Exports.html#instance-method-getExport",
+    "src/controllers/exports.js~Exports#getExport",
     "method"
   ],
   [
@@ -1539,6 +1587,18 @@ window.esdocSearchIndex = [
     "src/util.js~util#executecommand",
     "class/src/util.js~Util.html#instance-method-executeCommand",
     "src/util.js~Util#executeCommand",
+    "method"
+  ],
+  [
+    "src/util.js~util#exportcollection",
+    "class/src/util.js~Util.html#instance-method-exportCollection",
+    "src/util.js~Util#exportCollection",
+    "method"
+  ],
+  [
+    "src/util.js~util#importcollection",
+    "class/src/util.js~Util.html#instance-method-importCollection",
+    "src/util.js~Util#importCollection",
     "method"
   ],
   [

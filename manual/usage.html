@@ -75,6 +75,8 @@
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/example.html#example" data-ice="link">Example</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#index" data-ice="link">Index</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#logs" data-ice="link">Logs</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#export" data-ice="link">Export</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#anime" data-ice="link">Anime</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#movie" data-ice="link">Movie</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#show" data-ice="link">Show</a></li>
@@ -82,7 +84,7 @@
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#sorting" data-ice="link">Sorting</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#ordering" data-ice="link">Ordering</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#genres" data-ice="link">Genres</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#tv-shows-movies" data-ice="link">TV shows &amp; movies</a></li>
+<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#shows-movies" data-ice="link">shows &amp; movies</a></li>
 <li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#anime" data-ice="link">Anime</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#keywords" data-ice="link">Keywords</a></li>
 </ul>
@@ -119,23 +121,25 @@
   <div data-ice="content"><h1 id="usage">Usage</h1>
 <h5 id="npm">npm</h5>
 <p>The following commands are defined in the <code>package.json</code>:</p>
-<pre><code><code class="source-code prettyprint"> $ npm run start                    # Run Popcorn API and start the scraping process.
- $ npm run start-dev                # Same as above, but in development mode.
- $ npm run server                   # Run Popcorn API, but do not start the scraping process.
- $ npm run server-dev               # Same as above, but in development mode.
- $ npm run forever                  # Run Popcorn API with the &apos;forever&apos; module.
- $ npm run docs                     # Generate the documentation of the API.</code>
+<pre><code><code class="source-code prettyprint"> $ npm run start                        # Run Popcorn API and start the scraping process.
+ $ npm run start-dev                    # Same as above, but in development mode.
+ $ npm run server                       # Run Popcorn API, but do not start the scraping process.
+ $ npm run server-dev                   # Same as above, but in development mode.
+ $ npm run forever                      # Run Popcorn API with the &apos;forever&apos; module.
+ $ npm run docs                         # Generate the documentation of the API.</code>
 </code></pre><h5 id="gulp">Gulp</h5>
 <p>The following commands are defined by Gulp:</p>
-<pre><code><code class="source-code prettyprint"> $ gulp build                       # Transpile the ES6 source code to ES5.
- $ gulp clean                       # Delete the &apos;build&apos; directory.
- $ gulp default                     # The default gulp task (same as &apos;gulp build&apos;).
- $ gulp watch                       # Watch for any changes in the &apos;src&apos; directory.</code>
+<pre><code><code class="source-code prettyprint"> $ gulp build                           # Transpile the ES6 source code to ES5.
+ $ gulp clean                           # Delete the &apos;build&apos; directory.
+ $ gulp default                         # The default gulp task (same as &apos;gulp build&apos;).
+ $ gulp watch                           # Watch for any changes in the &apos;src&apos; directory.</code>
 </code></pre><h5 id="global">Global</h5>
 <p>The following commands are available when Popcorn API is installed globally:</p>
-<pre><code><code class="source-code prettyprint"> $ popcorn-api --content &lt;type&gt;     # Add content to the database.
- $ popcorn-api --run                # Run Popcorn API and start the scraping process.
- $ popcorn-api --server             # Run Popcorn API, but do not start the scraping process.</code>
+<pre><code><code class="source-code prettyprint"> $ popcorn-api --content &lt;type&gt;         # Add content to the database.
+ $ popcorn-api --run                    # Run Popcorn API and start the scraping process.
+ $ popcorn-api --server                 # Run Popcorn API, but do not start the scraping process.
+ $ popcorn-api --export &lt;collection&gt;    # Export a collection to a JSON file.
+ # popcorn-api --import &lt;json&gt;          # Import a JSON file to the database.</code>
 </code></pre></div>
 </div>
 </div>

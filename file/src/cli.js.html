@@ -43,6 +43,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeMap">katAnimeMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowMap">katShowMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-master">master</a></span></span></li>
@@ -60,6 +61,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webRequestTimeout">webRequestTimeout</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-workers">workers</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">controllers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/animes.js~Animes.html">Animes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/exports.js~Exports.html">Exports</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/movies.js~Movies.html">Movies</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/shows.js~Shows.html">Shows</a></span></span></li>
@@ -83,11 +85,13 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
 import bytes from &quot;bytes&quot;;
 import parseTorrent from &quot;parse-torrent&quot;;
+import path from &quot;path&quot;;
 import program from &quot;commander&quot;;
 import prompt from &quot;prompt&quot;;
 import torrentHealth from &quot;torrent-tracker-health&quot;;
 
 import Index from &quot;./index&quot;;
+import AnimeHelper from &quot;./providers/anime/helper&quot;;
 import MovieHelper from &quot;./providers/movie/helper&quot;;
 import packageJSON from &quot;../package.json&quot;;
 import Setup from &quot;./config/setup&quot;;
@@ -111,22 +115,30 @@ export default class CLI {
     // Setup the CLI program.
     program
       .version(`${packageJSON.name} v${packageJSON.version}`)
-      .option(&quot;-c, --content &lt;type&gt;&quot;, &quot;Add content from the MongoDB database (show | movie).&quot;, /^(show)|^(movie)/i, false)
+      .option(&quot;-c, --content &lt;type&gt;&quot;, &quot;Add content from the MongoDB database (anime | show | movie).&quot;, /^(anime)^(show)|^(movie)/i, false)
       .option(&quot;-r, --run&quot;, &quot;Run the API and start the scraping process.&quot;)
-      .option(&quot;-s, --server&quot;, &quot;Run the API without starting the scraping process.&quot;);
+      .option(&quot;-s, --server&quot;, &quot;Run the API without starting the scraping process.&quot;)
+      .option(&quot;-e, --export &lt;collection&gt;&quot;, &quot;Export a collection to a JSON file.&quot;, /^(anime)^(show)|^(movie)/i, false)
+      .option(&quot;-i, --import &lt;json&gt;&quot;, &quot;Import a JSON file to the database.&quot;);
 
     // Extra output on top of the default help output
     program.on(&quot;--help&quot;, () =&gt; {
       console.log(&quot;  Examples:&quot;);
       console.log(&quot;&quot;);
-      console.log(&quot;    $ popcorn-api -c &lt;movie|show&gt;&quot;);
-      console.log(&quot;    $ popcorn-api --content &lt;movie|show&gt;&quot;);
+      console.log(&quot;    $ popcorn-api -c &lt;anime|movie|show&gt;&quot;);
+      console.log(&quot;    $ popcorn-api --content &lt;anime|movie|show&gt;&quot;);
       console.log(&quot;&quot;);
       console.log(&quot;    $ popcorn-api -r&quot;);
       console.log(&quot;    $ popcorn-api --run&quot;);
       console.log(&quot;&quot;);
       console.log(&quot;    $ popcorn-api -s&quot;);
       console.log(&quot;    $ popcorn-api --server&quot;);
+      console.log(&quot;&quot;);
+      console.log(&quot;    $ popcorn-api -e &lt;anime|movie|show&gt;&quot;);
+      console.log(&quot;    $ popcorn-api --export &lt;anime|movie|show&gt;&quot;);
+      console.log(&quot;&quot;);
+      console.log(&quot;    $ popcorn-api -i &lt;path-to-json&gt;&quot;);
+      console.log(&quot;    $ popcorn-api --import &lt;path-to-json&gt;&quot;);
       console.log(&quot;&quot;);
     });
 
@@ -137,8 +149,17 @@ export default class CLI {
     const imdb = {
       description: &quot;The imdb id of the show/movie to add (tt1234567)&quot;,
       type: &quot;string&quot;,
-      pattern: /^(tt\d{7})/i,
+      pattern: /^(tt\d{7}|)|^(.*)/i,
       message: &quot;Not a valid imdb id.&quot;,
+      required: true
+    };
+
+    // The Hummingbird id property.
+    const hummingbirdId = {
+      description: &quot;The Hummingbird id of the anime to add&quot;,
+      type: &quot;string&quot;,
+      pattern: /^(.*)/i,
+      message: &quot;Not a validHhummingbird id.&quot;,
       required: true
     };
 
@@ -187,6 +208,20 @@ export default class CLI {
     };
 
     /**
+     * The shema used by `prompt` insert an anime show.
+     * @type {Object}
+     */
+    this._animeSchema = {
+      properties: {
+        &quot;imdb&quot;: hummingbirdId,
+        &quot;season&quot;: season,
+        &quot;episode&quot;: episode,
+        &quot;torrent&quot;: torrent,
+        &quot;quality&quot;: quality
+      }
+    };
+
+    /**
      * The shema used by `prompt` insert a movie.
      * @type {Object}
      */
@@ -212,6 +247,30 @@ export default class CLI {
         &quot;quality&quot;: quality
       }
     };
+  };
+
+  /** Adds a show to the database through the CLI. */
+  _animePrompt() {
+    prompt.get(this._showSchema, async(err, result) =&gt; {
+      if (err) {
+        util.onError(`An error occurred: ${err}`);
+        process.exit(1);
+      } else {
+        try {
+          const { hummingbirdId, season, episode, quality, torrent } = result;
+          const animeHelper = new AnimeHelper(providerName);
+          const newAnime = await animeHelper.getHummingbirdInfo(hummingbirdId);
+          if (newAnime &amp;&amp; newAnime._id) {
+            const data = await getShowTorrentDataRemote(torrent, quality, season, episode);
+            await animeHelper.addEpisodes(newAnime, data, hummingbirdId);
+            process.exit(0);
+          }
+        } catch (err) {
+          this._util.onError(`An error occurred: ${err}`);
+          process.exit(1);
+        }
+      }
+    });
   };
 
   /**
@@ -339,6 +398,15 @@ export default class CLI {
       } else if (program.content.match(/^(movie)/i)) {
         this._moviePrompt();
       }
+    } else if (program.export) {
+      this._util.exportCollection(program.export);
+    } else if (program.import) {
+      let collection = path.basename(program.import);
+      const index = collection.lastIndexOf(&quot;.&quot;);
+      collection = collection.substring(0, index);
+      this._util.importCollection(collection, program.import)
+        .then(res =&gt; console.log(res))
+        .catch(err =&gt; console.error(err));
     } else {
       this._util.onError(&quot;\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m&quot;);
       program.help();

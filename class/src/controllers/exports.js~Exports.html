@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">src/controllers/shows.js | Popcorn API API Document</title>
+  <title data-ice="title">Exports | Popcorn API API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -81,182 +81,325 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/controllers/shows.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
-import Show from &quot;../models/Show&quot;;
-import { pageSize } from &quot;../config/constants&quot;;
+<div class="content" data-ice="content"><div class="header-notice">
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Exports from &apos;<span><a href="file/src/controllers/exports.js.html#lineNumber10">popcorn-api/src/controllers/exports.js</a></span>&apos;</code></pre></div>
+  <span data-ice="access">public</span>
+  <span data-ice="kind">class</span>
+  
+  
+  
+  <span data-ice="source">| <span><a href="file/src/controllers/exports.js.html#lineNumber10">source</a></span></span>
+</div>
 
-/** class for getting show data from the MongoDB. */
-export default class Shows {
+<div class="self-detail detail">
+  <h1 data-ice="name">Exports</h1>
 
-  /**
-   * Create a shows object.
-   */
-  constructor() {
-    /**
-     * Object used for the projections of shows.
-     * @type {Object}
-     */
-    Shows._projections = {
-      _id: 1,
-      imdb_id: 1,
-      tvdb_id: 1,
-      title: 1,
-      year: 1,
-      images: 1,
-      slug: 1,
-      num_seasons: 1,
-      rating: 1
-    };
-  };
+  
 
-  /**
-   * Get all the pages.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
-   * @param {Function} next - The next function for Express.
-   * @returns {Array} - A list of pages which are available.
-   */
-  getShows(req, res, next) {
-    return Show.count({
-      num_seasons: {
-        $gt: 0
-      }
-    }).exec().then(count =&gt; {
-      const pages = Math.round(count / pageSize);
-      const docs = [];
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
-      for (let i = 1; i &lt; pages + 1; i++) docs.push(`shows/${i}`);
+  
+  
+  <div class="description" data-ice="description"><p>Class for getting anime data from the MongoDB.</p>
+</div>
 
-      return res.json(docs);
-    }).catch(err =&gt; next(err));
-  };
+  
 
-  /**
-   * Get one page.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
-   * @param {Function} next - The next function for Express.
-   * @returns {Array} - The contents of one page.
-   */
-  getPage(req, res, next) {
-    const page = req.params.page - 1;
-    const offset = page * pageSize;
+  
 
-    if (req.params.page.match(/all/i)) {
-      return Show.aggregate([{
-          $match: {
-            num_seasons: {
-              $gt: 0
-            }
-          }
-        }, {
-          $project: Shows._projections
-        }, {
-          $sort: {
-            title: -1
-          }
-        }]).exec()
-        .then(docs =&gt; res.json(docs))
-        .catch(err =&gt; next(err));
-    } else {
-      const query = {num_seasons: {$gt: 0}};
-      const data = req.query;
+  
 
-      if (!data.order) data.order = -1;
+  
+</div>
 
-      let sort = {
-        &quot;rating.votes&quot;: parseInt(data.order, 10),
-        &quot;rating.percentage&quot;: parseInt(data.order, 10),
-        &quot;rating.watching&quot;: parseInt(data.order, 10)
-      };
 
-      if (data.keywords) {
-        const words = data.keywords.split(&quot; &quot;);
-        let regex = &quot;^&quot;;
-        for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        query.title = { $regex: new RegExp(`${regex}.*`), $options: &quot;gi&quot; };
-      }
 
-      if (data.sort) {
-        if (data.sort.match(/name/i)) sort = {
-          &quot;title&quot;: (parseInt(data.order, 10) * -1)
-        };
-        if (data.sort.match(/rating/i)) sort = {
-          &quot;rating.percentage&quot;: parseInt(data.order, 10),
-          &quot;rating.votes&quot;: parseInt(data.order, 10)
-        };
-        if (data.sort.match(/trending/i)) sort = {
-          &quot;rating.watching&quot;: parseInt(data.order, 10)
-        };
-        if (data.sort.match(/updated/i)) sort = {
-          &quot;latest_episode&quot;: parseInt(data.order, 10)
-        };
-        if (data.sort.match(/year/i)) sort = {
-          &quot;year&quot;: parseInt(data.order, 10)
-        };
-      }
+<div data-ice="constructorSummary"><h2>Constructor Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Constructor</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/controllers/exports.js~Exports.html#instance-constructor-constructor">constructor</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Create an exports object.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="memberSummary"><h2>Member Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Private Members</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/controllers/exports.js~Exports.html#instance-member-_util">_util</a></span></span><span data-ice="signature">: <span><a href="class/src/util.js~Util.html">Util</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The util object with general functions.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/controllers/exports.js~Exports.html#instance-method-getExport">getExport</a></span></span><span data-ice="signature">(req: <span>Request</span>, res: <span>Response</span>, next: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>Download</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Download the export of a collection.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
 
-      if (data.genre &amp;&amp; !data.genre.match(/all/i)) {
-        if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i)) data.genre = &quot;science-fiction&quot;;
-        query.genres = data.genre.toLowerCase();
-      }
 
-      return Show.aggregate([{
-          $sort: sort
-        }, {
-          $match: query
-        }, {
-          $project: Shows._projections
-        }, {
-          $skip: offset
-        }, {
-          $limit: pageSize
-        }]).exec()
-        .then(docs =&gt; res.json(docs))
-        .catch(err =&gt; res.jfson(err));
-    }
-  };
 
-  /**
-   * Get info from one show.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
-   * @param {Function} next - The next function for Express.
-   * @returns {Show} - The details of a single show.
-   */
-  getShow(req, res, next) {
-    return Show.findOne({
-      _id: req.params.id
-    }, {latest_episode: 0}).exec()
-    .then(docs =&gt; res.json(docs))
-    .catch(err =&gt; next(err));
-  };
 
-  /**
-   * Get a random show.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
-   * @param {Function} next - The next function for Express.
-   * @returns {Show} - A random show.
-   */
-  getRandomShow(req, res, next) {
-    return Show.aggregate([{
-        $project: Shows._projections
-      }, {
-        $sample: {
-          size: 1
-        }
-      }, {
-        $limit: 1
-      }]).exec()
-      .then(docs =&gt; res.json(docs[0]))
-      .catch(err =&gt; next(err));
-  };
 
-};
-</code></pre>
+<div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
 
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-constructor-constructor">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">constructor</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/controllers/exports.js.html#lineNumber13">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Create an exports object.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+<div data-ice="memberDetails"><h2 data-ice="title">Private Members</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-_util">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    <span data-ice="name">_util</span><span data-ice="signature">: <span><a href="class/src/util.js~Util.html">Util</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/controllers/exports.js.html#lineNumber18">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>The util object with general functions.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getExport">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getExport</span><span data-ice="signature">(req: <span>Request</span>, res: <span>Response</span>, next: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>Download</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/controllers/exports.js.html#lineNumber28">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Download the export of a collection.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">req</td>
+      <td data-ice="type"><span>Request</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The express request object.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">res</td>
+      <td data-ice="type"><span>Response</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The express response object.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">next</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The next function for Express.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span>Download</span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>The download of an export of a collection.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
 </div>
 
 <footer class="footer">

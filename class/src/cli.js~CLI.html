@@ -43,6 +43,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeMap">katAnimeMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowMap">katShowMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-master">master</a></span></span></li>
@@ -60,6 +61,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webRequestTimeout">webRequestTimeout</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-workers">workers</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">controllers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/animes.js~Animes.html">Animes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/exports.js~Exports.html">Exports</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/movies.js~Movies.html">Movies</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/shows.js~Shows.html">Shows</a></span></span></li>
@@ -80,13 +82,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import CLI from &apos;<span><a href="file/src/cli.js.html#lineNumber16">popcorn-api/src/cli.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import CLI from &apos;<span><a href="file/src/cli.js.html#lineNumber18">popcorn-api/src/cli.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/cli.js.html#lineNumber16">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/cli.js.html#lineNumber18">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -158,6 +160,32 @@
   <tbody>
   
   <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/cli.js~CLI.html#instance-member-_animeSchema">_animeSchema</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The shema used by <code>prompt</code> insert an anime show.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
     <td>
       <span class="access" data-ice="access">private</span>
       
@@ -285,6 +313,32 @@
     <td>
       <div>
         <p>
+           <span data-ice="name"><span><a href="class/src/cli.js~CLI.html#instance-method-_animePrompt">_animePrompt</a></span></span><span data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Adds a show to the database through the CLI.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
            <span data-ice="name"><span><a href="class/src/cli.js~CLI.html#instance-method-_getMovieTorrentDataRemote">_getMovieTorrentDataRemote</a></span></span><span data-ice="signature">(torrent: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, language: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, quality: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span>
         </p>
       </div>
@@ -399,7 +453,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber22">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber24">source</a></span></span>
     </span>
   </h3>
 
@@ -451,6 +505,47 @@
 <div data-ice="memberDetails"><h2 data-ice="title">Private Members</h2>
 
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-_animeSchema">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    <span data-ice="name">_animeSchema</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber130">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>The shema used by <code>prompt</code> insert an anime show.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-_movieSchema">
     <span class="access" data-ice="access">private</span>
     
@@ -461,7 +556,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber111">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber144">source</a></span></span>
     </span>
   </h3>
 
@@ -502,7 +597,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber124">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber157">source</a></span></span>
     </span>
   </h3>
 
@@ -543,7 +638,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber27">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber29">source</a></span></span>
     </span>
   </h3>
 
@@ -587,7 +682,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber246">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber303">source</a></span></span>
     </span>
   </h3>
 
@@ -620,6 +715,47 @@
 <h2 data-ice="title">Private Methods</h2>
 
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-_animePrompt">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    <span data-ice="name">_animePrompt</span><span data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber169">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Adds a show to the database through the CLI.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-_getMovieTorrentDataRemote">
     <span class="access" data-ice="access">private</span>
     
@@ -630,7 +766,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber142">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber199">source</a></span></span>
     </span>
   </h3>
 
@@ -713,7 +849,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber198">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber255">source</a></span></span>
     </span>
   </h3>
 
@@ -803,7 +939,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber167">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber224">source</a></span></span>
     </span>
   </h3>
 
@@ -844,7 +980,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber222">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber279">source</a></span></span>
     </span>
   </h3>
 

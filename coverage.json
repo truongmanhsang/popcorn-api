@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 182,
-  "actualCount": 182,
+  "expectCount": 191,
+  "actualCount": 191,
   "files": {
     "src/models/Anime.js": {
       "expectCount": 1,
@@ -14,8 +14,8 @@
       "undocumentLines": []
     },
     "src/cli.js": {
-      "expectCount": 10,
-      "actualCount": 10,
+      "expectCount": 12,
+      "actualCount": 12,
       "undocumentLines": []
     },
     "src/providers/show/eztv.js": {
@@ -23,19 +23,24 @@
       "actualCount": 8,
       "undocumentLines": []
     },
+    "src/controllers/exports.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
     "src/providers/movie/helper.js": {
       "expectCount": 8,
       "actualCount": 8,
       "undocumentLines": []
     },
-    "src/providers/anime/helper.js": {
-      "expectCount": 11,
-      "actualCount": 11,
-      "undocumentLines": []
-    },
     "src/providers/show/helper.js": {
       "expectCount": 10,
       "actualCount": 10,
+      "undocumentLines": []
+    },
+    "src/providers/anime/helper.js": {
+      "expectCount": 11,
+      "actualCount": 11,
       "undocumentLines": []
     },
     "src/providers/anime/horriblesubs.js": {
@@ -53,12 +58,12 @@
       "actualCount": 5,
       "undocumentLines": []
     },
-    "src/providers/show/kat.js": {
+    "src/providers/anime/kat.js": {
       "expectCount": 12,
       "actualCount": 12,
       "undocumentLines": []
     },
-    "src/providers/anime/kat.js": {
+    "src/providers/show/kat.js": {
       "expectCount": 12,
       "actualCount": 12,
       "undocumentLines": []
@@ -84,8 +89,8 @@
       "undocumentLines": []
     },
     "src/config/constants.js": {
-      "expectCount": 20,
-      "actualCount": 20,
+      "expectCount": 21,
+      "actualCount": 21,
       "undocumentLines": []
     },
     "src/config/routes.js": {
@@ -114,8 +119,8 @@
       "undocumentLines": []
     },
     "src/util.js": {
-      "expectCount": 10,
-      "actualCount": 10,
+      "expectCount": 12,
+      "actualCount": 12,
       "undocumentLines": []
     },
     "src/providers/movie/yts.js": {

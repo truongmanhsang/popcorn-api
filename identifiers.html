@@ -43,6 +43,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeMap">katAnimeMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowMap">katShowMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-master">master</a></span></span></li>
@@ -60,6 +61,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webRequestTimeout">webRequestTimeout</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-workers">workers</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">controllers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/animes.js~Animes.html">Animes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/exports.js~Exports.html">Exports</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/movies.js~Movies.html">Movies</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/shows.js~Shows.html">Shows</a></span></span></li>
@@ -173,13 +175,13 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/providers/show/helper.js~Helper.html">Helper</a></span></span>
+           <span data-ice="name"><span><a href="class/src/controllers/exports.js~Exports.html">Exports</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Class for saving shows.</p>
+        <div data-ice="description"><p>Class for getting anime data from the MongoDB.</p>
 </div>
       </div>
     </td>
@@ -199,13 +201,13 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/providers/movie/helper.js~Helper.html">Helper</a></span></span>
+           <span data-ice="name"><span><a href="class/src/providers/show/helper.js~Helper.html">Helper</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Class for saving movies.</p>
+        <div data-ice="description"><p>Class for saving shows.</p>
 </div>
       </div>
     </td>
@@ -251,6 +253,32 @@
     <td>
       <div>
         <p>
+           <span data-ice="name"><span><a href="class/src/providers/movie/helper.js~Helper.html">Helper</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Class for saving movies.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
            <span data-ice="name"><span><a href="class/src/providers/anime/horriblesubs.js~HorribleSubs.html">HorribleSubs</a></span></span>
         </p>
       </div>
@@ -277,13 +305,13 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span>
+           <span data-ice="name"><span><a href="class/src/index.js~Index.html">Index</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>class for displaying information about the server the API is running on.</p>
+        <div data-ice="description"><p>Class for starting the API.</p>
 </div>
       </div>
     </td>
@@ -303,13 +331,13 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/index.js~Index.html">Index</a></span></span>
+           <span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Class for starting the API.</p>
+        <div data-ice="description"><p>class for displaying information about the server the API is running on.</p>
 </div>
       </div>
     </td>
@@ -787,6 +815,32 @@
         
         
         <div data-ice="description"><p>The host of the server of the database.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The name of the database.</p>
 </div>
       </div>
     </td>
