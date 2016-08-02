@@ -1,31 +1,40 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
+import HummingbirdAPI from "hummingbird-api";
 
 import Anime from "../../models/Anime";
-import HummingbirdAPI from "hummingbird-api";
 import Util from "../../util";
 
-/**
- * @class
- * @classdesc The factory function for saving shows.
- * @memberof module:providers/show/helper
- * @param {String} name - The name of the helper.
- * @property {Object} util - The util object with general functions.
- * @property {Object} hummingbirdAPI - A configured Hummingbird api.
- */
+/** class for saving anime shows. */
 export default class Helper {
 
+  /**
+   * Create an helper object.
+   * @param {String} name - The name of the helper.
+   */
   constructor(name, debug) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
     this.name = name;
 
+    /**
+     * A configured HummingBird API.
+     * @type {HummingbirdAPI}
+     * @see https://github.com/ChrisAlderson/hummingbird-api
+     */
+    this.hummingbird = new HummingbirdAPI({ debug });
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     this.util = new Util();
-    this.hummingbirdAPI = new HummingbirdAPI({ debug });
   };
 
   /**
-   * @description Update the number of episodes of a given anime
-   * @function Helper#updateNumEpisodes
-   * @memberof module:providers/anime/helper
+   * Update the number of episodes of a given anime
    * @param {Anime} anime - The anime to update the number of episodes.
    * @returns {Anime} - A newly updated anime.
    */
@@ -40,13 +49,12 @@ export default class Helper {
   };
 
   /**
-   * @description Update the torrents for an existing anime.
-   * @function Helper#updateEpisode
-   * @memberof module:providers/anime/helper
+   * Update the torrents for an existing anime.
    * @param {Object} matching - The matching episode of new the anime.
    * @param {Object} found - The matching episode existing anime.
    * @param {Anime} anime - The anime to merge the episodes to.
    * @param {String} quality - The quality of the torrent.
+   * @returns {Anime} - An anime with merged torrents.
    */
   updateEpisode(matching, found, anime, quality) {
     let index = anime.episodes.indexOf(matching);
@@ -76,9 +84,7 @@ export default class Helper {
   };
 
   /**
-   * @description Update a given anime with it's associated episodes.
-   * @function Helper#updateEpisodes
-   * @memberof module:providers/anime/helper
+   * Update a given anime with it's associated episodes.
    * @param {Anime} anime - The anime to update its episodes.
    * @returns {Anime} - A newly updated anime.
    */
@@ -114,14 +120,12 @@ export default class Helper {
   };
 
   /**
-   * @description Adds one season to a anime.
-   * @function Helper#addSeason
-   * @memberof module:providers/anime/helper
-   * @param {Show} show - The anime to add the torrents to.
+   * Adds one season to a anime.
+   * @param {Anime} anime - The anime to add the torrents to.
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
    * @param {String} slug - The slug of the anime.
-   * @returns {Show} - A new anime with seasons.
+   * @returns {Anime} - A new anime with seasons.
    */
   async addSeason(anime, episodes, seasonNumber, slug) {
     try {
@@ -144,9 +148,14 @@ export default class Helper {
     }
   };
 
+  /**
+   * Get info from Hummingbird and make a new anime object.
+   * @param {String} slug - The slug to query https://hummingbird.me/.
+   * @returns {Anime} - A new anime without the episodes attached.
+   */
   async getHummingbirdInfo(slug) {
     try {
-      const hummingbirdAnime = await this.hummingbirdAPI.Anime.getAnime(slug);
+      const hummingbirdAnime = await this.hummingbird.Anime.getAnime(slug);
 
       let type;
       if (hummingbirdAnime.show_type === "TV") {
@@ -192,13 +201,11 @@ export default class Helper {
   };
 
   /**
-   * @description Adds episodes to a anime.
-   * @function Helper#addEpisodes
-   * @memberof module:providers/anime/helper
+   * Adds episodes to a anime.
    * @param {Show} anime - The anime to add the torrents to.
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {String} slug - The slug of the anime.
-   * @returns {Show} - A anime with updated torrents.
+   * @returns {Anime} - A anime with updated torrents.
    */
   async addEpisodes(anime, episodes, slug) {
     try {

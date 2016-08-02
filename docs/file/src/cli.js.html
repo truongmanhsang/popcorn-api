@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/cli.js | Popcorn API API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/popcorn-official/popcorn-api.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli.js~CLI.html">CLI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/index.js~Index.html">Index</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/scraper.js~Scraper.html">Scraper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/util.js~Util.html">Util</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">config</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/routes.js~Routes.html">Routes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/setup.js~Setup.html">Setup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeMap">katAnimeMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowMap">katShowMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-master">master</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieProviders">movieProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-showProviders">showProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webRequestTimeout">webRequestTimeout</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-workers">workers</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">controllers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/animes.js~Animes.html">Animes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/movies.js~Movies.html">Movies</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/shows.js~Shows.html">Shows</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">models</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Anime">Anime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Movie">Movie</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Show">Show</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/anime</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/horriblesubs.js~HorribleSubs.html">HorribleSubs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/kat.js~KAT.html">KAT</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/movie</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/kat.js~KAT.html">KAT</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/yts.js~YTS.html">YTS</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/show</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/eztv.js~EZTV.html">EZTV</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/kat.js~KAT.html">KAT</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/cli.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
+import bytes from &quot;bytes&quot;;
+import parseTorrent from &quot;parse-torrent&quot;;
+import program from &quot;commander&quot;;
+import prompt from &quot;prompt&quot;;
+import torrentHealth from &quot;torrent-tracker-health&quot;;
+
+import Index from &quot;./index&quot;;
+import MovieHelper from &quot;./providers/movie/helper&quot;;
+import packageJSON from &quot;../package.json&quot;;
+import Setup from &quot;./config/setup&quot;;
+import ShowHelper from &quot;./providers/show/helper&quot;;
+import Util from &quot;./util&quot;;
+
+/** Class The class for the command line interface. */
+export default class CLI {
+
+  /**
+   * Create a cli object.
+   * @param {String} [providerName=CLI] - The default provider name.
+   */
+  constructor(providerName = &quot;CLI&quot;) {
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    this.util = new Util();
+
+    // Setup the CLI program.
+    program
+      .version(`${packageJSON.name} v${packageJSON.version}`)
+      .option(&quot;-c, --content &lt;type&gt;&quot;, &quot;Add content from the MongoDB database (show | movie).&quot;, /^(show)|^(movie)/i, false)
+      .option(&quot;-r, --run&quot;, &quot;Run the API and start the scraping process.&quot;)
+      .option(&quot;-s, --server&quot;, &quot;Run the API without starting the scraping process.&quot;);
+
+    // Extra output on top of the default help output
+    program.on(&quot;--help&quot;, () =&gt; {
+      console.log(&quot;  Examples:&quot;);
+      console.log(&quot;&quot;);
+      console.log(&quot;    $ popcorn-api -c &lt;movie|show&gt;&quot;);
+      console.log(&quot;    $ popcorn-api --content &lt;movie|show&gt;&quot;);
+      console.log(&quot;&quot;);
+      console.log(&quot;    $ popcorn-api -r&quot;);
+      console.log(&quot;    $ popcorn-api --run&quot;);
+      console.log(&quot;&quot;);
+      console.log(&quot;    $ popcorn-api -s&quot;);
+      console.log(&quot;    $ popcorn-api --server&quot;);
+      console.log(&quot;&quot;);
+    });
+
+    // Parse the command line arguments.
+    program.parse(process.argv);
+
+    // The imdb property.
+    const imdb = {
+      description: &quot;The imdb id of the show/movie to add (tt1234567)&quot;,
+      type: &quot;string&quot;,
+      pattern: /^(tt\d{7})/i,
+      message: &quot;Not a valid imdb id.&quot;,
+      required: true
+    };
+
+    // The torrent property.
+    const torrent = {
+      description: &quot;The link of the torrent to add&quot;,
+      type: &quot;string&quot;,
+      message: &quot;Not a valid torrent.&quot;,
+      required: true
+    };
+
+    // The language property.
+    const language = {
+      description: &quot;The language of the torrent to add (en, fr, jp)&quot;,
+      type: &quot;string&quot;,
+      pattern: /^([a-zA-Z]{2})/i,
+      message: &quot;Not a valid language&quot;,
+      required: true
+    }
+
+    // The quality property.
+    const quality = {
+      description: &quot;The quality of the torrent (480p | 720p | 1080p)&quot;,
+      type: &quot;string&quot;,
+      pattern: /^(480p|720p|1080p)/i,
+      message: &quot;Not a valid quality.&quot;,
+      required: true
+    };
+
+    // The season property.
+    const season = {
+      description: &quot;The season number of the torrent&quot;,
+      type: &quot;integer&quot;,
+      pattern: /^(\d+)/i,
+      message: &quot;Not a valid season.&quot;,
+      required: true
+    };
+
+    // The episode property.
+    const episode = {
+      description: &quot;The episode number of the torrent&quot;,
+      type: &quot;integer&quot;,
+      pattern: /^(\d+)/i,
+      message: &quot;Not a valid episode.&quot;,
+      required: true
+    };
+
+    /**
+     * The shema used by `prompt` insert a movie.
+     * @type {Object}
+     */
+    this.movieSchema = {
+      properties: {
+        &quot;imdb&quot;: imdb,
+        &quot;language&quot;: language,
+        &quot;torrent&quot;: torrent,
+        &quot;quality&quot;: quality
+      }
+    };
+
+    /**
+     * The shema used by `prompt` insert a show.
+     * @type {Object}
+     */
+    this.showSchema = {
+      properties: {
+        &quot;imdb&quot;: imdb,
+        &quot;season&quot;: season,
+        &quot;episode&quot;: episode,
+        &quot;torrent&quot;: torrent,
+        &quot;quality&quot;: quality
+      }
+    };
+  };
+
+  /**
+   * Get movie data from a given torrent url.
+   * @param {String} torrent - The url of the torrent.
+   * @param {String} language - The language of the torrent.
+   * @param {String} quality - The quality of the torrent.
+   * @returns {Promise} - Movie data from the torrent.
+   */
+  getMovieTorrentDataRemote(torrent, language, quality) {
+    return new Promise((resolve, reject) =&gt; {
+      parseTorrent.remote(torrent, (err, result) =&gt; {
+        if (err) return reject(err);
+
+        const magnet = parseTorrent.toMagnetURI(result);
+        torrentHealth(magnet).then(res =&gt; {
+          const { seeds, peers } = res;
+          const data = {};
+          if (!data[language]) data[language] = {};
+          if (!data[language][quality]) data[language][quality] = {
+            url: magnet,
+            seed: seeds,
+            peer: peers,
+            size: result.length,
+            filesize: bytes(result.length),
+            provider: providerName
+          };
+          return resolve(data);
+        }).catch(err =&gt; reject(err));
+      });
+    });
+  };
+
+  /** Adds a movie to the database through the CLI. */
+  moviePrompt() {
+    prompt.get(this.movieSchema, async(err, result) =&gt; {
+      if (err) {
+        util.onError(`An error occurred: ${err}`);
+        process.exit(1);
+      } else {
+        try {
+          const { imdb, quality, language, torrent } = result;
+          const movieHelper = new MovieHelper(providerName);
+          const newMovie = await movieHelper.getTraktInfo(imdb);
+          if (newMovie &amp;&amp; newMovie._id) {
+            const data = await getMovieTorrentDataRemote(torrent, language, quality);
+            await movieHelper.addTorrents(newMovie, data);
+            process.exit(0);
+          }
+        } catch (err) {
+          this.util.onError(`An error occurred: ${err}`);
+          process.exit(1);
+        }
+      }
+    });
+  };
+
+  /**
+   * Get show data from a given torrent url.
+   * @param {String} torrent - The url of the torrent.
+   * @param {String} quality - The quality of the torrent.
+   * @param {Integer} season - The season of the show from the torrent file.
+   * @param {Integer} episode - The episode of the show from the torrent.
+   * @returns {Promise} - Show data from the torrent.
+   */
+  getShowTorrentDataRemote(torrent, quality, season, episode) {
+    return new Promise((resolve, reject) =&gt; {
+      parseTorrent.remote(torrent, (err, result) =&gt; {
+        if (err) return reject(err);
+
+        const magnet = parseTorrent.toMagnetURI(result);
+        torrentHealth(magnet).then(res =&gt; {
+          const { seeds, peers } = res;
+          const data = {};
+          if (!data[season]) data[season] = {};
+          if (!data[season][episode]) data[season][episode] = {};
+          if (!data[season][episode][quality]) data[season][episode][quality] = {
+            url: magnet,
+            seeds,
+            peers,
+            provider: providerName
+          };
+          return resolve(data);
+        }).catch(err =&gt; reject(err));
+      });
+    });
+  };
+
+  /** Adds a show to the database through the CLI. */
+  showPrompt() {
+    prompt.get(this.showSchema, async(err, result) =&gt; {
+      if (err) {
+        util.onError(`An error occurred: ${err}`);
+        process.exit(1);
+      } else {
+        try {
+          const { imdb, season, episode, quality, torrent } = result;
+          const showHelper = new ShowHelper(providerName);
+          const newShow = await showHelper.getTraktInfo(imdb);
+          if (newShow &amp;&amp; newShow._id) {
+            const data = await getShowTorrentDataRemote(torrent, quality, season, episode);
+            await showHelper.addEpisodes(newShow, data, imdb);
+            process.exit(0);
+          }
+        } catch (err) {
+          this.util.onError(`An error occurred: ${err}`);
+          process.exit(1);
+        }
+      }
+    });
+  };
+
+  /** Run the CLI program. */
+  run() {
+    if (program.run) {
+      new Index({start: true, pretty: false, debug: false});
+    } else if (program.server) {
+      new Index({start: false, pretty: false, debug: false});
+    } else if (program.content) {
+      prompt.start();
+      Setup.connectMongoDB();
+
+      if (program.content.match(/^(show)/i)) {
+        this.showPrompt();
+      } else if (program.content.match(/^(movie)/i)) {
+        this.moviePrompt();
+      }
+    } else {
+      this.util.onError(&quot;\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m&quot;);
+      program.help();
+    }
+  };
+
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

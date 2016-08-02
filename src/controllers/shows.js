@@ -2,15 +2,17 @@
 import Show from "../models/Show";
 import { pageSize } from "../config/constants";
 
-/**
- * @class
- * @classdesc The factory function for getting show data from the MongoDB.
- * @memberof module:controllers/shows
- * @property {Object} projection - Object used for the projection of shows.
- */
+/** class for getting show data from the MongoDB. */
 export default class Shows {
 
+  /**
+   * Create a shows object.
+   */
   constructor() {
+    /**
+     * Object used for the projection of shows.
+     * @type {Object}
+     */
     Shows.projection = {
       _id: 1,
       imdb_id: 1,
@@ -25,11 +27,10 @@ export default class Shows {
   };
 
   /**
-   * @description Get all the pages.
-   * @function Shows#getShows
-   * @memberof module:controllers/shows
+   * Get all the pages.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
    * @returns {Array} - A list of pages which are available.
    */
   getShows(req, res, next) {
@@ -48,11 +49,10 @@ export default class Shows {
   };
 
   /**
-   * @description Get one page.
-   * @function Shows#getPage
-   * @memberof module:controllers/shows
+   * Get one page.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
    * @returns {Array} - The contents of one page.
    */
   getPage(req, res, next) {
@@ -135,30 +135,28 @@ export default class Shows {
   };
 
   /**
-   * @description Get info from one show.
-   * @function Shows#getShow
-   * @memberof module:controllers/shows
+   * Get info from one show.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
    * @returns {Show} - The details of a single show.
    */
-  getShow(req, res) {
+  getShow(req, res, next) {
     return Show.findOne({
       _id: req.params.id
     }, {latest_episode: 0}).exec()
     .then(docs => res.json(docs))
-    .catch(err => res.json(err));
+    .catch(err => next(err));
   };
 
   /**
-   * @description Get a random show.
-   * @function Movies#getRandomShow
-   * @memberof module:controllers/shows
+   * Get a random show.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
    * @returns {Show} - A random show.
    */
-  getRandomShow(req, res) {
+  getRandomShow(req, res, next) {
     return Show.aggregate([{
         $project: Shows.projection
       }, {
@@ -169,7 +167,7 @@ export default class Shows {
         $limit: 1
       }]).exec()
       .then(docs => res.json(docs[0]))
-      .catch(err => res.json(err));
+      .catch(err => next(err));
   };
 
 };

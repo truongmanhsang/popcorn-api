@@ -1,33 +1,47 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
-import katApi from "kat-api-pt";
+import KatAPI from "kat-api-pt";
 import { maxWebRequest, katMap } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
-/**
- * @class
- * @classdesc The factory function for scraping movies from {@link https://kat.cr/}.
- * @memberof module:providers/movie/kat
- * @param {String} name - The name of the KAT provider.
- * @property {Object} helper - The helper object for adding shows.
- * @property {Object} kat - Configured {@link https://kat.cr/} scraper.
- * @property {Object} util - The util object with general functions.
- */
+/** Class for scraping movies from https://kat.cr/. */
 export default class KAT {
 
+  /**
+   * Create a kat object.
+   * @param {String} name - The name of the torrent provider.
+   * @param {Boolean} debug - Debug mode for extra output.
+   */
   constructor(name, debug) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
     this.name = name;
 
+    /**
+     * The helper object for adding movies.
+     * @type {Helper}
+     */
     this.helper = new Helper(this.name);
-    this.kat = new katApi({ debug });
+
+    /**
+     * A configured KAT API.
+     * @type {KatAPI}
+     * @see https://github.com/ChrisAlderson/kat-api-pt
+     */
+    this.kat = new KatAPI({ debug });
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     this.util = new Util();
   };
 
   /**
-   * @description Get all the movies.
-   * @function KAT#getMovie
-   * @memberof module:providers/movie/kat
+   * Get all the movies.
    * @param {Object} katMovie - The movie information.
    * @returns {Movie} - A movie.
    */
@@ -51,9 +65,7 @@ export default class KAT {
   };
 
   /**
-   * @description Extract movie information based on a regex.
-   * @function KAT#extractMovie
-   * @memberof module:providers/movie/kat
+   * Extract movie information based on a regex.
    * @param {Object} torrent - The torrent to extract the movie information from.
    * @param {String} language - The language of the torrent.
    * @param {Regex} regex - The regex to extract the movie information.
@@ -84,11 +96,8 @@ export default class KAT {
   };
 
   /**
-   * @description Get movie info from a given torrent.
-   * @function KAT#getMovieData
-   * @memberof module:providers/movie/kat
-   * @param {Object} torrent - A torrent object to extract movie information
-   * from.
+   * Get movie info from a given torrent.
+   * @param {Object} torrent - A torrent object to extract movie information from.
    * @param {String} language - The language of the torrent.
    * @returns {Object} - Information about a movie from the torrent.
    */
@@ -108,13 +117,10 @@ export default class KAT {
   };
 
   /**
-   * @description Puts all the found movies from the torrents in an array.
-   * @function KAT#getAllKATMovies
-   * @memberof module:providers/movie/kat
+   * Puts all the found movies from the torrents in an array.
    * @param {Array} torrents - A list of torrents to extract movie information.
    * @param {String} language - The language of the torrent.
-   * @returns {Array} - A list of objects with movie information extracted from
-   * the torrents.
+   * @returns {Array} - A list of objects with movie information extracted from the torrents.
    */
   async getAllKATMovies(torrents, language) {
     try {
@@ -150,11 +156,9 @@ export default class KAT {
   };
 
   /**
-   * @description Get all the torrents of a given provider.
-   * @function KAT#getAllTorrents
-   * @memberof module:providers/movie/kat
+   * Get all the torrents of a given provider.
    * @param {Integer} totalPages - The total pages of the query.
-   * @param {Object} provider - The provider to query {@link https://kat.cr/}.
+   * @param {Object} provider - The provider to query https://kat.cr/.
    * @returns {Array} - A list of all the queried torrents.
    */
   async getAllTorrents(totalPages, provider) {
@@ -178,10 +182,8 @@ export default class KAT {
   };
 
   /**
-   * @description Returns a list of all the inserted torrents.
-   * @function KAT#search
-   * @memberof module:providers/movie/kat
-   * @param {Object} provider - The provider to query {@link https://kat.cr/}.
+   * Returns a list of all the inserted torrents.
+   * @param {Object} provider - The provider to query https://kat.cr/.
    * @returns {Array} - A list of scraped movies.
    */
   async search(provider) {

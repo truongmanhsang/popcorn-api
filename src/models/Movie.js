@@ -37,12 +37,11 @@ const MovieSchema = new mongoose.Schema({
   torrents: {}
 });
 
-/**
- * @class Movie
- * @classdesc A model object for movies.
- * @memberof module:models/movie
- */
+// Create the movie model.
 const Movie = mongoose.model("Movie", MovieSchema);
 
-// Export the user model.
+/**
+ * A model object for movies.
+ * @type {Movie}
+ */
 export default Movie;

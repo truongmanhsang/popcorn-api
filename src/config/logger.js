@@ -8,19 +8,18 @@ import winston from "winston";
 import { tempDir } from "./constants";
 import { name } from "../../package.json";
 
-/**
- * @class
- * @classdesc The factory function for overriding the default console object.
- * @memberof module:config/logger
- * @property {Object} logger - The Winston instance.
- * @property {Object} expressLogger - The Express Winston instance.
- * @param {Console} console - The default console object.
- */
+/** Class for overriding the default console object. */
 export default class Logger {
 
+  /** Create a logger object. */
   constructor() {
+     // Create the temp directory if it does not exists.
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
 
+    /**
+     * The Winston instance.
+     * @type {Object}
+     */
     Logger.logger = new winston.Logger({
       transports: [
         new winston.transports.Console({
@@ -40,8 +39,14 @@ export default class Logger {
       ],
       exitOnError: false
     });
+
+    /**
+     * The Express Winston instance.
+     * @type {Object}
+     */
     Logger.expressLogger = new expressWinston.logger({winstonInstance: Logger.logger, expressFormat: true});
 
+    // Override the console functions.
     console.log = msg => Logger.logger.info(msg);
     console.error = msg => Logger.logger.error(msg);
     console.warn = msg => Logger.logger.warn(msg);
@@ -49,6 +54,11 @@ export default class Logger {
     console.debug = msg => Logger.logger.debug(msg);
   };
 
+  /**
+   * Check if the message is empty and replace it with the meta.
+   * @param {Object} args - Arguments passed by Winston.
+   * @returns {Object} - Formatter arguments passed by Winston.
+   */
   static checkEmptyMessage(args) {
     if (args.message === "" && Object.keys(args.meta).length !== 0)
       args.message = JSON.stringify(args.meta);
@@ -56,6 +66,11 @@ export default class Logger {
     return args;
   };
 
+  /**
+   * Get the color of the output based on the log level.
+   * @param {String} level - The log level.
+   * @returns {String} - A color based on the log level.
+   */
   static getLevelColor(level) {
     switch (level) {
     case "error":
@@ -76,6 +91,11 @@ export default class Logger {
     }
   };
 
+  /**
+   * Formatter function which formats the output to the console.
+   * @param {Object} args - Arguments passed by Winston.
+   * @returns {String} - The formatted message.
+   */
   static consoleFormatter(args) {
     args = Logger.checkEmptyMessage(args);
     const color = Logger.getLevelColor(args.level);
@@ -85,6 +105,11 @@ export default class Logger {
       process.pid, args.message);
   };
 
+  /**
+   * Formatter function which formate the output to the log file.
+   * @param {Object} args - Arguments passed by Winston.
+   * @returns {String} - The formatted message.
+   */
   static fileFormatter(args) {
     args = Logger.checkEmptyMessage(args);
     return JSON.stringify({

@@ -1,21 +1,29 @@
+// Import the neccesary modules.
 import path from "path";
+import Trakt from "trakt.tv";
 
+/**
+ * The providers for scraping KAT for anime.
+ * @type {Array}
+ */
+export const animeProviders = [];
+
+/**
+ * The cron time for scraping torrents. Default is `0 0 *\/6 * * *`.
+ * @type {String}
+ */
 export const cronTime = "0 0 */6 * * *";
-export const dbHosts = ["localhost"];
-export const master = true;
-export const maxWebRequest = 2;
-export const pageSize = 50;
-export const port = 5000;
-export const Promise = global.Promise;
-export const server = "serv01";
-export const statusFile = "status.json";
-export const tempDir = path.join(process.cwd(), "tmp");
-export const timeZone = "America/Los_Angeles";
-export const traktKey = "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907";
-export const updatedFile = "lastUpdated.json";
-export const webRequestTimeout = 2;
-export const workers = 2;
 
+/**
+ * The host of the server of the database. Default is `["localhost"]`.
+ * @type {Array} dbHosts
+ */
+export const dbHosts = ["localhost"];
+
+/**
+ * Map object for correcting anime slugs form KAT.
+ * @type {Object}
+ */
 export const katAnimeMap = {
   "kabaneri-of-the-iron-fortress": "koutetsujou-no-kabaneri",
   "luck-&-logic": "luck-logic",
@@ -25,6 +33,10 @@ export const katAnimeMap = {
   "yuruyuri": "yuru-yuri"
 };
 
+/**
+ * Map object for correcting show slugs form KAT.
+ * @type {Object}
+ */
 export const katShowMap = {
   "60-minutes-us": "60-minutes",
   "american-crime": "american-crime-1969",
@@ -90,6 +102,22 @@ export const katShowMap = {
   "youre-the-worst": "you-re-the-worst"
 };
 
+/**
+ * Check if this instance of the API is the master. Default is `true`.
+ * @type {Boolean}
+ */
+export const master = true;
+
+/**
+ * The maximum web requests can take place at the same time. Default is `2`.
+ * @type {Integer}
+ */
+export const maxWebRequest = 2;
+
+/**
+ * The providers for scraping KAT for movies.
+ * @type {Array}
+ */
 export const movieProviders = [
   // English providers
   {name: "Megaradon", query: {query: "x264 720p | 1080p", uploader: "megaradon", language: "en"}},
@@ -105,6 +133,34 @@ export const movieProviders = [
   {name: "Dutch", query: {query: "720p | 1080p", language: "nl"}}
 ];
 
+/**
+ * The amount of object show per page. Default is `50`.
+ * @type {Integer}
+ */
+export const pageSize = 50;
+
+/**
+ * The port on which the API will run on. Default is `5000`.
+ * @type {Integer}
+ */
+export const port = 5000;
+
+/**
+ * The promise object to override the mongoose promise object. Default is `global.Promise`.
+ * @type {Promise}
+ */
+export const Promise = global.Promise;
+
+/**
+ * The name of the server. Default is `serv01`.
+ * @type {String}
+ */
+export const server = "serv01";
+
+/**
+ * The providers for scraping KAT for shows.
+ * @type {Array}
+ */
 export const showProviders = [
   // 720p and 1080p providers
   {name: "Zoner720p", query: {query: "x264 720p", uploader: "z0n321"}},
@@ -122,23 +178,44 @@ export const showProviders = [
   {name: "ZonerSD", query: {query: "x264 LOL | FLEET | KILLERS | W4F", uploader: "z0n321"}}
 ];
 
-export const animeProviders = [
+/**
+ * The name of the status file holding the `status` value for the index page. Default is `status.json`.
+ * @type {String}
+ */
+export const statusFile = "status.json";
 
-];
+/**
+ * The path to the temprary directory.. Default is `./tmp`.
+ * @type {String}
+ */
+export const tempDir = path.join(process.cwd(), "tmp");
 
-// /**
-//  * @class Global
-//  * @classdesc Holder to export all the global configuration objects.
-//  * @memberof module:config/global
-//  * @property {Object} global - The configuration object with properties
-//  * used over the whole API.
-//  * @property {Object} katMap - The configuration object with the correct
-//  * slugs for {@link https://kat.cr/}.
-//  * @property {Object} animeProviders - Providers used for scraping anime from
-//  * {@link https://kat.cr/}.
-//  * @property {Object} movieProviders - Providers used for scraping shows from
-//  * {@link https://kat.cr/}.
-//  * @property {Object} showProviders - Providers used for scraping movies from
-//  * {@link https://kat.cr/}.
-//  */
-// export { global, katAnimeMap, katShowMap, animeProviders, movieProviders, showProviders };
+/**
+ * The timezone the conjob will hold. Default is `America/Los_Angeles`.
+ * @type {String}
+ */
+export const timeZone = "America/Los_Angeles";
+
+/**
+ * A configured Trakt API.
+ * @type {Trakt}
+ */
+export const trakt = new Trakt({client_id: "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907"});
+
+/**
+ * The name of the updated file holding the `updated` value for the index page. Default is `lastUpdated.json`.
+ * @type {String}
+ */
+export const updatedFile = "lastUpdated.json";
+
+/**
+ * The maximum time a web request may take. Default is `2` seconds.
+ * @type {Integer}
+ */
+export const webRequestTimeout = 2;
+
+/**
+ * The amount of workers on the cluster. Default is `2`.
+ * @type {Integer}
+ */
+export const workers = 2;

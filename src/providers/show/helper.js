@@ -1,29 +1,33 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
+
 import Show from "../../models/Show";
 import Util from "../../util";
+import { trakt } from "../../config/constants";
 
-/**
- * @class
- * @classdesc The factory function for saving shows.
- * @memberof module:providers/show/helper
- * @param {String} name - The name of the helper.
- * @property {Object} util - The util object with general functions.
- * @property {Object} trakt - A configured trakt api.
- */
+/** Class for saving shows. */
 export default class Helper {
 
+  /**
+   * Create an helper object.
+   * @param {String} name - The name of the helper.
+   */
   constructor(name) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
     this.name = name;
 
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     this.util = new Util();
-    this.trakt = this.util.trakt;
   };
 
   /**
-   * @description Update the number of seasons of a given show
-   * @function Helper#updateNumSeasons
-   * @memberof module:providers/show/helper
+   * Update the number of seasons of a given show
    * @param {Show} show - The show to update the number of seasons.
    * @returns {Show} - A newly updated show.
    */
@@ -47,13 +51,12 @@ export default class Helper {
   };
 
   /**
-   * @description Update the torrents for an existing show.
-   * @function Helper#updateEpisode
-   * @memberof module:providers/show/helper
+   * Update the torrents for an existing show.
    * @param {Object} matching - The matching episode of new the show.
    * @param {Object} found - The matching episode existing show.
    * @param {Show} show - The show to merge the episodes to.
    * @param {String} quality - The quality of the torrent.
+   * @returns {Show} - A show with merged torrents.
    */
   updateEpisode(matching, found, show, quality) {
     let index = show.episodes.indexOf(matching);
@@ -83,9 +86,7 @@ export default class Helper {
   };
 
   /**
-   * @description Update a given show with it's associated episodes.
-   * @function Helper#updateEpisodes
-   * @memberof module:providers/show/helper
+   * Update a given show with it's associated episodes.
    * @param {Show} show - The show to update its episodes.
    * @returns {Show} - A newly updated show.
    */
@@ -123,9 +124,7 @@ export default class Helper {
   };
 
   /**
-   * @description Adds one season to a show.
-   * @function Helper#addSeason
-   * @memberof module:providers/show/helper
+   * Adds one season to a show.
    * @param {Show} show - The show to add the torrents to.
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
@@ -136,7 +135,7 @@ export default class Helper {
     try {
       seasonNumber = parseInt(seasonNumber);
       if (!isNaN(seasonNumber) && seasonNumber.toString().length <= 2) {
-        const season = await this.trakt.seasons.season({id: slug, season: seasonNumber, extended: "full"});
+        const season = await trakt.seasons.season({id: slug, season: seasonNumber, extended: "full"});
         for (let episodeData in season) {
           episodeData = season[episodeData];
           if (episodes[seasonNumber] && episodes[seasonNumber][episodeData.number]) {
@@ -168,16 +167,14 @@ export default class Helper {
   };
 
   /**
-   * @description Get info from Trakt and make a new show object.
-   * @function Helper#getTraktInfo
-   * @memberof module:providers/show/helper
-   * @param {String} slug - The slug to query trakt.tv.
+   * Get info from Trakt and make a new show object.
+   * @param {String} slug - The slug to query https://trakt.tv/.
    * @returns {Show} - A new show without the episodes attached.
    */
   async getTraktInfo(slug) {
     try {
-      const traktShow = await this.trakt.shows.summary({id: slug, extended: "full,images"});
-      const traktWatchers = await this.trakt.shows.watching({id: slug});
+      const traktShow = await trakt.shows.summary({id: slug, extended: "full,images"});
+      const traktWatchers = await trakt.shows.watching({id: slug});
 
       let watching = 0;
       if (traktWatchers !== null) watching = traktWatchers.length;
@@ -222,9 +219,7 @@ export default class Helper {
   };
 
   /**
-   * @description Adds episodes to a show.
-   * @function Helper#addEpisodes
-   * @memberof module:providers/show/helper
+   * Adds episodes to a show.
    * @param {Show} show - The show to add the torrents to.
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {String} slug - The slug of the show.

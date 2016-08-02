@@ -4,6 +4,7 @@ import parseTorrent from "parse-torrent";
 import program from "commander";
 import prompt from "prompt";
 import torrentHealth from "torrent-tracker-health";
+
 import Index from "./index";
 import MovieHelper from "./providers/movie/helper";
 import packageJSON from "../package.json";
@@ -11,20 +12,18 @@ import Setup from "./config/setup";
 import ShowHelper from "./providers/show/helper";
 import Util from "./util";
 
-/**
- * @class
- * @classdesc The factory function for the command line interface.
- * @memberof module:global/cli
- * @property {Function} index - The index object to start the API.
- * @property {Function} setup - The setup object to make a connection to MongoDB.
- * @property {Function} util - The util object with general functions.
- * @property {Object} packageJSON - The package.json file in JSON format.
- * @param {String} [providerName=CLI] - The default provider name.
- *
- */
+/** Class The class for the command line interface. */
 export default class CLI {
 
+  /**
+   * Create a cli object.
+   * @param {String} [providerName=CLI] - The default provider name.
+   */
   constructor(providerName = "CLI") {
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     this.util = new Util();
 
     // Setup the CLI program.
@@ -105,7 +104,10 @@ export default class CLI {
       required: true
     };
 
-    // The shema used by `prompt` insert a movie.
+    /**
+     * The shema used by `prompt` insert a movie.
+     * @type {Object}
+     */
     this.movieSchema = {
       properties: {
         "imdb": imdb,
@@ -115,7 +117,10 @@ export default class CLI {
       }
     };
 
-    // The shema used by `prompt` insert a show.
+    /**
+     * The shema used by `prompt` insert a show.
+     * @type {Object}
+     */
     this.showSchema = {
       properties: {
         "imdb": imdb,
@@ -128,9 +133,7 @@ export default class CLI {
   };
 
   /**
-   * @description Get movie data from a given torrent url.
-   * @function CLI#getMovieTorrentDataRemote
-   * @memberof module:global/cli
+   * Get movie data from a given torrent url.
    * @param {String} torrent - The url of the torrent.
    * @param {String} language - The language of the torrent.
    * @param {String} quality - The quality of the torrent.
@@ -160,11 +163,7 @@ export default class CLI {
     });
   };
 
-  /**
-   * @description Adds a movie to the database through the CLI.
-   * @function CLI#moviePrompt
-   * @memberof module:global/cli
-   */
+  /** Adds a movie to the database through the CLI. */
   moviePrompt() {
     prompt.get(this.movieSchema, async(err, result) => {
       if (err) {
@@ -189,9 +188,7 @@ export default class CLI {
   };
 
   /**
-   * @description Get show data from a given torrent url.
-   * @function CLI#getShowTorrentDataRemote
-   * @memberof module:global/cli
+   * Get show data from a given torrent url.
    * @param {String} torrent - The url of the torrent.
    * @param {String} quality - The quality of the torrent.
    * @param {Integer} season - The season of the show from the torrent file.
@@ -221,11 +218,7 @@ export default class CLI {
     });
   };
 
-  /**
-   * @description Adds a show to the database through the CLI.
-   * @function CLI#showPrompt
-   * @memberof module:global/cli
-   */
+  /** Adds a show to the database through the CLI. */
   showPrompt() {
     prompt.get(this.showSchema, async(err, result) => {
       if (err) {
@@ -249,11 +242,7 @@ export default class CLI {
     });
   };
 
-  /**
-   * @description Run the CLI program.
-   * @function CLI#run
-   * @memberof module:global/cli
-   */
+  /** Run the CLI program. */
   run() {
     if (program.run) {
       new Index({start: true, pretty: false, debug: false});

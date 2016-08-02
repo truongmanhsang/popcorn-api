@@ -1,13 +1,16 @@
 # Popcorn API
 
-[![Build Status](https://travis-ci.org/popcorn-official/popcorn-api.svg?branch=master)]()
+[![Build Status](https://travis-ci.org/popcorn-official/popcorn-api.svg?branch=master)](https://travis-ci.org/popcorn-official/popcorn-api)
 [![Dependency Status](https://david-dm.org/popcorn-official/popcorn-api.svg)](https://david-dm.org/popcorn-official/popcorn-api)
 [![devDependency Status](https://david-dm.org/popcorn-official/popcorn-api/dev-status.svg)](https://david-dm.org/popcorn-official/popcorn-api#info=devDependencies)
+[![document](https://github.com/popcorn-official/popcorn-api/docs/badge.svg)]()
+
 
 Popcorn API is developed to make it easier for anyone to create their own version of [Popcorn Time](http://popcorntime.sh). It contains:
 
 - Metadata about movies (taken from Trakt).
-- Metadata about TV Shows and individual episodes (taken from Trakt).
+- Metadata about TV shows and individual episodes (taken from Trakt).
+- Metadata about anime shows (taken from Hummingbird).
 - Multiple quality magnet links for every episode.
 - Ability to easily filter content to the user's content.
 - Add content manually through the CLI.
@@ -66,7 +69,7 @@ Know issues are indicated in the code with the `TODO` tag.
 
 # Providers
 
-Content from [kat.cr](https://kat.cr/) is grabbed with so called `providers` which can be configured in the `./src/config/providers.js` file. Providers will be converted to a search query to [kat.cr](https://kat.cr/) so each provider can get a maximum of 10.000 torrents (or 400 pages or torrents). You can read more on how to make providers [here](https://github.com/chrisalderson/kat-api-pt).
+Content from [kat.cr](https://kat.cr/) is grabbed with so called `providers` which can be configured in the `./src/config/constants.js` file. Providers will be converted to a search query to [kat.cr](https://kat.cr/) so each provider can get a maximum of 10.000 torrents (or 400 pages or torrents). You can read more on how to make providers [here](https://github.com/chrisalderson/kat-api-pt).
 
 **An example of a provider:**
 
@@ -97,7 +100,9 @@ The API has the following folder structure.
 
 # Routes
 
-## GET - `http://localhost:5000/`
+## Index
+
+**GET - `http://localhost:5000/`**
 
 Gives some basic information about the server on which the API is running on.
 
@@ -116,11 +121,129 @@ Gives some basic information about the server on which the API is running on.
 }
 ```
 
-## GET - `http://localhost:5000/logs/error`
+## Anime
+
+**GET - `http://localhost:5000/animes/{page}`**
+
+Gives an array of anime shows. The array has a has a maximum length of 50 anime shows per page.
+
+**Example output:**
+```javascript
+[
+  {
+    "_id": "5646",
+    "mal_id": "9253",
+    "title": "Steins;Gate",
+    "year": "2011",
+    "slug": "steins-gate",
+    "type": "show",
+    "genres": [
+      "Comedy",
+      "Sci-Fi",
+      "Mystery",
+      "Thriller",
+      "Drama"
+    ],
+    "images": {
+      "banner": "https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953",
+      "fanart": "https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953",
+      "poster": "https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953"
+    },
+    "rating": {
+      "hated": 100,
+      "loved": 100,
+      "votes": 0,
+      "watching": 0,
+      "percentage": 92
+    }
+  },
+  ...
+]
+```
+
+**GET - `http://localhost:5000/anime/{_id}`**
+
+Gives information about a single anime show based on the given id.
+
+**Example output:**
+
+```javascript
+{
+  "_id": "5646",
+  "mal_id": "9253",
+  "title": "Steins;Gate",
+  "year": "2011",
+  "slug": "steins-gate",
+  "synopsis": "Steins;Gate is set in the summer of 2010, approximately one year after the events that took place in Chaos;Head, in Akihabara.\n\nSteins;Gate is about a group of friends who have customized their microwave into a device that can send emails to the past (known as D-mails). As they perform different experiments, an organization named SERN, who has been doing their own research on time travel, tracks them down and now the characters have to find a way to avoid being captured by them.\n\n(Sources: VNDB, Wikipedia)",
+  "runtime": "24",
+  "status": "Finished Airing",
+  "type": "show",
+  "num_episodes": 12,
+  "last_updated": 1469804168091,
+  "__v": 0,
+  "episodes": [
+    {
+      "title": "Episode 13",
+      "torrents": {
+        "0": {
+          "url": "magnet:?xt=urn:btih:IEQGMZOUZJQ5FJJZNURKTTND3KUHBAHT&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce",
+          "seeds": 0,
+          "peers": 0,
+          "provider": "HorribleSubs"
+        },
+        "480p": {
+          "url": "magnet:?xt=urn:btih:IEQGMZOUZJQ5FJJZNURKTTND3KUHBAHT&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce",
+          "seeds": 0,
+          "peers": 0,
+          "provider": "HorribleSubs"
+        },
+        "720p": {
+          "url": "magnet:?xt=urn:btih:MCZBSUZP4YX2O4SBMBBXLFWBIQCEPOZF&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce",
+          "seeds": 0,
+          "peers": 0,
+          "provider": "HorribleSubs"
+        }
+      },
+      "season": "1",
+      "episode": "13",
+      "overview": "We still don't have single episode overviews for anime… Sorry",
+      "tvdb_id": "5646-1-13"
+    },
+    ...
+  ],
+  "genres": [
+    "Comedy",
+    "Sci-Fi",
+    "Mystery",
+    "Thriller",
+    "Drama"
+  ],
+  "images": {
+    "banner": "https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953",
+    "fanart": "https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953",
+    "poster": "https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953"
+  },
+  "rating": {
+    "hated": 100,
+    "loved": 100,
+    "votes": 0,
+    "watching": 0,
+    "percentage": 92
+  }
+}
+```
+
+**GET - `http://localhost:5000/random/anime`**
+
+Gives a random show from the database. The output will be similar to the on directly above.
+
+## Movie
+
+**GET - `http://localhost:5000/logs/error`**
 
 Display the error log. Each message will be in JSON format.
 
-## GET - `http://localhost:5000/movies/{page}`
+**GET - `http://localhost:5000/movies/{page}`**
 
 Gives an array of movies. The array has a has a maximum length of 50 movies per page.
 
@@ -173,7 +296,7 @@ Gives an array of movies. The array has a has a maximum length of 50 movies per 
 ]
 ```
 
-## GET - `http://localhost:5000/movie/{imdb_id}`
+**GET - `http://localhost:5000/movie/{imdb_id}`**
 
 Gives information about a single movie based on the given imdb id.
 
@@ -226,11 +349,13 @@ Gives information about a single movie based on the given imdb id.
 ]
 ```
 
-## GET - `http://localhost:5000/random/movie`
+**GET - `http://localhost:5000/random/movie`**
 
 Gives a random movie from the database. The output will be similar to the on directly above.
 
-## GET - `http://localhost:5000/shows/{page}`
+## Show
+
+**GET - `http://localhost:5000/shows/{page}`**
 
 Gives an array of shows. The array has a has a maximum length of 50 shows per page.
 
@@ -284,7 +409,7 @@ Gives an array of shows. The array has a has a maximum length of 50 shows per pa
 ]
 ```
 
-## GET - `http://localhost:5000/show/{imdb_id}`
+**GET - `http://localhost:5000/show/{imdb_id}`**
 
 Gives information about a single show based on the given imdb id.
 
@@ -359,6 +484,10 @@ Gives information about a single show based on the given imdb id.
 }
 ```
 
+**GET - `http://localhost:5000/random/show`**
+
+Gives a random show from the database. The output will be similar to the on directly above.
+
 # Query strings
 
 The following routes support query strings:
@@ -398,39 +527,85 @@ To order descending: `-1`
 
 `genre=`
 
-The API supports the following genres:
+##### TV shows & movies
 
-- action
-- adventure
-- animation
-- comedy
-- crime
-- disaster
-- documentary
-- drama
-- eastern
-- family
-- fan-film
-- fantasy
-- film-noir
-- history
-- holiday
-- horror
-- indie
-- music
-- mystery
-- none
-- road
-- romance
-- science-fiction
-- short
-- sports
-- sporting-event
-- suspense
-- thriller
-- tv-movie
-- war
-- western
+The API supports the following genres for **TV shows** and **movies**:
+ - action
+ - adventure
+ - animation
+ - comedy
+ - crime
+ - disaster
+ - documentary
+ - drama
+ - eastern
+ - family
+ - fan-film
+ - fantasy
+ - film-noir
+ - history
+ - holiday
+ - horror
+ - indie
+ - music
+ - mystery
+ - none
+ - road
+ - romance
+ - science-fiction
+ - short
+ - sports
+ - sporting-event
+ - suspense
+ - thriller
+ - tv-movie
+ - war
+ - western
+
+##### Anime
+
+The API supports the following genres for **anime**:
+ - Action
+ - Ecchi
+ - Harem
+ - Romance
+ - School
+ - Supernatural
+ - Drama
+ - Comedy
+ - Mystery
+ - Police
+ - Sports
+ - Mecha
+ - Sci-Fi
+ - Slice of Life
+ - Fantasy
+ - Adventure
+ - Gore
+ - Music
+ - Psychological
+ - Shoujo Ai
+ - Yuri
+ - Magic
+ - Horror
+ - Thriller
+ - Gender Bender
+ - Parody
+ - Historical
+ - Racing
+ - Demons
+ - Samurai
+ - Super Power
+ - Military
+ - Dementia
+ - Mahou Shounen
+ - Game
+ - Martial Arts
+ - Vampire
+ - Kids
+ - Mahou Shoujo
+ - Space
+ - Shounen Ai
 
 ## Keywords
 

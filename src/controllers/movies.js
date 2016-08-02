@@ -2,15 +2,15 @@
 import Movie from "../models/Movie";
 import { pageSize } from "../config/constants";
 
-/**
- * @class
- * @classdesc The factory function for getting movie data from the MongoDB.
- * @memberof module:controllers/movies
- * @property {Object} projection - Object used for the projection of movies.
- */
+/** Class for getting movie data from the MongoDB. */
 export default class Movies {
 
+  /** Create a movies object. */
   constructor() {
+    /**
+     * Object used for the projection of movies.
+     * @type {Object}
+     */
     Movies.projection = {
       _id: 1,
       imdb_id: 1,
@@ -29,11 +29,10 @@ export default class Movies {
   };
 
   /**
-   * @description Get all the pages.
-   * @function Movies#getMovies
-   * @memberof module:controllers/movies
+   * Get all the pages.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
    * @returns {Array} - A list of pages which are available.
    */
   getMovies(req, res, next) {
@@ -48,11 +47,10 @@ export default class Movies {
   };
 
   /**
-   * @description Get one page.
-   * @function Movies#getPage
-   * @memberof module:controllers/movies
+   * Get one page.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
    * @returns {Array} - The contents of one page.
    */
   getPage(req, res, next) {
@@ -129,11 +127,10 @@ export default class Movies {
   };
 
   /**
-   * @description Get info from one movie.
-   * @function Movies#getMovie
-   * @memberof module:controllers/movies
+   * Get info from one movie.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
    * @returns {Movie} - The details of a single movie.
    */
   getMovie(req, res, next) {
@@ -151,11 +148,10 @@ export default class Movies {
   };
 
   /**
-   * @description Get a random movie.
-   * @function Movies#getRandomMovie
-   * @memberof module:controllers/movies
+   * Get a random movie.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
    * @returns {Movie} - A random movie.
    */
   getRandomMovie(req, res, next) {

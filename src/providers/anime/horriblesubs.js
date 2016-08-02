@@ -5,34 +5,50 @@ import { maxWebRequest } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
-/**
- * @class
- * @classdesc The factory function for scraping anime from {@link https://horriblesubs.info/}.
- * @memberof module:providers/anime/horriblesubs
- * @param {String} name - The name of the HorribleSubs provider.
- * @property {Object} helper - The helper object for adding anime.
- * @property {Object} util - The util object with general functions.
- */
+/** Class for scraping anime from https://horriblesubs.info/. */
 export default class HorribleSubs {
 
+  /**
+   * Create a horriblesubs object.
+   * @param {String} name - The name of the torrent provider.
+   * @param {Boolean} debug - Debug mode for extra output.
+   */
   constructor(name, debug) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
     this.name = name;
-    this.horriblesubsAPI = new HorribleSubsAPI({ debug });
+
+    /**
+     * A configured HorribleSubs API.
+     * @type {HorribleSubsAPI}
+     * @see https://github.com/ChrisAlderson/horriblesubs-api
+     */
+    this.horriblesubs = new HorribleSubsAPI({ debug });
+
+    /**
+     * The helper object for adding anime shows.
+     * @type {Helper}
+     */
     this.helper = new Helper(this.name, debug);
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     this.util = new Util();
   };
 
   /**
-   * @description Get a complete show.
-   * @function EZTV#getShow
-   * @memberof module:providers/show/eztv
-   * @param {Object} eztvShow - show data from eztv.
-   * @returns {Show} - A complete show.
+   * Get a complete show.
+   * @param {Object} horribleSubsAnime - anime data from horriblesubs.
+   * @returns {Anime} - A complete show.
    */
   async getAnime(horribleSubsAnime) {
     try {
       if (horribleSubsAnime) {
-        horribleSubsAnime = await this.horriblesubsAPI.getAnimeData(horribleSubsAnime);
+        horribleSubsAnime = await this.horriblesubs.getAnimeData(horribleSubsAnime);
         const newShow = await this.helper.getHummingbirdInfo(horribleSubsAnime.slug);
 
         if (newShow && newShow._id) {
@@ -46,15 +62,13 @@ export default class HorribleSubs {
   };
 
   /**
-   * @description Returns a list of all the inserted torrents.
-   * @function HorribleSubs#search
-   * @memberof module:providers/anime/horriblesubs
+   * Returns a list of all the inserted torrents.
    * @returns {Array} - A list of scraped animes.
    */
   async search() {
     try {
       console.log(`${this.name}: Starting scraping...`);
-      const horribleSubsAnimes = await this.horriblesubsAPI.getAllAnime();
+      const horribleSubsAnimes = await this.horriblesubs.getAllAnime();
       console.log(`${this.name}: Found ${horribleSubsAnimes.length} anime shows.`);
       return await asyncq.mapLimit(horribleSubsAnimes, maxWebRequest, async horribleSubsAnime => {
         try {

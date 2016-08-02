@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/providers/show/kat.js | Popcorn API API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/popcorn-official/popcorn-api.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli.js~CLI.html">CLI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/index.js~Index.html">Index</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/scraper.js~Scraper.html">Scraper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/util.js~Util.html">Util</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">config</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/routes.js~Routes.html">Routes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/setup.js~Setup.html">Setup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeMap">katAnimeMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowMap">katShowMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-master">master</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieProviders">movieProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-showProviders">showProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webRequestTimeout">webRequestTimeout</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-workers">workers</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">controllers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/animes.js~Animes.html">Animes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/movies.js~Movies.html">Movies</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/shows.js~Shows.html">Shows</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">models</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Anime">Anime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Movie">Movie</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Show">Show</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/anime</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/horriblesubs.js~HorribleSubs.html">HorribleSubs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/kat.js~KAT.html">KAT</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/movie</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/kat.js~KAT.html">KAT</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/yts.js~YTS.html">YTS</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/show</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/eztv.js~EZTV.html">EZTV</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/kat.js~KAT.html">KAT</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/providers/show/kat.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
+import asyncq from &quot;async-q&quot;;
+import KatAPI from &quot;kat-api-pt&quot;;
+import { maxWebRequest, katShowMap } from &quot;../../config/constants&quot;;
+import Helper from &quot;./helper&quot;;
+import Util from &quot;../../util&quot;;
+
+/** Class for scraping shows from https://kat.cr/. */
+export default class KAT {
+
+   /**
+    * Create a kat object.
+    * @param {String} name - The name of the torrent provider.
+    * @param {Boolean} debug - Debug mode for extra output.
+    */
+  constructor(name, debug) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
+    this.name = name;
+
+    /**
+     * The helper object for adding shows.
+     * @type {Helper}
+     */
+    this.helper = new Helper(this.name);
+
+    /**
+     * A configured KAT API.
+     * @type {KatAPI}
+     * @see https://github.com/ChrisAlderson/kat-api-pt
+     */
+    this.kat = new KatAPI({ debug });
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    this.util = new Util();
+
+  };
+
+  /**
+   * Get all the shows.
+   * @param {Object} katShow - The show information.
+   * @returns {Show} - A show.
+   */
+  async getShow(katShow) {
+    try {
+      const newShow = await this.helper.getTraktInfo(katShow.slug);
+      if (newShow &amp;&amp; newShow._id) {
+        const slug = katShow.slug;
+
+        delete katShow.showTitle;
+        delete katShow.slug;
+        delete katShow.torrentLink;
+        delete katShow.season;
+        delete katShow.episode;
+        delete katShow.quality;
+        delete katShow.dateBased;
+        delete katShow[0];
+        return await this.helper.addEpisodes(newShow, katShow, slug);
+      }
+    } catch (err) {
+      return this.util.onError(err);
+    }
+  };
+
+  /**
+   * Extract show information based on a regex.
+   * @param {Object} torrent - The torrent to extract the show information from.
+   * @param {Regex} regex - The regex to extract the show information.
+   * @param {Boolean} dateBased - Check for dateBased episodes.
+   * @returns {Object} - Information about a show from the torrent.
+   */
+  extractShow(torrent, regex, dateBased) {
+    let showTitle = torrent.title.match(regex)[1];
+    if (showTitle.endsWith(&quot; &quot;)) showTitle = showTitle.substring(0, showTitle.length - 1);
+    showTitle = showTitle.replace(/\./g, &quot; &quot;);
+    let slug = showTitle.replace(/\s+/g, &quot;-&quot;).toLowerCase();
+    slug = slug in katShowMap ? katShowMap[slug] : slug;
+    let season = torrent.title.match(regex)[2];
+    let episode = torrent.title.match(regex)[3];
+    if (!dateBased) {
+      season = parseInt(season, 10);
+      episode = parseInt(episode, 10);
+    }
+    const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : &quot;480p&quot;;
+
+    const episodeTorrent = {
+      url: torrent.magnet,
+      seeds: torrent.seeds,
+      peers: torrent.peers,
+      provider: this.name
+    };
+
+    const show = { showTitle, slug, torrentLink: torrent.link, season, episode, quality, dateBased };
+
+    if (!show[season]) show[season] = {};
+    if (!show[season][episode]) show[season][episode] = {};
+    if ((!show[season][episode][quality] || show.showTitle.toLowerCase().indexOf(&quot;repack&quot;) &gt; -1) || (show[season][episode][quality] &amp;&amp; show[season][episode][quality].seeds &lt; episodeTorrent.seeds))
+      show[season][episode][quality] = episodeTorrent;
+
+    return show;
+  };
+
+  /**
+   * Get show info from a given torrent.
+   * @param {Object} torrent - A torrent object to extract show information from.
+   * @returns {Object} - Information about a show from the torrent.
+   */
+  getShowData(torrent) {
+    const seasonBased = /(.*).[sS](\d{2})[eE](\d{2})/;
+    const vtv = /(.*).(\d{1,2})[x](\d{2})/;
+    const dateBased = /(.*).(\d{4}).(\d{2}.\d{2})/;
+    if (torrent.title.match(seasonBased)) {
+      return this.extractShow(torrent, seasonBased, false);
+    } else if (torrent.title.match(vtv)) {
+      return this.extractShow(torrent, vtv, false);
+    } else if (torrent.title.match(dateBased)) {
+      return this.extractShow(torrent, dateBased, true);
+    } else {
+      console.warn(`${this.name}: Could not find data from torrent: &apos;${torrent.title}&apos;`);
+    }
+  };
+
+  /**
+   * Puts all the found shows from the torrents in an array.
+   * @param {Array} torrents - A list of torrents to extract show information.
+   * @returns {Array} - A list of objects with show information extracted from the torrents.
+   */
+  async getAllKATShows(torrents) {
+    try {
+      const shows = [];
+
+      await asyncq.mapSeries(torrents, torrent =&gt; {
+        if (torrent) {
+          const show = this.getShowData(torrent);
+          if (show) {
+            if (shows.length != 0) {
+              const { showTitle, slug, season, episode, quality } = show;
+              const matching = shows
+                .filter(s =&gt; s.showTitle === showTitle)
+                .filter(s =&gt; s.slug === slug);
+
+              if (matching.length != 0) {
+                const index = shows.indexOf(matching[0]);
+                if (!matching[0][season]) matching[0][season] = {};
+                if (!matching[0][season][episode]) matching[0][season][episode] = {};
+                if ((!matching[0][season][episode][quality] || matching[0].showTitle.toLowerCase().indexOf(&quot;repack&quot;) &gt; -1) || (matching[0][season][episode][quality] &amp;&amp; matching[0][season][episode][quality].seeds &lt; show[season][episode][quality].seeds))
+                  matching[0][season][episode][quality] = show[season][episode][quality];
+
+                shows.splice(index, 1, matching[0]);
+              } else {
+                shows.push(show);
+              }
+            } else {
+              shows.push(show);
+            }
+          }
+        }
+      });
+
+      return shows;
+    } catch (err) {
+      this.util.onError(err);
+    }
+  };
+
+  /**
+   * Get all the torrents of a given provider.
+   * @param {Integer} totalPages - The total pages of the query.
+   * @param {Object} provider - The provider to query https://kat.cr/.
+   * @returns {Array} - A list of all the queried torrents.
+   */
+  async getAllTorrents(totalPages, provider) {
+    try {
+      let katTorrents = [];
+      await asyncq.timesSeries(totalPages, async page =&gt; {
+        try {
+          provider.query.page = page + 1;
+          console.log(`${this.name}: Starting searching KAT on page ${provider.query.page} out of ${totalPages}`);
+          const result = await this.kat.search(provider.query);
+          katTorrents = katTorrents.concat(result.results);
+        } catch (err) {
+          return this.util.onError(err);
+        }
+      });
+      console.log(`${this.name}: Found ${katTorrents.length} torrents.`);
+      return katTorrents;
+    } catch (err) {
+      return this.util.onError(err);
+    }
+  };
+
+  /**
+   * Returns a list of all the inserted torrents.
+   * @param {Object} provider - The provider to query https://kat.cr/.
+   * @returns {Array} - A list of scraped shows.
+   */
+  async search(provider) {
+    try {
+      console.log(`${this.name} : Starting scraping...`);
+      provider.query.page = 1;
+      provider.query.category = &quot;tv&quot;;
+      provider.query.verified = 1;
+      provider.query.adult_filter = 1;
+      provider.query.language = &quot;en&quot;;
+
+      const getTotalPages = await this.kat.search(provider.query);
+      const totalPages = getTotalPages.totalPages; // Change to &apos;const&apos; for production.
+      if (!totalPages) return this.util.onError(`${this.name}: totalPages returned; &apos;${totalPages}&apos;`);
+      // totalPages = 3; // For testing purposes only.
+      console.log(`${this.name}: Total pages ${totalPages}`);
+
+      const katTorrents = await this.getAllTorrents(totalPages, provider);
+      const katShows = await this.getAllKATShows(katTorrents);
+      return await asyncq.mapLimit(katShows, maxWebRequest, async katShow =&gt; {
+        try {
+          return await this.getShow(katShow);
+        } catch (err) {
+          return this.util.onError(err);
+        }
+      });
+    } catch (err) {
+      return this.util.onError(err);
+    }
+  };
+
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

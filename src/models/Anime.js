@@ -37,12 +37,11 @@ const AnimeSchema = new mongoose.Schema({
   episodes: []
 });
 
-/**
- * @class Anime
- * @classdesc A model object for animes.
- * @memberof module:models/anime
- */
+// Create the anime model.
 const Anime = mongoose.model("Anime", AnimeSchema);
 
-// Export the user model.
+/**
+ * A model object for anime shows.
+ * @type {Anime}
+ */
 export default Anime;

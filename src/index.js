@@ -13,21 +13,52 @@ import Util from "./util";
 import { cronTime, master, port, timeZone, workers } from "./config/constants";
 
 /**
- * @class
- * @classdesc The factory function for starting the API.
- * @memberof module:global/index
- * @property {Object} util - The util object with general functions.
+ * Class for starting the API.
+ *
+ * @example <caption></caption>
+ * // Simply start the API by creating a new instance of the Index class.
+ * const index = new Index();
+ *
+ * @example
+ * // Or override the default configuration of the Index class.
+ * const index = new Index({start: true, pretty: true, debug: false});
  */
 export default class Index {
 
+  /**
+   * Create an index object.
+   * @param {Object} config - Configuration for the API.
+   * @param {Boolean} [config.start=true] - Start the scraping process.
+   * @param {Boolean} [config.pretty=true] - Pretty output with Winston logging.
+   * @param {Boolean} [config.debug=false] - Debug mode for extra output.
+   */
   constructor({start = true, pretty = true, debug = false} = {}) {
-    // Make an ExpressJS application.
+    /**
+     * The express object.
+     * @type {Express}
+     */
     Index.app = new Express();
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     Index.util = new Util();
+
+    /**
+     * The scraper object to scrape for torrents.
+     * @type {Scraper}
+     */
     Index.scraper = new Scraper(debug);
 
-    // Create a new logger class. Override the console object with Winston.
-    if (pretty) Index.logger = new Logger();
+    // Create a new logger class & override the console object with Winston.
+    if (pretty) {
+      /**
+       * The logger object to configure the logging.
+       * @type {Logger}
+       */
+      Index.logger = new Logger();
+    }
 
     // Setup the MongoDB configuration and ExpressJS configuration.
     const setup = new Setup(Index.app, pretty);
@@ -35,14 +66,13 @@ export default class Index {
     // Setup the API routes.
     const routes = new Routes(Index.app);
 
+    // Start the API.
     Index.startAPI(start);
   };
 
   /**
-   * @description function to start the API.
-   * @function Index#startAPI
-   * @memberof module:global/index
-   * @param {Boolean} [startScraping=true] - Start the scraping (Default `true`).
+   * Function to start the API.
+   * @param {Boolean} [start=true] - Start the scraping.
    */
   static startAPI(start) {
 

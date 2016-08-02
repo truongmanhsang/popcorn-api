@@ -4,26 +4,43 @@ import Animes from "../controllers/animes";
 import Movies from "../controllers/movies";
 import Shows from "../controllers/shows";
 
-/**
- * @class
- * @classdesc The factory function for setting up the routes for the API.
- * @memberof module:config/routes
- */
+/** Class for setting up the routes for the API. */
 export default class Routes {
 
+  /**
+   * Create a routes object.
+   * @param {Express} app - The ExpresssJS instance.
+   */
   constructor(app) {
+    /**
+     * The index controller.
+     * @type {Index}
+     */
     Routes.index = new Index();
+
+    /**
+     * The animes controller.
+     * @type {Animes}
+     */
     Routes.animes = new Animes();
+
+    /**
+     * The movies controller.
+     * @type {Movies}
+     */
     Routes.movies = new Movies();
+
+    /**
+     * The shows controller.
+     * @type {Shows}
+     */
     Routes.shows = new Shows();
 
     Routes.setupRoutes(app);
   };
 
   /**
-   * @description Setup ExpressJS routing.
-   * @function Routes#routes
-   * @memberof module:config/routes
+   * Setup ExpressJS routing.
    * @param {ExpressJS} app - The ExpresssJS application.
    */
   static setupRoutes(app) {

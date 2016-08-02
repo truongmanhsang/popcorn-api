@@ -9,23 +9,29 @@ import katShow from "./providers/show/kat";
 import Util from "./util";
 import YTS from "./providers/movie/yts";
 
-/**
- * @class
- * @classdesc The factory function for scraping movies and shows.
- * @memberof module:global/scraper
- * @property {Object} util - The util object with general functions.
- */
+/** Class for scraping movies and shows. */
 export default class Scraper {
 
+  /**
+   * Create a scraper object.
+   * @param {Boolean} debug - Debug mode for extra output.
+   */
   constructor(debug) {
+    /**
+     * The util object with general functions.
+     * @property {Object}
+     */
     Scraper.util = new Util();
-    Scraper.debug = debug
+
+    /**
+     * Debug mode for extra output.
+     * @type {Object}
+     */
+    Scraper.debug = debug;
   };
 
   /**
-   * @description Start scraping from EZTV.
-   * @function Scraper#scrapeEZTVShows
-   * @memberof module:global/scraper
+   * Start scraping from EZTV.
    * @returns {Array} A list of all the scraped shows.
    */
   async scrapeEZTVShows() {
@@ -41,9 +47,7 @@ export default class Scraper {
   };
 
   /**
-   * @description Start movie scraping from KAT.
-   * @function Scraper#scrapeKATMovies
-   * @memberof module:global/scraper
+   * Start movie scraping from KAT.
    * @returns {Array} A list of all the scraped movies.
    */
   scrapeKATMovies() {
@@ -61,9 +65,7 @@ export default class Scraper {
   };
 
   /**
-   * @description Start show scraping from KAT.
-   * @function Scraper#scrapeKATShows
-   * @memberof module:global/scraper
+   * Start show scraping from KAT.
    * @returns {Array} A list of all the scraped shows.
    */
   scrapeKATShows() {
@@ -81,9 +83,7 @@ export default class Scraper {
   };
 
   /**
-   * @description Start scraping from YTS.
-   * @function Scraper#scrapeYTSMovies
-   * @memberof module:global/scraper
+   * Start scraping from YTS.
    * @returns {Array} A list of all the scraped movies.
    */
   async scrapeYTSMovies() {
@@ -99,9 +99,7 @@ export default class Scraper {
   };
 
   /**
-   * @description Start scraping from HorribleSubs.
-   * @function Scraper#scrapeHorribelSubsAnime
-   * @memberof module:global/scraper
+   * Start scraping from HorribleSubs.
    * @returns {Array} A list of all the scraped anime.
    */
   async scrapeHorribelSubsAnime() {
@@ -117,9 +115,7 @@ export default class Scraper {
   };
 
   /**
-   * @description Start scraping from KAT.
-   * @function Scraper#scrapeKATAnime
-   * @memberof module:global/scraper
+   * Start scraping from KAT.
    * @returns {Array} A list of all the scraped anime.
    */
   async scrapeKATAnime() {
@@ -136,11 +132,7 @@ export default class Scraper {
     });
   }
 
-  /**
-   * @description Initiate the scraping for EZTV and KAT.
-   * @function Scraper#scrape
-   * @memberof module:global/scraper
-   */
+  /** Initiate the scraping for EZTV and KAT. */
   scrape() {
     Scraper.util.setLastUpdated();
 

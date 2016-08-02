@@ -7,23 +7,15 @@ import responseTime from "response-time";
 import { dbHosts, Promise } from "./constants";
 import Logger from "./logger";
 
-/**
- * @class
- * @classdesc The factory function for setting up the API.
- * @memberof module:config/setup
- */
+/** Class for setting up the API. */
 export default class Setup {
 
   /**
-   * @description Setup the Express service.
-   * @function Setup#setup
-   * @memberof module:config/setup
-   * @param {ExpressJS} app - The ExpresssJS instance.
-   * @param {Winston} logger - The express-winston logger instance.
+   * Setup the Express service.
+   * @param {Express} app - The ExpresssJS instance.
+   * @param {Boolean} pretty - Pretty output with Winston logging.
    */
   constructor(app, pretty) {
-    // Setup.connectMongoDB();
-
     // Used to extract data from query strings.
     RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 
@@ -47,11 +39,7 @@ export default class Setup {
     if (pretty) app.use(Logger.expressLogger);
   }
 
-  /**
-   * @description Connection and configuration of the MongoDB database.
-   * @function Setup#connectMongoDB
-   * @memberof module:config/setup
-   */
+  /** Connection and configuration of the MongoDB database. */
   static connectMongoDB() {
     mongoose.Promise = Promise;
     mongoose.connect(`mongodb://${dbHosts.join(",")}/popcorn`, {

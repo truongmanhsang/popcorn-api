@@ -1,32 +1,47 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
-import eztvApi from "eztv-api-pt";
+import EztvAPI from "eztv-api-pt";
 import { maxWebRequest } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
-/**
- * @class
- * @classdesc The factory function for scraping shows from {@link https://eztv.ag/}.
- * @memberof module:providers/show/eztv
- * @param {String} name - The name of the EZTV provider.
- * @property {Object} helper - The helper object for adding shows.
- * @property {Object} util - The util object with general functions.
- */
+/** Class for scraping shows from https://eztv.ag/. */
 export default class EZTV {
 
+  /**
+   * Create an eztv object.
+   * @param {String} name - The name of the torrent provider.
+   * @param {Boolean} debug - Debug mode for extra output.
+   */
   constructor(name, debug) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
     this.name = name;
 
-    this.eztv = new eztvApi({ debug });
+    /**
+     * A configured EZTV API.
+     * @type {EztvAPI}
+     * @see https://github.com/ChrisAlderson/eztv-api-pt
+     */
+    this.eztv = new EztvAPI({ debug });
+
+    /**
+     * The helper object for adding shows.
+     * @type {Helper}
+     */
     this.helper = new Helper(this.name);
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     this.util = new Util();
   };
 
   /**
-   * @description Get a complete show.
-   * @function EZTV#getShow
-   * @memberof module:providers/show/eztv
+   * Get a complete show.
    * @param {Object} eztvShow - show data from eztv.
    * @returns {Show} - A complete show.
    */
@@ -48,9 +63,7 @@ export default class EZTV {
   };
 
   /**
-   * @description Returns a list of all the inserted torrents.
-   * @function EZTV#search
-   * @memberof module:providers/show/eztv
+   * Returns a list of all the inserted torrents.
    * @returns {Array} - A list of scraped shows.
    */
   async search() {

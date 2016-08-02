@@ -1,33 +1,38 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
+
 import Movie from "../../models/Movie";
 import Util from "../../util";
+import { trakt } from "../../config/constants";
 
-/**
- * @class
- * @classdesc The factory function for saving movies.
- * @memberof module:providers/movie/helper
- * @param {String} name - The name of the helper;
- * @property {Object} util - The util object with general functions.
- * @property {Object} trakt - A configured trakt api.
- */
+/** Class for saving movies. */
 export default class Helper {
 
+  /**
+   * Create an helper object.
+   * @param {String} name - The name of the helper.
+   */
   constructor(name) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
     this.name = name;
 
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     this.util = new Util();
-    this.trakt = this.util.trakt;
   };
 
   /**
-   * @description Update the torrents for an existing movie.
-   * @function Helper#updateTorrent
-   * @memberof module:providers/movie/helper
+   * Update the torrents for an existing movie.
    * @param {Movie} movie - The new movie.
    * @param {Movie} found - The existing movie.
    * @param {String} language - The language of the torrent.
    * @param {String} quality - The quality of the torrent.
+   * @return {Movie} - A movie with merged torrents.
    */
    updateTorrent(movie, found, language, quality) {
      let update = false;
@@ -90,11 +95,10 @@ export default class Helper {
   };
 
   /**
-   * @description Adds torrents to a movie.
-   * @function Helper#addTorrents
-   * @memberof module:providers/movie/helper
+   * Adds torrents to a movie.
    * @param {Movie} movie - The movie to add the torrents to.
    * @param {Object} torrents - The torrents to add to the movie.
+   * @returns {Movie} - A movie with torrents attached.
    */
   addTorrents(movie, torrents) {
     return asyncq.each(Object.keys(torrents),
@@ -103,16 +107,14 @@ export default class Helper {
   };
 
   /**
-   * @description Get info from Trakt and make a new movie object.
-   * @function Helper#getTraktInfo
-   * @memberof module:providers/movie/helper
+   * Get info from Trakt and make a new movie object.
    * @param {String} slug - The slug to query trakt.tv.
    * @returns {Movie} - A new movie.
    */
   async getTraktInfo(slug) {
     try {
-      const traktMovie = await this.trakt.movies.summary({id: slug, extended: "full,images"});
-      const traktWatchers = await this.trakt.movies.watching({id: slug});
+      const traktMovie = await trakt.movies.summary({id: slug, extended: "full,images"});
+      const traktWatchers = await trakt.movies.watching({id: slug});
 
       let watching = 0;
       if (traktWatchers !== null) watching = traktWatchers.length;

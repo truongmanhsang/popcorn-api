@@ -6,20 +6,25 @@ import { maxWebRequest, webRequestTimeout } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
-/**
- * @class
- * @classdesc The factory function for scraping movies from {@link https://yts.ag/}.
- * @memberof module:providers/movie/yts
- * @param {String} name - The name of the YTS provider.
- * @property {Object} helper - The helper object for adding shows.
- * @property {Object} util - The util object with general functions.
- * @property {Object} request - The request object with added defaults.
- */
+/** Class for scraping movies from https://yts.ag/. */
 export default class YTS {
 
+  /**
+   * Create a yts object.
+   * @param {String} name - The name of the torrent provider.
+   * @param {Boolean} debug - Debug mode for extra output.
+   */
   constructor(name) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
     this.name = name;
 
+    /**
+     * The request object with added defaults.
+     * @type {Object}
+     */
     this.request = req.defaults({
       "headers": {
         "Content-Type": "application/json"
@@ -28,14 +33,21 @@ export default class YTS {
       "timeout": webRequestTimeout * 1000
     });
 
+    /**
+     * The helper object for adding movies.
+     * @type {Helper}
+     */
     this.helper = new Helper(this.name);
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     this.util = new Util();
   };
 
   /**
-   * @description Get the total pages to go through.
-   * @function YTS#getTotalPages
-   * @memberof module:lib/yts
+   * Get the total pages to go through.
    * @param {Boolean} [retry=true] - Retry the request.
    * @returns {Promise} - The maximum pages to go through.
    */
@@ -59,9 +71,7 @@ export default class YTS {
   };
 
   /**
-   * @description Format data from movies.
-   * @function YTS#formatPage
-   * @memberof module:lib/yts
+   * Format data from movies.
    * @param {Object} data - Data about the movies.
    * @returns {Object} - An object with the imdb id and the torrents.
    */
@@ -89,9 +99,7 @@ export default class YTS {
   };
 
   /**
-   * @description Get formatted data from one page.
-   * @function YTS#getOnePage
-   * @memberof module:lib/yts
+   * Get formatted data from one page.
    * @param {Integer} page - The page to get the data from.
    * @param {Boolean} [retry=true] - Retry the function.
    * @returns {Promise} - Formatted data from one page.
@@ -115,9 +123,7 @@ export default class YTS {
   };
 
   /**
-   * @description All the found movies.
-   * @function YTS#getMovies
-   * @memberof module:lib/yts
+   * All the found movies.
    * @returns {Array} - A list of all the found movies.
    */
   async getMovies() {
@@ -141,9 +147,7 @@ export default class YTS {
   };
 
   /**
-   * @description Returns a list of all the inserted torrents.
-   * @function YTS#search
-   * @memberof module:providers/movie/yts
+   * Returns a list of all the inserted torrents.
    * @returns {Array} - A list of scraped movies.
    */
   async search() {

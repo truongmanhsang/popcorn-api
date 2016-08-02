@@ -1,24 +1,47 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
-import katApi from "kat-api-pt";
+import KatAPI from "kat-api-pt";
 import { maxWebRequest, katAnimeMap } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
+/** Class for scraping anime shows from https://kat.cr/. */
 export default class KAT {
 
+  /**
+   * Create a kat object.
+   * @param {String} name - The name of the torrent provider.
+   * @param {Boolean} debug - Debug mode for extra output.
+   */
   constructor(name, debug) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
     this.name = name;
 
+    /**
+     * The helper object for adding anime shows.
+     * @type {Helper}
+     */
     this.helper = new Helper(this.name, debug);
-    this.kat = new katApi({ debug });
+
+    /**
+     * A configured KAT API.
+     * @type {KatAPI}
+     * @see https://github.com/ChrisAlderson/kat-api-pt
+     */
+    this.kat = new KatAPI({ debug });
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     this.util = new Util();
   };
 
   /**
-   * @description Get all the animes.
-   * @function KAT#getAnime
-   * @memberof module:providers/anime/kat
+   * Get all the animes.
    * @param {Object} katAnime - The anime information.
    * @returns {Anime} - An anime.
    */
@@ -43,9 +66,7 @@ export default class KAT {
   };
 
   /**
-   * @description Extract anime information based on a regex.
-   * @function KAT#extractAnime
-   * @memberof module:providers/anime/kat
+   * Extract anime information based on a regex.
    * @param {Object} torrent - The torrent to extract the anime information from.
    * @param {Regex} regex - The regex to extract the anime information.
    * @returns {Object} - Information about a anime from the torrent.
@@ -86,11 +107,8 @@ export default class KAT {
   };
 
   /**
-   * @description Get anime info from a given torrent.
-   * @function KAT#getAnimeData
-   * @memberof module:providers/anime/kat
-   * @param {Object} torrent - A torrent object to extract anime information
-   * from.
+   * Get anime info from a given torrent.
+   * @param {Object} torrent - A torrent object to extract anime information from.
    * @returns {Object} - Information about an anime from the torrent.
    */
   getAnimeData(torrent) {
@@ -103,12 +121,9 @@ export default class KAT {
   };
 
   /**
-   * @description Puts all the found animes from the torrents in an array.
-   * @function KAT#getAllKATAnimes
-   * @memberof module:providers/anime/kat
+   * Puts all the found animes from the torrents in an array.
    * @param {Array} torrents - A list of torrents to extract anime information.
-   * @returns {Array} - A list of objects with anime information extracted from
-   * the torrents.
+   * @returns {Array} - A list of objects with anime information extracted from the torrents.
    */
   async getAllKATAnimes(torrents) {
     try {
@@ -147,11 +162,9 @@ export default class KAT {
   };
 
   /**
-   * @description Get all the torrents of a given provider.
-   * @function KAT#getAllTorrents
-   * @memberof module:providers/anime/kat
+   * Get all the torrents of a given provider.
    * @param {Integer} totalPages - The total pages of the query.
-   * @param {Object} provider - The provider to query {@link https://kat.cr/}.
+   * @param {Object} provider - The provider to query https://kat.cr/.
    * @returns {Array} - A list of all the queried torrents.
    */
   async getAllTorrents(totalPages, provider) {
@@ -175,11 +188,9 @@ export default class KAT {
   };
 
   /**
-   * @description Returns a list of all the inserted torrents.
-   * @function KAT#search
-   * @memberof module:providers/anime/kat
-   * @param {Object} provider - The provider to query {@link https://kat.cr/}.
-   * @returns {Array} - A list of scraped animes.
+   * Returns a list of all the inserted torrents.
+   * @param {Object} provider - The provider to query https://kat.cr/.
+   * @returns {Array} - A list of scraped anime shows.
    */
   async search(provider) {
     try {

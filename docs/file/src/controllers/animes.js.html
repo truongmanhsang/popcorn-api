@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/controllers/animes.js | Popcorn API API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/popcorn-official/popcorn-api.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli.js~CLI.html">CLI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/index.js~Index.html">Index</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/scraper.js~Scraper.html">Scraper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/util.js~Util.html">Util</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">config</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/routes.js~Routes.html">Routes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/setup.js~Setup.html">Setup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeMap">katAnimeMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowMap">katShowMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-master">master</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieProviders">movieProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-showProviders">showProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webRequestTimeout">webRequestTimeout</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-workers">workers</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">controllers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/animes.js~Animes.html">Animes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/movies.js~Movies.html">Movies</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/shows.js~Shows.html">Shows</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">models</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Anime">Anime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Movie">Movie</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Show">Show</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/anime</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/horriblesubs.js~HorribleSubs.html">HorribleSubs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/kat.js~KAT.html">KAT</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/movie</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/kat.js~KAT.html">KAT</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/yts.js~YTS.html">YTS</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/show</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/eztv.js~EZTV.html">EZTV</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/kat.js~KAT.html">KAT</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/controllers/animes.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
+import Anime from &quot;../models/Anime&quot;;
+import { pageSize } from &quot;../config/constants&quot;;
+
+/** Class for getting anime data from the MongoDB. */
+export default class Animes {
+
+  /** Create an animes object. */
+  constructor() {
+    /**
+     * Object used for the projection of anime shows.
+     * @type {Object}
+     */
+    Animes.projection = {
+      images: 1,
+      mal_id: 1,
+      haru_id: 1,
+      tvdb_id: 1,
+      imdb_id: 1,
+      slug: 1,
+      title: 1,
+      year: 1,
+      type: 1,
+      item_data: 1,
+      rating: 1,
+      genres: 1
+    };
+  };
+
+  /**
+   * Get all the pages.
+   * @param {Request} req - The express request object.
+   * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
+   * @returns {Array} - A list of pages which are available.
+   */
+  getAnimes(req, res, next) {
+    return Anime.count({
+      num_episodes: {
+        $gt: 0
+      }
+    }).exec().then(count =&gt; {
+      const pages = Math.round(count / pageSize);
+      const docs = [];
+
+      for (let i = 1; i &lt; pages + 1; i++) docs.push(`animes/${i}`);
+
+      return res.json(docs);
+    }).catch(err =&gt; next(err));
+  };
+
+  /**
+   * Get one page.
+   * @param {Request} req - The express request object.
+   * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
+   * @returns {Array} - The contents of one page.
+   */
+  getPage(req, res, next) {
+    const page = req.params.page - 1;
+    const offset = page * pageSize;
+
+    if (req.params.page.match(/all/i)) {
+      return Anime.aggregate([{
+          $match: {
+            num_episodes: {
+              $gt: 0
+            }
+          }
+        }, {
+          $project: Animes.projection
+        }, {
+          $sort: {
+            title: -1
+          }
+        }]).exec()
+        .then(docs =&gt; res.json(docs))
+        .catch(err =&gt; next(err));
+    } else {
+      const query = {num_episodes: {$gt: 0}};
+      const data = req.query;
+
+      if (!data.order) data.order = -1;
+
+      let sort = {
+        &quot;rating.votes&quot;: parseInt(data.order, 10),
+        &quot;rating.percentage&quot;: parseInt(data.order, 10),
+        &quot;rating.watching&quot;: parseInt(data.order, 10)
+      };
+
+      if (data.keywords) {
+        const words = data.keywords.split(&quot; &quot;);
+        let regex = &quot;^&quot;;
+        for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+        query.title = {$regex: new RegExp(`${regex}.*`),$options: &quot;gi&quot;};
+      }
+
+      if (data.sort) {
+        if (data.sort.match(/name/i)) sort = {
+          &quot;title&quot;: (parseInt(data.order, 10) * -1)
+        };
+        if (data.sort.match(/rating/i)) sort = {
+          &quot;rating.percentage&quot;: parseInt(data.order, 10),
+          &quot;rating.votes&quot;: parseInt(data.order, 10)
+        };
+        // if (data.sort === &quot;trending&quot;) sort = {
+        //   &quot;rating.watching&quot;: parseInt(data.order, 10)
+        // };
+        // if (data.sort === &quot;updated&quot;) sort = {
+        //   &quot;latest_episode&quot;: parseInt(data.order, 10)
+        // };
+        if (data.sort.match(/year/i)) sort = {
+          &quot;year&quot;: parseInt(data.order, 10)
+        };
+      }
+
+      if (data.genre &amp;&amp; !data.genre.match(/all/i)) query.genres = data.genre;
+
+      return Anime.aggregate([{
+          $sort: sort
+        }, {
+          $match: query
+        }, {
+          $project: Animes.projection
+        }, {
+          $skip: offset
+        }, {
+          $limit: pageSize
+        }]).exec()
+        .then(docs =&gt; res.json(docs))
+        .catch(err =&gt; next(err));
+    }
+  };
+
+  /**
+   * Get info from one anime.
+   * @param {Request} req - The express request object.
+   * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
+   * @returns {Anime} - The details of a single anime.
+   */
+  getAnime(req, res, next) {
+    return Anime.findOne({_id: req.params.id}, {latest_episode: 0}).exec()
+      .then(docs =&gt; res.json(docs))
+      .catch(err =&gt; next(err));
+  };
+
+  /**
+   * Get a random anime.
+   * @param {Request} req - The express request object.
+   * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
+   * @returns {Anime} - A random movie.
+   */
+  getRandomAnime(req, res, next) {
+    return Anime.aggregate([{
+        $project: Animes.projection
+      }, {
+        $sample: {
+          size: 1
+        }
+      }, {
+        $limit: 1
+      }]).exec()
+      .then(docs =&gt; res.json(docs[0]))
+      .catch(err =&gt; next(err));
+  };
+
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

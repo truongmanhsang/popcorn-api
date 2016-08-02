@@ -10,27 +10,25 @@ import Util from "../util";
 import { server, statusFile, tempDir, updatedFile } from "../config/constants";
 import { name, repository, version } from "../../package.json";
 
-/**
- * @class
- * @classdesc The factory function for displaying information about the
- * server the API is running on.
- * @memberof module:controllers/index
- */
+/** class for displaying information about the server the API is running on. */
 export default class Index {
 
+  /** Create an index object. */
   constructor() {
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
     Index.util = new Util();
   };
 
   /**
-   * @description Displays a given file.
-   * @function Index#displayFile
-   * @memberof module:controllers/index
+   * Displays a given file.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {String} path - The path to the file.
    * @param {String} file - The name of the file.
-   * @returns {File} - A file to display in the browser.
+   * @returns {Object} - A file to display in the browser.
    */
   static displayFile(req, res, root, file) {
     if (fs.existsSync(path.join(root, file))) {
@@ -46,11 +44,10 @@ export default class Index {
   };
 
   /**
-   * @description Get general information about the server.
-   * @function Index#getIndex
-   * @memberof module:controllers/index
+   * Get general information about the server.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
    * @returns {Object} - General information about the server.
    */
   async getIndex(req, res, next) {
@@ -74,9 +71,7 @@ export default class Index {
   };
 
   /**
-   * @description Displays the 'popcorn-api.log' file.
-   * @function Index#getErrorLog
-   * @memberof module:controllers/index
+   * Displays the 'popcorn-api.log' file.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @returns {File} - The content of the log file.
