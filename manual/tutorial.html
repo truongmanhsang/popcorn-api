@@ -53,7 +53,8 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/tutorial.html#tutorial" data-ice="link">Tutorial</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#providers" data-ice="link">Providers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#content-providers" data-ice="link">Content Providers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#kat-providers" data-ice="link">KAT Providers</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#folder-structure" data-ice="link">Folder structure</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#versioning" data-ice="link">Versioning</a></li>
 </ul>
@@ -116,7 +117,11 @@
     <span data-ice="title">Tutorial</span>
   </div>
   <div data-ice="content"><h1 id="tutorial">Tutorial</h1>
-<h3 id="providers">Providers</h3>
+<h3 id="content-providers">Content Providers</h3>
+<ul>
+<li><code>TODO:</code> write about the helper classes.</li>
+</ul>
+<h3 id="kat-providers">KAT Providers</h3>
 <p>Content from <a href="https://kat.cr/">kat.cr</a> is grabbed with so called <code>providers</code> which can be configured in the <code>./src/config/constants.js</code> file. Providers will be converted to a search query to <a href="https://kat.cr/">kat.cr</a> so each provider can get a maximum of 10.000 torrents (or 400 pages or torrents). You can read more on how to make providers <a href="https://github.com/chrisalderson/kat-api-pt">here</a>.</p>
 <p><strong>An example of a provider:</strong></p>
 <pre><code class="lang-javascript"><code class="source-code prettyprint">{
