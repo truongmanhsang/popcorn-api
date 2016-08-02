@@ -4,7 +4,7 @@ import compress from "compression";
 import mongoose from "mongoose";
 import responseTime from "response-time";
 
-import { dbHosts, Promise } from "./constants";
+import { dbHosts, dbName, Promise } from "./constants";
 import Logger from "./logger";
 
 /** Class for setting up the API. */
@@ -42,7 +42,7 @@ export default class Setup {
   /** Connection and configuration of the MongoDB database. */
   static connectMongoDB() {
     mongoose.Promise = Promise;
-    mongoose.connect(`mongodb://${dbHosts.join(",")}/popcorn`, {
+    mongoose.connect(`mongodb://${dbHosts.join(",")}/${dbName}`, {
       db: {
         native_parser: true
       },

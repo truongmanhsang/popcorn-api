@@ -16,9 +16,15 @@ export const cronTime = "0 0 */6 * * *";
 
 /**
  * The host of the server of the database. Default is `["localhost"]`.
- * @type {Array} dbHosts
+ * @type {Array}
  */
 export const dbHosts = ["localhost"];
+
+/**
+ * The name of the database. Default is `popcorn`.
+ * @type {String}
+ */
+export const dbName = "popcorn";
 
 /**
  * Map object for correcting anime slugs form KAT.

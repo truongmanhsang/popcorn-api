@@ -1,6 +1,6 @@
 # Installation
 
-1. Install MongoDB.
+1. Install MongoDB including `mongoexport` and `mongoimport`.
 2. Install NodeJS (at least Node v6.3.0 or greater).
 3. Clone the repository with: `git clone https://github.com/popcorn-official/popcorn-api.git`.
 4. Install `gulp` globally with `[sudo] npm install -g gulp`.

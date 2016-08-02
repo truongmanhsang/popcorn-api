@@ -3,6 +3,7 @@ import Index from "../controllers/index";
 import Animes from "../controllers/animes";
 import Movies from "../controllers/movies";
 import Shows from "../controllers/shows";
+import Exports from "../controllers/exports";
 
 /** Class for setting up the routes for the API. */
 export default class Routes {
@@ -36,6 +37,12 @@ export default class Routes {
      */
     Routes._shows = new Shows();
 
+    /**
+     * The exports controller.
+     * @type {Exports}
+     */
+    Routes._exports = new Exports();
+
     Routes._setupRoutes(app);
   };
 
@@ -61,6 +68,8 @@ export default class Routes {
     app.get("/shows/:page", Routes._shows.getPage);
     app.get("/show/:id", Routes._shows.getShow);
     app.get("/random/show", Routes._shows.getRandomShow);
+
+    app.get("/exports/:collection", Routes._exports.getExport);
   };
 
 };

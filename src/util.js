@@ -3,7 +3,7 @@ import childProcess from "child_process";
 import fs from "fs";
 import path from "path";
 
-import { statusFile, tempDir, traktKey, updatedFile } from "./config/constants";
+import { dbName, statusFile, tempDir, traktKey, updatedFile } from "./config/constants";
 import { name } from "../package.json";
 
 /** Class holding the frequently used functions. */
@@ -38,6 +38,28 @@ export default class Util {
         return resolve(stdout.split("\n").join(""));
       });
     });
+  };
+
+  /**
+   * Export a collection to a JSON file.
+   * @param {String} collection - The collection to export.
+   * @returns {String} - The output of the mongoexport command.
+   */
+  exportCollection(collection) {
+    const jsonFile = path.join(tempDir, `${collection}s`);
+    return this.executeCommand(`mongoexport --db ${dbName} --collection ${collection}s --out "${jsonFile}.json"`);
+  };
+
+  /**
+   * Import a json file to a collection.
+   * @param {String} collection - The collection to import.
+   * @param {String} jsonFile - The json file to import..
+   * @returns {String} - The output of the mongoimport command.
+   */
+  importCollection(collection, jsonFile) {
+    jsonFile = path.join(process.cwd(), jsonFile);
+    if (!fs.existsSync(jsonFile)) return this.onError(`Error: no such file found for '${jsonFile}'`);
+    return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection}s --file "${jsonFile}" --upsert`);
   };
 
   /**

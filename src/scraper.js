@@ -130,20 +130,22 @@ export default class Scraper {
         return Scraper._util.onError(err);
       }
     });
-  }
+  };
 
   /** Initiate the scraping for EZTV and KAT. */
   scrape() {
     Scraper._util.setLastUpdated();
 
+
     asyncq.eachSeries([
-      //this._scrapeEZTVShows,
+      this._scrapeEZTVShows,
       // this._scrapeKATShows,
-      //this._scrapeYTSMovies,
+      this._scrapeYTSMovies,
       // this._scrapeKATMovies,
       this._scrapeHorribelSubsAnime,
       // this._scrapeKATAnime
     ], scraper => scraper()).then(value => Scraper._util.setStatus())
+      .then(res => asyncq.eachSeries(["anime", "movie", "show"], collection => Scraper._util.exportCollection(collection)))
       .catch(err => Scraper._util.onError(`Error while scraping: ${err}`));
   };
 

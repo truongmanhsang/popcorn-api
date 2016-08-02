@@ -2,8 +2,9 @@
 ====================================
 
 New features:
- - Anime! For all you weeaboos
- - Get a random tv show at `/random/show`.
+ - Anime! For all you weeaboos.
+ - Get a random TV show at `/random/show`.
+ - Import & export collection.
 
 Bug fixes:
  - Fixed search not working correctly.

@@ -1,11 +1,13 @@
 // Import the neccesary modules.
 import bytes from "bytes";
 import parseTorrent from "parse-torrent";
+import path from "path";
 import program from "commander";
 import prompt from "prompt";
 import torrentHealth from "torrent-tracker-health";
 
 import Index from "./index";
+import AnimeHelper from "./providers/anime/helper";
 import MovieHelper from "./providers/movie/helper";
 import packageJSON from "../package.json";
 import Setup from "./config/setup";
@@ -29,22 +31,30 @@ export default class CLI {
     // Setup the CLI program.
     program
       .version(`${packageJSON.name} v${packageJSON.version}`)
-      .option("-c, --content <type>", "Add content from the MongoDB database (show | movie).", /^(show)|^(movie)/i, false)
+      .option("-c, --content <type>", "Add content from the MongoDB database (anime | show | movie).", /^(anime)^(show)|^(movie)/i, false)
       .option("-r, --run", "Run the API and start the scraping process.")
-      .option("-s, --server", "Run the API without starting the scraping process.");
+      .option("-s, --server", "Run the API without starting the scraping process.")
+      .option("-e, --export <collection>", "Export a collection to a JSON file.", /^(anime)^(show)|^(movie)/i, false)
+      .option("-i, --import <json>", "Import a JSON file to the database.");
 
     // Extra output on top of the default help output
     program.on("--help", () => {
       console.log("  Examples:");
       console.log("");
-      console.log("    $ popcorn-api -c <movie|show>");
-      console.log("    $ popcorn-api --content <movie|show>");
+      console.log("    $ popcorn-api -c <anime|movie|show>");
+      console.log("    $ popcorn-api --content <anime|movie|show>");
       console.log("");
       console.log("    $ popcorn-api -r");
       console.log("    $ popcorn-api --run");
       console.log("");
       console.log("    $ popcorn-api -s");
       console.log("    $ popcorn-api --server");
+      console.log("");
+      console.log("    $ popcorn-api -e <anime|movie|show>");
+      console.log("    $ popcorn-api --export <anime|movie|show>");
+      console.log("");
+      console.log("    $ popcorn-api -i <path-to-json>");
+      console.log("    $ popcorn-api --import <path-to-json>");
       console.log("");
     });
 
@@ -55,8 +65,17 @@ export default class CLI {
     const imdb = {
       description: "The imdb id of the show/movie to add (tt1234567)",
       type: "string",
-      pattern: /^(tt\d{7})/i,
+      pattern: /^(tt\d{7}|)|^(.*)/i,
       message: "Not a valid imdb id.",
+      required: true
+    };
+
+    // The Hummingbird id property.
+    const hummingbirdId = {
+      description: "The Hummingbird id of the anime to add",
+      type: "string",
+      pattern: /^(.*)/i,
+      message: "Not a validHhummingbird id.",
       required: true
     };
 
@@ -105,6 +124,20 @@ export default class CLI {
     };
 
     /**
+     * The shema used by `prompt` insert an anime show.
+     * @type {Object}
+     */
+    this._animeSchema = {
+      properties: {
+        "imdb": hummingbirdId,
+        "season": season,
+        "episode": episode,
+        "torrent": torrent,
+        "quality": quality
+      }
+    };
+
+    /**
      * The shema used by `prompt` insert a movie.
      * @type {Object}
      */
@@ -130,6 +163,30 @@ export default class CLI {
         "quality": quality
       }
     };
+  };
+
+  /** Adds a show to the database through the CLI. */
+  _animePrompt() {
+    prompt.get(this._showSchema, async(err, result) => {
+      if (err) {
+        util.onError(`An error occurred: ${err}`);
+        process.exit(1);
+      } else {
+        try {
+          const { hummingbirdId, season, episode, quality, torrent } = result;
+          const animeHelper = new AnimeHelper(providerName);
+          const newAnime = await animeHelper.getHummingbirdInfo(hummingbirdId);
+          if (newAnime && newAnime._id) {
+            const data = await getShowTorrentDataRemote(torrent, quality, season, episode);
+            await animeHelper.addEpisodes(newAnime, data, hummingbirdId);
+            process.exit(0);
+          }
+        } catch (err) {
+          this._util.onError(`An error occurred: ${err}`);
+          process.exit(1);
+        }
+      }
+    });
   };
 
   /**
@@ -257,6 +314,15 @@ export default class CLI {
       } else if (program.content.match(/^(movie)/i)) {
         this._moviePrompt();
       }
+    } else if (program.export) {
+      this._util.exportCollection(program.export);
+    } else if (program.import) {
+      let collection = path.basename(program.import);
+      const index = collection.lastIndexOf(".");
+      collection = collection.substring(0, index);
+      this._util.importCollection(collection, program.import)
+        .then(res => console.log(res))
+        .catch(err => console.error(err));
     } else {
       this._util.onError("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
       program.help();

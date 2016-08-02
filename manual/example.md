@@ -21,6 +21,21 @@ Gives some basic information about the server on which the API is running on.
 }
 ```
 
+## Logs
+
+**GET - `http://localhost:5000/logs/error`**
+
+Display the error log. Each message will be in JSON format.
+
+## Export
+
+**GET - `http://localhost:5000/exports/{collection}`**
+
+Download the contents a collection in a json file. Possible collections are:
+ - anime
+ - movie
+ - shows
+
 ## Anime
 
 **GET - `http://localhost:5000/animes/{page}`**
@@ -138,10 +153,6 @@ Gives information about a single anime show based on the given id.
 Gives a random show from the database. The output will be similar to the on directly above.
 
 ## Movie
-
-**GET - `http://localhost:5000/logs/error`**
-
-Display the error log. Each message will be in JSON format.
 
 **GET - `http://localhost:5000/movies/{page}`**
 
@@ -392,6 +403,7 @@ Gives a random show from the database. The output will be similar to the on dire
 
 The following routes support query strings:
 
+- **GET - `http://localhost:5000/animes/{page}`**
 - **GET - `http://localhost:5000/movies/{page}`**
 - **GET - `http://localhost:5000/shows/{page}`**
 
@@ -399,7 +411,13 @@ The following routes support query strings:
 
 `sort=`
 
-Possible options for movies are:
+Possible options for **anime** are:
+
+- `name`: sort by the release date of the movies.
+- `rating`: sort by the highest rated anime.
+- `year`: sort by the release year of the anime.
+
+Possible options for **movies** are:
 
 - `last added`: sort by the release date of the movies.
 - `rating`: sort by the highest rated movies.
@@ -407,7 +425,7 @@ Possible options for movies are:
 - `trending`: sort by trending movies.
 - `year`: sort by the release year of the movies.
 
-Possible options for shows are:
+Possible options for **shows** are:
 
 - `name`: sort by the title of the shows.
 - `rating`: sort by the highest rated shows.
@@ -427,9 +445,9 @@ To order descending: `-1`
 
 `genre=`
 
-##### TV shows & movies
+##### shows & movies
 
-The API supports the following genres for **TV shows** and **movies**:
+The API supports the following genres for **shows** and **movies**:
  - action
  - adventure
  - animation

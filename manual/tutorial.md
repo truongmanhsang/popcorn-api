@@ -31,6 +31,7 @@ The API has the following folder structure.
     ├── controllers      # REST Controllers
     ├── models           # Models
     └── providers        # Providers
+        ├── anime        # Anime providers
         ├── movie        # Movie providers
         └── show         # Show providers
 ```
