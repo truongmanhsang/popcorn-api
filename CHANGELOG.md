@@ -1,5 +1,5 @@
 2.1.0 - You weeaboos - 2 August 2016
-==================================
+====================================
 
 New features:
  - Anime! For all you weeaboos
@@ -7,6 +7,7 @@ New features:
 
 Bug fixes:
  - Fixed search not working correctly.
+ - Fixed #25.
 
 Notes:
  - Moved documentation over to ESDoc.

@@ -1,6 +1,10 @@
 # Tutorial
 
-### Providers
+### Content Providers
+
+- `TODO:` write about the helper classes.
+
+### KAT Providers
 
 Content from [kat.cr](https://kat.cr/) is grabbed with so called `providers` which can be configured in the `./src/config/constants.js` file. Providers will be converted to a search query to [kat.cr](https://kat.cr/) so each provider can get a maximum of 10.000 torrents (or 400 pages or torrents). You can read more on how to make providers [here](https://github.com/chrisalderson/kat-api-pt).
 
