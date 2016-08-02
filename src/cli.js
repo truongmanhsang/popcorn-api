@@ -24,7 +24,7 @@ export default class CLI {
      * The util object with general functions.
      * @type {Util}
      */
-    this.util = new Util();
+    this._util = new Util();
 
     // Setup the CLI program.
     program
@@ -108,7 +108,7 @@ export default class CLI {
      * The shema used by `prompt` insert a movie.
      * @type {Object}
      */
-    this.movieSchema = {
+    this._movieSchema = {
       properties: {
         "imdb": imdb,
         "language": language,
@@ -121,7 +121,7 @@ export default class CLI {
      * The shema used by `prompt` insert a show.
      * @type {Object}
      */
-    this.showSchema = {
+    this._showSchema = {
       properties: {
         "imdb": imdb,
         "season": season,
@@ -139,7 +139,7 @@ export default class CLI {
    * @param {String} quality - The quality of the torrent.
    * @returns {Promise} - Movie data from the torrent.
    */
-  getMovieTorrentDataRemote(torrent, language, quality) {
+  _getMovieTorrentDataRemote(torrent, language, quality) {
     return new Promise((resolve, reject) => {
       parseTorrent.remote(torrent, (err, result) => {
         if (err) return reject(err);
@@ -164,8 +164,8 @@ export default class CLI {
   };
 
   /** Adds a movie to the database through the CLI. */
-  moviePrompt() {
-    prompt.get(this.movieSchema, async(err, result) => {
+  _moviePrompt() {
+    prompt.get(this._movieSchema, async(err, result) => {
       if (err) {
         util.onError(`An error occurred: ${err}`);
         process.exit(1);
@@ -180,7 +180,7 @@ export default class CLI {
             process.exit(0);
           }
         } catch (err) {
-          this.util.onError(`An error occurred: ${err}`);
+          this._util.onError(`An error occurred: ${err}`);
           process.exit(1);
         }
       }
@@ -195,7 +195,7 @@ export default class CLI {
    * @param {Integer} episode - The episode of the show from the torrent.
    * @returns {Promise} - Show data from the torrent.
    */
-  getShowTorrentDataRemote(torrent, quality, season, episode) {
+  _getShowTorrentDataRemote(torrent, quality, season, episode) {
     return new Promise((resolve, reject) => {
       parseTorrent.remote(torrent, (err, result) => {
         if (err) return reject(err);
@@ -219,8 +219,8 @@ export default class CLI {
   };
 
   /** Adds a show to the database through the CLI. */
-  showPrompt() {
-    prompt.get(this.showSchema, async(err, result) => {
+  _showPrompt() {
+    prompt.get(this._showSchema, async(err, result) => {
       if (err) {
         util.onError(`An error occurred: ${err}`);
         process.exit(1);
@@ -235,7 +235,7 @@ export default class CLI {
             process.exit(0);
           }
         } catch (err) {
-          this.util.onError(`An error occurred: ${err}`);
+          this._util.onError(`An error occurred: ${err}`);
           process.exit(1);
         }
       }
@@ -253,12 +253,12 @@ export default class CLI {
       Setup.connectMongoDB();
 
       if (program.content.match(/^(show)/i)) {
-        this.showPrompt();
+        this._showPrompt();
       } else if (program.content.match(/^(movie)/i)) {
-        this.moviePrompt();
+        this._moviePrompt();
       }
     } else {
-      this.util.onError("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
+      this._util.onError("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
       program.help();
     }
   };

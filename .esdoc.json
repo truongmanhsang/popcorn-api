@@ -3,7 +3,7 @@
   "destination": "./docs",
   "includes": [".js$"],
   "excludes": ["(node_modules|build|docs|views|gulpfile*)"],
-  "access": ["public", "protected"],
+  "access": ["public", "protected", "private"],
   "autoPrivate": true,
   "unexportIdentifier": false,
   "undocumentIdentifier": true,

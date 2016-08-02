@@ -10,10 +10,10 @@ export default class Shows {
    */
   constructor() {
     /**
-     * Object used for the projection of shows.
+     * Object used for the projections of shows.
      * @type {Object}
      */
-    Shows.projection = {
+    Shows._projections = {
       _id: 1,
       imdb_id: 1,
       tvdb_id: 1,
@@ -67,7 +67,7 @@ export default class Shows {
             }
           }
         }, {
-          $project: Shows.projection
+          $project: Shows._projections
         }, {
           $sort: {
             title: -1
@@ -123,7 +123,7 @@ export default class Shows {
         }, {
           $match: query
         }, {
-          $project: Shows.projection
+          $project: Shows._projections
         }, {
           $skip: offset
         }, {
@@ -158,7 +158,7 @@ export default class Shows {
    */
   getRandomShow(req, res, next) {
     return Show.aggregate([{
-        $project: Shows.projection
+        $project: Shows._projections
       }, {
         $sample: {
           size: 1

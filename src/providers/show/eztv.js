@@ -25,19 +25,19 @@ export default class EZTV {
      * @type {EztvAPI}
      * @see https://github.com/ChrisAlderson/eztv-api-pt
      */
-    this.eztv = new EztvAPI({ debug });
+    this._eztv = new EztvAPI({ debug });
 
     /**
      * The helper object for adding shows.
      * @type {Helper}
      */
-    this.helper = new Helper(this.name);
+    this._helper = new Helper(this.name);
 
     /**
      * The util object with general functions.
      * @type {Util}
      */
-    this.util = new Util();
+    this._util = new Util();
   };
 
   /**
@@ -45,20 +45,20 @@ export default class EZTV {
    * @param {Object} eztvShow - show data from eztv.
    * @returns {Show} - A complete show.
    */
-  async getShow(eztvShow) {
+  async _getShow(eztvShow) {
     try {
       if (eztvShow) {
-        eztvShow = await this.eztv.getShowData(eztvShow);
-        const newShow = await this.helper.getTraktInfo(eztvShow.slug);
+        eztvShow = await this._eztv.getShowData(eztvShow);
+        const newShow = await this._helper.getTraktInfo(eztvShow.slug);
 
         if (newShow && newShow._id) {
           delete eztvShow.episodes.dateBased;
           delete eztvShow.episodes[0];
-          return await this.helper.addEpisodes(newShow, eztvShow.episodes, eztvShow.slug);
+          return await this._helper.addEpisodes(newShow, eztvShow.episodes, eztvShow.slug);
         }
       }
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -69,17 +69,17 @@ export default class EZTV {
   async search() {
     try {
       console.log(`${this.name}: Starting scraping...`);
-      const eztvShows = await this.eztv.getAllShows();
+      const eztvShows = await this._eztv.getAllShows();
       console.log(`${this.name}: Found ${eztvShows.length} shows.`);
       return await asyncq.mapLimit(eztvShows, maxWebRequest, async eztvShow => {
         try {
-          return await this.getShow(eztvShow);
+          return await this._getShow(eztvShow);
         } catch (err) {
-          return this.util.onError(err);
+          return this._util.onError(err);
         }
       });
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 

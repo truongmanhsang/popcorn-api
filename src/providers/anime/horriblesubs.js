@@ -25,19 +25,19 @@ export default class HorribleSubs {
      * @type {HorribleSubsAPI}
      * @see https://github.com/ChrisAlderson/horriblesubs-api
      */
-    this.horriblesubs = new HorribleSubsAPI({ debug });
+    this._horriblesubs = new HorribleSubsAPI({ debug });
 
     /**
      * The helper object for adding anime shows.
      * @type {Helper}
      */
-    this.helper = new Helper(this.name, debug);
+    this._helper = new Helper(this.name, debug);
 
     /**
      * The util object with general functions.
      * @type {Util}
      */
-    this.util = new Util();
+    this._util = new Util();
   };
 
   /**
@@ -45,19 +45,19 @@ export default class HorribleSubs {
    * @param {Object} horribleSubsAnime - anime data from horriblesubs.
    * @returns {Anime} - A complete show.
    */
-  async getAnime(horribleSubsAnime) {
+  async _getAnime(horribleSubsAnime) {
     try {
       if (horribleSubsAnime) {
-        horribleSubsAnime = await this.horriblesubs.getAnimeData(horribleSubsAnime);
-        const newShow = await this.helper.getHummingbirdInfo(horribleSubsAnime.slug);
+        horribleSubsAnime = await this._horriblesubs.getAnimeData(horribleSubsAnime);
+        const newShow = await this._helper.getHummingbirdInfo(horribleSubsAnime.slug);
 
         if (newShow && newShow._id) {
           delete horribleSubsAnime.episodes[0];
-          return await this.helper.addEpisodes(newShow, horribleSubsAnime.episodes, horribleSubsAnime.slug);
+          return await this._helper.addEpisodes(newShow, horribleSubsAnime.episodes, horribleSubsAnime.slug);
         }
       }
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -68,17 +68,17 @@ export default class HorribleSubs {
   async search() {
     try {
       console.log(`${this.name}: Starting scraping...`);
-      const horribleSubsAnimes = await this.horriblesubs.getAllAnime();
+      const horribleSubsAnimes = await this._horriblesubs.getAllAnime();
       console.log(`${this.name}: Found ${horribleSubsAnimes.length} anime shows.`);
       return await asyncq.mapLimit(horribleSubsAnimes, maxWebRequest, async horribleSubsAnime => {
         try {
-          return await this.getAnime(horribleSubsAnime);
+          return await this._getAnime(horribleSubsAnime);
         } catch (err) {
-          return this.util.onError(err);
+          return this._util.onError(err);
         }
       });
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 

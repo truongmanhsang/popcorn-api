@@ -24,20 +24,20 @@ export default class KAT {
      * The helper object for adding anime shows.
      * @type {Helper}
      */
-    this.helper = new Helper(this.name, debug);
+    this._helper = new Helper(this.name, debug);
 
     /**
      * A configured KAT API.
      * @type {KatAPI}
      * @see https://github.com/ChrisAlderson/kat-api-pt
      */
-    this.kat = new KatAPI({ debug });
+    this._kat = new KatAPI({ debug });
 
     /**
      * The util object with general functions.
      * @type {Util}
      */
-    this.util = new Util();
+    this._util = new Util();
   };
 
   /**
@@ -45,9 +45,9 @@ export default class KAT {
    * @param {Object} katAnime - The anime information.
    * @returns {Anime} - An anime.
    */
-  async getAnime(katAnime) {
+  async _getAnime(katAnime) {
     try {
-      const newAnime = await this.helper.getHummingbirdInfo(katAnime.slug);
+      const newAnime = await this._helper.getHummingbirdInfo(katAnime.slug);
       if (newAnime && newAnime._id) {
         const slug = katAnime.slug;
 
@@ -58,10 +58,10 @@ export default class KAT {
         delete katAnime.episode;
         delete katAnime.quality;
 
-        return await this.helper.addEpisodes(newAnime, katAnime, slug);
+        return await this._helper.addEpisodes(newAnime, katAnime, slug);
       }
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -71,7 +71,7 @@ export default class KAT {
    * @param {Regex} regex - The regex to extract the anime information.
    * @returns {Object} - Information about a anime from the torrent.
    */
-  extractAnime(torrent, regex) {
+  _extractAnime(torrent, regex) {
     let animeTitle = torrent.title.match(regex)[1];
     if (animeTitle.endsWith(" ")) animeTitle = animeTitle.substring(0, animeTitle.length - 1);
     animeTitle = animeTitle.replace(/\./g, " ");
@@ -111,10 +111,10 @@ export default class KAT {
    * @param {Object} torrent - A torrent object to extract anime information from.
    * @returns {Object} - Information about an anime from the torrent.
    */
-  getAnimeData(torrent) {
+  _getAnimeData(torrent) {
     const secondSeason = /\[horriblesubs\].(.*).S(\d)...(\d{2,3}).\[(\d{3,4}p)\]/i;
     if (torrent.title.match(secondSeason)) {
-      return this.extractAnime(torrent, secondSeason);
+      return this._extractAnime(torrent, secondSeason);
     } else {
       console.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
@@ -125,12 +125,12 @@ export default class KAT {
    * @param {Array} torrents - A list of torrents to extract anime information.
    * @returns {Array} - A list of objects with anime information extracted from the torrents.
    */
-  async getAllKATAnimes(torrents) {
+  async _getAllKATAnimes(torrents) {
     try {
       const animes = [];
       await asyncq.mapSeries(torrents, torrent => {
         if (torrent) {
-          const anime = this.getAnimeData(torrent);
+          const anime = this._getAnimeData(torrent);
           if (anime) {
             if (animes.length != 0) {
               const { animeTitle, slug, season, episode, quality } = anime;
@@ -157,7 +157,7 @@ export default class KAT {
       });
       return animes;
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -167,23 +167,23 @@ export default class KAT {
    * @param {Object} provider - The provider to query https://kat.cr/.
    * @returns {Array} - A list of all the queried torrents.
    */
-  async getAllTorrents(totalPages, provider) {
+  async _getAllTorrents(totalPages, provider) {
     try {
       let katTorrents = [];
       await asyncq.timesSeries(totalPages, async page => {
         try {
           provider.query.page = page + 1;
           console.log(`${this.name}: Starting searching KAT on page ${provider.query.page} out of ${totalPages}`);
-          const result = await this.kat.search(provider.query);
+          const result = await this._kat.search(provider.query);
           katTorrents = katTorrents.concat(result.results);
         } catch (err) {
-          return this.util.onError(err);
+          return this._util.onError(err);
         }
       });
       console.log(`${this.name}: Found ${katTorrents.length} torrents.`);
       return katTorrents;
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -200,18 +200,18 @@ export default class KAT {
       provider.query.verified = 1;
       provider.query.adult_filter = 1;
 
-      const getTotalPages = await this.kat.search(provider.query);
+      const getTotalPages = await this._kat.search(provider.query);
       const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
-      if (!totalPages) return this.util.onError(`${this.name}: totalPages returned: '${totalPages}'`);
+      if (!totalPages) return this._util.onError(`${this.name}: totalPages returned: '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
       console.log(`${this.name}: Total pages ${totalPages}`);
 
-      const katTorrents = await this.getAllTorrents(totalPages, provider);
-      const katAnimes = await this.getAllKATAnimes(katTorrents);
+      const katTorrents = await this._getAllTorrents(totalPages, provider);
+      const katAnimes = await this._getAllKATAnimes(katTorrents);
       return await asyncq.mapLimit(katAnimes, maxWebRequest,
-        katAnime => this.getAnime(katAnime).catch(err => this.util.onError(err)));
+        katAnime => this._getAnime(katAnime).catch(err => this._util.onError(err)));
     } catch (err) {
-      this.util.onError(err);
+      this._util.onError(err);
     }
   };
 

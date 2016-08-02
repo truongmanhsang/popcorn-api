@@ -24,7 +24,7 @@ export default class Logger {
       transports: [
         new winston.transports.Console({
           name,
-          formatter: Logger.consoleFormatter,
+          formatter: Logger._consoleFormatter,
           handleExceptions: true,
           prettyPrint: true
         }),
@@ -32,7 +32,7 @@ export default class Logger {
           filename: path.join(tempDir, `${name}.log`),
           level: "warn",
           json: false,
-          formatter: Logger.fileFormatter,
+          formatter: Logger._fileFormatter,
           maxsize: 5242880,
           handleExceptions: true
         })
@@ -59,7 +59,7 @@ export default class Logger {
    * @param {Object} args - Arguments passed by Winston.
    * @returns {Object} - Formatter arguments passed by Winston.
    */
-  static checkEmptyMessage(args) {
+  static _checkEmptyMessage(args) {
     if (args.message === "" && Object.keys(args.meta).length !== 0)
       args.message = JSON.stringify(args.meta);
 
@@ -71,7 +71,7 @@ export default class Logger {
    * @param {String} level - The log level.
    * @returns {String} - A color based on the log level.
    */
-  static getLevelColor(level) {
+  static _getLevelColor(level) {
     switch (level) {
     case "error":
       return "\x1b[31m";
@@ -96,9 +96,9 @@ export default class Logger {
    * @param {Object} args - Arguments passed by Winston.
    * @returns {String} - The formatted message.
    */
-  static consoleFormatter(args) {
-    args = Logger.checkEmptyMessage(args);
-    const color = Logger.getLevelColor(args.level);
+  static _consoleFormatter(args) {
+    args = Logger._checkEmptyMessage(args);
+    const color = Logger._getLevelColor(args.level);
 
     return sprintf(`\x1b[0m[%s] ${color}%5s:\x1b[0m %2s/%d: \x1b[36m%s\x1b[0m`,
       new Date().toISOString(), args.level.toUpperCase(), name,
@@ -110,8 +110,8 @@ export default class Logger {
    * @param {Object} args - Arguments passed by Winston.
    * @returns {String} - The formatted message.
    */
-  static fileFormatter(args) {
-    args = Logger.checkEmptyMessage(args);
+  static _fileFormatter(args) {
+    args = Logger._checkEmptyMessage(args);
     return JSON.stringify({
       name,
       pid: process.pid,

@@ -19,7 +19,7 @@ export default class Index {
      * The util object with general functions.
      * @type {Util}
      */
-    Index.util = new Util();
+    Index._util = new Util();
   };
 
   /**
@@ -30,7 +30,7 @@ export default class Index {
    * @param {String} file - The name of the file.
    * @returns {Object} - A file to display in the browser.
    */
-  static displayFile(req, res, root, file) {
+  static _displayFile(req, res, root, file) {
     if (fs.existsSync(path.join(root, file))) {
       return res.sendFile(file, {
         root,
@@ -54,7 +54,7 @@ export default class Index {
     try {
       const { updated } = JSON.parse(fs.readFileSync(path.join(tempDir, updatedFile), "utf8")),
         { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), "utf8")),
-        commit = await Index.util.executeCommand("git rev-parse --short HEAD"),
+        commit = await Index._util.executeCommand("git rev-parse --short HEAD"),
         totalAnimes = await Anime.count({num_episodes: {$gt: 0}}).exec(),
         totalMovies = await Movie.count().exec(),
         totalShows = await Show.count({num_seasons: {$gt: 0}}).exec();
@@ -77,7 +77,7 @@ export default class Index {
    * @returns {File} - The content of the log file.
    */
   getErrorLog(req, res) {
-    return Index.displayFile(req, res, tempDir, `${name}.log`);
+    return Index._displayFile(req, res, tempDir, `${name}.log`);
   };
 
 };

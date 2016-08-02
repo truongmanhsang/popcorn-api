@@ -22,45 +22,45 @@ export default class Routes {
      * The animes controller.
      * @type {Animes}
      */
-    Routes.animes = new Animes();
+    Routes._animes = new Animes();
 
     /**
      * The movies controller.
      * @type {Movies}
      */
-    Routes.movies = new Movies();
+    Routes._movies = new Movies();
 
     /**
      * The shows controller.
      * @type {Shows}
      */
-    Routes.shows = new Shows();
+    Routes._shows = new Shows();
 
-    Routes.setupRoutes(app);
+    Routes._setupRoutes(app);
   };
 
   /**
    * Setup ExpressJS routing.
    * @param {ExpressJS} app - The ExpresssJS application.
    */
-  static setupRoutes(app) {
+  static _setupRoutes(app) {
     app.get("/", Routes.index.getIndex);
     app.get("/logs/error", Routes.index.getErrorLog);
 
-    app.get("/animes", Routes.animes.getAnimes);
-    app.get("/animes/:page", Routes.animes.getPage);
-    app.get("/anime/:id", Routes.animes.getAnime);
-    app.get("/random/anime", Routes.animes.getRandomAnime);
+    app.get("/animes", Routes._animes.getAnimes);
+    app.get("/animes/:page", Routes._animes.getPage);
+    app.get("/anime/:id", Routes._animes.getAnime);
+    app.get("/random/anime", Routes._animes.getRandomAnime);
 
-    app.get("/movies", Routes.movies.getMovies);
-    app.get("/movies/:page", Routes.movies.getPage);
-    app.get("/movie/:id", Routes.movies.getMovie);
-    app.get("/random/movie", Routes.movies.getRandomMovie);
+    app.get("/movies", Routes._movies.getMovies);
+    app.get("/movies/:page", Routes._movies.getPage);
+    app.get("/movie/:id", Routes._movies.getMovie);
+    app.get("/random/movie", Routes._movies.getRandomMovie);
 
-    app.get("/shows", Routes.shows.getShows);
-    app.get("/shows/:page", Routes.shows.getPage);
-    app.get("/show/:id", Routes.shows.getShow);
-    app.get("/random/show", Routes.shows.getRandomShow);
+    app.get("/shows", Routes._shows.getShows);
+    app.get("/shows/:page", Routes._shows.getPage);
+    app.get("/show/:id", Routes._shows.getShow);
+    app.get("/random/show", Routes._shows.getRandomShow);
   };
 
 };

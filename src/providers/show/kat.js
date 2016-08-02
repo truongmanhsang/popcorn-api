@@ -24,20 +24,20 @@ export default class KAT {
      * The helper object for adding shows.
      * @type {Helper}
      */
-    this.helper = new Helper(this.name);
+    this._helper = new Helper(this.name);
 
     /**
      * A configured KAT API.
      * @type {KatAPI}
      * @see https://github.com/ChrisAlderson/kat-api-pt
      */
-    this.kat = new KatAPI({ debug });
+    this._kat = new KatAPI({ debug });
 
     /**
      * The util object with general functions.
      * @type {Util}
      */
-    this.util = new Util();
+    this._util = new Util();
 
   };
 
@@ -46,9 +46,9 @@ export default class KAT {
    * @param {Object} katShow - The show information.
    * @returns {Show} - A show.
    */
-  async getShow(katShow) {
+  async _getShow(katShow) {
     try {
-      const newShow = await this.helper.getTraktInfo(katShow.slug);
+      const newShow = await this._helper.getTraktInfo(katShow.slug);
       if (newShow && newShow._id) {
         const slug = katShow.slug;
 
@@ -60,10 +60,10 @@ export default class KAT {
         delete katShow.quality;
         delete katShow.dateBased;
         delete katShow[0];
-        return await this.helper.addEpisodes(newShow, katShow, slug);
+        return await this._helper.addEpisodes(newShow, katShow, slug);
       }
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -74,7 +74,7 @@ export default class KAT {
    * @param {Boolean} dateBased - Check for dateBased episodes.
    * @returns {Object} - Information about a show from the torrent.
    */
-  extractShow(torrent, regex, dateBased) {
+  _extractShow(torrent, regex, dateBased) {
     let showTitle = torrent.title.match(regex)[1];
     if (showTitle.endsWith(" ")) showTitle = showTitle.substring(0, showTitle.length - 1);
     showTitle = showTitle.replace(/\./g, " ");
@@ -110,16 +110,16 @@ export default class KAT {
    * @param {Object} torrent - A torrent object to extract show information from.
    * @returns {Object} - Information about a show from the torrent.
    */
-  getShowData(torrent) {
+  _getShowData(torrent) {
     const seasonBased = /(.*).[sS](\d{2})[eE](\d{2})/;
     const vtv = /(.*).(\d{1,2})[x](\d{2})/;
     const dateBased = /(.*).(\d{4}).(\d{2}.\d{2})/;
     if (torrent.title.match(seasonBased)) {
-      return this.extractShow(torrent, seasonBased, false);
+      return this._extractShow(torrent, seasonBased, false);
     } else if (torrent.title.match(vtv)) {
-      return this.extractShow(torrent, vtv, false);
+      return this._extractShow(torrent, vtv, false);
     } else if (torrent.title.match(dateBased)) {
-      return this.extractShow(torrent, dateBased, true);
+      return this._extractShow(torrent, dateBased, true);
     } else {
       console.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
@@ -130,13 +130,13 @@ export default class KAT {
    * @param {Array} torrents - A list of torrents to extract show information.
    * @returns {Array} - A list of objects with show information extracted from the torrents.
    */
-  async getAllKATShows(torrents) {
+  async _getAllKATShows(torrents) {
     try {
       const shows = [];
 
       await asyncq.mapSeries(torrents, torrent => {
         if (torrent) {
-          const show = this.getShowData(torrent);
+          const show = this._getShowData(torrent);
           if (show) {
             if (shows.length != 0) {
               const { showTitle, slug, season, episode, quality } = show;
@@ -164,7 +164,7 @@ export default class KAT {
 
       return shows;
     } catch (err) {
-      this.util.onError(err);
+      this._util.onError(err);
     }
   };
 
@@ -174,23 +174,23 @@ export default class KAT {
    * @param {Object} provider - The provider to query https://kat.cr/.
    * @returns {Array} - A list of all the queried torrents.
    */
-  async getAllTorrents(totalPages, provider) {
+  async _getAllTorrents(totalPages, provider) {
     try {
       let katTorrents = [];
       await asyncq.timesSeries(totalPages, async page => {
         try {
           provider.query.page = page + 1;
           console.log(`${this.name}: Starting searching KAT on page ${provider.query.page} out of ${totalPages}`);
-          const result = await this.kat.search(provider.query);
+          const result = await this._kat.search(provider.query);
           katTorrents = katTorrents.concat(result.results);
         } catch (err) {
-          return this.util.onError(err);
+          return this._util.onError(err);
         }
       });
       console.log(`${this.name}: Found ${katTorrents.length} torrents.`);
       return katTorrents;
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -208,23 +208,23 @@ export default class KAT {
       provider.query.adult_filter = 1;
       provider.query.language = "en";
 
-      const getTotalPages = await this.kat.search(provider.query);
+      const getTotalPages = await this._kat.search(provider.query);
       const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
-      if (!totalPages) return this.util.onError(`${this.name}: totalPages returned; '${totalPages}'`);
+      if (!totalPages) return this._util.onError(`${this.name}: totalPages returned; '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
       console.log(`${this.name}: Total pages ${totalPages}`);
 
-      const katTorrents = await this.getAllTorrents(totalPages, provider);
-      const katShows = await this.getAllKATShows(katTorrents);
+      const katTorrents = await this._getAllTorrents(totalPages, provider);
+      const katShows = await this._getAllKATShows(katTorrents);
       return await asyncq.mapLimit(katShows, maxWebRequest, async katShow => {
         try {
-          return await this.getShow(katShow);
+          return await this._getShow(katShow);
         } catch (err) {
-          return this.util.onError(err);
+          return this._util.onError(err);
         }
       });
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 

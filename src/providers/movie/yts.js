@@ -25,7 +25,7 @@ export default class YTS {
      * The request object with added defaults.
      * @type {Object}
      */
-    this.request = req.defaults({
+    this._request = req.defaults({
       "headers": {
         "Content-Type": "application/json"
       },
@@ -37,13 +37,13 @@ export default class YTS {
      * The helper object for adding movies.
      * @type {Helper}
      */
-    this.helper = new Helper(this.name);
+    this._helper = new Helper(this.name);
 
     /**
      * The util object with general functions.
      * @type {Util}
      */
-    this.util = new Util();
+    this._util = new Util();
   };
 
   /**
@@ -51,12 +51,12 @@ export default class YTS {
    * @param {Boolean} [retry=true] - Retry the request.
    * @returns {Promise} - The maximum pages to go through.
    */
-  getTotalPages(retry = true) {
+  _getTotalPages(retry = true) {
     const url = "list_movies.json";
     return new Promise((resolve, reject) => {
-      this.request(url, (err, res, body) => {
+      this._request(url, (err, res, body) => {
         if (err && retry) {
-          return resolve(this.getTotalPages(false));
+          return resolve(this._getTotalPages(false));
         } else if (err) {
           return reject(`YTS: ${err} with link: 'list_movies.json'`);
         } else if (!body || res.statusCode >= 400) {
@@ -75,7 +75,7 @@ export default class YTS {
    * @param {Object} data - Data about the movies.
    * @returns {Object} - An object with the imdb id and the torrents.
    */
-  formatPage(data) {
+  _formatPage(data) {
     return asyncq.each(data, movie => {
       if (movie && movie.torrents && movie.imdb_code && movie.language.match(/english/i)) {
         const torrents = {};
@@ -104,19 +104,19 @@ export default class YTS {
    * @param {Boolean} [retry=true] - Retry the function.
    * @returns {Promise} - Formatted data from one page.
    */
-  getOnePage(page, retry = true) {
+  _getOnePage(page, retry = true) {
     const url = `?limit=50&page=${page + 1}`;
     return new Promise((resolve, reject) => {
-      this.request(url, (err, res, body) => {
+      this._request(url, (err, res, body) => {
         if (err && retry) {
-          return resolve(this.getOnePage(page, false));
+          return resolve(this._getOnePage(page, false));
         } else if (err) {
           return reject(`YTS: ${err} with link: '?limit=50&page=${page + 1}'`);
         } else if (!body || res.statusCode >= 400) {
           return reject(`YTS: Could not find data on '${url}'.`);
         } else {
           body = JSON.parse(body);
-          return resolve(this.formatPage(body.data.movies));
+          return resolve(this._formatPage(body.data.movies));
         }
       });
     });
@@ -126,23 +126,23 @@ export default class YTS {
    * All the found movies.
    * @returns {Array} - A list of all the found movies.
    */
-  async getMovies() {
+  async _getMovies() {
     try {
-      const totalPages = await this.getTotalPages(); // Change to 'const' for production.
-      if (!totalPages) return this.util.onError(`${this.name}: totalPages returned; '${totalPages}'`);
+      const totalPages = await this._getTotalPages(); // Change to 'const' for production.
+      if (!totalPages) return this._util.onError(`${this.name}: totalPages returned; '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
       let movies = [];
       return await asyncq.timesSeries(totalPages, async page => {
         try {
           console.log(`${this.name}: Starting searching YTS on page ${page + 1} out of ${totalPages}`);
-          const onePage = await this.getOnePage(page);
+          const onePage = await this._getOnePage(page);
           movies = movies.concat(onePage);
         } catch (err) {
-          return this.util.onError(err);
+          return this._util.onError(err);
         }
       }).then(value => movies);
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -153,18 +153,18 @@ export default class YTS {
   async search() {
     try {
       console.log(`${this.name}: Starting scraping...`);
-      const movies = await this.getMovies();
+      const movies = await this._getMovies();
       return await asyncq.eachLimit(movies, maxWebRequest, async ytsMovie => {
         if (ytsMovie && ytsMovie.imdb_id) {
-          const newMovie = await this.helper.getTraktInfo(ytsMovie.imdb_id);
+          const newMovie = await this._helper.getTraktInfo(ytsMovie.imdb_id);
           if (newMovie && newMovie._id) {
             delete ytsMovie.imdb_id;
-            return await this.helper.addTorrents(newMovie, ytsMovie.torrents);
+            return await this._helper.addTorrents(newMovie, ytsMovie.torrents);
           }
         }
       });
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 

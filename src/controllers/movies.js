@@ -11,7 +11,7 @@ export default class Movies {
      * Object used for the projection of movies.
      * @type {Object}
      */
-    Movies.projection = {
+    Movies._projection = {
       _id: 1,
       imdb_id: 1,
       title: 1,
@@ -59,7 +59,7 @@ export default class Movies {
 
     if (req.params.page.match(/all/i)) {
       return Movie.aggregate([{
-          $project: Movies.projection
+          $project: Movies._projection
         }, {
           $sort: {
             title: -1
@@ -115,7 +115,7 @@ export default class Movies {
         }, {
           $match: query
         }, {
-          $project: Movies.projection
+          $project: Movies._projection
         }, {
           $skip: offset
         }, {
@@ -139,7 +139,7 @@ export default class Movies {
           _id: req.params.id
         }
       }, {
-        $project: Movies.projection
+        $project: Movies._projection
       }, {
         $limit: 1
       }]).exec()
@@ -156,7 +156,7 @@ export default class Movies {
    */
   getRandomMovie(req, res, next) {
     return Movie.aggregate([{
-        $project: Movies.projection
+        $project: Movies._projection
       }, {
         $sample: {
           size: 1

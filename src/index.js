@@ -37,19 +37,19 @@ export default class Index {
      * The express object.
      * @type {Express}
      */
-    Index.app = new Express();
+    Index._app = new Express();
 
     /**
      * The util object with general functions.
      * @type {Util}
      */
-    Index.util = new Util();
+    Index._util = new Util();
 
     /**
      * The scraper object to scrape for torrents.
      * @type {Scraper}
      */
-    Index.scraper = new Scraper(debug);
+    Index._scraper = new Scraper(debug);
 
     // Create a new logger class & override the console object with Winston.
     if (pretty) {
@@ -57,66 +57,66 @@ export default class Index {
        * The logger object to configure the logging.
        * @type {Logger}
        */
-      Index.logger = new Logger();
+      Index._logger = new Logger();
     }
 
     // Setup the MongoDB configuration and ExpressJS configuration.
-    const setup = new Setup(Index.app, pretty);
+    const _setup = new Setup(Index._app, pretty);
 
     // Setup the API routes.
-    const routes = new Routes(Index.app);
+    const _routes = new Routes(Index._app);
 
     // Start the API.
-    Index.startAPI(start);
+    Index._startAPI(start);
   };
 
   /**
    * Function to start the API.
    * @param {Boolean} [start=true] - Start the scraping.
    */
-  static startAPI(start) {
+  static _startAPI(start) {
 
     if (cluster.isMaster) { // Check is the cluster is the master
       // Clear the log files from the temp directory.
-      Index.util.resetLog();
+      Index._util.resetLog();
 
       // Setup the temporary directory
-      Index.util.createTemp();
+      Index._util.createTemp();
 
       // Fork workers.
       for (let i = 0; i < Math.min(os.cpus().length, workers); i++) cluster.fork();
 
       // Check for errors with the workers.
       cluster.on("exit", worker => {
-        Index.util.onError(`Worker '${worker.process.pid}' died, spinning up another!`);
+        Index._util.onError(`Worker '${worker.process.pid}' died, spinning up another!`);
         cluster.fork();
       });
 
       // Start the cronjob.
       if (master) {
-        const scraper = new Scraper();
+        // WARNING: Domain module is pending deprication: https://nodejs.org/api/domain.html
         const scope = domain.create();
         scope.run(() => {
           console.log("API started");
           try {
             new cron.CronJob({
               cronTime, timeZone,
-              onTick: () => scraper.scrape(),
-              onComplete: () => Index.util.setStatus()
+              onTick: () => Index._scraper.scrape(),
+              onComplete: () => Index._util.setStatus()
             });
 
-            Index.util.setLastUpdated("Never");
-            Index.util.setStatus();
+            Index._util.setLastUpdated("Never");
+            Index._util.setStatus();
 
-            if (start) scraper.scrape();
+            if (start) Index._scraper.scrape();
           } catch (err) {
-            return Index.util.onError(err);
+            return Index._util.onError(err);
           }
         });
-        scope.on("error", err => Index.util.onError(err));
+        scope.on("error", err => Index._util.onError(err));
       }
     } else {
-      Index.app.listen(port);
+      Index._app.listen(port);
     }
   };
 

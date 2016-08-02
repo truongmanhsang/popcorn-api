@@ -24,20 +24,20 @@ export default class KAT {
      * The helper object for adding movies.
      * @type {Helper}
      */
-    this.helper = new Helper(this.name);
+    this._helper = new Helper(this.name);
 
     /**
      * A configured KAT API.
      * @type {KatAPI}
      * @see https://github.com/ChrisAlderson/kat-api-pt
      */
-    this.kat = new KatAPI({ debug });
+    this._kat = new KatAPI({ debug });
 
     /**
      * The util object with general functions.
      * @type {Util}
      */
-    this.util = new Util();
+    this._util = new Util();
   };
 
   /**
@@ -45,9 +45,9 @@ export default class KAT {
    * @param {Object} katMovie - The movie information.
    * @returns {Movie} - A movie.
    */
-  async getMovie(katMovie) {
+  async _getMovie(katMovie) {
     try {
-      const newMovie = await this.helper.getTraktInfo(katMovie.slugYear);
+      const newMovie = await this._helper.getTraktInfo(katMovie.slugYear);
       if (newMovie && newMovie._id) {
         delete katMovie.movieTitle;
         delete katMovie.slug;
@@ -57,10 +57,10 @@ export default class KAT {
         delete katMovie.year;
         delete katMovie.language;
 
-        return await this.helper.addTorrents(newMovie, katMovie);
+        return await this._helper.addTorrents(newMovie, katMovie);
       }
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -71,7 +71,7 @@ export default class KAT {
    * @param {Regex} regex - The regex to extract the movie information.
    * @returns {Object} - Information about a movie from the torrent.
    */
-  extractMovie(torrent, language, regex) {
+  _extractMovie(torrent, language, regex) {
     let movieTitle = torrent.title.match(regex)[1];
     if (movieTitle.endsWith(" ")) movieTitle = movieTitle.substring(0, movieTitle.length - 1);
     movieTitle = movieTitle.replace(/\./g, " ");
@@ -101,16 +101,16 @@ export default class KAT {
    * @param {String} language - The language of the torrent.
    * @returns {Object} - Information about a movie from the torrent.
    */
-  getMovieData(torrent, language) {
+  _getMovieData(torrent, language) {
     const threeDimensions = /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/;
     const fourKay = /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/;
     const withYear = /(.*).(\d{4})\D+(\d{3,4}p)/;
     if (torrent.title.match(threeDimensions)) {
-      return this.extractMovie(torrent, language, threeDimensions);
+      return this._extractMovie(torrent, language, threeDimensions);
     } else if (torrent.title.match(fourKay)) {
-      return this.extractMovie(torrent, language, fourKay);
+      return this._extractMovie(torrent, language, fourKay);
     } else if (torrent.title.match(withYear)) {
-      return this.extractMovie(torrent, language, withYear);
+      return this._extractMovie(torrent, language, withYear);
     } else {
       console.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
@@ -122,12 +122,12 @@ export default class KAT {
    * @param {String} language - The language of the torrent.
    * @returns {Array} - A list of objects with movie information extracted from the torrents.
    */
-  async getAllKATMovies(torrents, language) {
+  async _getAllKATMovies(torrents, language) {
     try {
       const movies = [];
       await asyncq.mapSeries(torrents, torrent => {
         if (torrent) {
-          const movie = this.getMovieData(torrent, language);
+          const movie = this._getMovieData(torrent, language);
           if (movie) {
             if (movies.length != 0) {
               const { movieTitle, slug, language, quality } = movie;
@@ -151,7 +151,7 @@ export default class KAT {
       });
       return movies;
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -161,23 +161,23 @@ export default class KAT {
    * @param {Object} provider - The provider to query https://kat.cr/.
    * @returns {Array} - A list of all the queried torrents.
    */
-  async getAllTorrents(totalPages, provider) {
+  async _getAllTorrents(totalPages, provider) {
     try {
       let katTorrents = [];
       await asyncq.timesSeries(totalPages, async page => {
         try {
           provider.query.page = page + 1;
           console.log(`${this.name}: Starting searching KAT on page ${provider.query.page} out of ${totalPages}`);
-          const result = await this.kat.search(provider.query);
+          const result = await this._kat.search(provider.query);
           katTorrents = katTorrents.concat(result.results);
         } catch (err) {
-          return this.util.onError(err);
+          return this._util.onError(err);
         }
       });
       console.log(`${this.name}: Found ${katTorrents.length} torrents.`);
       return katTorrents;
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -188,7 +188,7 @@ export default class KAT {
    */
   async search(provider) {
     try {
-      if (!provider.query.language) return this.util.onError(`Provider with name: '${this.name}' does not have a language set!`);
+      if (!provider.query.language) return this._util.onError(`Provider with name: '${this.name}' does not have a language set!`);
 
       console.log(`${this.name}: Starting scraping...`);
       provider.query.page = 1;
@@ -196,18 +196,18 @@ export default class KAT {
       provider.query.verified = 1;
       provider.query.adult_filter = 1;
 
-      const getTotalPages = await this.kat.search(provider.query);
+      const getTotalPages = await this._kat.search(provider.query);
       const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
-      if (!totalPages) return this.util.onError(`${this.name}: totalPages returned: '${totalPages}'`);
+      if (!totalPages) return this._util.onError(`${this.name}: totalPages returned: '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
       console.log(`${this.name}: Total pages ${totalPages}`);
 
-      const katTorrents = await this.getAllTorrents(totalPages, provider);
-      const katMovies = await this.getAllKATMovies(katTorrents, provider.query.language);
+      const katTorrents = await this._getAllTorrents(totalPages, provider);
+      const katMovies = await this._getAllKATMovies(katTorrents, provider.query.language);
       return await asyncq.mapLimit(katMovies, maxWebRequest,
-        katMovie => this.getMovie(katMovie).catch(err => this.util.onError(err)));
+        katMovie => this._getMovie(katMovie).catch(err => this._util.onError(err)));
     } catch (err) {
-      this.util.onError(err);
+      this._util.onError(err);
     }
   };
 

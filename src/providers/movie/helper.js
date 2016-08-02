@@ -23,7 +23,7 @@ export default class Helper {
      * The util object with general functions.
      * @type {Util}
      */
-    this.util = new Util();
+    this._util = new Util();
   };
 
   /**
@@ -34,7 +34,7 @@ export default class Helper {
    * @param {String} quality - The quality of the torrent.
    * @return {Movie} - A movie with merged torrents.
    */
-   updateTorrent(movie, found, language, quality) {
+   _updateTorrent(movie, found, language, quality) {
      let update = false;
 
      if (found.torrents[language] && movie.torrents[language]) {
@@ -67,7 +67,7 @@ export default class Helper {
    * @param {Movie} movie - The movie to update its torrent.
    * @returns {Movie} - A newly updated movie.
    */
-  async updateMovie(movie) {
+  async _updateMovie(movie) {
     try {
       const found = await Movie.findOne({
         _id: movie._id
@@ -77,8 +77,8 @@ export default class Helper {
 
         if (found.torrents) {
           Object.keys(found.torrents).forEach(language => {
-            movie = this.updateTorrent(movie, found, language, "720p");
-            movie = this.updateTorrent(movie, found, language, "1080p");
+            movie = this._updateTorrent(movie, found, language, "720p");
+            movie = this._updateTorrent(movie, found, language, "1080p");
           });
         }
 
@@ -90,7 +90,7 @@ export default class Helper {
         return await new Movie(movie).save();
       }
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -103,7 +103,7 @@ export default class Helper {
   addTorrents(movie, torrents) {
     return asyncq.each(Object.keys(torrents),
         torrent => movie.torrents[torrent] = torrents[torrent])
-      .then(value => this.updateMovie(movie));
+      .then(value => this._updateMovie(movie));
   };
 
   /**
@@ -150,7 +150,7 @@ export default class Helper {
         };
       }
     } catch (err) {
-      return this.util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 

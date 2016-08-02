@@ -11,7 +11,7 @@ export default class Animes {
      * Object used for the projection of anime shows.
      * @type {Object}
      */
-    Animes.projection = {
+    Animes._projection = {
       images: 1,
       mal_id: 1,
       haru_id: 1,
@@ -68,7 +68,7 @@ export default class Animes {
             }
           }
         }, {
-          $project: Animes.projection
+          $project: Animes._projection
         }, {
           $sort: {
             title: -1
@@ -121,7 +121,7 @@ export default class Animes {
         }, {
           $match: query
         }, {
-          $project: Animes.projection
+          $project: Animes._projection
         }, {
           $skip: offset
         }, {
@@ -154,7 +154,7 @@ export default class Animes {
    */
   getRandomAnime(req, res, next) {
     return Anime.aggregate([{
-        $project: Animes.projection
+        $project: Animes._projection
       }, {
         $sample: {
           size: 1

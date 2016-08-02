@@ -23,7 +23,7 @@ export default class Helper {
      * The util object with general functions.
      * @type {Util}
      */
-    this.util = new Util();
+    this._util = new Util();
   };
 
   /**
@@ -31,7 +31,7 @@ export default class Helper {
    * @param {Show} show - The show to update the number of seasons.
    * @returns {Show} - A newly updated show.
    */
-  async updateNumSeasons(show) {
+  async _updateNumSeasons(show) {
     const saved = await Show.findOneAndUpdate({
       _id: show._id
     }, show, {
@@ -58,7 +58,7 @@ export default class Helper {
    * @param {String} quality - The quality of the torrent.
    * @returns {Show} - A show with merged torrents.
    */
-  updateEpisode(matching, found, show, quality) {
+  _updateEpisode(matching, found, show, quality) {
     let index = show.episodes.indexOf(matching);
 
     if (found.torrents[quality] && matching.torrents[quality]) {
@@ -90,7 +90,7 @@ export default class Helper {
    * @param {Show} show - The show to update its episodes.
    * @returns {Show} - A newly updated show.
    */
-  async updateEpisodes(show) {
+  async _updateEpisodes(show) {
     try {
 
       const found = await Show.findOne({
@@ -104,22 +104,22 @@ export default class Helper {
             .filter(showEpisode => showEpisode.episode === found.episodes[i].episode);
 
           if (matching.length != 0) {
-            show = this.updateEpisode(matching[0], found.episodes[i], show, "480p");
-            show = this.updateEpisode(matching[0], found.episodes[i], show, "720p");
-            show = this.updateEpisode(matching[0], found.episodes[i], show, "1080p");
+            show = this._updateEpisode(matching[0], found.episodes[i], show, "480p");
+            show = this._updateEpisode(matching[0], found.episodes[i], show, "720p");
+            show = this._updateEpisode(matching[0], found.episodes[i], show, "1080p");
           } else {
             show.episodes.push(found.episodes[i]);
           }
         }
 
-        return await this.updateNumSeasons(show);
+        return await this._updateNumSeasons(show);
       } else {
         console.log(`${this.name}: '${show.title}' is a new show!`);
         const newShow = await new Show(show).save();
-        return await this.updateNumSeasons(newShow);
+        return await this._updateNumSeasons(newShow);
       }
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -131,7 +131,7 @@ export default class Helper {
    * @param {String} slug - The slug of the show.
    * @returns {Show} - A new show with seasons.
    */
-  async addSeason(show, episodes, seasonNumber, slug) {
+  async _addSeason(show, episodes, seasonNumber, slug) {
     try {
       seasonNumber = parseInt(seasonNumber);
       if (!isNaN(seasonNumber) && seasonNumber.toString().length <= 2) {
@@ -162,7 +162,7 @@ export default class Helper {
         }
       }
     } catch (err) {
-      return this.util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 
@@ -214,7 +214,7 @@ export default class Helper {
         };
       }
     } catch (err) {
-      return this.util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 
@@ -227,10 +227,10 @@ export default class Helper {
    */
   async addEpisodes(show, episodes, slug) {
     try {
-      await asyncq.each(Object.keys(episodes), seasonNumber => this.addSeason(show, episodes, seasonNumber, slug));
-      return await this.updateEpisodes(show);
+      await asyncq.each(Object.keys(episodes), seasonNumber => this._addSeason(show, episodes, seasonNumber, slug));
+      return await this._updateEpisodes(show);
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 

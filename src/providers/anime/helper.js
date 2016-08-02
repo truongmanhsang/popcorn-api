@@ -24,13 +24,13 @@ export default class Helper {
      * @type {HummingbirdAPI}
      * @see https://github.com/ChrisAlderson/hummingbird-api
      */
-    this.hummingbird = new HummingbirdAPI({ debug });
+    this._hummingbird = new HummingbirdAPI({ debug });
 
     /**
      * The util object with general functions.
      * @type {Util}
      */
-    this.util = new Util();
+    this._util = new Util();
   };
 
   /**
@@ -38,7 +38,7 @@ export default class Helper {
    * @param {Anime} anime - The anime to update the number of episodes.
    * @returns {Anime} - A newly updated anime.
    */
-  async updateNumEpisodes(anime) {
+  async _updateNumEpisodes(anime) {
     anime.num_episodes = anime.episodes.length;
     return await Anime.findOneAndUpdate({
       _id: anime._id
@@ -56,7 +56,7 @@ export default class Helper {
    * @param {String} quality - The quality of the torrent.
    * @returns {Anime} - An anime with merged torrents.
    */
-  updateEpisode(matching, found, anime, quality) {
+  _updateEpisode(matching, found, anime, quality) {
     let index = anime.episodes.indexOf(matching);
 
     if (found.torrents[quality] && matching.torrents[quality]) {
@@ -88,7 +88,7 @@ export default class Helper {
    * @param {Anime} anime - The anime to update its episodes.
    * @returns {Anime} - A newly updated anime.
    */
-  async updateEpisodes(anime) {
+  async _updateEpisodes(anime) {
     try {
       const found = await Anime.findOne({
           _id: anime._id
@@ -100,22 +100,22 @@ export default class Helper {
             .filter(animeEpisode => animeEpisode.episode === found.episodes[i].episode);
 
           if (matching.length != 0) {
-            anime = this.updateEpisode(matching[0], found.episodes[i], anime, "480p");
-            anime = this.updateEpisode(matching[0], found.episodes[i], anime, "720p");
-            anime = this.updateEpisode(matching[0], found.episodes[i], anime, "1080p");
+            anime = this._updateEpisode(matching[0], found.episodes[i], anime, "480p");
+            anime = this._updateEpisode(matching[0], found.episodes[i], anime, "720p");
+            anime = this._updateEpisode(matching[0], found.episodes[i], anime, "1080p");
           } else {
             anime.episodes.push(found.episodes[i]);
           }
         }
 
-        return await this.updateNumEpisodes(anime);
+        return await this._updateNumEpisodes(anime);
       } else {
         console.log(`${this.name}: '${anime.title}' is a new anime!`);
         const newAnime = await new Anime(anime).save();
-        return await this.updateNumEpisodes(newAnime);
+        return await this._updateNumEpisodes(newAnime);
       }
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
@@ -127,7 +127,7 @@ export default class Helper {
    * @param {String} slug - The slug of the anime.
    * @returns {Anime} - A new anime with seasons.
    */
-  async addSeason(anime, episodes, seasonNumber, slug) {
+  async _addSeason(anime, episodes, seasonNumber, slug) {
     try {
       await asyncq.each(Object.keys(episodes[seasonNumber]), episodeNumber => {
         const episode = {
@@ -144,7 +144,7 @@ export default class Helper {
         anime.episodes.push(episode);
       });
     } catch (err) {
-      return this.util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this._util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 
@@ -155,10 +155,10 @@ export default class Helper {
    */
   async getHummingbirdInfo(slug) {
     try {
-      const hummingbirdAnime = await this.hummingbird.Anime.getAnime(slug);
+      const hummingbirdAnime = await this._hummingbird.Anime.getAnime(slug);
 
       let type;
-      if (hummingbirdAnime.show_type === "TV") {
+      if (hummingbirdAnime.show_type.match(/tv/i)) {
         type = "show";
       } else {
         type = "movie";
@@ -196,7 +196,7 @@ export default class Helper {
         };
       }
     } catch (err) {
-      return this.util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this._util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 
@@ -209,10 +209,10 @@ export default class Helper {
    */
   async addEpisodes(anime, episodes, slug) {
     try {
-      await asyncq.each(Object.keys(episodes), seasonNumber => this.addSeason(anime, episodes, seasonNumber, slug));
-      return await this.updateEpisodes(anime);
+      await asyncq.each(Object.keys(episodes), seasonNumber => this._addSeason(anime, episodes, seasonNumber, slug));
+      return await this._updateEpisodes(anime);
     } catch (err) {
-      return this.util.onError(err);
+      return this._util.onError(err);
     }
   };
 
