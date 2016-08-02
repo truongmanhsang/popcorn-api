@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/providers/show/helper.js | Popcorn API API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/popcorn-official/popcorn-api.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli.js~CLI.html">CLI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/index.js~Index.html">Index</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/scraper.js~Scraper.html">Scraper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/util.js~Util.html">Util</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">config</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/routes.js~Routes.html">Routes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/setup.js~Setup.html">Setup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeMap">katAnimeMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowMap">katShowMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-master">master</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieProviders">movieProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-showProviders">showProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webRequestTimeout">webRequestTimeout</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-workers">workers</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">controllers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/animes.js~Animes.html">Animes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/movies.js~Movies.html">Movies</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/shows.js~Shows.html">Shows</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">models</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Anime">Anime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Movie">Movie</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Show">Show</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/anime</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/horriblesubs.js~HorribleSubs.html">HorribleSubs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/kat.js~KAT.html">KAT</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/movie</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/kat.js~KAT.html">KAT</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movie/yts.js~YTS.html">YTS</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/show</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/eztv.js~EZTV.html">EZTV</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/helper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/show/kat.js~KAT.html">KAT</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/providers/show/helper.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
+import asyncq from &quot;async-q&quot;;
+
+import Show from &quot;../../models/Show&quot;;
+import Util from &quot;../../util&quot;;
+import { trakt } from &quot;../../config/constants&quot;;
+
+/** Class for saving shows. */
+export default class Helper {
+
+  /**
+   * Create an helper object.
+   * @param {String} name - The name of the helper.
+   */
+  constructor(name) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
+    this.name = name;
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    this._util = new Util();
+  };
+
+  /**
+   * Update the number of seasons of a given show
+   * @param {Show} show - The show to update the number of seasons.
+   * @returns {Show} - A newly updated show.
+   */
+  async _updateNumSeasons(show) {
+    const saved = await Show.findOneAndUpdate({
+      _id: show._id
+    }, show, {
+      new: true,
+      upsert: true
+    }).exec();
+    const distinct = await Show.distinct(&quot;episodes.season&quot;, {
+      _id: saved._id
+    }).exec();
+    saved.num_seasons = distinct.length;
+    return await Show.findOneAndUpdate({
+      _id: saved._id
+    }, saved, {
+      new: true,
+      upsert: true
+    }).exec();
+  };
+
+  /**
+   * Update the torrents for an existing show.
+   * @param {Object} matching - The matching episode of new the show.
+   * @param {Object} found - The matching episode existing show.
+   * @param {Show} show - The show to merge the episodes to.
+   * @param {String} quality - The quality of the torrent.
+   * @returns {Show} - A show with merged torrents.
+   */
+  _updateEpisode(matching, found, show, quality) {
+    let index = show.episodes.indexOf(matching);
+
+    if (found.torrents[quality] &amp;&amp; matching.torrents[quality]) {
+      let update = false;
+
+      if (found.torrents[quality].seeds &gt; matching.torrents[quality].seeds) {
+        update = true;
+      } else if (matching.torrents[quality].seeds &gt; found.torrents[quality].seeds) {
+        update = false;
+      } else if (found.torrents[quality].url === matching.torrents[quality].url) {
+        update = true;
+      }
+
+      if (update) {
+        if (quality === &quot;480p&quot;) matching.torrents[&quot;0&quot;] = found.torrents[quality];
+        matching.torrents[quality] = found.torrents[quality];
+      }
+    } else if (found.torrents[quality] &amp;&amp; !matching.torrents[quality]) {
+      if (quality === &quot;480p&quot;) matching.torrents[&quot;0&quot;] = found.torrents[quality];
+      matching.torrents[quality] = found.torrents[quality];
+    }
+
+    show.episodes.splice(index, 1, matching);
+    return show;
+  };
+
+  /**
+   * Update a given show with it&apos;s associated episodes.
+   * @param {Show} show - The show to update its episodes.
+   * @returns {Show} - A newly updated show.
+   */
+  async _updateEpisodes(show) {
+    try {
+
+      const found = await Show.findOne({
+          _id: show._id
+        }).exec();
+      if (found) {
+        console.log(`${this.name}: &apos;${found.title}&apos; is an existing show.`);
+        for (let i = 0; i &lt; found.episodes.length; i++) {
+          let matching = show.episodes
+            .filter(showEpisode =&gt; showEpisode.season === found.episodes[i].season)
+            .filter(showEpisode =&gt; showEpisode.episode === found.episodes[i].episode);
+
+          if (matching.length != 0) {
+            show = this._updateEpisode(matching[0], found.episodes[i], show, &quot;480p&quot;);
+            show = this._updateEpisode(matching[0], found.episodes[i], show, &quot;720p&quot;);
+            show = this._updateEpisode(matching[0], found.episodes[i], show, &quot;1080p&quot;);
+          } else {
+            show.episodes.push(found.episodes[i]);
+          }
+        }
+
+        return await this._updateNumSeasons(show);
+      } else {
+        console.log(`${this.name}: &apos;${show.title}&apos; is a new show!`);
+        const newShow = await new Show(show).save();
+        return await this._updateNumSeasons(newShow);
+      }
+    } catch (err) {
+      return this._util.onError(err);
+    }
+  };
+
+  /**
+   * Adds one season to a show.
+   * @param {Show} show - The show to add the torrents to.
+   * @param {Object} episodes - The episodes containing the torrents.
+   * @param {Integer} seasonNumber - The season number.
+   * @param {String} slug - The slug of the show.
+   * @returns {Show} - A new show with seasons.
+   */
+  async _addSeason(show, episodes, seasonNumber, slug) {
+    try {
+      seasonNumber = parseInt(seasonNumber);
+      if (!isNaN(seasonNumber) &amp;&amp; seasonNumber.toString().length &lt;= 2) {
+        const season = await trakt.seasons.season({id: slug, season: seasonNumber, extended: &quot;full&quot;});
+        for (let episodeData in season) {
+          episodeData = season[episodeData];
+          if (episodes[seasonNumber] &amp;&amp; episodes[seasonNumber][episodeData.number]) {
+            const episode = {
+              tvdb_id: episodeData.ids[&quot;tvdb&quot;],
+              season: episodeData.season,
+              episode: episodeData.number,
+              title: episodeData.title,
+              overview: episodeData.overview,
+              date_based: false,
+              first_aired: new Date(episodeData.first_aired).getTime() / 1000.0,
+              watched: {
+                watched: false
+              },
+              torrents: {}
+            };
+
+            if (episode.first_aired &gt; show.latest_episode) show.latest_episode = episode.first_aired;
+
+            episode.torrents = episodes[seasonNumber][episodeData.number];
+            episode.torrents[0] = episodes[seasonNumber][episodeData.number][&quot;480p&quot;] ? episodes[seasonNumber][episodeData.number][&quot;480p&quot;] : episodes[seasonNumber][episodeData.number][&quot;720p&quot;];
+            show.episodes.push(episode);
+          }
+        }
+      }
+    } catch (err) {
+      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: &apos;${slug}&apos;`);
+    }
+  };
+
+  /**
+   * Get info from Trakt and make a new show object.
+   * @param {String} slug - The slug to query https://trakt.tv/.
+   * @returns {Show} - A new show without the episodes attached.
+   */
+  async getTraktInfo(slug) {
+    try {
+      const traktShow = await trakt.shows.summary({id: slug, extended: &quot;full,images&quot;});
+      const traktWatchers = await trakt.shows.watching({id: slug});
+
+      let watching = 0;
+      if (traktWatchers !== null) watching = traktWatchers.length;
+
+      if (traktShow &amp;&amp; traktShow.ids[&quot;imdb&quot;]) {
+        return {
+          _id: traktShow.ids[&quot;imdb&quot;],
+          imdb_id: traktShow.ids[&quot;imdb&quot;],
+          tvdb_id: traktShow.ids[&quot;tvdb&quot;],
+          title: traktShow.title,
+          year: traktShow.year,
+          slug: traktShow.ids[&quot;slug&quot;],
+          synopsis: traktShow.overview,
+          runtime: traktShow.runtime,
+          rating: {
+            hated: 100,
+            loved: 100,
+            votes: traktShow.votes,
+            watching: watching,
+            percentage: Math.round(traktShow.rating * 10)
+          },
+          country: traktShow.country,
+          network: traktShow.network,
+          air_day: traktShow.airs.day,
+          air_time: traktShow.airs.time,
+          status: traktShow.status,
+          num_seasons: 0,
+          last_updated: Number(new Date()),
+          latest_episode: 0,
+          images: {
+            banner: traktShow.images.banner.full !== null ? traktShow.images.banner.full : &quot;images/posterholder.png&quot;,
+            fanart: traktShow.images.fanart.full !== null ? traktShow.images.fanart.full : &quot;images/posterholder.png&quot;,
+            poster: traktShow.images.poster.full !== null ? traktShow.images.poster.full : &quot;images/posterholder.png&quot;
+          },
+          genres: traktShow.genres !== null ? traktShow.genres : [&quot;unknown&quot;],
+          episodes: []
+        };
+      }
+    } catch (err) {
+      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: &apos;${slug}&apos;`);
+    }
+  };
+
+  /**
+   * Adds episodes to a show.
+   * @param {Show} show - The show to add the torrents to.
+   * @param {Object} episodes - The episodes containing the torrents.
+   * @param {String} slug - The slug of the show.
+   * @returns {Show} - A show with updated torrents.
+   */
+  async addEpisodes(show, episodes, slug) {
+    try {
+      await asyncq.each(Object.keys(episodes), seasonNumber =&gt; this._addSeason(show, episodes, seasonNumber, slug));
+      return await this._updateEpisodes(show);
+    } catch (err) {
+      return this._util.onError(err);
+    }
+  };
+
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
