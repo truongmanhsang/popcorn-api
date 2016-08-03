@@ -57,9 +57,9 @@ export default class Util {
    * @returns {String} - The output of the mongoimport command.
    */
   importCollection(collection, jsonFile) {
-    jsonFile = path.join(process.cwd(), jsonFile);
+    if (!path.isAbsolute(jsonFile)) jsonFile = path.join(process.cwd(), jsonFile);
     if (!fs.existsSync(jsonFile)) return this.onError(`Error: no such file found for '${jsonFile}'`);
-    return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection}s --file "${jsonFile}" --upsert`);
+    return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection} --file "${jsonFile}" --upsert`);
   };
 
   /**

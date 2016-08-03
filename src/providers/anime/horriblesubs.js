@@ -41,19 +41,19 @@ export default class HorribleSubs {
   };
 
   /**
-   * Get a complete show.
+   * Get a complete anime show.
    * @param {Object} horribleSubsAnime - anime data from horriblesubs.
-   * @returns {Anime} - A complete show.
+   * @returns {Anime} - A complete anime show.
    */
   async _getAnime(horribleSubsAnime) {
     try {
       if (horribleSubsAnime) {
         horribleSubsAnime = await this._horriblesubs.getAnimeData(horribleSubsAnime);
-        const newShow = await this._helper.getHummingbirdInfo(horribleSubsAnime.slug);
+        const newAnime = await this._helper.getHummingbirdInfo(horribleSubsAnime.slug);
 
-        if (newShow && newShow._id) {
+        if (newAnime && newAnime._id) {
           delete horribleSubsAnime.episodes[0];
-          return await this._helper.addEpisodes(newShow, horribleSubsAnime.episodes, horribleSubsAnime.slug);
+          return await this._helper.addEpisodes(newAnime, horribleSubsAnime.episodes, horribleSubsAnime.slug);
         }
       }
     } catch (err) {

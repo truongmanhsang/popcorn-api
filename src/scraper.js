@@ -1,6 +1,6 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
-import { animeProviders, movieProviders, showProviders } from "./config/constants";
+import { animeProviders, collections, movieProviders, showProviders } from "./config/constants";
 import EZTV from "./providers/show/eztv";
 import HorribleSubs from "./providers/anime/horriblesubs";
 import katAnime from "./providers/anime/kat";
@@ -136,7 +136,6 @@ export default class Scraper {
   scrape() {
     Scraper._util.setLastUpdated();
 
-
     asyncq.eachSeries([
       this._scrapeEZTVShows,
       // this._scrapeKATShows,
@@ -145,7 +144,7 @@ export default class Scraper {
       this._scrapeHorribelSubsAnime,
       // this._scrapeKATAnime
     ], scraper => scraper()).then(value => Scraper._util.setStatus())
-      .then(res => asyncq.eachSeries(["anime", "movie", "show"], collection => Scraper._util.exportCollection(collection)))
+      .then(res => asyncq.eachSeries(collections, collection => Scraper._util.exportCollection(collection)))
       .catch(err => Scraper._util.onError(`Error while scraping: ${err}`));
   };
 

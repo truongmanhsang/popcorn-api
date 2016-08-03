@@ -9,6 +9,12 @@ import Trakt from "trakt.tv";
 export const animeProviders = [];
 
 /**
+ * An array of the supported collections for mongodb.
+ * @type {Array}
+ */
+export const collections = ["anime", "movie", "show"];
+
+/**
  * The cron time for scraping torrents. Default is `0 0 *\/6 * * *`.
  * @type {String}
  */

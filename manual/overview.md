@@ -19,11 +19,43 @@ Popcorn API is developed to make it easier for anyone to create their own versio
 
 Documentation for the code can be generated with the command `npm run docs`. This will automatically generate the documentation which will be generated in the `./docs` directory. The `index.html` page will be the starting point.
 
+# Folder structure
+
+The API has the following folder structure.
+
+```
+.
+├── docs                 # Folder with the ESDoc generated documentation for the API.
+├── manual               # Folder with markdown files used by the documentation.
+└── src                  # Holding the ES6 source code
+    ├── config           # Configuration
+    ├── controllers      # REST Controllers
+    ├── models           # Models
+    └── providers        # Providers
+        ├── anime        # Anime providers
+        ├── movie        # Movie providers
+        └── show         # Show providers
+```
+
 # Known Issues
 
 Know issues are indicated in the code with the `TODO` tag.
 
 - No known issues :)
+
+# Versioning
+
+For transparency and insight into our release cycle, and for striving to maintain backward compatibility, this project will be maintained according to the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
+
+Releases will be numbered with the following format: `<major>.<minor>.<patch>-<build>`
+
+Constructed with the following guidelines:
+
+- A new _major_ release indicates a large change where backwards compatibility is broken.
+- A new _minor_ release indicates a normal change that maintains backwards compatibility.
+- A new _patch_ release indicates a bugfix or small change which does not affect compatibility.
+- A new _build_ release indicates this is a pre-release of the version.
+
 
 # License
 

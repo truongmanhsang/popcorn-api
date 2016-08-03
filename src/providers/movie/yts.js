@@ -63,7 +63,7 @@ export default class YTS {
           return reject(`YTS: Could not find data on '${url}'.`);
         } else {
           body = JSON.parse(body);
-          const totalPages = Math.ceil(body.data.movie_count / 50); // Change to 'const' for production.
+          const totalPages = Math.ceil(body.data.movie_count / 50);
           return resolve(totalPages);
         }
       });
@@ -159,6 +159,7 @@ export default class YTS {
           const newMovie = await this._helper.getTraktInfo(ytsMovie.imdb_id);
           if (newMovie && newMovie._id) {
             delete ytsMovie.imdb_id;
+            console.log(ytsMovie.torrents);
             return await this._helper.addTorrents(newMovie, ytsMovie.torrents);
           }
         }

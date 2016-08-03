@@ -12,12 +12,14 @@ Gives some basic information about the server on which the API is running on.
 {
   "repo": "https://github.com/popcorn-official/popcorn-api.git",
   "server": "serv01",
-  "status": "Idle",
-  "totalMovies": ​6700,
-  "totalShows": ​2452,
-  "updated": ​1462484100,
-  "uptime": ​825385,
-  "version": "2.0.0"
+  "status": "Scraping EZTV",
+  "totalAnimes": 623,
+  "totalMovies": 5593,
+  "totalShows": 1482,
+  "updated": 1470233725,
+  "uptime": 9,
+  "version": "2.1.0",
+  "commit": "ad78dd1"
 }
 ```
 
@@ -31,7 +33,7 @@ Display the error log. Each message will be in JSON format.
 
 **GET - `http://localhost:5000/exports/{collection}`**
 
-Download the contents a collection in a json file. Possible collections are:
+Download the contents a collection in a JSON file. Possible collections are:
  - anime
  - movie
  - shows

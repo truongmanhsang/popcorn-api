@@ -123,6 +123,15 @@ export default class CLI {
       required: true
     };
 
+    const confirm = {
+      description: "Do you really want to import a collection, this will override the current data for the collection?",
+      type: "boolean",
+      pattern: /^(yes|no|y|n)$/gi,
+      message: "Type yes/no",
+      required: true,
+      default: "no"
+    };
+
     /**
      * The shema used by `prompt` insert an anime show.
      * @type {Object}
@@ -138,7 +147,7 @@ export default class CLI {
     };
 
     /**
-     * The shema used by `prompt` insert a movie.
+     * The schema used by `prompt` insert a movie.
      * @type {Object}
      */
     this._movieSchema = {
@@ -151,7 +160,7 @@ export default class CLI {
     };
 
     /**
-     * The shema used by `prompt` insert a show.
+     * The schema used by `prompt` insert a show.
      * @type {Object}
      */
     this._showSchema = {
@@ -161,6 +170,16 @@ export default class CLI {
         "episode": episode,
         "torrent": torrent,
         "quality": quality
+      }
+    };
+
+    /**
+     * The schema used by `prompt` to confirm an import.
+     * @type {Object}
+     */
+    this._importSchema = {
+      properties: {
+        "confirm": confirm
       }
     };
   };
@@ -279,7 +298,7 @@ export default class CLI {
   _showPrompt() {
     prompt.get(this._showSchema, async(err, result) => {
       if (err) {
-        util.onError(`An error occurred: ${err}`);
+        this._util.onError(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
@@ -299,12 +318,28 @@ export default class CLI {
     });
   };
 
+  /** Confimation to import a collection */
+  _importPrompt() {
+    prompt.get(this._importSchema, (err, result) => {
+      if (err) {
+        this._util.onError(`An error occured: ${err}`);
+        process.exit(1);
+      } else {
+        let collection = path.basename(program.import);
+        const index = collection.lastIndexOf(".");
+        collection = collection.substring(0, index);
+        this._util.importCollection(collection, program.import)
+          .catch(err => console.error(err));
+      }
+    });
+  };
+
   /** Run the CLI program. */
   run() {
     if (program.run) {
-      new Index({start: true, pretty: false, debug: false});
+      new Index({start: true, pretty: true, debug: false});
     } else if (program.server) {
-      new Index({start: false, pretty: false, debug: false});
+      new Index({start: false, pretty: true, debug: false});
     } else if (program.content) {
       prompt.start();
       Setup.connectMongoDB();
@@ -317,12 +352,7 @@ export default class CLI {
     } else if (program.export) {
       this._util.exportCollection(program.export);
     } else if (program.import) {
-      let collection = path.basename(program.import);
-      const index = collection.lastIndexOf(".");
-      collection = collection.substring(0, index);
-      this._util.importCollection(collection, program.import)
-        .then(res => console.log(res))
-        .catch(err => console.error(err));
+      this.__importPrompt();
     } else {
       this._util.onError("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
       program.help();
