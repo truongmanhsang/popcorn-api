@@ -37,7 +37,9 @@
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#overview" data-ice="link">Overview</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#documentation" data-ice="link">Documentation</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#folder-structure" data-ice="link">Folder structure</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#known-issues" data-ice="link">Known Issues</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#versioning" data-ice="link">Versioning</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#license" data-ice="link">License</a></li>
 </ul>
   </div>
@@ -53,10 +55,25 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/tutorial.html#tutorial" data-ice="link">Tutorial</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#content-providers" data-ice="link">Content Providers</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#kat-providers" data-ice="link">KAT Providers</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#folder-structure" data-ice="link">Folder structure</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#versioning" data-ice="link">Versioning</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#scraper" data-ice="link">Scraper</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#content-providers" data-ice="link">Content Providers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#eztv" data-ice="link">EZTV</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getallshows" data-ice="link">getAllShows</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getshowdata" data-ice="link">getShowData</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#horriblesubs" data-ice="link">Horriblesubs</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getallanime" data-ice="link">getAllAnime</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getanimedata" data-ice="link">getAnimeData</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#kat" data-ice="link">KAT</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#anime" data-ice="link">Anime</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#movie" data-ice="link">Movie</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#show" data-ice="link">Show</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#yts" data-ice="link">YTS</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#helpers" data-ice="link">Helpers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#anime-show" data-ice="link">Anime &amp; Show</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#movie" data-ice="link">Movie</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#metadata-providers" data-ice="link">Metadata Providers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#trakt-tv" data-ice="link">Trakt.tv</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#hummingbird-me" data-ice="link">Hummingbird.me</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="usage">
@@ -134,10 +151,33 @@
 </ul>
 <h1 id="documentation">Documentation</h1>
 <p>Documentation for the code can be generated with the command <code>npm run docs</code>. This will automatically generate the documentation which will be generated in the <code>./docs</code> directory. The <code>index.html</code> page will be the starting point.</p>
-<h1 id="known-issues">Known Issues</h1>
+<h1 id="folder-structure">Folder structure</h1>
+<p>The API has the following folder structure.</p>
+<pre><code><code class="source-code prettyprint">.
+&#x251C;&#x2500;&#x2500; docs                 # Folder with the ESDoc generated documentation for the API.
+&#x251C;&#x2500;&#x2500; manual               # Folder with markdown files used by the documentation.
+&#x2514;&#x2500;&#x2500; src                  # Holding the ES6 source code
+    &#x251C;&#x2500;&#x2500; config           # Configuration
+    &#x251C;&#x2500;&#x2500; controllers      # REST Controllers
+    &#x251C;&#x2500;&#x2500; models           # Models
+    &#x2514;&#x2500;&#x2500; providers        # Providers
+        &#x251C;&#x2500;&#x2500; anime        # Anime providers
+        &#x251C;&#x2500;&#x2500; movie        # Movie providers
+        &#x2514;&#x2500;&#x2500; show         # Show providers</code>
+</code></pre><h1 id="known-issues">Known Issues</h1>
 <p>Know issues are indicated in the code with the <code>TODO</code> tag.</p>
 <ul>
 <li>No known issues :)</li>
+</ul>
+<h1 id="versioning">Versioning</h1>
+<p>For transparency and insight into our release cycle, and for striving to maintain backward compatibility, this project will be maintained according to the <a href="http://semver.org/">Semantic Versioning</a> guidelines as much as possible.</p>
+<p>Releases will be numbered with the following format: <code>&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;-&lt;build&gt;</code></p>
+<p>Constructed with the following guidelines:</p>
+<ul>
+<li>A new <em>major</em> release indicates a large change where backwards compatibility is broken.</li>
+<li>A new <em>minor</em> release indicates a normal change that maintains backwards compatibility.</li>
+<li>A new <em>patch</em> release indicates a bugfix or small change which does not affect compatibility.</li>
+<li>A new <em>build</em> release indicates this is a pre-release of the version.</li>
 </ul>
 <h1 id="license">License</h1>
 <p>MIT License</p>

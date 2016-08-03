@@ -37,7 +37,9 @@
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#overview" data-ice="link">Overview</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#documentation" data-ice="link">Documentation</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#folder-structure" data-ice="link">Folder structure</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#known-issues" data-ice="link">Known Issues</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#versioning" data-ice="link">Versioning</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#license" data-ice="link">License</a></li>
 </ul>
   </div>
@@ -53,10 +55,25 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/tutorial.html#tutorial" data-ice="link">Tutorial</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#content-providers" data-ice="link">Content Providers</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#kat-providers" data-ice="link">KAT Providers</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#folder-structure" data-ice="link">Folder structure</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#versioning" data-ice="link">Versioning</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#scraper" data-ice="link">Scraper</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#content-providers" data-ice="link">Content Providers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#eztv" data-ice="link">EZTV</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getallshows" data-ice="link">getAllShows</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getshowdata" data-ice="link">getShowData</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#horriblesubs" data-ice="link">Horriblesubs</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getallanime" data-ice="link">getAllAnime</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getanimedata" data-ice="link">getAnimeData</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#kat" data-ice="link">KAT</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#anime" data-ice="link">Anime</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#movie" data-ice="link">Movie</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#show" data-ice="link">Show</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#yts" data-ice="link">YTS</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#helpers" data-ice="link">Helpers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#anime-show" data-ice="link">Anime &amp; Show</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#movie" data-ice="link">Movie</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#metadata-providers" data-ice="link">Metadata Providers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#trakt-tv" data-ice="link">Trakt.tv</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#hummingbird-me" data-ice="link">Hummingbird.me</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="usage">
@@ -119,12 +136,150 @@
     <span data-ice="title">Tutorial</span>
   </div>
   <div data-ice="content"><h1 id="tutorial">Tutorial</h1>
-<h3 id="content-providers">Content Providers</h3>
-<ul>
-<li><code>TODO:</code> write about the helper classes.</li>
-</ul>
-<h3 id="kat-providers">KAT Providers</h3>
-<p>Content from <a href="https://kat.cr/">kat.cr</a> is grabbed with so called <code>providers</code> which can be configured in the <code>./src/config/constants.js</code> file. Providers will be converted to a search query to <a href="https://kat.cr/">kat.cr</a> so each provider can get a maximum of 10.000 torrents (or 400 pages or torrents). You can read more on how to make providers <a href="https://github.com/chrisalderson/kat-api-pt">here</a>.</p>
+<p>In this tutorial section you can read about the scraping process of the API.</p>
+<h2 id="scraper">Scraper</h2>
+<p>The <code>scraper.js</code> class is the entry point to start the scraping process with the <code>scrape</code> method. This method will iterate through an array of methods to scrape each individual content provider.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">scrape() {
+  Scraper._util.setLastUpdated();
+
+  asyncq.eachSeries([
+    this._scrapeEZTVShows,
+    this._scrapeKATShows,
+    this._scrapeYTSMovies,
+    this._scrapeKATMovies,
+    this._scrapeHorribelSubsAnime,
+    this._scrapeKATAnime
+  ], scraper =&gt; scraper()).then(value =&gt; Scraper._util.setStatus())
+    .catch(err =&gt; Scraper._util.onError(`Error while scraping: ${err}`));
+};</code>
+</code></pre>
+<h2 id="content-providers">Content Providers</h2>
+<p>Popcorn API gets its torrent content from various sources. Here you can see where the content is coming from.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Anime</th>
+<th>Movie</th>
+<th>Show</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EZTV</td>
+<td></td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>Horriblesubs</td>
+<td>X</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>KAT</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>YTS</td>
+<td></td>
+<td>X</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="eztv">EZTV</h3>
+<p>Content from <a href="https://eztv.ag/">eztv.ag</a> is grabbed through the <a href="https://github.com/ChrisAlderson/eztv-api-pt">eztv-api-pt</a> module. The module contains two methods <code>getAllShows</code> and <code>getShowData</code>.</p>
+<h4 id="getallshows">getAllShows</h4>
+<p>This method returns a list of all the available shows listed <a href="https://eztv.ag/showlist/">here</a>. Through regular expression it grabs the show title, the id used by <a href="https://eztv.ag/">eztv</a> and the slug.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">[{
+    show: &quot;10 O\&quot;Clock Live&quot;,
+    id: &quot;449&quot;,
+    slug: &quot;10-o-clock-live&quot;
+  }, {
+    show: &quot;10 Things I Hate About You&quot;,
+    id: &quot;308&quot;,
+    slug: &quot;10-things-i-hate-about-you&quot;
+  },
+  ...
+]</code>
+</code></pre>
+<h4 id="getshowdata">getShowData</h4>
+<p>Each show from the <code>getAllShows</code> can be passed into the <code>getShowData</code> method to get more data on the individual show. Through this process the slug can change to another slug or imdb id which is compatible with <a href="https://trakt.tv/">trakt.tv</a>. Torrents are being added to the <code>episodes</code> property which is compatible with the <a href="#helpers">helper</a> to insert the torrents into the MongoDB database. Nested within the <code>episodes</code> property there is the <code>season number</code> within the <code>season number</code> is the <code>episode number</code> and within the <code>episode number</code> are the different <code>qualities</code> of the torrent.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">{ show: &quot;10 O\&apos;Clock Live&quot;,
+  id: &quot;449&quot;,
+  slug: &quot;tt1811399&quot;,
+  episodes:
+   { &quot;1&quot;:
+      { &quot;1&quot;:
+         { &quot;480p&quot;:
+            { url: &quot;magnet:?xt=urn:btih:LMJXHHNOW33Z3YGXJLCTJZ23WK2D6VO4&amp;dn=10.OClock.Live.S01E01.WS.PDTV.XviD-PVR&amp;tr=udp://tracker.openbittorrent.com:80&amp;tr=udp://open.demonii.com:80&amp;tr=udp://tracker.coppersurfer.tk:80&amp;tr=udp://tracker.leechers-paradise.org:6969&amp;tr=udp://exodus.desync.com:6969&quot;,
+              seeds: 0,
+              peers: 0,
+              provider: &quot;EZTV&quot; } },
+        ...
+      }
+    }
+}</code>
+</code></pre>
+<h3 id="horriblesubs">Horriblesubs</h3>
+<p>Content from <a href="https://horriblesubs.info/">horriblesubs.info</a> is grabbed through the <a href="https://github.com/ChrisAlderson/horriblesubs-api">horriblesubs-api</a> module. The module contains two methods <code>getAllAnime</code> and <code>getAnimeData</code>. This module is based on <a href="https://github.com/ChrisAlderson/eztv-api-pt">eztv-api-pt</a> module and the usage of the module within the API is very similar to the <a href="#eztv">EZTV provider</a>.</p>
+<h4 id="getallanime">getAllAnime</h4>
+<p>This method returns a list of all the available shows listed <a href="http://horriblesubs.info/shows/">here</a>. Through the <a href="https://github.com/cheeriojs/cheerio">cheerio</a> module it grabs the anime title, the slug, and the link to get more details about the anime.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">[{
+  link: &quot;/shows/91-days&quot;,
+  slug: &quot;91-days&quot;,
+  title: &quot;91 Days&quot;
+}, {
+  link: &quot;/shows/absolute-duo&quot;,
+  slug: &quot;absolute-duo&quot;,
+  title: &quot;Absolute Duo&quot;
+}, ...]</code>
+</code></pre>
+<h4 id="getanimedata">getAnimeData</h4>
+<p>Each anime from the <code>getAllAnime</code> can be passed into the <code>getAnimeData</code> method to get more data on the individual anime. Through this process the slug can change to another slug which is compatible with <a href="https://hummingbird.me">hummingbird.me</a>. The <code>hs_showid</code> is added and torrents are being added to the <code>episodes</code> property which is compatible with the <a href="#helpers">helper</a> to insert the torrents into the MongoDB database. Nested within the <code>episodes</code> property there is the <code>season number</code> within the <code>season number</code> is the <code>episode number</code> and within the <code>episode number</code> are the different <code>qualities</code> of the torrent.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">{ link: &quot;/shows/91-days&quot;,
+  slug: &quot;ninety-one-days&quot;,
+  title: &quot;91 Days&quot;,
+  hs_showid: &quot;731&quot;,
+  episodes:
+   { &quot;1&quot;:
+      { &quot;1&quot;:
+        { &quot;480&quot;:
+          { url: &quot;magnet:?xt=urn:btih:AYIJKPLP5WVVF36O25JBB3FFPNJEBBPQ&amp;tr=http://open.nyaatorrents.info:6544/announce&amp;tr=udp://tracker.openbittorrent.com:80/announce&amp;tr=udp://tracker.coppersurfer.tk:6969/announce&quot;,
+          seeds: 0,
+          peers: 0,
+          provider: &quot;HorribleSubs&quot; } },
+        ...
+      }
+    }
+}</code>
+</code></pre>
+<h3 id="kat">KAT</h3>
+<p>Content from <a href="https://kat.cr/">kat.cr</a> is grabbed with so called <code>providers</code> which can be configured in the <code>./src/config/constants.js</code> file. Providers will be converted to a search query to <a href="https://kat.cr/">kat.cr</a> so each provider can get a maximum of 10.000 torrents (or 400 pages or torrents). The module used for getting the data from <a href="https://kat.cr/">kat.cr</a> can be found <a href="https://github.com/chrisalderson/kat-api-pt">here</a>.</p>
+<p>Each provider needs a <code>name</code> property and a <code>query</code> property. The <code>name</code> property is a <code>String</code> will be used for logging purposes so that issues can be more easily figured out. The <code>query</code> property is an <code>Object</code> which can contain various properties. These properties will be converted into a search query to <a href="https://kat.cr/">kat.cr</a>.</p>
+<p>The following <code>query</code> properties can be used:</p>
+<pre><code><code class="source-code prettyprint">- query               # Search for keywords
+- category            # The category to search for e.g. tv or movies
+- uploader            # The name of the uploader of the torrents
+- min_seeds           # The minimum amount of seeds
+- age                 # The age of the torrents
+- min_files           # The minimum amount of files
+- imdb                # The imdb id for a tv show (only works with category:tv)
+- tvrage              # The tvrage id for a tv show (only works with category:tv)
+- isbn                # The isbn id for a book (only works with category:books)
+- language            # The language of the movie/tv show e.g. en or pl
+- adult_filter        # Adult filtering of torrents
+- verified            # Show only the verified torrents
+- season              # Season number of a tv show (only works with category:tv)
+- episode             # Episode number of a tv show (only works with category:tv)
+- page                # The page to search on.
+- sort_by             # Sort by property
+- order               # Order the list asc or desc</code>
+</code></pre><p>All three types of content can be scraped from <a href="https://kat.cr/">kat.cr</a> through the <code>kat.js</code> class in each folder of the providers. By default the <code>kat.js</code> class add a few default properties to the providers. The <code>page</code> property does not need to be indicated as the algorithm for scraping <a href="https://kat.cr/">kat.cr</a> will go through all the available pages. The <code>adult_filter</code> and <code>verified</code> properties are also turned on by default to potentially filter out bad content. The <code>category</code> property is filled in for each type of content. For <code>anime</code> it is <code>english-translated</code>, the <code>movies</code> category is <code>movies</code> and for <code>shows</code> there is <code>tv</code>. Lastly the <code>movies</code> need a <code>language</code> property otherwise the scraper with throw an error and the <code>shows</code> will have a default <code>language</code> as <code>en</code> so only English TV shows get filtered.</p>
 <p><strong>An example of a provider:</strong></p>
 <pre><code class="lang-javascript"><code class="source-code prettyprint">{
   name: &quot;ZonerLOL&quot;,
@@ -134,27 +289,109 @@
   }
 }</code>
 </code></pre>
-<h3 id="folder-structure">Folder structure</h3>
-<p>The API has the following folder structure.</p>
-<pre><code><code class="source-code prettyprint">.
-&#x2514;&#x2500;&#x2500; src                  # Holding the ES6 source code
-    &#x251C;&#x2500;&#x2500; config           # Configuration
-    &#x251C;&#x2500;&#x2500; controllers      # REST Controllers
-    &#x251C;&#x2500;&#x2500; models           # Models
-    &#x2514;&#x2500;&#x2500; providers        # Providers
-        &#x251C;&#x2500;&#x2500; anime        # Anime providers
-        &#x251C;&#x2500;&#x2500; movie        # Movie providers
-        &#x2514;&#x2500;&#x2500; show         # Show providers</code>
-</code></pre><h3 id="versioning">Versioning</h3>
-<p>For transparency and insight into our release cycle, and for striving to maintain backward compatibility, this project will be maintained according to the <a href="http://semver.org/">Semantic Versioning</a> guidelines as much as possible.</p>
-<p>Releases will be numbered with the following format: <code>&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;-&lt;build&gt;</code></p>
-<p>Constructed with the following guidelines:</p>
-<ul>
-<li>A new <em>major</em> release indicates a large change where backwards compatibility is broken.</li>
-<li>A new <em>minor</em> release indicates a normal change that maintains backwards compatibility.</li>
-<li>A new <em>patch</em> release indicates a bugfix or small change which does not affect compatibility.</li>
-<li>A new <em>build</em> release indicates this is a pre-release of the version.</li>
-</ul>
+<p>If you want to make a provider for <a href="https://kat.cr/">kat.cr</a> it is highly recommended you try it fist in the browser by manually going to <a href="https://kat.cr/">kat.cr</a> and search for the content because the title of the torrent will be subjected to regular expression to grab the needed data for the <a href="#helpers">helper</a> to insert the torrents into the MongoDB database.</p>
+<h4 id="anime">Anime</h4>
+<p><strong>NOTE:</strong> the kat content provider was written just before the <a href="https://kat.cr/">kat.cr</a> was taken down. This is why there is only one regular expression and it is for Horriblesubs. This regular expression is redundant because of the <a href="#horriblesubs">horriblesubs</a> provider.</p>
+<p>The regular expression needs to get an <code>title</code>, <code>episode</code> and a <code>quality</code> property. A <code>season</code> property is optional, if the <code>season</code> is not in the episode title it will assume the torrent is from <code>season</code> 1. Down below you can see the method to get the needed data for an anime episode. If your content does not match any of these regular expressions, you can add the regular expression to the method.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">_getAnimeData(torrent) {
+  const secondSeason = /\[horriblesubs\].(.*).S(\d)...(\d{2,3}).\[(\d{3,4}p)\]/i; // [HorribleSubs] Fairy Tail S2 - 70 [1080p].mkv
+  const oneSeason = /\[horriblesubs\].(.*)...(\d{2,3}).\[(\d{3,4}p)\]/i // [HorribleSubs] Gangsta - 06 [480p].mkv
+  if (torrent.title.match(secondSeason)) {
+    return this._extractAnime(torrent, secondSeason);
+  } else if (torrent.title.match(oneSeason) {
+    return this._extractAnime(torrent, oneSeason);
+  } else {
+    console.warn(`${this.name}: Could not find data from torrent: &apos;${torrent.title}&apos;`);
+  }
+};</code>
+</code></pre>
+<h4 id="movie">Movie</h4>
+<p>The regular expression for movies needs to get a <code>title</code>, <code>year</code> and a <code>quality</code> property. Down below you can see the method to get the needed data for a movie. If your content does not match any of these regular expressions, you can add the regular expression to the method.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">_getMovieData(torrent, language) {
+  const threeDimensions = /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/; // Journey to Space 2015 3D 1080p BRRip Half-SBS x264 AAC-ETRG
+  const fourKay = /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/; // Spider Man 2002 4K REMASTERED Bluray 1080p TrueHD x264-Grym
+  const withYear = /(.*).(\d{4})\D+(\d{3,4}p)/; // Batman Begins 2005 720p BluRay x264 AC3 - Ozlem
+  if (torrent.title.match(threeDimensions)) {
+    return this._extractMovie(torrent, language, threeDimensions);
+  } else if (torrent.title.match(fourKay)) {
+    return this._extractMovie(torrent, language, fourKay);
+  } else if (torrent.title.match(withYear)) {
+    return this._extractMovie(torrent, language, withYear);
+  } else {
+    console.warn(`${this.name}: Could not find data from torrent: &apos;${torrent.title}&apos;`);
+  }
+};</code>
+</code></pre>
+<h4 id="show">Show</h4>
+<p>The regular expression for shows needs to get a <code>title</code>, <code>season</code>, <code>episode</code> and a <code>quality</code> property. Down below you can see the method to get the needed data for a show episode. If your content does not match any of these regular expressions, you can add the regular expression to the method.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">_getShowData(torrent) {
+  const seasonBased = /(.*).[sS](\d{2})[eE](\d{2})/; // Dexter S08E09 720p HDTV x264-IMMERSE
+  const vtv = /(.*).(\d{1,2})[x](\d{2})/; // The Whispers 1x09 (HDTV-x264-KILLERS)[VTV]
+  const dateBased = /(.*).(\d{4}).(\d{2}.\d{2})/; // Jimmy Fallon 2016 08 02 Jonah Hill HDTV x264-CROOKS
+  if (torrent.title.match(seasonBased)) {
+    return this._extractShow(torrent, seasonBased, false);
+  } else if (torrent.title.match(vtv)) {
+    return this._extractShow(torrent, vtv, false);
+  } else if (torrent.title.match(dateBased)) {
+    return this._extractShow(torrent, dateBased, true);
+  } else {
+    console.warn(`${this.name}: Could not find data from torrent: &apos;${torrent.title}&apos;`);
+  }
+};</code>
+</code></pre>
+<h3 id="yts">YTS</h3>
+<p><strong>NOTE:</strong> This provider will most likely be moved to use a YTS API wrapper module. No API wrappers exists for YTS which are using promises, so one needs to be made.</p>
+<h2 id="helpers">Helpers</h2>
+<p>The <code>helper.js</code> classes in each provider folder helps the providers to insert the scraped data into the MongoDB database. The providers need to call two methods.</p>
+<h3 id="anime-show">Anime &amp; Show</h3>
+<p>The first method to call is <code>getHummingbirdInfo</code> for anime and <code>getTraktInfo</code> for shows. These methods need a slug as a parameter (<code>getTraktInfo</code> can also use an imdb id). These methods will fetch metadata from <a href="https://hummingbird.me/">hummingbird.me</a> or <a href="https://trakt.tv">trakt.tv</a> and return an object based on the schema of the mongoose model, but without any episodes.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">getTraktInfo(slug);
+getHummingbirdInfo(slug);</code>
+</code></pre>
+<p>The second method to call is the <code>addEpisodes</code> method to attach the episodes to the object returned by <code>getHummingbirdInfo</code> or <code>getTraktInfo</code>. This object is the first parameter, the second one is the episodes object and the third parameter is the slug again.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">addEpisodes(anime/show, episodes, slug);</code>
+</code></pre>
+<p>The episodes are structured in a particular way. In the episodes object you first have the seasons represented by a number. Nested in each season is another object which is the episode which is also represented by a number. In the episode object you have the qualities available for the episode. These qualities can be <code>480p</code>, <code>720p</code> or <code>1080p</code>. Finally inside the quality object you have the <code>url</code> to the torrent or magnet link, the amount of <code>seeds</code> and <code>peers</code> and lastly the name of the provider.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">{
+  &quot;1&quot;: {
+    &quot;1&quot;: {
+      &quot;480p&quot;: {
+        url: &quot;magnet:?xt=urn:btih:LMJXHHNOW33Z3YGXJLCTJZ23WK2D6VO4&amp;dn=10.OClock.Live.S01E01.WS.PDTV.XviD-PVR&amp;tr=udp://tracker.openbittorrent.com:80&amp;tr=udp://open.demonii.com:80&amp;tr=udp://tracker.coppersurfer.tk:80&amp;tr=udp://tracker.leechers-paradise.org:6969&amp;tr=udp://exodus.desync.com:6969&quot;,
+        seeds: 0,
+        peers: 0,
+        provider: &quot;EZTV&quot;
+      }
+    }
+  }
+}</code>
+</code></pre>
+<h3 id="movie">Movie</h3>
+<p>The first method to call is <code>getTraktInfo</code>. This method need a slug as a parameter, but can also use an imdb id). This method will fetch metadata from <a href="https://trakt.tv">trakt.tv</a> and return an object based on the schema of the mongoose model, but without any torrents.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">getTraktInfo(katMovie.slugYear);</code>
+</code></pre>
+<p>The second method to call is the <code>addTorrents</code> method to attach the torrents to the object returned by <code>getTraktInfo</code>. This object is the first parmeter, the second one is the torrents for the movie.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">addTorrents(movie, torrents);</code>
+</code></pre>
+<p>The torrents are structured in a particular way. In the torrents object you first have the language of the torrents represented by a language code e.g. <code>en</code>. Nested inside the language are the qualities of the torrents. These qualities can be <code>720p</code> or <code>1080p</code>. Finally inside the quality object you have the <code>url</code> to the torrent or magnet link, the amount of <code>seeds</code> and <code>peers</code>, the <code>size</code> of the torrent in bits, the <code>fileSize</code> which is a more easily readable version of <code>size</code> and lastly the name of provider.</p>
+<pre><code class="lang-javascipt"><code class="source-code prettyprint">{
+  &quot;en&quot;: {
+    &quot;720p&quot;: {
+      url: &quot;magnet:?xt=urn:btih:1BEA4C992D1F7A765F3C943E627E881AC7FDAA35&amp;tr=udp://glotorrents.pw:6969/announce&amp;tr=udp://tracker.opentrackr.org:1337/announce&amp;tr=udp://torrent.gresille.org:80/announce&amp;tr=udp://tracker.openbittorrent.com:80&amp;tr=udp://tracker.coppersurfer.tk:6969&amp;tr=udp://tracker.leechers-paradise.org:6969&amp;tr=udp://p4p.arenabg.ch:1337&amp;tr=udp://tracker.internetwarriors.net:1337&quot;,
+      seed: 156,
+      peer: 44,
+      size: 819829146,
+      filesize: &quot;781.85 MB&quot;,
+      provider: &quot;YTS&quot;
+    }
+  }
+}</code>
+</code></pre>
+<h2 id="metadata-providers">Metadata Providers</h2>
+<p>Metadata providers are providers which get data on a movie or get seasonal information from a show. Popcorn API uses two API services to get its metadata on anime, movies and shows.</p>
+<h3 id="trakt-tv">Trakt.tv</h3>
+<p><a href="https://trakt.tv/">Trakt.tv</a> is the metadata provider for movies and shows. It uses a module from <a href="https://github.com/vankasteelj">Jean van Kasteel</a> called <a href="https://github.com/vankasteelj/trakt.tv">trakt.tv</a>. For more information about the Trakt API you can click <a href="http://docs.trakt.apiary.io/">here</a>.</p>
+<h3 id="hummingbird-me">Hummingbird.me</h3>
+<p><a href="https://hummingbird.me">Hummingbird.me</a> is the metadata provider for anime. It uses the <a href="https://github.com/ChrisAlderson/hummingbird-api">hummingbird-api</a> module. For more information about the Hummingbird API you can click <a href="https://github.com/hummingbird-me/hummingbird/wiki">here</a>.</p>
 </div>
 </div>
 </div>

@@ -41,6 +41,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/setup.js~Setup.html">Setup</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-collections">collections</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span></li>
@@ -84,7 +85,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/scraper.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
 import asyncq from &quot;async-q&quot;;
-import { animeProviders, movieProviders, showProviders } from &quot;./config/constants&quot;;
+import { animeProviders, collections, movieProviders, showProviders } from &quot;./config/constants&quot;;
 import EZTV from &quot;./providers/show/eztv&quot;;
 import HorribleSubs from &quot;./providers/anime/horriblesubs&quot;;
 import katAnime from &quot;./providers/anime/kat&quot;;
@@ -220,7 +221,6 @@ export default class Scraper {
   scrape() {
     Scraper._util.setLastUpdated();
 
-
     asyncq.eachSeries([
       this._scrapeEZTVShows,
       // this._scrapeKATShows,
@@ -229,7 +229,7 @@ export default class Scraper {
       this._scrapeHorribelSubsAnime,
       // this._scrapeKATAnime
     ], scraper =&gt; scraper()).then(value =&gt; Scraper._util.setStatus())
-      .then(res =&gt; asyncq.eachSeries([&quot;anime&quot;, &quot;movie&quot;, &quot;show&quot;], collection =&gt; Scraper._util.exportCollection(collection)))
+      .then(res =&gt; asyncq.eachSeries(collections, collection =&gt; Scraper._util.exportCollection(collection)))
       .catch(err =&gt; Scraper._util.onError(`Error while scraping: ${err}`));
   };
 

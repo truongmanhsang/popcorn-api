@@ -156,6 +156,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "popcorn-api/src/config/constants.js~collections",
+    "variable/index.html#static-variable-collections",
+    "<span>collections</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
     "popcorn-api/src/config/constants.js~crontime",
     "variable/index.html#static-variable-cronTime",
     "<span>cronTime</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
@@ -628,6 +634,18 @@ window.esdocSearchIndex = [
     "class/src/cli.js~CLI.html#instance-method-_getShowTorrentDataRemote",
     "src/cli.js~CLI#_getShowTorrentDataRemote",
     "method"
+  ],
+  [
+    "src/cli.js~cli#_importprompt",
+    "class/src/cli.js~CLI.html#instance-method-_importPrompt",
+    "src/cli.js~CLI#_importPrompt",
+    "method"
+  ],
+  [
+    "src/cli.js~cli#_importschema",
+    "class/src/cli.js~CLI.html#instance-member-_importSchema",
+    "src/cli.js~CLI#_importSchema",
+    "member"
   ],
   [
     "src/cli.js~cli#_movieprompt",

@@ -41,6 +41,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/setup.js~Setup.html">Setup</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-collections">collections</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span></li>
@@ -196,13 +197,39 @@
     <td>
       <div>
         <p>
+           <span data-ice="name"><span><a href="class/src/cli.js~CLI.html#instance-member-_importSchema">_importSchema</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The schema used by <code>prompt</code> to confirm an import.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
            <span data-ice="name"><span><a href="class/src/cli.js~CLI.html#instance-member-_movieSchema">_movieSchema</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>The shema used by <code>prompt</code> insert a movie.</p>
+        <div data-ice="description"><p>The schema used by <code>prompt</code> insert a movie.</p>
 </div>
       </div>
     </td>
@@ -228,7 +255,7 @@
       <div>
         
         
-        <div data-ice="description"><p>The shema used by <code>prompt</code> insert a show.</p>
+        <div data-ice="description"><p>The schema used by <code>prompt</code> insert a show.</p>
 </div>
       </div>
     </td>
@@ -391,6 +418,32 @@
     <td>
       <div>
         <p>
+           <span data-ice="name"><span><a href="class/src/cli.js~CLI.html#instance-method-_importPrompt">_importPrompt</a></span></span><span data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Confimation to import a collection</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
            <span data-ice="name"><span><a href="class/src/cli.js~CLI.html#instance-method-_moviePrompt">_moviePrompt</a></span></span><span data-ice="signature">()</span>
         </p>
       </div>
@@ -515,7 +568,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber130">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber139">source</a></span></span>
     </span>
   </h3>
 
@@ -523,6 +576,47 @@
   
   
   <div data-ice="description"><p>The shema used by <code>prompt</code> insert an anime show.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-_importSchema">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    <span data-ice="name">_importSchema</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber180">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>The schema used by <code>prompt</code> to confirm an import.</p>
 </div>
 
   
@@ -556,14 +650,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber144">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber153">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>The shema used by <code>prompt</code> insert a movie.</p>
+  <div data-ice="description"><p>The schema used by <code>prompt</code> insert a movie.</p>
 </div>
 
   
@@ -597,14 +691,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber157">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber166">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>The shema used by <code>prompt</code> insert a show.</p>
+  <div data-ice="description"><p>The schema used by <code>prompt</code> insert a show.</p>
 </div>
 
   
@@ -682,7 +776,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber303">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber338">source</a></span></span>
     </span>
   </h3>
 
@@ -725,7 +819,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber169">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber188">source</a></span></span>
     </span>
   </h3>
 
@@ -766,7 +860,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber199">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber218">source</a></span></span>
     </span>
   </h3>
 
@@ -849,7 +943,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber255">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber274">source</a></span></span>
     </span>
   </h3>
 
@@ -929,6 +1023,47 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-_importPrompt">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    <span data-ice="name">_importPrompt</span><span data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber322">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Confimation to import a collection</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-_moviePrompt">
     <span class="access" data-ice="access">private</span>
     
@@ -939,7 +1074,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber224">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber243">source</a></span></span>
     </span>
   </h3>
 
@@ -980,7 +1115,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber279">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cli.js.html#lineNumber298">source</a></span></span>
     </span>
   </h3>
 

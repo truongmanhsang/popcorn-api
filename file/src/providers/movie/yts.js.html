@@ -41,6 +41,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/setup.js~Setup.html">Setup</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-collections">collections</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span></li>
@@ -147,7 +148,7 @@ export default class YTS {
           return reject(`YTS: Could not find data on &apos;${url}&apos;.`);
         } else {
           body = JSON.parse(body);
-          const totalPages = Math.ceil(body.data.movie_count / 50); // Change to &apos;const&apos; for production.
+          const totalPages = Math.ceil(body.data.movie_count / 50);
           return resolve(totalPages);
         }
       });
@@ -243,6 +244,7 @@ export default class YTS {
           const newMovie = await this._helper.getTraktInfo(ytsMovie.imdb_id);
           if (newMovie &amp;&amp; newMovie._id) {
             delete ytsMovie.imdb_id;
+            console.log(ytsMovie.torrents);
             return await this._helper.addTorrents(newMovie, ytsMovie.torrents);
           }
         }

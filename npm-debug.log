@@ -10,17 +10,17 @@
 6 silly lifecycle popcorn-api@2.1.0~predocs: no script for predocs, continuing
 7 info lifecycle popcorn-api@2.1.0~docs: popcorn-api@2.1.0
 8 verbose lifecycle popcorn-api@2.1.0~docs: unsafe-perm in lifecycle true
-9 verbose lifecycle popcorn-api@2.1.0~docs: PATH: C:\Program Files\nodejs\node_modules\npm\bin\node-gyp-bin;C:\Users\Sjoerd Thijsse\Documents\GitHub\popcorn-api\docs\node_modules\.bin;C:\Program Files\nodejs;C:\Users\Sjoerd Thijsse\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Sjoerd Thijsse\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Skype\Phone;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\QuickTime\QTSystem;C:\Program Files\MongoDB\Server\3.2\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Android\sdk;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\Android\sdk\platform-tools;C:\Users\Sjoerd Thijsse\AppData\Local\atom\bin;C:\Program Files\MongoDB\Server\3.2\bin;C:\Users\Sjoerd Thijsse\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+9 verbose lifecycle popcorn-api@2.1.0~docs: PATH: C:\Users\Sjoerd Thijsse\AppData\Roaming\nvm\v6.3.0\node_modules\npm\bin\node-gyp-bin;C:\Users\Sjoerd Thijsse\Documents\GitHub\popcorn-api\docs\node_modules\.bin;C:\Program Files\nodejs;C:\Users\Sjoerd Thijsse\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Sjoerd Thijsse\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Skype\Phone;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\QuickTime\QTSystem;C:\Program Files\MongoDB\Server\3.2\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Android\sdk;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\Android\sdk\platform-tools;C:\Users\Sjoerd Thijsse\AppData\Local\atom\bin;C:\Program Files\MongoDB\Server\3.2\bin;C:\Users\Sjoerd Thijsse\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
 10 verbose lifecycle popcorn-api@2.1.0~docs: CWD: C:\Users\Sjoerd Thijsse\Documents\GitHub\popcorn-api\docs
 11 silly lifecycle popcorn-api@2.1.0~docs: Args: [ '/d /s /c', 'esdoc -c .esdoc.json' ]
 12 silly lifecycle popcorn-api@2.1.0~docs: Returned: code: 1  signal: null
 13 info lifecycle popcorn-api@2.1.0~docs: Failed to exec docs script
 14 verbose stack Error: popcorn-api@2.1.0 docs: `esdoc -c .esdoc.json`
 14 verbose stack Exit status 1
-14 verbose stack     at EventEmitter.<anonymous> (C:\Program Files\nodejs\node_modules\npm\lib\utils\lifecycle.js:242:16)
+14 verbose stack     at EventEmitter.<anonymous> (C:\Users\Sjoerd Thijsse\AppData\Roaming\nvm\v6.3.0\node_modules\npm\lib\utils\lifecycle.js:242:16)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at EventEmitter.emit (events.js:191:7)
-14 verbose stack     at ChildProcess.<anonymous> (C:\Program Files\nodejs\node_modules\npm\lib\utils\spawn.js:40:14)
+14 verbose stack     at ChildProcess.<anonymous> (C:\Users\Sjoerd Thijsse\AppData\Roaming\nvm\v6.3.0\node_modules\npm\lib\utils\spawn.js:40:14)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at ChildProcess.emit (events.js:191:7)
 14 verbose stack     at maybeClose (internal/child_process.js:852:16)

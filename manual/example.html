@@ -37,7 +37,9 @@
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#overview" data-ice="link">Overview</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#documentation" data-ice="link">Documentation</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#folder-structure" data-ice="link">Folder structure</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#known-issues" data-ice="link">Known Issues</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#versioning" data-ice="link">Versioning</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#license" data-ice="link">License</a></li>
 </ul>
   </div>
@@ -53,10 +55,25 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/tutorial.html#tutorial" data-ice="link">Tutorial</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#content-providers" data-ice="link">Content Providers</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#kat-providers" data-ice="link">KAT Providers</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#folder-structure" data-ice="link">Folder structure</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#versioning" data-ice="link">Versioning</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#scraper" data-ice="link">Scraper</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#content-providers" data-ice="link">Content Providers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#eztv" data-ice="link">EZTV</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getallshows" data-ice="link">getAllShows</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getshowdata" data-ice="link">getShowData</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#horriblesubs" data-ice="link">Horriblesubs</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getallanime" data-ice="link">getAllAnime</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getanimedata" data-ice="link">getAnimeData</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#kat" data-ice="link">KAT</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#anime" data-ice="link">Anime</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#movie" data-ice="link">Movie</a></li>
+<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#show" data-ice="link">Show</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#yts" data-ice="link">YTS</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#helpers" data-ice="link">Helpers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#anime-show" data-ice="link">Anime &amp; Show</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#movie" data-ice="link">Movie</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#metadata-providers" data-ice="link">Metadata Providers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#trakt-tv" data-ice="link">Trakt.tv</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#hummingbird-me" data-ice="link">Hummingbird.me</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="usage">
@@ -126,12 +143,14 @@
 <pre><code class="lang-javascript"><code class="source-code prettyprint">{
   &quot;repo&quot;: &quot;https://github.com/popcorn-official/popcorn-api.git&quot;,
   &quot;server&quot;: &quot;serv01&quot;,
-  &quot;status&quot;: &quot;Idle&quot;,
-  &quot;totalMovies&quot;: &#x200B;6700,
-  &quot;totalShows&quot;: &#x200B;2452,
-  &quot;updated&quot;: &#x200B;1462484100,
-  &quot;uptime&quot;: &#x200B;825385,
-  &quot;version&quot;: &quot;2.0.0&quot;
+  &quot;status&quot;: &quot;Scraping EZTV&quot;,
+  &quot;totalAnimes&quot;: 623,
+  &quot;totalMovies&quot;: 5593,
+  &quot;totalShows&quot;: 1482,
+  &quot;updated&quot;: 1470233725,
+  &quot;uptime&quot;: 9,
+  &quot;version&quot;: &quot;2.1.0&quot;,
+  &quot;commit&quot;: &quot;ad78dd1&quot;
 }</code>
 </code></pre>
 <h2 id="logs">Logs</h2>
@@ -139,7 +158,7 @@
 <p>Display the error log. Each message will be in JSON format.</p>
 <h2 id="export">Export</h2>
 <p><strong>GET - <code>http://localhost:5000/exports/{collection}</code></strong></p>
-<p>Download the contents a collection in a json file. Possible collections are:</p>
+<p>Download the contents a collection in a JSON file. Possible collections are:</p>
 <ul>
 <li>anime</li>
 <li>movie</li>

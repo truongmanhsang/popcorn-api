@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 191,
-  "actualCount": 191,
+  "expectCount": 194,
+  "actualCount": 194,
   "files": {
     "src/models/Anime.js": {
       "expectCount": 1,
@@ -14,8 +14,8 @@
       "undocumentLines": []
     },
     "src/cli.js": {
-      "expectCount": 12,
-      "actualCount": 12,
+      "expectCount": 14,
+      "actualCount": 14,
       "undocumentLines": []
     },
     "src/providers/show/eztv.js": {
@@ -28,9 +28,9 @@
       "actualCount": 4,
       "undocumentLines": []
     },
-    "src/providers/movie/helper.js": {
-      "expectCount": 8,
-      "actualCount": 8,
+    "src/providers/anime/helper.js": {
+      "expectCount": 11,
+      "actualCount": 11,
       "undocumentLines": []
     },
     "src/providers/show/helper.js": {
@@ -38,9 +38,9 @@
       "actualCount": 10,
       "undocumentLines": []
     },
-    "src/providers/anime/helper.js": {
-      "expectCount": 11,
-      "actualCount": 11,
+    "src/providers/movie/helper.js": {
+      "expectCount": 8,
+      "actualCount": 8,
       "undocumentLines": []
     },
     "src/providers/anime/horriblesubs.js": {
@@ -58,17 +58,17 @@
       "actualCount": 5,
       "undocumentLines": []
     },
+    "src/providers/movie/kat.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
     "src/providers/anime/kat.js": {
       "expectCount": 12,
       "actualCount": 12,
       "undocumentLines": []
     },
     "src/providers/show/kat.js": {
-      "expectCount": 12,
-      "actualCount": 12,
-      "undocumentLines": []
-    },
-    "src/providers/movie/kat.js": {
       "expectCount": 12,
       "actualCount": 12,
       "undocumentLines": []
@@ -89,8 +89,8 @@
       "undocumentLines": []
     },
     "src/config/constants.js": {
-      "expectCount": 21,
-      "actualCount": 21,
+      "expectCount": 22,
+      "actualCount": 22,
       "undocumentLines": []
     },
     "src/config/routes.js": {

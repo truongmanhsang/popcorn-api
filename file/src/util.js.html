@@ -41,6 +41,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/setup.js~Setup.html">Setup</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-collections">collections</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span></li>
@@ -141,9 +142,9 @@ export default class Util {
    * @returns {String} - The output of the mongoimport command.
    */
   importCollection(collection, jsonFile) {
-    jsonFile = path.join(process.cwd(), jsonFile);
+    if (!path.isAbsolute(jsonFile)) jsonFile = path.join(process.cwd(), jsonFile);
     if (!fs.existsSync(jsonFile)) return this.onError(`Error: no such file found for &apos;${jsonFile}&apos;`);
-    return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection}s --file &quot;${jsonFile}&quot; --upsert`);
+    return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection} --file &quot;${jsonFile}&quot; --upsert`);
   };
 
   /**

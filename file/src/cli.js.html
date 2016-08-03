@@ -41,6 +41,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/setup.js~Setup.html">Setup</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeProviders">animeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-collections">collections</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span></li>
@@ -207,6 +208,15 @@ export default class CLI {
       required: true
     };
 
+    const confirm = {
+      description: &quot;Do you really want to import a collection, this will override the current data for the collection?&quot;,
+      type: &quot;boolean&quot;,
+      pattern: /^(yes|no|y|n)$/gi,
+      message: &quot;Type yes/no&quot;,
+      required: true,
+      default: &quot;no&quot;
+    };
+
     /**
      * The shema used by `prompt` insert an anime show.
      * @type {Object}
@@ -222,7 +232,7 @@ export default class CLI {
     };
 
     /**
-     * The shema used by `prompt` insert a movie.
+     * The schema used by `prompt` insert a movie.
      * @type {Object}
      */
     this._movieSchema = {
@@ -235,7 +245,7 @@ export default class CLI {
     };
 
     /**
-     * The shema used by `prompt` insert a show.
+     * The schema used by `prompt` insert a show.
      * @type {Object}
      */
     this._showSchema = {
@@ -245,6 +255,16 @@ export default class CLI {
         &quot;episode&quot;: episode,
         &quot;torrent&quot;: torrent,
         &quot;quality&quot;: quality
+      }
+    };
+
+    /**
+     * The schema used by `prompt` to confirm an import.
+     * @type {Object}
+     */
+    this._importSchema = {
+      properties: {
+        &quot;confirm&quot;: confirm
       }
     };
   };
@@ -363,7 +383,7 @@ export default class CLI {
   _showPrompt() {
     prompt.get(this._showSchema, async(err, result) =&gt; {
       if (err) {
-        util.onError(`An error occurred: ${err}`);
+        this._util.onError(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
@@ -383,12 +403,28 @@ export default class CLI {
     });
   };
 
+  /** Confimation to import a collection */
+  _importPrompt() {
+    prompt.get(this._importSchema, (err, result) =&gt; {
+      if (err) {
+        this._util.onError(`An error occured: ${err}`);
+        process.exit(1);
+      } else {
+        let collection = path.basename(program.import);
+        const index = collection.lastIndexOf(&quot;.&quot;);
+        collection = collection.substring(0, index);
+        this._util.importCollection(collection, program.import)
+          .catch(err =&gt; console.error(err));
+      }
+    });
+  };
+
   /** Run the CLI program. */
   run() {
     if (program.run) {
-      new Index({start: true, pretty: false, debug: false});
+      new Index({start: true, pretty: true, debug: false});
     } else if (program.server) {
-      new Index({start: false, pretty: false, debug: false});
+      new Index({start: false, pretty: true, debug: false});
     } else if (program.content) {
       prompt.start();
       Setup.connectMongoDB();
@@ -401,12 +437,7 @@ export default class CLI {
     } else if (program.export) {
       this._util.exportCollection(program.export);
     } else if (program.import) {
-      let collection = path.basename(program.import);
-      const index = collection.lastIndexOf(&quot;.&quot;);
-      collection = collection.substring(0, index);
-      this._util.importCollection(collection, program.import)
-        .then(res =&gt; console.log(res))
-        .catch(err =&gt; console.error(err));
+      this.__importPrompt();
     } else {
       this._util.onError(&quot;\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m&quot;);
       program.help();
