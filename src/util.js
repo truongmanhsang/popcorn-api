@@ -60,7 +60,7 @@ export default class Util {
    */
   importCollection(collection, jsonFile) {
     if (!path.isAbsolute(jsonFile)) jsonFile = path.join(process.cwd(), jsonFile);
-    if (!fs.existsSync(jsonFile)) return this.onError(`Error: no such file found for '${jsonFile}'`);
+    if (!fs.existsSync(jsonFile)) throw new Error(`Error: no such file found for '${jsonFile}'`);
 
     console.log(`Importing collection: '${collection}', from: '${jsonFile}'`);
 
