@@ -46,8 +46,10 @@ export default class Util {
    * @returns {String} - The output of the mongoexport command.
    */
   exportCollection(collection) {
-    const jsonFile = path.join(tempDir, `${collection}s`);
-    return this.executeCommand(`mongoexport --db ${dbName} --collection ${collection}s --out "${jsonFile}.json"`);
+    const jsonFile = path.join(tempDir, `${collection}s.json`);
+    console.log(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
+
+    return this.executeCommand(`mongoexport --db ${dbName} --collection ${collection}s --out "${jsonFile}"`);
   };
 
   /**
@@ -59,6 +61,9 @@ export default class Util {
   importCollection(collection, jsonFile) {
     if (!path.isAbsolute(jsonFile)) jsonFile = path.join(process.cwd(), jsonFile);
     if (!fs.existsSync(jsonFile)) return this.onError(`Error: no such file found for '${jsonFile}'`);
+
+    console.log(`Importing collection: '${collection}', from: '${jsonFile}'`);
+
     return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection} --file "${jsonFile}" --upsert`);
   };
 

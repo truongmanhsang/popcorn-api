@@ -17,7 +17,7 @@ Popcorn API is developed to make it easier for anyone to create their own versio
 
 # Documentation
 
-Documentation for the code can be generated with the command `npm run docs`. This will automatically generate the documentation which will be generated in the `./docs` directory. The `index.html` page will be the starting point.
+Documentation for the code can be generated with the command `npm run docs`. This will automatically generate the documentation which will be located in the `docs` directory. The `index.html` page will be the starting point. You can also view the documentation online right [here](https://chrisalderson.github.io/).
 
 # Folder structure
 
@@ -36,12 +36,6 @@ The API has the following folder structure.
         ├── movie        # Movie providers
         └── show         # Show providers
 ```
-
-# Known Issues
-
-Know issues are indicated in the code with the `TODO` tag.
-
-- No known issues :)
 
 # Versioning
 

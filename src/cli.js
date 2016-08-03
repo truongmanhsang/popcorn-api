@@ -31,11 +31,11 @@ export default class CLI {
     // Setup the CLI program.
     program
       .version(`${packageJSON.name} v${packageJSON.version}`)
-      .option("-c, --content <type>", "Add content from the MongoDB database (anime | show | movie).", /^(anime)^(show)|^(movie)/i, false)
+      .option("-c, --content <type>", "Add content from the MongoDB database (anime | show | movie).", /^(anime)|^(show)|^(movie)/i, false)
       .option("-r, --run", "Run the API and start the scraping process.")
       .option("-s, --server", "Run the API without starting the scraping process.")
-      .option("-e, --export <collection>", "Export a collection to a JSON file.", /^(anime)^(show)|^(movie)/i, false)
-      .option("-i, --import <json>", "Import a JSON file to the database.");
+      .option("-e, --export <collection>", "Export a collection to a JSON file.", /^(anime)|^(show)|^(movie)/i, false)
+      .option("-i, --import <collection>", "Import a JSON file to the database.");
 
     // Extra output on top of the default help output
     program.on("--help", () => {
@@ -124,9 +124,9 @@ export default class CLI {
     };
 
     const confirm = {
-      description: "Do you really want to import a collection, this will override the current data for the collection?",
-      type: "boolean",
-      pattern: /^(yes|no|y|n)$/gi,
+      description: "Do you really want to import a collection, this can override the current data?",
+      type: "string",
+      pattern: /^(yes|no|y|n)$/i,
       message: "Type yes/no",
       required: true,
       default: "no"
@@ -325,11 +325,15 @@ export default class CLI {
         this._util.onError(`An error occured: ${err}`);
         process.exit(1);
       } else {
-        let collection = path.basename(program.import);
-        const index = collection.lastIndexOf(".");
-        collection = collection.substring(0, index);
-        this._util.importCollection(collection, program.import)
-          .catch(err => console.error(err));
+        if (result.confirm.match(/^(y|yes)/i)) {
+          let collection = path.basename(program.import);
+          const index = collection.lastIndexOf(".");
+          collection = collection.substring(0, index);
+          this._util.importCollection(collection, program.import)
+            .catch(err => console.error(err));
+        } else if (result.confirm.match(/^(n|no)/i)) {
+          process.exit(0);
+        }
       }
     });
   };
@@ -352,7 +356,7 @@ export default class CLI {
     } else if (program.export) {
       this._util.exportCollection(program.export);
     } else if (program.import) {
-      this.__importPrompt();
+      this._importPrompt();
     } else {
       this._util.onError("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
       program.help();

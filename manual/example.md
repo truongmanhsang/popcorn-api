@@ -1,5 +1,7 @@
 # Example
 
+In this example section you can read about the routes that are provided by Popcorn API.
+
 ## Index
 
 **GET - `http://localhost:5000/`**
@@ -165,44 +167,53 @@ Gives an array of movies. The array has a has a maximum length of 50 movies per 
 ```javascript
 [
   {
-    "_id": "tt2015381",
-    "imdb_id": "tt2015381",
-    "title": "Guardians of the Galaxy",
-    "year": "2014",
-    "synopsis": "Light years from Earth, 26 years after being abducted, Peter Quill finds himself the prime target of a manhunt after discovering an orb wanted by Ronan the Accuser.",
-    "runtime": "121",
-    "released": 1406851200,
-    "trailer": "http://youtube.com/watch?v=2LIQ2-PZBC8",
+    "_id": "tt1375666",
+    "imdb_id": "tt1375666",
+    "title": "Inception",
+    "year": "2010",
+    "synopsis": "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.",
+    "runtime": "148",
+    "released": 1279238400,
+    "trailer": "http://youtube.com/watch?v=xitHF0IPJSQ",
     "certification": "PG-13",
     "torrents": {
       "en": {
         "1080p": {
-          "provider": "Z0n321",
-          "fileSize": "8.74 GB",
-          "size": 9384503541,
-          "peer": 114,
-          "seed": 91,
-          "magnet": "magnet:?xt=urn:btih:8A8CBF1DF12D459AF26B01DC3C584A3631E0C2B5&dn=guardians+of+the+galaxy+2014+1080p+bluray+x264+sparks&tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce",
-          "url": "magnet:?xt=urn:btih:8A8CBF1DF12D459AF26B01DC3C584A3631E0C2B5&dn=guardians+of+the+galaxy+2014+1080p+bluray+x264+sparks&tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce"
+          "url": "magnet:?xt=urn:btih:224BF45881252643DFC2E71ABC7B2660A21C68C4&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337",
+          "seed": 927,
+          "peer": 82,
+          "size": 1986422374,
+          "filesize": "1.85 GB",
+          "provider": "YTS"
+        },
+        "720p": {
+          "url": "magnet:?xt=urn:btih:CE9156EB497762F8B7577B71C0647A4B0C3423E1&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337",
+          "seed": 571,
+          "peer": 47,
+          "size": 1148903752,
+          "filesize": "1.07 GB",
+          "provider": "YTS"
         }
       }
     },
     "genres": [
+      "action",
       "adventure",
-      "fantasy",
-      "science-fiction"
+      "mystery",
+      "science-fiction",
+      "thriller"
     ],
     "images": {
-      "banner": "https://walter.trakt.us/images/movies/000/082/405/banners/original/592c80e5b3.jpg",
-      "fanart": "https://walter.trakt.us/images/movies/000/082/405/fanarts/original/d2e37f8511.jpg",
-      "poster": "https://walter.trakt.us/images/movies/000/082/405/posters/original/a189960d53.jpg"
+      "poster": "https://walter.trakt.us/images/movies/000/016/662/posters/original/a7f71cbc67.jpg",
+      "fanart": "https://walter.trakt.us/images/movies/000/016/662/fanarts/original/d02c86e1f7.jpg",
+      "banner": "https://walter.trakt.us/images/movies/000/016/662/banners/original/9bd450d083.jpg"
     },
     "rating": {
-      "hated": 100,
+      "percentage": 88,
+      "watching": 2,
+      "votes": 25134,
       "loved": 100,
-      "votes": 21025,
-      "watching": 1,
-      "percentage": 83
+      "hated": 100
     }
   },
   ...
@@ -216,50 +227,56 @@ Gives information about a single movie based on the given imdb id.
 **Example output:**
 
 ```javascript
-[
-  {
-    "_id": "tt2015381",
-    "imdb_id": "tt2015381",
-    "title": "Guardians of the Galaxy",
-    "year": "2014",
-    "synopsis": "Light years from Earth, 26 years after being abducted, Peter Quill finds himself the prime target of a manhunt after discovering an orb wanted by Ronan the Accuser.",
-    "runtime": "121",
-    "released": 1406851200,
-    "trailer": "http://youtube.com/watch?v=2LIQ2-PZBC8",
-    "certification": "PG-13",
-    "torrents": {
-      "en": {
-        "1080p": {
-          "provider": "Z0n321",
-          "fileSize": "8.74 GB",
-          "size": 9384503541,
-          "peer": 114,
-          "seed": 91,
-          "magnet": "magnet:?xt=urn:btih:8A8CBF1DF12D459AF26B01DC3C584A3631E0C2B5&dn=guardians+of+the+galaxy+2014+1080p+bluray+x264+sparks&tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce",
-          "url": "magnet:?xt=urn:btih:8A8CBF1DF12D459AF26B01DC3C584A3631E0C2B5&dn=guardians+of+the+galaxy+2014+1080p+bluray+x264+sparks&tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce"
-        }
+{
+  "_id": "tt1375666",
+  "imdb_id": "tt1375666",
+  "title": "Inception",
+  "year": "2010",
+  "synopsis": "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.",
+  "runtime": "148",
+  "released": 1279238400,
+  "trailer": "http://youtube.com/watch?v=xitHF0IPJSQ",
+  "certification": "PG-13",
+  "torrents": {
+    "en": {
+      "1080p": {
+        "url": "magnet:?xt=urn:btih:224BF45881252643DFC2E71ABC7B2660A21C68C4&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337",
+        "seed": 927,
+        "peer": 82,
+        "size": 1986422374,
+        "filesize": "1.85 GB",
+        "provider": "YTS"
+      },
+      "720p": {
+        "url": "magnet:?xt=urn:btih:CE9156EB497762F8B7577B71C0647A4B0C3423E1&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337",
+        "seed": 571,
+        "peer": 47,
+        "size": 1148903752,
+        "filesize": "1.07 GB",
+        "provider": "YTS"
       }
-    },
-    "genres": [
-      "adventure",
-      "fantasy",
-      "science-fiction"
-    ],
-    "images": {
-      "banner": "https://walter.trakt.us/images/movies/000/082/405/banners/original/592c80e5b3.jpg",
-      "fanart": "https://walter.trakt.us/images/movies/000/082/405/fanarts/original/d2e37f8511.jpg",
-      "poster": "https://walter.trakt.us/images/movies/000/082/405/posters/original/a189960d53.jpg"
-    },
-    "rating": {
-      "hated": 100,
-      "loved": 100,
-      "votes": 21025,
-      "watching": 1,
-      "percentage": 83
     }
   },
-  ...
-]
+  "genres": [
+    "action",
+    "adventure",
+    "mystery",
+    "science-fiction",
+    "thriller"
+  ],
+  "images": {
+    "poster": "https://walter.trakt.us/images/movies/000/016/662/posters/original/a7f71cbc67.jpg",
+    "fanart": "https://walter.trakt.us/images/movies/000/016/662/fanarts/original/d02c86e1f7.jpg",
+    "banner": "https://walter.trakt.us/images/movies/000/016/662/banners/original/9bd450d083.jpg"
+  },
+  "rating": {
+    "percentage": 88,
+    "watching": 2,
+    "votes": 25134,
+    "loved": 100,
+    "hated": 100
+  }
+}
 ```
 
 **GET - `http://localhost:5000/random/movie`**
@@ -413,11 +430,15 @@ The following routes support query strings:
 
 `sort=`
 
+###### Anime
+
 Possible options for **anime** are:
 
 - `name`: sort by the release date of the movies.
 - `rating`: sort by the highest rated anime.
 - `year`: sort by the release year of the anime.
+
+###### Movies
 
 Possible options for **movies** are:
 
@@ -426,6 +447,8 @@ Possible options for **movies** are:
 - `title`: sort by the title of the movies.
 - `trending`: sort by trending movies.
 - `year`: sort by the release year of the movies.
+
+###### Shows
 
 Possible options for **shows** are:
 
@@ -440,14 +463,13 @@ Possible options for **shows** are:
 `order=`
 
 To order ascending: `1`
-
 To order descending: `-1`
 
 ## Genres
 
 `genre=`
 
-##### shows & movies
+### Movies & Shows
 
 The API supports the following genres for **shows** and **movies**:
  - action
@@ -482,7 +504,7 @@ The API supports the following genres for **shows** and **movies**:
  - war
  - western
 
-##### Anime
+### Anime
 
 The API supports the following genres for **anime**:
  - Action

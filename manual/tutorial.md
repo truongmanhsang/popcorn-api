@@ -4,7 +4,7 @@ In this tutorial section you can read about the scraping process of the API.
 
 ## Scraper
 
-The `scraper.js` class is the entry point to start the scraping process with the `scrape` method. This method will iterate through an array of methods to scrape each individual content provider.
+The [`Scraper`](https://chrisalderson.github.io/class/src/scraper.js~Scraper.html) class is the entry point to start the scraping process with the [`scrape`](https://chrisalderson.github.io/class/src/scraper.js~Scraper.html#instance-method-scrape) method. This method will iterate through an array of methods to scrape each individual content provider.
 
 ```javascript
 scrape() {
@@ -28,10 +28,10 @@ Popcorn API gets its torrent content from various sources. Here you can see wher
 
 |              | Anime | Movie | Show |
 |--------------|-------|-------|------|
-| EZTV         |       |       | X    |
-| Horriblesubs | X     |       |      |
-| KAT          | X     | X     | X    |
-| YTS          |       | X     |      | |
+| [EZTV](https://eztv.ag/)         |       |       | X    |
+| [Horriblesubs](https://horriblesubs.info/) | X     |       |      |
+| [KAT](https://kat.cr/)          | X     | X     | X    |
+| [YTS](https://yts.ag/)          |       | X     |      | |
 
 ### EZTV
 
@@ -57,7 +57,7 @@ This method returns a list of all the available shows listed [here](https://eztv
 
 #### getShowData
 
-Each show from the `getAllShows` can be passed into the `getShowData` method to get more data on the individual show. Through this process the slug can change to another slug or imdb id which is compatible with [trakt.tv](https://trakt.tv/). Torrents are being added to the `episodes` property which is compatible with the [helper](#helpers) to insert the torrents into the MongoDB database. Nested within the `episodes` property there is the `season number` within the `season number` is the `episode number` and within the `episode number` are the different `qualities` of the torrent.
+Each show from the `getAllShows` can be passed into the `getShowData` method to get more data on the individual show. Through this process the slug can change to another slug or imdb id which is compatible with [Trakt.tv](https://trakt.tv/). Torrents are being added to the `episodes` property which is compatible with the [helper](#helpers) to insert the torrents into the MongoDB database. Nested within the `episodes` property there is the `season number` within the `season number` is the `episode number` and within the `episode number` are the different `qualities` of the torrent.
 
 ```javascript
 { show: "10 O\'Clock Live",
@@ -100,7 +100,7 @@ This method returns a list of all the available shows listed [here](http://horri
 
 #### getAnimeData
 
-Each anime from the `getAllAnime` can be passed into the `getAnimeData` method to get more data on the individual anime. Through this process the slug can change to another slug which is compatible with [hummingbird.me](https://hummingbird.me). The `hs_showid` is added and torrents are being added to the `episodes` property which is compatible with the [helper](#helpers) to insert the torrents into the MongoDB database. Nested within the `episodes` property there is the `season number` within the `season number` is the `episode number` and within the `episode number` are the different `qualities` of the torrent.
+Each anime from the `getAllAnime` can be passed into the `getAnimeData` method to get more data on the individual anime. Through this process the slug can change to another slug which is compatible with [Hummingbird.me](https://hummingbird.me). The `hs_showid` is added and torrents are being added to the `episodes` property which is compatible with the [helper](#helpers) to insert the torrents into the MongoDB database. Nested within the `episodes` property there is the `season number` within the `season number` is the `episode number` and within the `episode number` are the different `qualities` of the torrent.
 
 ```javascript
 { link: "/shows/91-days",
@@ -123,32 +123,31 @@ Each anime from the `getAllAnime` can be passed into the `getAnimeData` method t
 
 ### KAT
 
-Content from [kat.cr](https://kat.cr/) is grabbed with so called `providers` which can be configured in the `./src/config/constants.js` file. Providers will be converted to a search query to [kat.cr](https://kat.cr/) so each provider can get a maximum of 10.000 torrents (or 400 pages or torrents). The module used for getting the data from [kat.cr](https://kat.cr/) can be found [here](https://github.com/chrisalderson/kat-api-pt).
+Content from [kat.cr](https://kat.cr/) is grabbed with so called `providers` which are defined in the [`animeProviders`](https://chrisalderson.github.io/variable/index.html#static-variable-animeProviders), [`movieProviders`](https://chrisalderson.github.io/variable/index.html#static-variable-movieProviders) and [`showProviders`](https://chrisalderson.github.io/variable/index.html#static-variable-showProviders) arrays. Providers will be converted to a search query to [kat.cr](https://kat.cr/) so each provider can get a maximum of 10.000 torrents (or 400 pages or torrents). The module used for getting the data from [kat.cr](https://kat.cr/) can be found [here](https://github.com/chrisalderson/kat-api-pt).
 
-Each provider needs a `name` property and a `query` property. The `name` property is a `String` will be used for logging purposes so that issues can be more easily figured out. The `query` property is an `Object` which can contain various properties. These properties will be converted into a search query to [kat.cr](https://kat.cr/).
+Each provider needs a `name` property and a `query` property. The `name` property is a `String` will be used for logging purposes so that issues with the provider can be figured out easier. The `query` property is an `Object` which can contain various properties. These properties will be converted into a search query to [kat.cr](https://kat.cr/).
 
 The following `query` properties can be used:
 ```
-- query               # Search for keywords
-- category            # The category to search for e.g. tv or movies
-- uploader            # The name of the uploader of the torrents
-- min_seeds           # The minimum amount of seeds
-- age                 # The age of the torrents
-- min_files           # The minimum amount of files
-- imdb                # The imdb id for a tv show (only works with category:tv)
-- tvrage              # The tvrage id for a tv show (only works with category:tv)
-- isbn                # The isbn id for a book (only works with category:books)
-- language            # The language of the movie/tv show e.g. en or pl
-- adult_filter        # Adult filtering of torrents
-- verified            # Show only the verified torrents
-- season              # Season number of a tv show (only works with category:tv)
-- episode             # Episode number of a tv show (only works with category:tv)
-- page                # The page to search on.
-- sort_by             # Sort by property
-- order               # Order the list asc or desc
+ - query               # Search for keywords
+ - category            # The category to search for e.g. tv or movies
+ - uploader            # The name of the uploader of the torrents
+ - min_seeds           # The minimum amount of seeds
+ - age                 # The age of the torrents
+ - min_files           # The minimum amount of files
+ - imdb                # The imdb id for a tv show (only works with category:tv)
+ - tvrage              # The tvrage id for a tv show (only works with category:tv)
+ - language            # The language of the movie/tv show e.g. en or pl
+ - adult_filter        # Filter out the adult torrents
+ - verified            # Show only the verified torrents
+ - season              # Season number of a tv show (only works with category:tv)
+ - episode             # Episode number of a tv show (only works with category:tv)
+ - page                # The page to search on.
+ - sort_by             # Sort by property
+ - order               # Order the list asc or desc
 ```
 
-All three types of content can be scraped from [kat.cr](https://kat.cr/) through the `kat.js` class in each folder of the providers. By default the `kat.js` class add a few default properties to the providers. The `page` property does not need to be indicated as the algorithm for scraping [kat.cr](https://kat.cr/) will go through all the available pages. The `adult_filter` and `verified` properties are also turned on by default to potentially filter out bad content. The `category` property is filled in for each type of content. For `anime` it is `english-translated`, the `movies` category is `movies` and for `shows` there is `tv`. Lastly the `movies` need a `language` property otherwise the scraper with throw an error and the `shows` will have a default `language` as `en` so only English TV shows get filtered.
+All three types of content can be scraped from [kat.cr](https://kat.cr/) through the `KAT` class in each folder of the providers. By default the `KAT` class add a few default properties to the providers. The `page` property does not need to be indicated since the algorithm for scraping [kat.cr](https://kat.cr/) will go through all the available pages (max of 400 due to site limitations). The `adult_filter` and `verified` properties are also turned on by default to filter out the bad content. The `category` property is filled in for each type of content. For `anime` it is `english-translated`, the `movies` category is `movies` and for `shows` there is `tv`. Lastly the `movies` need a `language` property otherwise the scraper will throw an error and the `shows` will have a default `language` as `en` so only English TV shows will be filtered.
 
 **An example of a provider:**
 ```javascript
@@ -161,13 +160,13 @@ All three types of content can be scraped from [kat.cr](https://kat.cr/) through
 }
 ```
 
-If you want to make a provider for [kat.cr](https://kat.cr/) it is highly recommended you try it fist in the browser by manually going to [kat.cr](https://kat.cr/) and search for the content because the title of the torrent will be subjected to regular expression to grab the needed data for the [helper](#helpers) to insert the torrents into the MongoDB database.
+If you want to make a provider for [kat.cr](https://kat.cr/) it is highly recommended you try it fist in the browser by manually going to [kat.cr](https://kat.cr/) and search for the content. This is because the title of the torrent will be subjected to regular expressions to grab the needed data for the [helper](#helpers) to insert the torrents into the MongoDB database.
 
 #### Anime
 
-**NOTE:** the kat content provider was written just before the [kat.cr](https://kat.cr/) was taken down. This is why there is only one regular expression and it is for Horriblesubs. This regular expression is redundant because of the [horriblesubs](#horriblesubs) provider.
+**NOTE:** the KAT content provider was written just before the [kat.cr](https://kat.cr/) was taken down. This is why there are only two regular expression and those are for Horriblesubs. These regular expressions are redundant because of the [Horriblesubs](#horriblesubs) provider.
 
-The regular expression needs to get an `title`, `episode` and a `quality` property. A `season` property is optional, if the `season` is not in the episode title it will assume the torrent is from `season` 1. Down below you can see the method to get the needed data for an anime episode. If your content does not match any of these regular expressions, you can add the regular expression to the method.
+The regular expression needs to get a `title`, `episode` and a `quality` property. A `season` property is optional, if the `season` is not in the episode title it will assume the torrent is from `season` 1. Down below you can see the method to get the needed data for an anime episode. If your content does not match any of these regular expressions, you can add the regular expression to the method.
 
 ```javascript
 _getAnimeData(torrent) {
@@ -227,7 +226,7 @@ _getShowData(torrent) {
 
 ### YTS
 
-**NOTE:** This provider will most likely be moved to use a YTS API wrapper module. No API wrappers exists for YTS which are using promises, so one needs to be made.
+**NOTE:** This provider will most likely be changed to use a YTS API wrapper module. No API wrappers exists for YTS which are using promises, so one needs to be made.
 
 ## Helpers
 
@@ -235,14 +234,14 @@ The `helper.js` classes in each provider folder helps the providers to insert th
 
 ### Anime & Show
 
-The first method to call is `getHummingbirdInfo` for anime and `getTraktInfo` for shows. These methods need a slug as a parameter (`getTraktInfo` can also use an imdb id). These methods will fetch metadata from [hummingbird.me](https://hummingbird.me/) or [trakt.tv](https://trakt.tv) and return an object based on the schema of the mongoose model, but without any episodes.
+The first method to call is [`getHummingbirdInfo`](https://chrisalderson.github.io/class/src/providers/anime/helper.js~Helper.html#instance-method-getHummingbirdInfo) for anime and [`getTraktInfo`](https://chrisalderson.github.io/class/src/providers/show/helper.js~Helper.html#instance-method-getTraktInfo) for shows. These methods need a slug as a parameter ([`getTraktInfo`](https://chrisalderson.github.io/class/src/providers/show/helper.js~Helper.html#instance-method-getTraktInfo) can also use an imdb id). These methods will fetch metadata from [Hummingbird.me](https://hummingbird.me/) or [Trakt.tv](https://trakt.tv) and return an object based on the schema of the mongoose model, but without any episodes.
 
 ```javascript
 getTraktInfo(slug);
 getHummingbirdInfo(slug);
 ```
 
-The second method to call is the `addEpisodes` method to attach the episodes to the object returned by `getHummingbirdInfo` or `getTraktInfo`. This object is the first parameter, the second one is the episodes object and the third parameter is the slug again.
+The second method to call is the `addEpisodes` method to attach the episodes to the object returned by [`getHummingbirdInfo`](https://chrisalderson.github.io/class/src/providers/anime/helper.js~Helper.html#instance-method-getHummingbirdInfo) or [`getTraktInfo`](https://chrisalderson.github.io/class/src/providers/show/helper.js~Helper.html#instance-method-getTraktInfo). This object is the first parameter, the second one is the episodes object and the third parameter is the slug again.
 
 ```javascript
 addEpisodes(anime/show, episodes, slug);
@@ -267,13 +266,13 @@ The episodes are structured in a particular way. In the episodes object you firs
 
 ### Movie
 
-The first method to call is `getTraktInfo`. This method need a slug as a parameter, but can also use an imdb id). This method will fetch metadata from [trakt.tv](https://trakt.tv) and return an object based on the schema of the mongoose model, but without any torrents.
+The first method to call is [`getTraktInfo`](https://chrisalderson.github.io/class/src/providers/movie/helper.js~Helper.html#instance-method-getTraktInfo). This method need a slug as a parameter, but can also use an imdb id). This method will fetch metadata from [Trakt.tv](https://trakt.tv) and return an object based on the schema of the mongoose model, but without any torrents.
 
 ```javascript
-getTraktInfo(katMovie.slugYear);
+getTraktInfo(slug);
 ```
 
-The second method to call is the `addTorrents` method to attach the torrents to the object returned by `getTraktInfo`. This object is the first parmeter, the second one is the torrents for the movie.
+The second method to call is the [`addTorrents`](https://chrisalderson.github.io/class/src/providers/movie/helper.js~Helper.html#instance-method-addTorrents) method to attach the torrents to the object returned by [`getTraktInfo`](https://chrisalderson.github.io/class/src/providers/movie/helper.js~Helper.html#instance-method-getTraktInfo). This object is the first parameter, the second one is the torrents for the movie.
 
 ```javascript
 addTorrents(movie, torrents);
@@ -302,7 +301,7 @@ Metadata providers are providers which get data on a movie or get seasonal infor
 
 ### Trakt.tv
 
-[Trakt.tv](https://trakt.tv/) is the metadata provider for movies and shows. It uses a module from [Jean van Kasteel](https://github.com/vankasteelj) called [trakt.tv](https://github.com/vankasteelj/trakt.tv). For more information about the Trakt API you can click [here](http://docs.trakt.apiary.io/).
+[Trakt.tv](https://trakt.tv/) is the metadata provider for movies and shows. It uses a module from [Jean van Kasteel](https://github.com/vankasteelj) called [Trakt.tv](https://github.com/vankasteelj/trakt.tv). For more information about the Trakt API you can click [here](http://docs.trakt.apiary.io/).
 
 ### Hummingbird.me
 

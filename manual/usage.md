@@ -1,6 +1,8 @@
 # Usage
 
-##### npm
+In this usage section you can read about Popcorn API and its functionality through the CLI.
+
+## npm
 The following commands are defined in the `package.json`:
 
 ```
@@ -12,7 +14,7 @@ The following commands are defined in the `package.json`:
  $ npm run docs                         # Generate the documentation of the API.
 ```
 
-##### Gulp
+## Gulp
 The following commands are defined by Gulp:
 
 ```
@@ -22,7 +24,7 @@ The following commands are defined by Gulp:
  $ gulp watch                           # Watch for any changes in the 'src' directory.
  ```
 
-##### Global
+## Global
 The following commands are available when Popcorn API is installed globally:
 
 ```
@@ -30,5 +32,5 @@ The following commands are available when Popcorn API is installed globally:
  $ popcorn-api --run                    # Run Popcorn API and start the scraping process.
  $ popcorn-api --server                 # Run Popcorn API, but do not start the scraping process.
  $ popcorn-api --export <collection>    # Export a collection to a JSON file.
- # popcorn-api --import <json>          # Import a JSON file to the database.
+ $ popcorn-api --import <collection>    # Import a collection file to the database.
 ```
