@@ -38,7 +38,6 @@
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#overview" data-ice="link">Overview</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#documentation" data-ice="link">Documentation</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#folder-structure" data-ice="link">Folder structure</a></li>
-<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#known-issues" data-ice="link">Known Issues</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#versioning" data-ice="link">Versioning</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#license" data-ice="link">License</a></li>
 </ul>
@@ -81,9 +80,9 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/usage.html#usage" data-ice="link">Usage</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/usage.html#npm" data-ice="link">npm</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/usage.html#gulp" data-ice="link">Gulp</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/usage.html#global" data-ice="link">Global</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/usage.html#npm" data-ice="link">npm</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/usage.html#gulp" data-ice="link">Gulp</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/usage.html#global" data-ice="link">Global</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="example">
@@ -101,8 +100,8 @@
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#sorting" data-ice="link">Sorting</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#ordering" data-ice="link">Ordering</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#genres" data-ice="link">Genres</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#shows-movies" data-ice="link">shows &amp; movies</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#anime" data-ice="link">Anime</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/example.html#movies-shows" data-ice="link">Movies &amp; Shows</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/example.html#anime" data-ice="link">Anime</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#keywords" data-ice="link">Keywords</a></li>
 </ul>
   </div>
@@ -136,7 +135,8 @@
     <span data-ice="title">Usage</span>
   </div>
   <div data-ice="content"><h1 id="usage">Usage</h1>
-<h5 id="npm">npm</h5>
+<p>In this usage section you can read about Popcorn API and its functionality through the CLI.</p>
+<h2 id="npm">npm</h2>
 <p>The following commands are defined in the <code>package.json</code>:</p>
 <pre><code><code class="source-code prettyprint"> $ npm run start                        # Run Popcorn API and start the scraping process.
  $ npm run start-dev                    # Same as above, but in development mode.
@@ -144,19 +144,19 @@
  $ npm run server-dev                   # Same as above, but in development mode.
  $ npm run forever                      # Run Popcorn API with the &apos;forever&apos; module.
  $ npm run docs                         # Generate the documentation of the API.</code>
-</code></pre><h5 id="gulp">Gulp</h5>
+</code></pre><h2 id="gulp">Gulp</h2>
 <p>The following commands are defined by Gulp:</p>
 <pre><code><code class="source-code prettyprint"> $ gulp build                           # Transpile the ES6 source code to ES5.
  $ gulp clean                           # Delete the &apos;build&apos; directory.
  $ gulp default                         # The default gulp task (same as &apos;gulp build&apos;).
  $ gulp watch                           # Watch for any changes in the &apos;src&apos; directory.</code>
-</code></pre><h5 id="global">Global</h5>
+</code></pre><h2 id="global">Global</h2>
 <p>The following commands are available when Popcorn API is installed globally:</p>
 <pre><code><code class="source-code prettyprint"> $ popcorn-api --content &lt;type&gt;         # Add content to the database.
  $ popcorn-api --run                    # Run Popcorn API and start the scraping process.
  $ popcorn-api --server                 # Run Popcorn API, but do not start the scraping process.
  $ popcorn-api --export &lt;collection&gt;    # Export a collection to a JSON file.
- # popcorn-api --import &lt;json&gt;          # Import a JSON file to the database.</code>
+ $ popcorn-api --import &lt;collection&gt;    # Import a collection file to the database.</code>
 </code></pre></div>
 </div>
 </div>

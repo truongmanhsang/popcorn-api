@@ -38,7 +38,6 @@
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#overview" data-ice="link">Overview</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#documentation" data-ice="link">Documentation</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#folder-structure" data-ice="link">Folder structure</a></li>
-<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#known-issues" data-ice="link">Known Issues</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#versioning" data-ice="link">Versioning</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#license" data-ice="link">License</a></li>
 </ul>
@@ -81,9 +80,9 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/usage.html#usage" data-ice="link">Usage</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/usage.html#npm" data-ice="link">npm</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/usage.html#gulp" data-ice="link">Gulp</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/usage.html#global" data-ice="link">Global</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/usage.html#npm" data-ice="link">npm</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/usage.html#gulp" data-ice="link">Gulp</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/usage.html#global" data-ice="link">Global</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="example">
@@ -101,8 +100,8 @@
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#sorting" data-ice="link">Sorting</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#ordering" data-ice="link">Ordering</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#genres" data-ice="link">Genres</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#shows-movies" data-ice="link">shows &amp; movies</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#anime" data-ice="link">Anime</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/example.html#movies-shows" data-ice="link">Movies &amp; Shows</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/example.html#anime" data-ice="link">Anime</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#keywords" data-ice="link">Keywords</a></li>
 </ul>
   </div>
@@ -136,6 +135,7 @@
     <span data-ice="title">Example</span>
   </div>
   <div data-ice="content"><h1 id="example">Example</h1>
+<p>In this example section you can read about the routes that are provided by Popcorn API.</p>
 <h2 id="index">Index</h2>
 <p><strong>GET - <code>http://localhost:5000/</code></strong></p>
 <p>Gives some basic information about the server on which the API is running on.</p>
@@ -274,44 +274,53 @@
 <p><strong>Example output:</strong></p>
 <pre><code class="lang-javascript"><code class="source-code prettyprint">[
   {
-    &quot;_id&quot;: &quot;tt2015381&quot;,
-    &quot;imdb_id&quot;: &quot;tt2015381&quot;,
-    &quot;title&quot;: &quot;Guardians of the Galaxy&quot;,
-    &quot;year&quot;: &quot;2014&quot;,
-    &quot;synopsis&quot;: &quot;Light years from Earth, 26 years after being abducted, Peter Quill finds himself the prime target of a manhunt after discovering an orb wanted by Ronan the Accuser.&quot;,
-    &quot;runtime&quot;: &quot;121&quot;,
-    &quot;released&quot;: 1406851200,
-    &quot;trailer&quot;: &quot;http://youtube.com/watch?v=2LIQ2-PZBC8&quot;,
+    &quot;_id&quot;: &quot;tt1375666&quot;,
+    &quot;imdb_id&quot;: &quot;tt1375666&quot;,
+    &quot;title&quot;: &quot;Inception&quot;,
+    &quot;year&quot;: &quot;2010&quot;,
+    &quot;synopsis&quot;: &quot;Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \&quot;inception\&quot;, the implantation of another person&apos;s idea into a target&apos;s subconscious.&quot;,
+    &quot;runtime&quot;: &quot;148&quot;,
+    &quot;released&quot;: 1279238400,
+    &quot;trailer&quot;: &quot;http://youtube.com/watch?v=xitHF0IPJSQ&quot;,
     &quot;certification&quot;: &quot;PG-13&quot;,
     &quot;torrents&quot;: {
       &quot;en&quot;: {
         &quot;1080p&quot;: {
-          &quot;provider&quot;: &quot;Z0n321&quot;,
-          &quot;fileSize&quot;: &quot;8.74 GB&quot;,
-          &quot;size&quot;: 9384503541,
-          &quot;peer&quot;: 114,
-          &quot;seed&quot;: 91,
-          &quot;magnet&quot;: &quot;magnet:?xt=urn:btih:8A8CBF1DF12D459AF26B01DC3C584A3631E0C2B5&amp;dn=guardians+of+the+galaxy+2014+1080p+bluray+x264+sparks&amp;tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&amp;tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&amp;tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&amp;tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&quot;,
-          &quot;url&quot;: &quot;magnet:?xt=urn:btih:8A8CBF1DF12D459AF26B01DC3C584A3631E0C2B5&amp;dn=guardians+of+the+galaxy+2014+1080p+bluray+x264+sparks&amp;tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&amp;tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&amp;tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&amp;tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&quot;
+          &quot;url&quot;: &quot;magnet:?xt=urn:btih:224BF45881252643DFC2E71ABC7B2660A21C68C4&amp;tr=udp://glotorrents.pw:6969/announce&amp;tr=udp://tracker.opentrackr.org:1337/announce&amp;tr=udp://torrent.gresille.org:80/announce&amp;tr=udp://tracker.openbittorrent.com:80&amp;tr=udp://tracker.coppersurfer.tk:6969&amp;tr=udp://tracker.leechers-paradise.org:6969&amp;tr=udp://p4p.arenabg.ch:1337&amp;tr=udp://tracker.internetwarriors.net:1337&quot;,
+          &quot;seed&quot;: 927,
+          &quot;peer&quot;: 82,
+          &quot;size&quot;: 1986422374,
+          &quot;filesize&quot;: &quot;1.85 GB&quot;,
+          &quot;provider&quot;: &quot;YTS&quot;
+        },
+        &quot;720p&quot;: {
+          &quot;url&quot;: &quot;magnet:?xt=urn:btih:CE9156EB497762F8B7577B71C0647A4B0C3423E1&amp;tr=udp://glotorrents.pw:6969/announce&amp;tr=udp://tracker.opentrackr.org:1337/announce&amp;tr=udp://torrent.gresille.org:80/announce&amp;tr=udp://tracker.openbittorrent.com:80&amp;tr=udp://tracker.coppersurfer.tk:6969&amp;tr=udp://tracker.leechers-paradise.org:6969&amp;tr=udp://p4p.arenabg.ch:1337&amp;tr=udp://tracker.internetwarriors.net:1337&quot;,
+          &quot;seed&quot;: 571,
+          &quot;peer&quot;: 47,
+          &quot;size&quot;: 1148903752,
+          &quot;filesize&quot;: &quot;1.07 GB&quot;,
+          &quot;provider&quot;: &quot;YTS&quot;
         }
       }
     },
     &quot;genres&quot;: [
+      &quot;action&quot;,
       &quot;adventure&quot;,
-      &quot;fantasy&quot;,
-      &quot;science-fiction&quot;
+      &quot;mystery&quot;,
+      &quot;science-fiction&quot;,
+      &quot;thriller&quot;
     ],
     &quot;images&quot;: {
-      &quot;banner&quot;: &quot;https://walter.trakt.us/images/movies/000/082/405/banners/original/592c80e5b3.jpg&quot;,
-      &quot;fanart&quot;: &quot;https://walter.trakt.us/images/movies/000/082/405/fanarts/original/d2e37f8511.jpg&quot;,
-      &quot;poster&quot;: &quot;https://walter.trakt.us/images/movies/000/082/405/posters/original/a189960d53.jpg&quot;
+      &quot;poster&quot;: &quot;https://walter.trakt.us/images/movies/000/016/662/posters/original/a7f71cbc67.jpg&quot;,
+      &quot;fanart&quot;: &quot;https://walter.trakt.us/images/movies/000/016/662/fanarts/original/d02c86e1f7.jpg&quot;,
+      &quot;banner&quot;: &quot;https://walter.trakt.us/images/movies/000/016/662/banners/original/9bd450d083.jpg&quot;
     },
     &quot;rating&quot;: {
-      &quot;hated&quot;: 100,
+      &quot;percentage&quot;: 88,
+      &quot;watching&quot;: 2,
+      &quot;votes&quot;: 25134,
       &quot;loved&quot;: 100,
-      &quot;votes&quot;: 21025,
-      &quot;watching&quot;: 1,
-      &quot;percentage&quot;: 83
+      &quot;hated&quot;: 100
     }
   },
   ...
@@ -320,50 +329,56 @@
 <p><strong>GET - <code>http://localhost:5000/movie/{imdb_id}</code></strong></p>
 <p>Gives information about a single movie based on the given imdb id.</p>
 <p><strong>Example output:</strong></p>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">[
-  {
-    &quot;_id&quot;: &quot;tt2015381&quot;,
-    &quot;imdb_id&quot;: &quot;tt2015381&quot;,
-    &quot;title&quot;: &quot;Guardians of the Galaxy&quot;,
-    &quot;year&quot;: &quot;2014&quot;,
-    &quot;synopsis&quot;: &quot;Light years from Earth, 26 years after being abducted, Peter Quill finds himself the prime target of a manhunt after discovering an orb wanted by Ronan the Accuser.&quot;,
-    &quot;runtime&quot;: &quot;121&quot;,
-    &quot;released&quot;: 1406851200,
-    &quot;trailer&quot;: &quot;http://youtube.com/watch?v=2LIQ2-PZBC8&quot;,
-    &quot;certification&quot;: &quot;PG-13&quot;,
-    &quot;torrents&quot;: {
-      &quot;en&quot;: {
-        &quot;1080p&quot;: {
-          &quot;provider&quot;: &quot;Z0n321&quot;,
-          &quot;fileSize&quot;: &quot;8.74 GB&quot;,
-          &quot;size&quot;: 9384503541,
-          &quot;peer&quot;: 114,
-          &quot;seed&quot;: 91,
-          &quot;magnet&quot;: &quot;magnet:?xt=urn:btih:8A8CBF1DF12D459AF26B01DC3C584A3631E0C2B5&amp;dn=guardians+of+the+galaxy+2014+1080p+bluray+x264+sparks&amp;tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&amp;tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&amp;tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&amp;tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&quot;,
-          &quot;url&quot;: &quot;magnet:?xt=urn:btih:8A8CBF1DF12D459AF26B01DC3C584A3631E0C2B5&amp;dn=guardians+of+the+galaxy+2014+1080p+bluray+x264+sparks&amp;tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&amp;tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&amp;tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&amp;tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&quot;
-        }
+<pre><code class="lang-javascript"><code class="source-code prettyprint">{
+  &quot;_id&quot;: &quot;tt1375666&quot;,
+  &quot;imdb_id&quot;: &quot;tt1375666&quot;,
+  &quot;title&quot;: &quot;Inception&quot;,
+  &quot;year&quot;: &quot;2010&quot;,
+  &quot;synopsis&quot;: &quot;Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \&quot;inception\&quot;, the implantation of another person&apos;s idea into a target&apos;s subconscious.&quot;,
+  &quot;runtime&quot;: &quot;148&quot;,
+  &quot;released&quot;: 1279238400,
+  &quot;trailer&quot;: &quot;http://youtube.com/watch?v=xitHF0IPJSQ&quot;,
+  &quot;certification&quot;: &quot;PG-13&quot;,
+  &quot;torrents&quot;: {
+    &quot;en&quot;: {
+      &quot;1080p&quot;: {
+        &quot;url&quot;: &quot;magnet:?xt=urn:btih:224BF45881252643DFC2E71ABC7B2660A21C68C4&amp;tr=udp://glotorrents.pw:6969/announce&amp;tr=udp://tracker.opentrackr.org:1337/announce&amp;tr=udp://torrent.gresille.org:80/announce&amp;tr=udp://tracker.openbittorrent.com:80&amp;tr=udp://tracker.coppersurfer.tk:6969&amp;tr=udp://tracker.leechers-paradise.org:6969&amp;tr=udp://p4p.arenabg.ch:1337&amp;tr=udp://tracker.internetwarriors.net:1337&quot;,
+        &quot;seed&quot;: 927,
+        &quot;peer&quot;: 82,
+        &quot;size&quot;: 1986422374,
+        &quot;filesize&quot;: &quot;1.85 GB&quot;,
+        &quot;provider&quot;: &quot;YTS&quot;
+      },
+      &quot;720p&quot;: {
+        &quot;url&quot;: &quot;magnet:?xt=urn:btih:CE9156EB497762F8B7577B71C0647A4B0C3423E1&amp;tr=udp://glotorrents.pw:6969/announce&amp;tr=udp://tracker.opentrackr.org:1337/announce&amp;tr=udp://torrent.gresille.org:80/announce&amp;tr=udp://tracker.openbittorrent.com:80&amp;tr=udp://tracker.coppersurfer.tk:6969&amp;tr=udp://tracker.leechers-paradise.org:6969&amp;tr=udp://p4p.arenabg.ch:1337&amp;tr=udp://tracker.internetwarriors.net:1337&quot;,
+        &quot;seed&quot;: 571,
+        &quot;peer&quot;: 47,
+        &quot;size&quot;: 1148903752,
+        &quot;filesize&quot;: &quot;1.07 GB&quot;,
+        &quot;provider&quot;: &quot;YTS&quot;
       }
-    },
-    &quot;genres&quot;: [
-      &quot;adventure&quot;,
-      &quot;fantasy&quot;,
-      &quot;science-fiction&quot;
-    ],
-    &quot;images&quot;: {
-      &quot;banner&quot;: &quot;https://walter.trakt.us/images/movies/000/082/405/banners/original/592c80e5b3.jpg&quot;,
-      &quot;fanart&quot;: &quot;https://walter.trakt.us/images/movies/000/082/405/fanarts/original/d2e37f8511.jpg&quot;,
-      &quot;poster&quot;: &quot;https://walter.trakt.us/images/movies/000/082/405/posters/original/a189960d53.jpg&quot;
-    },
-    &quot;rating&quot;: {
-      &quot;hated&quot;: 100,
-      &quot;loved&quot;: 100,
-      &quot;votes&quot;: 21025,
-      &quot;watching&quot;: 1,
-      &quot;percentage&quot;: 83
     }
   },
-  ...
-]</code>
+  &quot;genres&quot;: [
+    &quot;action&quot;,
+    &quot;adventure&quot;,
+    &quot;mystery&quot;,
+    &quot;science-fiction&quot;,
+    &quot;thriller&quot;
+  ],
+  &quot;images&quot;: {
+    &quot;poster&quot;: &quot;https://walter.trakt.us/images/movies/000/016/662/posters/original/a7f71cbc67.jpg&quot;,
+    &quot;fanart&quot;: &quot;https://walter.trakt.us/images/movies/000/016/662/fanarts/original/d02c86e1f7.jpg&quot;,
+    &quot;banner&quot;: &quot;https://walter.trakt.us/images/movies/000/016/662/banners/original/9bd450d083.jpg&quot;
+  },
+  &quot;rating&quot;: {
+    &quot;percentage&quot;: 88,
+    &quot;watching&quot;: 2,
+    &quot;votes&quot;: 25134,
+    &quot;loved&quot;: 100,
+    &quot;hated&quot;: 100
+  }
+}</code>
 </code></pre>
 <p><strong>GET - <code>http://localhost:5000/random/movie</code></strong></p>
 <p>Gives a random movie from the database. The output will be similar to the on directly above.</p>
@@ -498,12 +513,14 @@
 </ul>
 <h2 id="sorting">Sorting</h2>
 <p><code>sort=</code></p>
+<h6 id="anime">Anime</h6>
 <p>Possible options for <strong>anime</strong> are:</p>
 <ul>
 <li><code>name</code>: sort by the release date of the movies.</li>
 <li><code>rating</code>: sort by the highest rated anime.</li>
 <li><code>year</code>: sort by the release year of the anime.</li>
 </ul>
+<h6 id="movies">Movies</h6>
 <p>Possible options for <strong>movies</strong> are:</p>
 <ul>
 <li><code>last added</code>: sort by the release date of the movies.</li>
@@ -512,6 +529,7 @@
 <li><code>trending</code>: sort by trending movies.</li>
 <li><code>year</code>: sort by the release year of the movies.</li>
 </ul>
+<h6 id="shows">Shows</h6>
 <p>Possible options for <strong>shows</strong> are:</p>
 <ul>
 <li><code>name</code>: sort by the title of the shows.</li>
@@ -522,11 +540,11 @@
 </ul>
 <h2 id="ordering">Ordering</h2>
 <p><code>order=</code></p>
-<p>To order ascending: <code>1</code></p>
-<p>To order descending: <code>-1</code></p>
+<p>To order ascending: <code>1</code>
+To order descending: <code>-1</code></p>
 <h2 id="genres">Genres</h2>
 <p><code>genre=</code></p>
-<h5 id="shows-movies">shows &amp; movies</h5>
+<h3 id="movies-shows">Movies &amp; Shows</h3>
 <p>The API supports the following genres for <strong>shows</strong> and <strong>movies</strong>:</p>
 <ul>
 <li>action</li>
@@ -561,7 +579,7 @@
 <li>war</li>
 <li>western</li>
 </ul>
-<h5 id="anime">Anime</h5>
+<h3 id="anime">Anime</h3>
 <p>The API supports the following genres for <strong>anime</strong>:</p>
 <ul>
 <li>Action</li>

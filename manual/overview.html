@@ -38,7 +38,6 @@
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#overview" data-ice="link">Overview</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#documentation" data-ice="link">Documentation</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#folder-structure" data-ice="link">Folder structure</a></li>
-<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#known-issues" data-ice="link">Known Issues</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#versioning" data-ice="link">Versioning</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#license" data-ice="link">License</a></li>
 </ul>
@@ -81,9 +80,9 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/usage.html#usage" data-ice="link">Usage</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/usage.html#npm" data-ice="link">npm</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/usage.html#gulp" data-ice="link">Gulp</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/usage.html#global" data-ice="link">Global</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/usage.html#npm" data-ice="link">npm</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/usage.html#gulp" data-ice="link">Gulp</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/usage.html#global" data-ice="link">Global</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="example">
@@ -101,8 +100,8 @@
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#sorting" data-ice="link">Sorting</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#ordering" data-ice="link">Ordering</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#genres" data-ice="link">Genres</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#shows-movies" data-ice="link">shows &amp; movies</a></li>
-<li data-ice="manualNav" class="indent-h5"><span class="manual-dot"></span><a href="manual/example.html#anime" data-ice="link">Anime</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/example.html#movies-shows" data-ice="link">Movies &amp; Shows</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/example.html#anime" data-ice="link">Anime</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/example.html#keywords" data-ice="link">Keywords</a></li>
 </ul>
   </div>
@@ -150,7 +149,7 @@
 <li>Add content manually through the CLI.</li>
 </ul>
 <h1 id="documentation">Documentation</h1>
-<p>Documentation for the code can be generated with the command <code>npm run docs</code>. This will automatically generate the documentation which will be generated in the <code>./docs</code> directory. The <code>index.html</code> page will be the starting point.</p>
+<p>Documentation for the code can be generated with the command <code>npm run docs</code>. This will automatically generate the documentation which will be located in the <code>docs</code> directory. The <code>index.html</code> page will be the starting point. You can also view the documentation online right <a href="https://chrisalderson.github.io/">here</a>.</p>
 <h1 id="folder-structure">Folder structure</h1>
 <p>The API has the following folder structure.</p>
 <pre><code><code class="source-code prettyprint">.
@@ -164,12 +163,7 @@
         &#x251C;&#x2500;&#x2500; anime        # Anime providers
         &#x251C;&#x2500;&#x2500; movie        # Movie providers
         &#x2514;&#x2500;&#x2500; show         # Show providers</code>
-</code></pre><h1 id="known-issues">Known Issues</h1>
-<p>Know issues are indicated in the code with the <code>TODO</code> tag.</p>
-<ul>
-<li>No known issues :)</li>
-</ul>
-<h1 id="versioning">Versioning</h1>
+</code></pre><h1 id="versioning">Versioning</h1>
 <p>For transparency and insight into our release cycle, and for striving to maintain backward compatibility, this project will be maintained according to the <a href="http://semver.org/">Semantic Versioning</a> guidelines as much as possible.</p>
 <p>Releases will be numbered with the following format: <code>&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;-&lt;build&gt;</code></p>
 <p>Constructed with the following guidelines:</p>
