@@ -4,7 +4,7 @@ In this tutorial section you can read about the scraping process of the API.
 
 ## Scraper
 
-The [`Scraper`](https://chrisalderson.github.io/class/src/scraper.js~Scraper.html) class is the entry point to start the scraping process with the [`scrape`](https://chrisalderson.github.io/class/src/scraper.js~Scraper.html#instance-method-scrape) method. This method will iterate through an array of methods to scrape each individual content provider.
+The [`Scraper`](https://popcorn-official.github.io/popcorn-api/class/src/scraper.js~Scraper.html) class is the entry point to start the scraping process with the [`scrape`](https://popcorn-official.github.io/popcorn-api/class/src/scraper.js~Scraper.html#instance-method-scrape) method. This method will iterate through an array of methods to scrape each individual content provider.
 
 ```javascript
 scrape() {
@@ -123,7 +123,8 @@ Each anime from the `getAllAnime` can be passed into the `getAnimeData` method t
 
 ### KAT
 
-Content from [kat.cr](https://kat.cr/) is grabbed with so called `providers` which are defined in the [`animeProviders`](https://chrisalderson.github.io/variable/index.html#static-variable-animeProviders), [`movieProviders`](https://chrisalderson.github.io/variable/index.html#static-variable-movieProviders) and [`showProviders`](https://chrisalderson.github.io/variable/index.html#static-variable-showProviders) arrays. Providers will be converted to a search query to [kat.cr](https://kat.cr/) so each provider can get a maximum of 10.000 torrents (or 400 pages or torrents). The module used for getting the data from [kat.cr](https://kat.cr/) can be found [here](https://github.com/chrisalderson/kat-api-pt).
+Content from [kat.cr](https://kat.cr/) is grabbed with so called `providers` which are defined in the
+ [`animeProviders`](https://popcorn-official.github.io/popcorn-api/variable/index.html#static-variable-animeProviders), [`movieProviders`](https://popcorn-official.github.io/popcorn-api/variable/index.html#static-variable-movieProviders) and [`showProviders`](https://popcorn-official.github.io/popcorn-api/variable/index.html#static-variable-showProviders) arrays. Providers will be converted to a search query to [kat.cr](https://kat.cr/) so each provider can get a maximum of 10.000 torrents (or 400 pages or torrents). The module used for getting the data from [kat.cr](https://kat.cr/) can be found [here](https://github.com/chrisalderson/kat-api-pt).
 
 Each provider needs a `name` property and a `query` property. The `name` property is a `String` will be used for logging purposes so that issues with the provider can be figured out easier. The `query` property is an `Object` which can contain various properties. These properties will be converted into a search query to [kat.cr](https://kat.cr/).
 
@@ -234,14 +235,14 @@ The `helper.js` classes in each provider folder helps the providers to insert th
 
 ### Anime & Show
 
-The first method to call is [`getHummingbirdInfo`](https://chrisalderson.github.io/class/src/providers/anime/helper.js~Helper.html#instance-method-getHummingbirdInfo) for anime and [`getTraktInfo`](https://chrisalderson.github.io/class/src/providers/show/helper.js~Helper.html#instance-method-getTraktInfo) for shows. These methods need a slug as a parameter ([`getTraktInfo`](https://chrisalderson.github.io/class/src/providers/show/helper.js~Helper.html#instance-method-getTraktInfo) can also use an imdb id). These methods will fetch metadata from [Hummingbird.me](https://hummingbird.me/) or [Trakt.tv](https://trakt.tv) and return an object based on the schema of the mongoose model, but without any episodes.
+The first method to call is [`getHummingbirdInfo`](https://popcorn-official.github.io/popcorn-api/class/src/providers/anime/helper.js~Helper.html#instance-method-getHummingbirdInfo) for anime and [`getTraktInfo`](https://popcorn-official.github.io/popcorn-api/class/src/providers/show/helper.js~Helper.html#instance-method-getTraktInfo) for shows. These methods need a slug as a parameter ([`getTraktInfo`](https://popcorn-official.github.io/popcorn-api/class/src/providers/show/helper.js~Helper.html#instance-method-getTraktInfo) can also use an imdb id). These methods will fetch metadata from [Hummingbird.me](https://hummingbird.me/) or [Trakt.tv](https://trakt.tv) and return an object based on the schema of the mongoose model, but without any episodes.
 
 ```javascript
 getTraktInfo(slug);
 getHummingbirdInfo(slug);
 ```
 
-The second method to call is the `addEpisodes` method to attach the episodes to the object returned by [`getHummingbirdInfo`](https://chrisalderson.github.io/class/src/providers/anime/helper.js~Helper.html#instance-method-getHummingbirdInfo) or [`getTraktInfo`](https://chrisalderson.github.io/class/src/providers/show/helper.js~Helper.html#instance-method-getTraktInfo). This object is the first parameter, the second one is the episodes object and the third parameter is the slug again.
+The second method to call is the `addEpisodes` method to attach the episodes to the object returned by [`getHummingbirdInfo`](https://popcorn-official.github.io/popcorn-api/class/src/providers/anime/helper.js~Helper.html#instance-method-getHummingbirdInfo) or [`getTraktInfo`](https://popcorn-official.github.io/popcorn-api/class/src/providers/anime/helper.js~Helper.html#instance-method-getHummingbirdInfo). This object is the first parameter, the second one is the episodes object and the third parameter is the slug again.
 
 ```javascript
 addEpisodes(anime/show, episodes, slug);
@@ -266,13 +267,13 @@ The episodes are structured in a particular way. In the episodes object you firs
 
 ### Movie
 
-The first method to call is [`getTraktInfo`](https://chrisalderson.github.io/class/src/providers/movie/helper.js~Helper.html#instance-method-getTraktInfo). This method need a slug as a parameter, but can also use an imdb id). This method will fetch metadata from [Trakt.tv](https://trakt.tv) and return an object based on the schema of the mongoose model, but without any torrents.
+The first method to call is [`getTraktInfo`](https://popcorn-official.github.io/popcorn-api/class/src/providers/movie/helper.js~Helper.html#instance-method-getTraktInfo). This method need a slug as a parameter, but can also use an imdb id). This method will fetch metadata from [Trakt.tv](https://trakt.tv) and return an object based on the schema of the mongoose model, but without any torrents.
 
 ```javascript
 getTraktInfo(slug);
 ```
 
-The second method to call is the [`addTorrents`](https://chrisalderson.github.io/class/src/providers/movie/helper.js~Helper.html#instance-method-addTorrents) method to attach the torrents to the object returned by [`getTraktInfo`](https://chrisalderson.github.io/class/src/providers/movie/helper.js~Helper.html#instance-method-getTraktInfo). This object is the first parameter, the second one is the torrents for the movie.
+The second method to call is the [`addTorrents`](https://popcorn-official.github.io/popcorn-api/class/src/providers/movie/helper.js~Helper.html#instance-method-addTorrents) method to attach the torrents to the object returned by [`getTraktInfo`](https://popcorn-official.github.io/popcorn-api/class/src/providers/movie/helper.js~Helper.html#instance-method-getTraktInfo). This object is the first parameter, the second one is the torrents for the movie.
 
 ```javascript
 addTorrents(movie, torrents);
