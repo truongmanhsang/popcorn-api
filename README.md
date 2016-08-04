@@ -26,7 +26,7 @@ Popcorn API is developed to make it easier for anyone to create their own versio
 
 # Manual
 
-Checkout the [manual](https://popcorn-official.github.io/popcorn-api/) to find out more about this project.
+Checkout the [manual](https://popcorn-official.github.io/popcorn-api/manual/index.html) to find out more about this project. Or checkout the documentation for the API routes [here](http://docs.popcornofficial.apiary.io/#).
 
 # License
 

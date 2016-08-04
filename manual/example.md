@@ -154,7 +154,7 @@ Gives information about a single anime show based on the given id.
 
 **GET - `http://localhost:5000/random/anime`**
 
-Gives a random show from the database. The output will be similar to the on directly above.
+Gives a random anime from the database. The output will be similar to the on directly above.
 
 ## Movie
 
