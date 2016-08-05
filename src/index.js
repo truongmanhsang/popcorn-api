@@ -72,9 +72,9 @@ export default class Index {
 
   /**
    * Function to start the API.
-   * @param {Boolean} [runOnInit=true] - Start the scraping.
+   * @param {Boolean} [start=true] - Start the scraping.
    */
-  static _startAPI(runOnInit = true) {
+  static _startAPI(start = true) {
 
     if (cluster.isMaster) { // Check is the cluster is the master
       // Clear the log files from the temp directory.
@@ -100,7 +100,7 @@ export default class Index {
           console.log("API started");
           try {
             new CronJob({
-              cronTime, runOnInit, timeZone,
+              cronTime, timeZone,
               onComplete: () => Index._util.setStatus(),
               onTick: () => Index._scraper.scrape(),
               start: true
@@ -108,6 +108,7 @@ export default class Index {
 
             Index._util.setLastUpdated("Never");
             Index._util.setStatus();
+            if (start) Index._scraper.scrape();
           } catch (err) {
             return Index._util.onError(err);
           }
