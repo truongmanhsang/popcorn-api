@@ -1,6 +1,6 @@
 // Import the neccesary modules.
 import cluster from "cluster";
-import cron from "cron";
+import { CronJob } from "cron";
 import domain from "domain";
 import Express from "express";
 import os from "os";
@@ -72,9 +72,9 @@ export default class Index {
 
   /**
    * Function to start the API.
-   * @param {Boolean} [start=true] - Start the scraping.
+   * @param {Boolean} [runOnInit=true] - Start the scraping.
    */
-  static _startAPI(start) {
+  static _startAPI(runOnInit = true) {
 
     if (cluster.isMaster) { // Check is the cluster is the master
       // Clear the log files from the temp directory.
@@ -99,16 +99,15 @@ export default class Index {
         scope.run(() => {
           console.log("API started");
           try {
-            new cron.CronJob({
-              cronTime, timeZone,
+            new CronJob({
+              cronTime, runOnInit, timeZone,
+              onComplete: () => Index._util.setStatus(),
               onTick: () => Index._scraper.scrape(),
-              onComplete: () => Index._util.setStatus()
+              start: true
             });
 
             Index._util.setLastUpdated("Never");
             Index._util.setStatus();
-
-            if (start) Index._scraper.scrape();
           } catch (err) {
             return Index._util.onError(err);
           }

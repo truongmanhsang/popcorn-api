@@ -159,7 +159,6 @@ export default class YTS {
           const newMovie = await this._helper.getTraktInfo(ytsMovie.imdb_id);
           if (newMovie && newMovie._id) {
             delete ytsMovie.imdb_id;
-            console.log(ytsMovie.torrents);
             return await this._helper.addTorrents(newMovie, ytsMovie.torrents);
           }
         }
