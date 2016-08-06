@@ -1,29 +1,37 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
+
 import Show from "../../models/Show";
 import Util from "../../util";
+import { trakt } from "../../config/constants";
 
-/**
- * @class
- * @classdesc The factory function for saving shows.
- * @memberof module:providers/show/helper
- * @param {String} name - The name of the helper.
- * @property {Object} util - The util object with general functions.
- * @property {Object} trakt - A configured trakt api.
- */
-const Helper = name => {
-
-  const util = Util();
-  const trakt = util.trakt;
+/** Class for saving shows. */
+export default class Helper {
 
   /**
-   * @description Update the number of seasons of a given show
-   * @function Helper#updateNumSeasons
-   * @memberof module:providers/show/helper
+   * Create an helper object.
+   * @param {String} name - The name of the helper.
+   */
+  constructor(name) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
+    this.name = name;
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    this._util = new Util();
+  };
+
+  /**
+   * Update the number of seasons of a given show
    * @param {Show} show - The show to update the number of seasons.
    * @returns {Show} - A newly updated show.
    */
-  const updateNumSeasons = async show => {
+  async _updateNumSeasons(show) {
     const saved = await Show.findOneAndUpdate({
       _id: show._id
     }, show, {
@@ -43,15 +51,14 @@ const Helper = name => {
   };
 
   /**
-   * @description Update the torrents for an existing show.
-   * @function Helper#updateEpisode
-   * @memberof module:providers/show/helper
+   * Update the torrents for an existing show.
    * @param {Object} matching - The matching episode of new the show.
    * @param {Object} found - The matching episode existing show.
    * @param {Show} show - The show to merge the episodes to.
    * @param {String} quality - The quality of the torrent.
+   * @returns {Show} - A show with merged torrents.
    */
-  const updateEpisode = (matching, found, show, quality) => {
+  _updateEpisode(matching, found, show, quality) {
     let index = show.episodes.indexOf(matching);
 
     if (found.torrents[quality] && matching.torrents[quality]) {
@@ -79,55 +86,52 @@ const Helper = name => {
   };
 
   /**
-   * @description Update a given show with it's associated episodes.
-   * @function Helper#updateEpisodes
-   * @memberof module:providers/show/helper
+   * Update a given show with it's associated episodes.
    * @param {Show} show - The show to update its episodes.
    * @returns {Show} - A newly updated show.
    */
-  const updateEpisodes = async show => {
+  async _updateEpisodes(show) {
     try {
+
       const found = await Show.findOne({
           _id: show._id
         }).exec();
       if (found) {
-        console.log(`${name}: '${found.title}' is an existing show.`);
+        console.log(`${this.name}: '${found.title}' is an existing show.`);
         for (let i = 0; i < found.episodes.length; i++) {
           let matching = show.episodes
             .filter(showEpisode => showEpisode.season === found.episodes[i].season)
             .filter(showEpisode => showEpisode.episode === found.episodes[i].episode);
 
           if (matching.length != 0) {
-            show = updateEpisode(matching[0], found.episodes[i], show, "480p");
-            show = updateEpisode(matching[0], found.episodes[i], show, "720p");
-            show = updateEpisode(matching[0], found.episodes[i], show, "1080p");
+            show = this._updateEpisode(matching[0], found.episodes[i], show, "480p");
+            show = this._updateEpisode(matching[0], found.episodes[i], show, "720p");
+            show = this._updateEpisode(matching[0], found.episodes[i], show, "1080p");
           } else {
             show.episodes.push(found.episodes[i]);
           }
         }
 
-        return await updateNumSeasons(show);
+        return await this._updateNumSeasons(show);
       } else {
-        console.log(`${name}: '${show.title}' is a new show!`);
+        console.log(`${this.name}: '${show.title}' is a new show!`);
         const newShow = await new Show(show).save();
-        return await updateNumSeasons(newShow);
+        return await this._updateNumSeasons(newShow);
       }
     } catch (err) {
-      return util.onError(err);
+      return this._util.onError(err);
     }
   };
 
   /**
-   * @description Adds one season to a show.
-   * @function Helper#addSeason
-   * @memberof module:providers/show/helper
+   * Adds one season to a show.
    * @param {Show} show - The show to add the torrents to.
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
    * @param {String} slug - The slug of the show.
    * @returns {Show} - A new show with seasons.
    */
-  const addSeason = async(show, episodes, seasonNumber, slug) => {
+  async _addSeason(show, episodes, seasonNumber, slug) {
     try {
       seasonNumber = parseInt(seasonNumber);
       if (!isNaN(seasonNumber) && seasonNumber.toString().length <= 2) {
@@ -149,6 +153,8 @@ const Helper = name => {
               torrents: {}
             };
 
+            if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
+
             episode.torrents = episodes[seasonNumber][episodeData.number];
             episode.torrents[0] = episodes[seasonNumber][episodeData.number]["480p"] ? episodes[seasonNumber][episodeData.number]["480p"] : episodes[seasonNumber][episodeData.number]["720p"];
             show.episodes.push(episode);
@@ -156,18 +162,16 @@ const Helper = name => {
         }
       }
     } catch (err) {
-      return util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 
   /**
-   * @description Get info from Trakt and make a new show object.
-   * @function Helper#getTraktInfo
-   * @memberof module:providers/show/helper
-   * @param {String} slug - The slug to query trakt.tv.
+   * Get info from Trakt and make a new show object.
+   * @param {String} slug - The slug to query https://trakt.tv/.
    * @returns {Show} - A new show without the episodes attached.
    */
-  const getTraktInfo = async slug => {
+  async getTraktInfo(slug) {
     try {
       const traktShow = await trakt.shows.summary({id: slug, extended: "full,images"});
       const traktWatchers = await trakt.shows.watching({id: slug});
@@ -199,6 +203,7 @@ const Helper = name => {
           status: traktShow.status,
           num_seasons: 0,
           last_updated: Number(new Date()),
+          latest_episode: 0,
           images: {
             banner: traktShow.images.banner.full !== null ? traktShow.images.banner.full : "images/posterholder.png",
             fanart: traktShow.images.fanart.full !== null ? traktShow.images.fanart.full : "images/posterholder.png",
@@ -209,32 +214,24 @@ const Helper = name => {
         };
       }
     } catch (err) {
-      return util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 
   /**
-   * @description Adds episodes to a show.
-   * @function Helper#addEpisodes
-   * @memberof module:providers/show/helper
+   * Adds episodes to a show.
    * @param {Show} show - The show to add the torrents to.
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {String} slug - The slug of the show.
    * @returns {Show} - A show with updated torrents.
    */
-  const addEpisodes = async(show, episodes, slug) => {
+  async addEpisodes(show, episodes, slug) {
     try {
-      await asyncq.each(Object.keys(episodes), seasonNumber => addSeason(show, episodes, seasonNumber, slug));
-      return await updateEpisodes(show);
+      await asyncq.each(Object.keys(episodes), seasonNumber => this._addSeason(show, episodes, seasonNumber, slug));
+      return await this._updateEpisodes(show);
     } catch (err) {
-      return util.onError(err);
+      return this._util.onError(err);
     }
   };
 
-  // Return the public functions.
-  return { addEpisodes, getTraktInfo };
-
 };
-
-// Export the helper factory function.
-export default Helper;

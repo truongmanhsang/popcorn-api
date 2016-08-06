@@ -1,75 +1,86 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
-import eztvApi from "eztv-api-pt";
-import { global } from "../../config/global";
+import EztvAPI from "eztv-api-pt";
+import { maxWebRequest } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
-/**
- * @class
- * @classdesc The factory function for scraping shows from {@link https://eztv.ag/}.
- * @memberof module:providers/show/eztv
- * @param {String} name - The name of the EZTV provider.
- * @property {Object} helper - The helper object for adding shows.
- * @property {Object} util - The util object with general functions.
- */
-const EZTV = name => {
-
-  const eztv = new eztvApi();
-  const helper = Helper(name);
-  const util = Util();
+/** Class for scraping shows from https://eztv.ag/. */
+export default class EZTV {
 
   /**
-   * @description Get a complete show.
-   * @function EZTV#getShow
-   * @memberof module:providers/show/eztv
+   * Create an eztv object.
+   * @param {String} name - The name of the torrent provider.
+   * @param {Boolean} debug - Debug mode for extra output.
+   */
+  constructor(name, debug) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
+    this.name = name;
+
+    /**
+     * A configured EZTV API.
+     * @type {EztvAPI}
+     * @see https://github.com/ChrisAlderson/eztv-api-pt
+     */
+    this._eztv = new EztvAPI({ debug });
+
+    /**
+     * The helper object for adding shows.
+     * @type {Helper}
+     */
+    this._helper = new Helper(this.name);
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    this._util = new Util();
+  };
+
+  /**
+   * Get a complete show.
    * @param {Object} eztvShow - show data from eztv.
    * @returns {Show} - A complete show.
    */
-  const getShow = async eztvShow => {
+  async _getShow(eztvShow) {
     try {
       if (eztvShow) {
-        eztvShow = await eztv.getShowData(eztvShow);
-        const newShow = await helper.getTraktInfo(eztvShow.slug);
+        eztvShow = await this._eztv.getShowData(eztvShow);
+        const newShow = await this._helper.getTraktInfo(eztvShow.slug);
 
         if (newShow && newShow._id) {
           delete eztvShow.episodes.dateBased;
           delete eztvShow.episodes[0];
-          return await helper.addEpisodes(newShow, eztvShow.episodes, eztvShow.slug);
+          return await this._helper.addEpisodes(newShow, eztvShow.episodes, eztvShow.slug);
         }
       }
     } catch (err) {
-      return util.onError(err);
+      return this._util.onError(err);
     }
   };
 
   /**
-   * @description Returns a list of all the inserted torrents.
-   * @function EZTV#search
-   * @memberof module:providers/show/eztv
+   * Returns a list of all the inserted torrents.
    * @returns {Array} - A list of scraped shows.
    */
-  const search = async() => {
+  async search() {
     try {
-      console.log(`${name}: Starting scraping...`);
-      const eztvShows = await eztv.getAllShows();
-      console.log(`${name}: Found ${eztvShows.length} shows.`);
-      return await asyncq.mapLimit(eztvShows, global.maxWebRequest, async eztvShow => {
+      console.log(`${this.name}: Starting scraping...`);
+      const eztvShows = await this._eztv.getAllShows();
+      console.log(`${this.name}: Found ${eztvShows.length} shows.`);
+      return await asyncq.mapLimit(eztvShows, maxWebRequest, async eztvShow => {
         try {
-          return await getShow(eztvShow);
+          return await this._getShow(eztvShow);
         } catch (err) {
-          return util.onError(err);
+          return this._util.onError(err);
         }
       });
     } catch (err) {
-      return util.onError(err);
+      return this._util.onError(err);
     }
   };
 
-  // Return the public functions.
-  return { name, search };
-
 };
-
-// Export the eztv factory function.
-export default EZTV;

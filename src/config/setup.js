@@ -3,23 +3,46 @@ import bodyParser from "body-parser";
 import compress from "compression";
 import mongoose from "mongoose";
 import responseTime from "response-time";
-import { global } from "./global";
 
-/**
- * @class
- * @classdesc The factory function for setting up the API.
- * @memberof module:config/setup
- */
-const Setup = () => {
+import { dbHosts, dbName, Promise } from "./constants";
+import Logger from "./logger";
+
+/** Class for setting up the API. */
+export default class Setup {
 
   /**
-   * @description Connection and configuration of the MongoDB database.
-   * @function Setup#connectMongoDB
-   * @memberof module:config/setup
+   * Setup the Express service.
+   * @param {Express} app - The ExpresssJS instance.
+   * @param {Boolean} pretty - Pretty output with Winston logging.
    */
-  const connectMongoDB = () => {
-    mongoose.Promise = global.Promise;
-    mongoose.connect(`mongodb://${global.dbHosts.join(",")}/popcorn`, {
+  constructor(app, pretty) {
+    // Used to extract data from query strings.
+    RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+
+    // Connection and configuration of the MongoDB database.
+    Setup.connectMongoDB();
+
+    // Enable parsing URL encoded bodies.
+    app.use(bodyParser.urlencoded({extended: true}));
+
+    // Enable parsing JSON bodies.
+    app.use(bodyParser.json());
+
+    // Enables compression of response bodies.
+    app.use(compress({threshold: 1400, level: 4, memLevel: 3}));
+
+    // Enable response time tracking for HTTP request.
+    app.use(responseTime());
+
+    // Enable HTTP request logging.
+    // app.use(Logger.expressLogger);
+    if (pretty) app.use(Logger.expressLogger);
+  }
+
+  /** Connection and configuration of the MongoDB database. */
+  static connectMongoDB() {
+    mongoose.Promise = Promise;
+    mongoose.connect(`mongodb://${dbHosts.join(",")}/${dbName}`, {
       db: {
         native_parser: true
       },
@@ -42,42 +65,4 @@ const Setup = () => {
     });
   };
 
-  /**
-   * @description Setup the Express service.
-   * @function Setup#setup
-   * @memberof module:config/setup
-   * @param {ExpressJS} app - The ExpresssJS instance.
-   * @param {Winston} logger - The express-winston logger instance.
-   */
-  const setup = (app, logger) => {
-
-    // Used to extract data from query strings.
-    RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-
-    // Connection and configuration of the MongoDB database.
-    connectMongoDB();
-
-    // Enable parsing URL encoded bodies.
-    app.use(bodyParser.urlencoded({extended: true}));
-
-    // Enable parsing JSON bodies.
-    app.use(bodyParser.json());
-
-    // Enables compression of response bodies.
-    app.use(compress({threshold: 1400, level: 4, memLevel: 3}));
-
-    // Enable response time tracking for HTTP request.
-    app.use(responseTime());
-
-    // Enable HTTP request logging.
-    app.use(logger.expressLogger);
-
-  };
-
-  // Return the public functions.
-  return { connectMongoDB, setup };
-
 };
-
-// Export the Setup factory function.
-export default Setup;

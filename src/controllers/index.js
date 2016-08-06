@@ -1,99 +1,83 @@
 // Import the neccesary modules.
 import fs from "fs";
-import { global } from "../config/global";
+import path from "path";
+
+import Anime from "../models/Anime";
 import Movie from "../models/Movie";
-import packageJSON from "../../package.json";
 import Show from "../models/Show";
 import Util from "../util";
 
-/**
- * @class
- * @classdesc The factory function for displaying information about the
- * server the API is running on.
- * @memberof module:controllers/index
- */
-const Index = () => {
+import { server, statusFile, tempDir, updatedFile } from "../config/constants";
+import { name, repository, version } from "../../package.json";
 
-  const util = Util();
+/** class for displaying information about the server the API is running on. */
+export default class Index {
+
+  /** Create an index object. */
+  constructor() {
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    Index._util = new Util();
+  };
 
   /**
-   * @description Displays a given file.
-   * @function Index#displayFile
-   * @memberof module:controllers/index
+   * Displays a given file.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {String} path - The path to the file.
    * @param {String} file - The name of the file.
-   * @returns {File} - A file to display in the browser.
+   * @returns {Object} - A file to display in the browser.
    */
-  const displayFile = (req, res, path, file) => {
-    if (fs.existsSync(`${path}/${file}`)) {
+  static _displayFile(req, res, root, file) {
+    if (fs.existsSync(path.join(root, file))) {
       return res.sendFile(file, {
-        root: path,
+        root,
         headers: {
           "Content-Type": "text/plain; charset=UTF-8"
         }
       });
     } else {
-      const errorMsg = `Could not find file: '${path}'`;
-      return res.json({
-        error: errorMsg
-      });
+      return res.json({error: `Could not find file: '${root}'`});
     }
   };
 
   /**
-   * @description Get general information about the server.
-   * @function Index#getIndex
-   * @memberof module:controllers/index
+   * Get general information about the server.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
+   * @param {Function} next - The next function for Express.
    * @returns {Object} - General information about the server.
    */
-  const getIndex = async(req, res) => {
+  async getIndex(req, res, next) {
     try {
-      const lastUpdatedJSON = JSON.parse(fs.readFileSync(`${global.tempDir}/${global.updatedFile}`, "utf8")),
-        statusJSON = JSON.parse(fs.readFileSync(`${global.tempDir}/${global.statusFile}`, "utf8")),
-        commit = await util.executeCommand("git rev-parse --short HEAD"),
-        movieCount = await Movie.count().exec(),
-        showCount = await Show.count({
-          num_seasons: {
-            $gt: 0
-          }
-        }).exec();
+      const { updated } = JSON.parse(fs.readFileSync(path.join(tempDir, updatedFile), "utf8")),
+        { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), "utf8")),
+        commit = await Index._util.executeCommand("git rev-parse --short HEAD"),
+        totalAnimes = await Anime.count({num_episodes: {$gt: 0}}).exec(),
+        totalMovies = await Movie.count().exec(),
+        totalShows = await Show.count({num_seasons: {$gt: 0}}).exec();
 
       return res.json({
-        repo: packageJSON.repository.url,
-        server: global.serverName,
-        status: statusJSON.status,
-        totalMovies: movieCount,
-        totalShows: showCount,
-        updated: lastUpdatedJSON.lastUpdated,
-        uptime: process.uptime() | 0,
-        version: packageJSON.version,
-        commit
+        repo: repository.url, server, status,
+        totalAnimes, totalMovies, totalShows,
+        updated, uptime: process.uptime() | 0,
+        version, commit
       });
     } catch (err) {
-      return res.json(err);
+      return next(err);
     }
   };
 
   /**
-   * @description Displays the 'popcorn-api.log' file.
-   * @function Index#getErrorLog
-   * @memberof module:controllers/index
+   * Displays the 'popcorn-api.log' file.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @returns {File} - The content of the log file.
    */
-  const getErrorLog = (req, res) => {
-    return displayFile(req, res, `${global.tempDir}`, `${packageJSON.name}.log`);
+  getErrorLog(req, res) {
+    return Index._displayFile(req, res, tempDir, `${name}.log`);
   };
 
-  // Return the public functions.
-  return { getIndex, getErrorLog };
-
 };
-
-// Export the index factory function.
-export default Index;

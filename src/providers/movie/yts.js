@@ -2,53 +2,68 @@
 import asyncq from "async-q";
 import req from "request";
 import Movie from "../../models/Movie";
-import { global } from "../../config/global";
+import { maxWebRequest, webRequestTimeout } from "../../config/constants";
 import Helper from "./helper";
 import Util from "../../util";
 
-/**
- * @class
- * @classdesc The factory function for scraping movies from {@link https://yts.ag/}.
- * @memberof module:providers/movie/yts
- * @param {String} name - The name of the YTS provider.
- * @property {Object} helper - The helper object for adding shows.
- * @property {Object} util - The util object with general functions.
- * @property {Object} request - The request object with added defaults.
- */
-const YTS = name => {
-
-  const helper = Helper(name);
-  const util = Util();
-
-  const request = req.defaults({
-    "headers": {
-      "Content-Type": "application/json"
-    },
-    "baseUrl": "https://yts.ag/api/v2/list_movies.json",
-    "timeout": global.webRequestTimeout * 1000
-  });
+/** Class for scraping movies from https://yts.ag/. */
+export default class YTS {
 
   /**
-   * @description Get the total pages to go through.
-   * @function YTS#getTotalPages
-   * @memberof module:lib/yts
+   * Create a yts object.
+   * @param {String} name - The name of the torrent provider.
+   * @param {Boolean} debug - Debug mode for extra output.
+   */
+  constructor(name) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
+    this.name = name;
+
+    /**
+     * The request object with added defaults.
+     * @type {Object}
+     */
+    this._request = req.defaults({
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "baseUrl": "https://yts.ag/api/v2/list_movies.json",
+      "timeout": webRequestTimeout * 1000
+    });
+
+    /**
+     * The helper object for adding movies.
+     * @type {Helper}
+     */
+    this._helper = new Helper(this.name);
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    this._util = new Util();
+  };
+
+  /**
+   * Get the total pages to go through.
    * @param {Boolean} [retry=true] - Retry the request.
    * @returns {Promise} - The maximum pages to go through.
    */
-  const getTotalPages = (retry = true) => {
+  _getTotalPages(retry = true) {
     const url = "list_movies.json";
     return new Promise((resolve, reject) => {
-      request(url, (err, res, body) => {
+      this._request(url, (err, res, body) => {
         if (err && retry) {
-          return resolve(getTotalPages(false));
+          return resolve(this._getTotalPages(false));
         } else if (err) {
           return reject(`YTS: ${err} with link: 'list_movies.json'`);
         } else if (!body || res.statusCode >= 400) {
           return reject(`YTS: Could not find data on '${url}'.`);
         } else {
           body = JSON.parse(body);
-          const totalPages = Math.ceil(body.data.movie_count / 50); // Change to 'const' for production.
-          // totalPages = 3; // For testing purposes only.
+          const totalPages = Math.ceil(body.data.movie_count / 50);
           return resolve(totalPages);
         }
       });
@@ -56,13 +71,11 @@ const YTS = name => {
   };
 
   /**
-   * @description Format data from movies.
-   * @function YTS#formatPage
-   * @memberof module:lib/yts
+   * Format data from movies.
    * @param {Object} data - Data about the movies.
    * @returns {Object} - An object with the imdb id and the torrents.
    */
-  const formatPage = data => {
+  _formatPage(data) {
     return asyncq.each(data, movie => {
       if (movie && movie.torrents && movie.imdb_code && movie.language.match(/english/i)) {
         const torrents = {};
@@ -80,94 +93,79 @@ const YTS = name => {
           }
         });
 
-        return {
-          imdb_id: movie.imdb_code,
-          torrents
-        };
+        return { imdb_id: movie.imdb_code, torrents };
       }
     });
   };
 
   /**
-   * @description Get formatted data from one page.
-   * @function YTS#getOnePage
-   * @memberof module:lib/yts
+   * Get formatted data from one page.
    * @param {Integer} page - The page to get the data from.
    * @param {Boolean} [retry=true] - Retry the function.
    * @returns {Promise} - Formatted data from one page.
    */
-  const getOnePage = (page, retry = true) => {
+  _getOnePage(page, retry = true) {
     const url = `?limit=50&page=${page + 1}`;
     return new Promise((resolve, reject) => {
-      request(url, (err, res, body) => {
+      this._request(url, (err, res, body) => {
         if (err && retry) {
-          return resolve(getOnePage(page, false));
+          return resolve(this._getOnePage(page, false));
         } else if (err) {
           return reject(`YTS: ${err} with link: '?limit=50&page=${page + 1}'`);
         } else if (!body || res.statusCode >= 400) {
           return reject(`YTS: Could not find data on '${url}'.`);
         } else {
           body = JSON.parse(body);
-          return resolve(formatPage(body.data.movies));
+          return resolve(this._formatPage(body.data.movies));
         }
       });
     });
   };
 
   /**
-   * @description All the found movies.
-   * @function YTS#getMovies
-   * @memberof module:lib/yts
+   * All the found movies.
    * @returns {Array} - A list of all the found movies.
    */
-  const getMovies = async() => {
+  async _getMovies() {
     try {
-      const totalPages = await getTotalPages(); // Change to 'const' for production.
-      if (!totalPages) return util.onError(`${name}: totalPages returned; '${totalPages}'`);
+      const totalPages = await this._getTotalPages(); // Change to 'const' for production.
+      if (!totalPages) return this._util.onError(`${this.name}: totalPages returned; '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
       let movies = [];
       return await asyncq.timesSeries(totalPages, async page => {
         try {
-          console.log(`YTS: Starting searching kat on page ${page + 1} out of ${totalPages}`);
-          const onePage = await getOnePage(page);
+          console.log(`${this.name}: Starting searching YTS on page ${page + 1} out of ${totalPages}`);
+          const onePage = await this._getOnePage(page);
           movies = movies.concat(onePage);
         } catch (err) {
-          return util.onError(err);
+          return this._util.onError(err);
         }
       }).then(value => movies);
     } catch (err) {
-      return util.onError(err);
+      return this._util.onError(err);
     }
   };
 
   /**
-   * @description Returns a list of all the inserted torrents.
-   * @function YTS#search
-   * @memberof module:providers/movie/yts
+   * Returns a list of all the inserted torrents.
    * @returns {Array} - A list of scraped movies.
    */
-  const search = async() => {
+  async search() {
     try {
-      console.log(`${name}: Starting scraping...`);
-      const movies = await getMovies();
-      return await asyncq.eachLimit(movies, global.maxWebRequest, async ytsMovie => {
+      console.log(`${this.name}: Starting scraping...`);
+      const movies = await this._getMovies();
+      return await asyncq.eachLimit(movies, maxWebRequest, async ytsMovie => {
         if (ytsMovie && ytsMovie.imdb_id) {
-          const newMovie = await helper.getTraktInfo(ytsMovie.imdb_id);
+          const newMovie = await this._helper.getTraktInfo(ytsMovie.imdb_id);
           if (newMovie && newMovie._id) {
             delete ytsMovie.imdb_id;
-            return await helper.addTorrents(newMovie, ytsMovie.torrents);
+            return await this._helper.addTorrents(newMovie, ytsMovie.torrents);
           }
         }
       });
     } catch (err) {
-      return util.onError(err);
+      return this._util.onError(err);
     }
   };
 
-  // Return the public functions.
-  return { name, search };
-
 };
-
-// Export the YTS factory function.
-export default YTS;

@@ -1,8 +1,26 @@
-2.0.0 - Whatcha Babbling about? - 20 June 2016
-===============================================
+2.1.0 - You weeaboos - 2 August 2016
+====================================
 
 New features:
- - Get a random movie at `/random/movie`
+ - Anime! For all you weeaboos.
+ - Get a random TV show at `/random/show`.
+ - Import & export collection.
+
+Bug fixes:
+ - Fixed search not working correctly.
+ - Fixed #25.
+
+Notes:
+ - Moved documentation over to ESDoc.
+ - Documentation will now be on GitHub.
+ - Added Travis CI.
+ - Using ES6 classes instead of factory functions.
+
+2.0.0 - Whatcha Babbling about? - 20 June 2016
+==============================================
+
+New features:
+ - Get a random movie at `/random/movie`.
  - Added YTS as a movie provider.
  - Movies now support multiple languages.
  - Moved the entire project to ES6 with [Babel](https://babeljs.io/).

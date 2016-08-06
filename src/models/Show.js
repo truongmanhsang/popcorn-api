@@ -31,6 +31,7 @@ const ShowSchema = new mongoose.Schema({
   status: String,
   num_seasons: Number,
   last_updated: Number,
+  latest_episode: {type: Number, default: 0},
   images: {
     banner: String,
     fanart: String,
@@ -40,12 +41,11 @@ const ShowSchema = new mongoose.Schema({
   episodes: []
 });
 
-/**
- * @class Show
- * @classdesc A model object for shows.
- * @memberof module:models/show
- */
+// Create the show model.
 const Show = mongoose.model("Show", ShowSchema);
 
-// Export the user model.
+/**
+ * A model object for shows.
+ * @type {Show}
+ */
 export default Show;

@@ -1,30 +1,29 @@
 // Import the neccesary modules.
-import Movie from "../models/Movie";
+import Anime from "../models/Anime";
 import { pageSize } from "../config/constants";
 
-/** Class for getting movie data from the MongoDB. */
-export default class Movies {
+/** Class for getting anime data from the MongoDB. */
+export default class Animes {
 
-  /** Create a movies object. */
+  /** Create an animes object. */
   constructor() {
     /**
-     * Object used for the projection of movies.
+     * Object used for the projection of anime shows.
      * @type {Object}
      */
-    Movies._projection = {
-      _id: 1,
+    Animes._projection = {
+      images: 1,
+      mal_id: 1,
+      haru_id: 1,
+      tvdb_id: 1,
       imdb_id: 1,
+      slug: 1,
       title: 1,
       year: 1,
-      runtime: 1,
-      images: 1,
-      genres: 1,
-      synopsis: 1,
-      trailer: 1,
-      certification: 1,
-      released: 1,
+      type: 1,
+      item_data: 1,
       rating: 1,
-      torrents: 1
+      genres: 1
     };
   };
 
@@ -35,12 +34,16 @@ export default class Movies {
    * @param {Function} next - The next function for Express.
    * @returns {Array} - A list of pages which are available.
    */
-  getMovies(req, res, next) {
-    return Movie.count().exec().then(count => {
+  getAnimes(req, res, next) {
+    return Anime.count({
+      num_episodes: {
+        $gt: 0
+      }
+    }).exec().then(count => {
       const pages = Math.round(count / pageSize);
       const docs = [];
 
-      for (let i = 1; i < pages + 1; i++) docs.push(`movies/${i}`);
+      for (let i = 1; i < pages + 1; i++) docs.push(`animes/${i}`);
 
       return res.json(docs);
     }).catch(err => next(err));
@@ -58,8 +61,14 @@ export default class Movies {
     const offset = page * pageSize;
 
     if (req.params.page.match(/all/i)) {
-      return Movie.aggregate([{
-          $project: Movies._projection
+      return Anime.aggregate([{
+          $match: {
+            num_episodes: {
+              $gt: 0
+            }
+          }
+        }, {
+          $project: Animes._projection
         }, {
           $sort: {
             title: -1
@@ -68,7 +77,7 @@ export default class Movies {
         .then(docs => res.json(docs))
         .catch(err => next(err));
     } else {
-      const query = {};
+      const query = {num_episodes: {$gt: 0}};
       const data = req.query;
 
       if (!data.order) data.order = -1;
@@ -83,39 +92,36 @@ export default class Movies {
         const words = data.keywords.split(" ");
         let regex = "^";
         for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        query.title = {$regex: new RegExp(`${regex}.*`), $options: "gi"};
+        query.title = {$regex: new RegExp(`${regex}.*`),$options: "gi"};
       }
 
       if (data.sort) {
-        if (data.sort.match(/last added/i)) sort = {
-          "released": parseInt(data.order, 10)
+        if (data.sort.match(/name/i)) sort = {
+          "title": (parseInt(data.order, 10) * -1)
         };
         if (data.sort.match(/rating/i)) sort = {
           "rating.percentage": parseInt(data.order, 10),
           "rating.votes": parseInt(data.order, 10)
         };
-        if (data.sort.match(/title/i)) sort = {
-          "title": (parseInt(data.order, 10) * 1)
-        };
-        if (data.sort.match(/trending/i)) sort = {
-          "rating.watching": parseInt(data.order, 10)
-        };
+        // if (data.sort === "trending") sort = {
+        //   "rating.watching": parseInt(data.order, 10)
+        // };
+        // if (data.sort === "updated") sort = {
+        //   "latest_episode": parseInt(data.order, 10)
+        // };
         if (data.sort.match(/year/i)) sort = {
           "year": parseInt(data.order, 10)
         };
       }
 
-      if (data.genre && !data.genre.match(/all/i)) {
-        if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i)) data.genre = "science-fiction";
-        query.genres = data.genre.toLowerCase();
-      }
+      if (data.genre && !data.genre.match(/all/i)) query.genres = data.genre;
 
-      return Movie.aggregate([{
+      return Anime.aggregate([{
           $sort: sort
         }, {
           $match: query
         }, {
-          $project: Movies._projection
+          $project: Animes._projection
         }, {
           $skip: offset
         }, {
@@ -127,36 +133,28 @@ export default class Movies {
   };
 
   /**
-   * Get info from one movie.
+   * Get info from one anime.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Movie} - The details of a single movie.
+   * @returns {Anime} - The details of a single anime.
    */
-  getMovie(req, res, next) {
-    return Movie.aggregate([{
-        $match: {
-          _id: req.params.id
-        }
-      }, {
-        $project: Movies._projection
-      }, {
-        $limit: 1
-      }]).exec()
-      .then(docs => res.json(docs[0]))
+  getAnime(req, res, next) {
+    return Anime.findOne({_id: req.params.id}, {latest_episode: 0}).exec()
+      .then(docs => res.json(docs))
       .catch(err => next(err));
   };
 
   /**
-   * Get a random movie.
+   * Get a random anime.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Movie} - A random movie.
+   * @returns {Anime} - A random movie.
    */
-  getRandomMovie(req, res, next) {
-    return Movie.aggregate([{
-        $project: Movies._projection
+  getRandomAnime(req, res, next) {
+    return Anime.aggregate([{
+        $project: Animes._projection
       }, {
         $sample: {
           size: 1

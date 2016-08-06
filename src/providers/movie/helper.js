@@ -1,31 +1,40 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
+
 import Movie from "../../models/Movie";
 import Util from "../../util";
+import { trakt } from "../../config/constants";
 
-/**
- * @class
- * @classdesc The factory function for saving movies.
- * @memberof module:providers/movie/helper
- * @param {String} name - The name of the helper;
- * @property {Object} util - The util object with general functions.
- * @property {Object} trakt - A configured trakt api.
- */
-const Helper = name => {
-
-  const util = Util();
-  const trakt = util.trakt;
+/** Class for saving movies. */
+export default class Helper {
 
   /**
-   * @description Update the torrents for an existing movie.
-   * @function Helper#updateTorrent
-   * @memberof module:providers/movie/helper
+   * Create an helper object.
+   * @param {String} name - The name of the helper.
+   */
+  constructor(name) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
+    this.name = name;
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    this._util = new Util();
+  };
+
+  /**
+   * Update the torrents for an existing movie.
    * @param {Movie} movie - The new movie.
    * @param {Movie} found - The existing movie.
    * @param {String} language - The language of the torrent.
    * @param {String} quality - The quality of the torrent.
+   * @return {Movie} - A movie with merged torrents.
    */
-   const updateTorrent = (movie, found, language, quality) => {
+   _updateTorrent(movie, found, language, quality) {
      let update = false;
 
      if (found.torrents[language] && movie.torrents[language]) {
@@ -58,54 +67,51 @@ const Helper = name => {
    * @param {Movie} movie - The movie to update its torrent.
    * @returns {Movie} - A newly updated movie.
    */
-  const updateMovie = async movie => {
+  async _updateMovie(movie) {
     try {
       const found = await Movie.findOne({
         _id: movie._id
       }).exec();
       if (found) {
-        console.log(`${name}: '${found.title}' is an existing movie.`);
+        console.log(`${this.name}: '${found.title}' is an existing movie.`);
 
         if (found.torrents) {
           Object.keys(found.torrents).forEach(language => {
-            movie = updateTorrent(movie, found, language, "720p");
-            movie = updateTorrent(movie, found, language, "1080p");
+            movie = this._updateTorrent(movie, found, language, "720p");
+            movie = this._updateTorrent(movie, found, language, "1080p");
           });
         }
-        
+
         return await Movie.findOneAndUpdate({
           _id: movie._id
         }, movie).exec();
       } else {
-        console.log(`${name}: '${movie.title}' is a new movie!`);
+        console.log(`${this.name}: '${movie.title}' is a new movie!`);
         return await new Movie(movie).save();
       }
     } catch (err) {
-      return util.onError(err);
+      return this._util.onError(err);
     }
   };
 
   /**
-   * @description Adds torrents to a movie.
-   * @function Helper#addTorrents
-   * @memberof module:providers/movie/helper
+   * Adds torrents to a movie.
    * @param {Movie} movie - The movie to add the torrents to.
    * @param {Object} torrents - The torrents to add to the movie.
+   * @returns {Movie} - A movie with torrents attached.
    */
-  const addTorrents = (movie, torrents) => {
+  addTorrents(movie, torrents) {
     return asyncq.each(Object.keys(torrents),
         torrent => movie.torrents[torrent] = torrents[torrent])
-      .then(value => updateMovie(movie));
+      .then(value => this._updateMovie(movie));
   };
 
   /**
-   * @description Get info from Trakt and make a new movie object.
-   * @function Helper#getTraktInfo
-   * @memberof module:providers/movie/helper
+   * Get info from Trakt and make a new movie object.
    * @param {String} slug - The slug to query trakt.tv.
    * @returns {Movie} - A new movie.
    */
-  const getTraktInfo = async slug => {
+  async getTraktInfo(slug) {
     try {
       const traktMovie = await trakt.movies.summary({id: slug, extended: "full,images"});
       const traktWatchers = await trakt.movies.watching({id: slug});
@@ -144,14 +150,8 @@ const Helper = name => {
         };
       }
     } catch (err) {
-      return util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 
-  // Return the public functions.
-  return { addTorrents, getTraktInfo };
-
 };
-
-// Export the helper factory function.
-export default Helper;

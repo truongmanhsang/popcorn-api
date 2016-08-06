@@ -1,36 +1,53 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
-import katApi from "kat-api-pt";
-import { global } from "../../config/global";
+import KatAPI from "kat-api-pt";
+import { maxWebRequest, katMap } from "../../config/constants";
 import Helper from "./helper";
-import { katMap } from "../../config/kat";
 import Util from "../../util";
 
-/**
- * @class
- * @classdesc The factory function for scraping movies from {@link https://kat.cr/}.
- * @memberof module:providers/movie/kat
- * @param {String} name - The name of the KAT provider.
- * @property {Object} helper - The helper object for adding shows.
- * @property {Object} kat - Configured {@link https://kat.cr/} scraper.
- * @property {Object} util - The util object with general functions.
- */
-const KAT = name => {
-
-  const helper = Helper(name);
-  const kat = new katApi();
-  const util = Util();
+/** Class for scraping movies from https://kat.cr/. */
+export default class KAT {
 
   /**
-   * @description Get all the movies.
-   * @function KAT#getMovie
-   * @memberof module:providers/movie/kat
+   * Create a kat object.
+   * @param {String} name - The name of the torrent provider.
+   * @param {Boolean} debug - Debug mode for extra output.
+   */
+  constructor(name, debug) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}  The name of the torrent provider.
+     */
+    this.name = name;
+
+    /**
+     * The helper object for adding movies.
+     * @type {Helper}
+     */
+    this._helper = new Helper(this.name);
+
+    /**
+     * A configured KAT API.
+     * @type {KatAPI}
+     * @see https://github.com/ChrisAlderson/kat-api-pt
+     */
+    this._kat = new KatAPI({ debug });
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    this._util = new Util();
+  };
+
+  /**
+   * Get all the movies.
    * @param {Object} katMovie - The movie information.
    * @returns {Movie} - A movie.
    */
-  const getMovie = async katMovie => {
+  async _getMovie(katMovie) {
     try {
-      const newMovie = await helper.getTraktInfo(katMovie.slugYear);
+      const newMovie = await this._helper.getTraktInfo(katMovie.slugYear);
       if (newMovie && newMovie._id) {
         delete katMovie.movieTitle;
         delete katMovie.slug;
@@ -40,23 +57,21 @@ const KAT = name => {
         delete katMovie.year;
         delete katMovie.language;
 
-        return await helper.addTorrents(newMovie, katMovie);
+        return await this._helper.addTorrents(newMovie, katMovie);
       }
     } catch (err) {
-      return util.onError(err);
+      return this._util.onError(err);
     }
   };
 
   /**
-   * @description Extract movie information based on a regex.
-   * @function KAT#extractMovie
-   * @memberof module:providers/movie/kat
+   * Extract movie information based on a regex.
    * @param {Object} torrent - The torrent to extract the movie information from.
    * @param {String} language - The language of the torrent.
    * @param {Regex} regex - The regex to extract the movie information.
    * @returns {Object} - Information about a movie from the torrent.
    */
-  const extractMovie = (torrent, language, regex) => {
+  _extractMovie(torrent, language, regex) {
     let movieTitle = torrent.title.match(regex)[1];
     if (movieTitle.endsWith(" ")) movieTitle = movieTitle.substring(0, movieTitle.length - 1);
     movieTitle = movieTitle.replace(/\./g, " ");
@@ -74,51 +89,45 @@ const KAT = name => {
       peer: torrent.peers,
       size: torrent.size,
       fileSize: torrent.fileSize,
-      provider: name
+      provider: this.name
     };
 
     return movie;
   };
 
   /**
-   * @description Get movie info from a given torrent.
-   * @function KAT#getMovieData
-   * @memberof module:providers/movie/kat
-   * @param {Object} torrent - A torrent object to extract movie information
-   * from.
+   * Get movie info from a given torrent.
+   * @param {Object} torrent - A torrent object to extract movie information from.
    * @param {String} language - The language of the torrent.
    * @returns {Object} - Information about a movie from the torrent.
    */
-  const getMovieData = (torrent, language) => {
+  _getMovieData(torrent, language) {
     const threeDimensions = /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/;
     const fourKay = /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/;
     const withYear = /(.*).(\d{4})\D+(\d{3,4}p)/;
     if (torrent.title.match(threeDimensions)) {
-      return extractMovie(torrent, language, threeDimensions);
+      return this._extractMovie(torrent, language, threeDimensions);
     } else if (torrent.title.match(fourKay)) {
-      return extractMovie(torrent, language, fourKay);
+      return this._extractMovie(torrent, language, fourKay);
     } else if (torrent.title.match(withYear)) {
-      return extractMovie(torrent, language, withYear);
+      return this._extractMovie(torrent, language, withYear);
     } else {
-      console.warn(`${name}: Could not find data from torrent: '${torrent.title}'`);
+      console.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
   };
 
   /**
-   * @description Puts all the found movies from the torrents in an array.
-   * @function KAT#getAllKATMovies
-   * @memberof module:providers/movie/kat
+   * Puts all the found movies from the torrents in an array.
    * @param {Array} torrents - A list of torrents to extract movie information.
    * @param {String} language - The language of the torrent.
-   * @returns {Array} - A list of objects with movie information extracted from
-   * the torrents.
+   * @returns {Array} - A list of objects with movie information extracted from the torrents.
    */
-  const getAllKATMovies = async (torrents, language) => {
+  async _getAllKATMovies(torrents, language) {
     try {
       const movies = [];
       await asyncq.mapSeries(torrents, torrent => {
         if (torrent) {
-          const movie = getMovieData(torrent, language);
+          const movie = this._getMovieData(torrent, language);
           if (movie) {
             if (movies.length != 0) {
               const { movieTitle, slug, language, quality } = movie;
@@ -142,76 +151,64 @@ const KAT = name => {
       });
       return movies;
     } catch (err) {
-      return util.onError(err);
+      return this._util.onError(err);
     }
   };
 
   /**
-   * @description Get all the torrents of a given provider.
-   * @function KAT#getAllTorrents
-   * @memberof module:providers/movie/kat
+   * Get all the torrents of a given provider.
    * @param {Integer} totalPages - The total pages of the query.
-   * @param {Object} provider - The provider to query {@link https://kat.cr/}.
+   * @param {Object} provider - The provider to query https://kat.cr/.
    * @returns {Array} - A list of all the queried torrents.
    */
-  const getAllTorrents = async(totalPages, provider) => {
+  async _getAllTorrents(totalPages, provider) {
     try {
       let katTorrents = [];
       await asyncq.timesSeries(totalPages, async page => {
         try {
           provider.query.page = page + 1;
-          console.log(`${name}: Starting searching kat on page ${provider.query.page} out of ${totalPages}`);
-          const result = await kat.search(provider.query);
+          console.log(`${this.name}: Starting searching KAT on page ${provider.query.page} out of ${totalPages}`);
+          const result = await this._kat.search(provider.query);
           katTorrents = katTorrents.concat(result.results);
         } catch (err) {
-          return util.onError(err);
+          return this._util.onError(err);
         }
       });
-      console.log(`${name}: Found ${katTorrents.length} torrents.`);
+      console.log(`${this.name}: Found ${katTorrents.length} torrents.`);
       return katTorrents;
     } catch (err) {
-      return util.onError(err);
+      return this._util.onError(err);
     }
   };
 
   /**
-   * @description Returns a list of all the inserted torrents.
-   * @function KAT#search
-   * @memberof module:providers/movie/kat
-   * @param {Object} provider - The provider to query {@link https://kat.cr/}.
+   * Returns a list of all the inserted torrents.
+   * @param {Object} provider - The provider to query https://kat.cr/.
    * @returns {Array} - A list of scraped movies.
    */
-  const search = async provider => {
+  async search(provider) {
     try {
-      if (!provider.query.language) return util.onError(`Provider with name: '${name}' does not have a language set!`);
+      if (!provider.query.language) return this._util.onError(`Provider with name: '${this.name}' does not have a language set!`);
 
-      console.log(`${name}: Starting scraping...`);
+      console.log(`${this.name}: Starting scraping...`);
       provider.query.page = 1;
       provider.query.category = "movies";
       provider.query.verified = 1;
       provider.query.adult_filter = 1;
 
-      const getTotalPages = await kat.search(provider.query);
+      const getTotalPages = await this._kat.search(provider.query);
       const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
-      if (!totalPages) return util.onError(`${name}: totalPages returned: '${totalPages}'`);
+      if (!totalPages) return this._util.onError(`${this.name}: totalPages returned: '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
-      console.log(`${name}: Total pages ${totalPages}`);
+      console.log(`${this.name}: Total pages ${totalPages}`);
 
-      const katTorrents = await getAllTorrents(totalPages, provider);
-      const katMovies = await getAllKATMovies(katTorrents, provider.query.language);
-      return await asyncq.mapLimit(katMovies, global.maxWebRequest,
-        katMovie => getMovie(katMovie).catch(err => util.onError(err)));
+      const katTorrents = await this._getAllTorrents(totalPages, provider);
+      const katMovies = await this._getAllKATMovies(katTorrents, provider.query.language);
+      return await asyncq.mapLimit(katMovies, maxWebRequest,
+        katMovie => this._getMovie(katMovie).catch(err => this._util.onError(err)));
     } catch (err) {
-      util.onError(err);
+      this._util.onError(err);
     }
   };
 
-  // Return the public functions.
-  return {
-    search
-  };
-
 };
-
-// Export the KAT factory function.
-export default KAT;

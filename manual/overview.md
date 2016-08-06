@@ -15,18 +15,41 @@ Popcorn API is developed to make it easier for anyone to create their own versio
 - Ability to easily filter content to the user's content.
 - Add content manually through the CLI.
 
-# Installation
+# Documentation
 
-1. Install MongoDB including `mongoexport` and `mongoimport`.
-2. Install NodeJS (at least Node v6.3.0 or greater).
-3. Clone the repository with: `git clone https://github.com/popcorn-official/popcorn-api.git`.
-4. Install `gulp` globally with `[sudo] npm install -g gulp`.
-5. Install dependencies of Popcorn API with `cd popcorn-api` and `npm install`.
-6. Build the ES5 code with `gulp build`.
+Documentation for the code can be generated with the command `npm run docs`. This will automatically generate the documentation which will be located in the `docs` directory. The `index.html` page will be the starting point. You can also view the documentation online right [here](https://popcorn-official.github.io/popcorn-api/manual/index.html).
 
-# Manual
+# Folder structure
 
-Checkout the [manual](https://popcorn-official.github.io/popcorn-api/manual/index.html) to find out more about this project. Or checkout the documentation for the API routes [here](http://docs.popcornofficial.apiary.io/#).
+The API has the following folder structure.
+
+```
+.
+├── docs                 # Folder with the ESDoc generated documentation for the API.
+├── manual               # Folder with markdown files used by the documentation.
+└── src                  # Holding the ES6 source code
+    ├── config           # Configuration
+    ├── controllers      # REST Controllers
+    ├── models           # Models
+    └── providers        # Providers
+        ├── anime        # Anime providers
+        ├── movie        # Movie providers
+        └── show         # Show providers
+```
+
+# Versioning
+
+For transparency and insight into our release cycle, and for striving to maintain backward compatibility, this project will be maintained according to the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
+
+Releases will be numbered with the following format: `<major>.<minor>.<patch>-<build>`
+
+Constructed with the following guidelines:
+
+- A new _major_ release indicates a large change where backwards compatibility is broken.
+- A new _minor_ release indicates a normal change that maintains backwards compatibility.
+- A new _patch_ release indicates a bugfix or small change which does not affect compatibility.
+- A new _build_ release indicates this is a pre-release of the version.
+
 
 # License
 

@@ -1,8 +1,8 @@
 // Import the neccesary modules.
 import mongoose from "mongoose";
 
-// The movie schema used by mongoose.
-const MovieSchema = new mongoose.Schema({
+// The anime schema used by mongoose.
+const AnimeSchema = new mongoose.Schema({
   _id: {
     type: String,
     required: true,
@@ -10,12 +10,13 @@ const MovieSchema = new mongoose.Schema({
       unique: true
     }
   },
-  imdb_id: String,
+  mal_id: String,
   title: String,
   year: String,
   slug: String,
   synopsis: String,
   runtime: String,
+  status: String,
   rating: {
     percentage: Number,
     watching: Number,
@@ -23,25 +24,24 @@ const MovieSchema = new mongoose.Schema({
     loved: Number,
     hated: Number
   },
-  country: String,
+  type: String,
+  num_episodes: Number,
   last_updated: Number,
+  latest_episode: {type: Number, default: 0},
   images: {
     banner: String,
     fanart: String,
     poster: String
   },
   genres: [],
-  released: Number,
-  trailer: String,
-  certification: String,
-  torrents: {}
+  episodes: []
 });
 
-// Create the movie model.
-const Movie = mongoose.model("Movie", MovieSchema);
+// Create the anime model.
+const Anime = mongoose.model("Anime", AnimeSchema);
 
 /**
- * A model object for movies.
- * @type {Movie}
+ * A model object for anime shows.
+ * @type {Anime}
  */
-export default Movie;
+export default Anime;
