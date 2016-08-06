@@ -3,19 +3,20 @@ import asyncq from "async-q";
 
 import Show from "../../models/Show";
 import Util from "../../util";
+
 import { trakt } from "../../config/constants";
 
 /** Class for saving shows. */
 export default class Helper {
 
   /**
-   * Create an helper object.
+   * Create an helper object for shows.
    * @param {String} name - The name of the helper.
    */
   constructor(name) {
     /**
      * The name of the torrent provider.
-     * @type {String}  The name of the torrent provider.
+     * @type {String}
      */
     this.name = name;
 

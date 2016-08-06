@@ -3,10 +3,17 @@ import path from "path";
 import Trakt from "trakt.tv";
 
 /**
- * The providers for scraping KAT for anime.
- * @type {Array}
+ * Map object for correcting anime slugs.
+ * @type {Object}
  */
-export const animeProviders = [];
+export const animeMap = {
+  "kabaneri-of-the-iron-fortress": "koutetsujou-no-kabaneri",
+  "luck-&-logic": "luck-logic",
+  "naruto-shippuuden": "naruto-shippuden",
+  "norn9norn+nonet": "norn9-norn-nonet",
+  "sailor-moon-crystal": "bishoujo-senshi-sailor-moon-crystal",
+  "yuruyuri": "yuru-yuri"
+};
 
 /**
  * An array of the supported collections for mongodb.
@@ -33,23 +40,126 @@ export const dbHosts = ["localhost"];
 export const dbName = "popcorn";
 
 /**
- * Map object for correcting anime slugs form KAT.
- * @type {Object}
+ * The providers for scraping ExtraTorrent for shows.
+ * @type {Array}
  */
-export const katAnimeMap = {
-  "kabaneri-of-the-iron-fortress": "koutetsujou-no-kabaneri",
-  "luck-&-logic": "luck-logic",
-  "naruto-shippuuden": "naruto-shippuden",
-  "norn9norn+nonet": "norn9-norn-nonet",
-  "sailor-moon-crystal": "bishoujo-senshi-sailor-moon-crystal",
-  "yuruyuri": "yuru-yuri"
-};
+export const extratorrentShowProviders = [
+  // 480p
+  {name: "ETTV LOL", query: {with_words: "ettv hdtv x264 lol", without: "720p 1080p"}},
+  {name: "ETTV KILLERS", query: {with_words: "ettv hdtv x264 killers", without: "720p 1080p"}},
+  {name: "ETTV 2HD", query: {with_words: "ettv hdtv x264 2hd", without: "720p 1080p"}},
+  {name: "ETTV CROOKS", query: {with_words: "ettv hdtv x264 crooks", without: "720p 1080p"}},
+  {name: "ETTV FUM", query: {with_words: "ettv hdtv x264 fum", without: "720p 1080p"}},
+  {name: "ETTV BATV", query: {with_words: "ettv hdtv x264 batv", without: "720p 1080p"}},
+  {name: "ETTV ASAP", query: {with_words: "ettv hdtv x264 asap", without: "720p 1080p"}},
+  {name: "ETTV TLA", query: {with_words: "ettv hdtv x264 tla", without: "720p 1080p"}},
+  {name: "ETTV W4F", query: {with_words: "ettv hdtv x264 w4f", without: "720p 1080p"}},
+  {name: "ETTV EVOLVE", query: {with_words: "ettv hdtv x264 EVOLVE", without: "720p 1080p"}},
+  {name: "ETTV ORGANiC", query: {with_words: "ettv hdtv x264 organic", without: "720p 1080p"}},
+  {name: "ETTV BAJSKORV", query: {with_words: "ettv hdtv x264 bajskorv", without: "720p 1080p"}},
+  {name: "ETTV RiVER", query: {with_words: "ettv hdtv x264 river", without: "720p 1080p"}},
+
+  // 720p
+  {name: "ETTV 720p", query: {with_words: "ettv hdtv x264 720p"}},
+  {name: "ETHD 720p", query: {with_words: "ethd hdtv x264 720p"}},
+
+  // 1080p
+  {name: "1080p", query: {width_words: "hdtv x264 1080p"}}
+];
 
 /**
- * Map object for correcting show slugs form KAT.
+ * The providers for scraping KAT for anime.
+ * @type {Array}
+ */
+export const katAnimeProviders = [];
+
+/**
+ * The providers for scraping KAT for movies.
+ * @type {Array}
+ */
+export const katMovieProviders = [
+  // English providers
+  {name: "Megaradon", query: {query: "x264 720p | 1080p", uploader: "megaradon", language: "en"}},
+  {name: "Z0n321", query: {query: "x264 720p | 1080p", uploader: "z0n321", language: "en"}},
+
+  // French providers
+  {name: "French", query: {query: "720p | 1080p", language: "fr"}},
+  // German providers
+  {name: "German", query: {query: "720p | 1080p", language: "de"}},
+  // Spanish providers
+  {name: "Spanish", query: {query: "720p | 1080p", language: "es"}},
+  // Ductch providers
+  {name: "Dutch", query: {query: "720p | 1080p", language: "nl"}}
+];
+
+/**
+ * The providers for scraping KAT for shows.
+ * @type {Array}
+ */
+export const katShowProviders = [
+  // 720p and 1080p providers
+  {name: "Zoner720p", query: {query: "x264 720p", uploader: "z0n321"}},
+  {name: "Zoner1080p", query: {query: "x264 1080p", uploader: "z0n321"}},
+  {name: "Brasse0", query: {query: "x264", uploader: "brasse0"}},
+  {name: "ETHD", query: {query: "x264", uploader: "ethd"}},
+
+  // Uploader providers
+  {name: "ETTV", query: {query: "x264", uploader: "ettv"}},
+  {name: "KAT_EZTV", query: {query: "x264", uploader: "eztv"}},
+  {name: "VTV", query: {query: "x264", uploader: "vtv"}},
+  {name: "SRIGGA", query: {query: "x264", uploader: "ethd"}},
+
+  // Zoner providers
+  {name: "ZonerSD", query: {query: "x264 LOL | FLEET | KILLERS | W4F", uploader: "z0n321"}}
+];
+
+/**
+ * Check if this instance of the API is the master. Default is `true`.
+ * @type {Boolean}
+ */
+export const master = true;
+
+/**
+ * The maximum web requests can take place at the same time. Default is `2`.
+ * @type {Integer}
+ */
+export const maxWebRequest = 2;
+
+/**
+ * Map object for correcting movie slugs.
  * @type {Object}
  */
-export const katShowMap = {
+export const movieMap = {};
+
+/**
+ * The amount of object show per page. Default is `50`.
+ * @type {Integer}
+ */
+export const pageSize = 50;
+
+/**
+ * The port on which the API will run on. Default is `5000`.
+ * @type {Integer}
+ */
+export const port = 5000;
+
+/**
+ * The promise object to override the mongoose promise object. Default is `global.Promise`.
+ * @type {Promise}
+ */
+export const Promise = global.Promise;
+
+/**
+ * The name of the server. Default is `serv01`.
+ * @type {String}
+ */
+export const server = "serv01";
+
+/**
+ * Map object for correcting show slugs.
+ * @type {Object}
+ */
+export const showMap = {
   "60-minutes-us": "60-minutes",
   "american-crime": "american-crime-1969",
   "bachelor-live": "the-bachelor-live",
@@ -113,82 +223,6 @@ export const katShowMap = {
   "youre-the-worst-2014": "you-re-the-worst",
   "youre-the-worst": "you-re-the-worst"
 };
-
-/**
- * Check if this instance of the API is the master. Default is `true`.
- * @type {Boolean}
- */
-export const master = true;
-
-/**
- * The maximum web requests can take place at the same time. Default is `2`.
- * @type {Integer}
- */
-export const maxWebRequest = 2;
-
-/**
- * The providers for scraping KAT for movies.
- * @type {Array}
- */
-export const movieProviders = [
-  // English providers
-  {name: "Megaradon", query: {query: "x264 720p | 1080p", uploader: "megaradon", language: "en"}},
-  {name: "Z0n321", query: {query: "x264 720p | 1080p", uploader: "z0n321", language: "en"}},
-
-  // French providers
-  {name: "French", query: {query: "720p | 1080p", language: "fr"}},
-  // German providers
-  {name: "German", query: {query: "720p | 1080p", language: "de"}},
-  // Spanish providers
-  {name: "Spanish", query: {query: "720p | 1080p", language: "es"}},
-  // Ductch providers
-  {name: "Dutch", query: {query: "720p | 1080p", language: "nl"}}
-];
-
-/**
- * The amount of object show per page. Default is `50`.
- * @type {Integer}
- */
-export const pageSize = 50;
-
-/**
- * The port on which the API will run on. Default is `5000`.
- * @type {Integer}
- */
-export const port = 5000;
-
-/**
- * The promise object to override the mongoose promise object. Default is `global.Promise`.
- * @type {Promise}
- */
-export const Promise = global.Promise;
-
-/**
- * The name of the server. Default is `serv01`.
- * @type {String}
- */
-export const server = "serv01";
-
-/**
- * The providers for scraping KAT for shows.
- * @type {Array}
- */
-export const showProviders = [
-  // 720p and 1080p providers
-  {name: "Zoner720p", query: {query: "x264 720p", uploader: "z0n321"}},
-  {name: "Zoner1080p", query: {query: "x264 1080p", uploader: "z0n321"}},
-  {name: "Brasse0", query: {query: "x264", uploader: "brasse0"}},
-  {name: "ETHD", query: {query: "x264", uploader: "ethd"}},
-
-  // Uploader providers
-  {name: "ETTV", query: {query: "x264", uploader: "ettv"}},
-  {name: "KAT_EZTV", query: {query: "x264", uploader: "eztv"}},
-  {name: "VTV", query: {query: "x264", uploader: "vtv"}},
-  {name: "SRIGGA", query: {query: "x264", uploader: "ethd"}},
-
-  // Zoner providers
-  {name: "ZonerSD", query: {query: "x264 LOL | FLEET | KILLERS | W4F", uploader: "z0n321"}}
-];
 
 /**
  * The name of the status file holding the `status` value for the index page. Default is `status.json`.

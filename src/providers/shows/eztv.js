@@ -1,9 +1,11 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 import EztvAPI from "eztv-api-pt";
-import { maxWebRequest } from "../../config/constants";
-import Helper from "./helper";
+
+import Extractor from "../extractors/showextractor";
 import Util from "../../util";
+
+import { maxWebRequest } from "../../config/constants";
 
 /** Class for scraping shows from https://eztv.ag/. */
 export default class EZTV {
@@ -16,7 +18,7 @@ export default class EZTV {
   constructor(name, debug) {
     /**
      * The name of the torrent provider.
-     * @type {String}  The name of the torrent provider.
+     * @type {String}
      */
     this.name = name;
 
@@ -28,10 +30,10 @@ export default class EZTV {
     this._eztv = new EztvAPI({ debug });
 
     /**
-     * The helper object for adding shows.
-     * @type {Helper}
+     * The extractor object for getting show data on torrents.
+     * @type {Extractor}
      */
-    this._helper = new Helper(this.name);
+    this._extractor = new Extractor(this.name, this._eztv, debug);
 
     /**
      * The util object with general functions.
@@ -41,39 +43,19 @@ export default class EZTV {
   };
 
   /**
-   * Get a complete show.
-   * @param {Object} eztvShow - show data from eztv.
-   * @returns {Show} - A complete show.
-   */
-  async _getShow(eztvShow) {
-    try {
-      if (eztvShow) {
-        eztvShow = await this._eztv.getShowData(eztvShow);
-        const newShow = await this._helper.getTraktInfo(eztvShow.slug);
-
-        if (newShow && newShow._id) {
-          delete eztvShow.episodes.dateBased;
-          delete eztvShow.episodes[0];
-          return await this._helper.addEpisodes(newShow, eztvShow.episodes, eztvShow.slug);
-        }
-      }
-    } catch (err) {
-      return this._util.onError(err);
-    }
-  };
-
-  /**
    * Returns a list of all the inserted torrents.
    * @returns {Array} - A list of scraped shows.
    */
   async search() {
     try {
       console.log(`${this.name}: Starting scraping...`);
-      const eztvShows = await this._eztv.getAllShows();
-      console.log(`${this.name}: Found ${eztvShows.length} shows.`);
-      return await asyncq.mapLimit(eztvShows, maxWebRequest, async eztvShow => {
+      const shows = await this._eztv.getAllShows();
+      console.log(`${this.name}: Found ${shows.length} shows.`);
+
+      return await asyncq.mapLimit(shows, maxWebRequest, async show => {
         try {
-          return await this._getShow(eztvShow);
+          show = await this._eztv.getShowData(show);
+          return await this._extractor.getShow(show);
         } catch (err) {
           return this._util.onError(err);
         }

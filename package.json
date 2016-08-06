@@ -13,6 +13,7 @@
     "cron": "^1.1.0",
     "express": "^4.14.0",
     "express-winston": "^2.0.0",
+    "extratorrent-api": "^1.0.1",
     "eztv-api-pt": "^1.0.8",
     "horriblesubs-api": "^1.0.2",
     "hummingbird-api": "^1.0.8",

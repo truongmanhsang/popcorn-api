@@ -9,13 +9,13 @@ import Util from "../../util";
 export default class Helper {
 
   /**
-   * Create an helper object.
+   * Create an helper object for anime.
    * @param {String} name - The name of the helper.
    */
   constructor(name, debug) {
     /**
      * The name of the torrent provider.
-     * @type {String}  The name of the torrent provider.
+     * @type {String}
      */
     this.name = name;
 

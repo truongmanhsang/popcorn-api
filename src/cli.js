@@ -7,11 +7,11 @@ import prompt from "prompt";
 import torrentHealth from "torrent-tracker-health";
 
 import Index from "./index";
-import AnimeHelper from "./providers/anime/helper";
-import MovieHelper from "./providers/movie/helper";
+import AnimeHelper from "./providers/helpers/animehelper";
+import MovieHelper from "./providers/helpers/moviehelper";
 import packageJSON from "../package.json";
 import Setup from "./config/setup";
-import ShowHelper from "./providers/show/helper";
+import ShowHelper from "./providers/helpers/showhelper";
 import Util from "./util";
 
 /** Class The class for the command line interface. */
@@ -341,7 +341,7 @@ export default class CLI {
   /** Run the CLI program. */
   run() {
     if (program.run) {
-      new Index({start: true, pretty: true, debug: false});
+      new Index({start: true, pretty: false, debug: false});
     } else if (program.server) {
       new Index({start: false, pretty: true, debug: false});
     } else if (program.content) {

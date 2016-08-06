@@ -3,7 +3,7 @@ import asyncq from "async-q";
 import req from "request";
 import Movie from "../../models/Movie";
 import { maxWebRequest, webRequestTimeout } from "../../config/constants";
-import Helper from "./helper";
+import Helper from "../helpers/moviehelper";
 import Util from "../../util";
 
 /** Class for scraping movies from https://yts.ag/. */
@@ -17,7 +17,7 @@ export default class YTS {
   constructor(name) {
     /**
      * The name of the torrent provider.
-     * @type {String}  The name of the torrent provider.
+     * @type {String}
      */
     this.name = name;
 
