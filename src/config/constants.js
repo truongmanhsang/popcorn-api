@@ -40,6 +40,21 @@ export const dbHosts = ["localhost"];
 export const dbName = "popcorn";
 
 /**
+ * The providers for scraping ExtraTorrent for anime.
+ * @type {Array}
+ */
+export const extratorrentAnimeProviders = [];
+
+/**
+ * The providers for scraping ExtraTorrent for movies.
+ * @type {Array}
+ */
+export const extratorrentMovieProviders = [
+  {name: "ETRG 720p", query: {with_words: "etrg x264 720p"}},
+  {name: "ETRG 1080p", query: {with_words: "etrg x264 1080p"}}
+];
+
+/**
  * The providers for scraping ExtraTorrent for shows.
  * @type {Array}
  */

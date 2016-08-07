@@ -4,7 +4,6 @@ import HorribleSubsAPI from "horriblesubs-api";
 
 import Extractor from "../extractors/animeextractor";
 import Util from "../../util";
-
 import { maxWebRequest } from "../../config/constants";
 
 /** Class for scraping anime from https://horriblesubs.info/. */

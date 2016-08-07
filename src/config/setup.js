@@ -4,8 +4,8 @@ import compress from "compression";
 import mongoose from "mongoose";
 import responseTime from "response-time";
 
-import { dbHosts, dbName, Promise } from "./constants";
 import Logger from "./logger";
+import { dbHosts, dbName, Promise } from "./constants";
 
 /** Class for setting up the API. */
 export default class Setup {

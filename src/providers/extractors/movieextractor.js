@@ -1,10 +1,10 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
+import bytes from "bytes";
 
 import BaseExtractor from "./baseextractor";
 import Helper from "../helpers/moviehelper";
 import Util from "../../util";
-
 import { maxWebRequest, movieMap } from "../../config/constants";
 
 /** Class for extracting movies from torrents. */
@@ -61,16 +61,18 @@ export default class Extractor extends BaseExtractor {
     const year = torrent.title.match(regex)[2];
     const quality = torrent.title.match(regex)[3];
 
+    const size = torrent.size ? torrent.size : torrent.fileSize;
+
     const movie = { movieTitle, slug, slugYear: `${slug}-${year}`, torrentLink: torrent.link, year, quality, language };
     movie.torrents = {};
 
     movie.torrents[language] = {};
     movie.torrents[language][quality] = {
       url: torrent.torrent_link ? torrent.torrent_link : torrent.magnet,
-      seeds: torrent.seeds ? torrent.seeds : 0,
-      peers: torrent.peers ? torrent.peers : 0,
-      size: torrent.size ? torrent.size : 0,
-      fileSize: torrent.fileSize ? torrent.fileSize : 0,
+      seed: torrent.seeds ? torrent.seeds : 0,
+      peer: torrent.peers ? torrent.peers : 0,
+      size: bytes(size.replace(/\s/g, "")),
+      filesize: size,
       provider: this.name
     };
 
@@ -84,9 +86,9 @@ export default class Extractor extends BaseExtractor {
    * @returns {Object} - Information about a movie from the torrent.
    */
   _getMovieData(torrent, language) {
-    const threeDimensions = /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/;
-    const fourKay = /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/;
-    const withYear = /(.*).(\d{4})\D+(\d{3,4}p)/;
+    const threeDimensions = /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/i;
+    const fourKay = /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/i;
+    const withYear = /(.*).(\d{4})\D+(\d{3,4}p)/i;
     if (torrent.title.match(threeDimensions)) {
       return this._extractMovie(torrent, language, threeDimensions);
     } else if (torrent.title.match(fourKay)) {
@@ -147,8 +149,9 @@ export default class Extractor extends BaseExtractor {
       provider.query.page = 1;
       provider.query.verified = 1;
       provider.query.adult_filter = 1;
+      provider.query.language = provider.query.language ? provider.query.language : "en";
 
-      const getTotalPages = await this.contentProvider.search(provider.query);
+      const getTotalPages = await this._contentProvider.search(provider.query);
       const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
       if (!totalPages) return this._util.onError(`${this.name}: total_pages returned: '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.

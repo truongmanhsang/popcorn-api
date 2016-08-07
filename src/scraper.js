@@ -1,17 +1,19 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 
-import extratorrentShow from "./providers/shows/extratorrent";
 import EZTV from "./providers/shows/eztv";
 import HorribleSubs from "./providers/anime/horriblesubs";
+import extratorrentShow from "./providers/shows/extratorrent";
+import extratorrentMovie from "./providers/movies/extratorrent";
 import katAnime from "./providers/anime/kat";
 import katMovie from "./providers/movies/kat";
 import katShow from "./providers/shows/kat";
-import Util from "./util";
 import YTS from "./providers/movies/yts";
-
+import Util from "./util";
 import {
   collections,
+  extratorrentAnimeProviders,
+  extratorrentMovieProviders,
   extratorrentShowProviders,
   katAnimeProviders,
   katMovieProviders,
@@ -40,6 +42,24 @@ export default class Scraper {
   };
 
   /**
+   * Start show scraping from ExtraTorrent.
+   * @returns {Array} A list of all the scraped shows.
+   */
+  _scrapeExtraTorrentShows() {
+    return asyncq.eachSeries(extratorrentShowProviders, async provider => {
+      try {
+        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        const extratorrentProvider = new extratorrentShow(provider.name, Scraper._debug);
+        const extratorrentShows = await extratorrentProvider.search(provider);
+        console.log(`${provider.name}: Done.`);
+        return extratorrentShows;
+      } catch (err) {
+        return Scraper._util.onError(err);
+      }
+    });
+  };
+
+  /**
    * Start scraping from EZTV.
    * @returns {Array} A list of all the scraped shows.
    */
@@ -53,6 +73,41 @@ export default class Scraper {
     } catch (err) {
       return Scraper._util.onError(err);
     }
+  };
+
+  /**
+   * Start show scraping from KAT.
+   * @returns {Array} A list of all the scraped shows.
+   */
+  _scrapeKATShows() {
+    return asyncq.eachSeries(katShowProviders, async provider => {
+      try {
+        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        const katProvider = new katShow(provider.name, Scraper._debug);
+        const katShows = await katProvider.search(provider);
+        console.log(`${provider.name}: Done.`);
+      } catch (err) {
+        return Scraper._util.onError(err);
+      }
+    });
+  };
+
+  /**
+   * Start movie scraping from ExtraTorrent.
+   * @returns {Array} A list of all the scraped movies.
+   */
+  _scrapeExtraTorrentMovies() {
+    return asyncq.eachSeries(extratorrentMovieProviders, async provider => {
+      try {
+        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        const extratorrentProvider = new extratorrentMovie(provider.name, Scraper._debug);
+        const extratorrentMovies = await extratorrentProvider.search(provider);
+        console.log(`${provider.name}: Done.`);
+        return extratorrentMovies;
+      } catch (err) {
+        return Scraper._util.onError(err);
+      }
+    });
   };
 
   /**
@@ -74,41 +129,6 @@ export default class Scraper {
   };
 
   /**
-   * Start show scraping from KAT.
-   * @returns {Array} A list of all the scraped shows.
-   */
-  _scrapeKATShows() {
-    return asyncq.eachSeries(katShowProviders, async provider => {
-      try {
-        Scraper._util.setStatus(`Scraping ${provider.name}`);
-        const katProvider = new katShow(provider.name, Scraper._debug);
-        const katShows = await katProvider.search(provider);
-        console.log(`${provider.name}: Done.`);
-      } catch (err) {
-        return Scraper._util.onError(err);
-      }
-    });
-  };
-
-  /**
-   * Start show scraping from ExtraTorrent.
-   * @returns {Array} A list of all the scraped shows.
-   */
-  _scrapeExtraTorrentShows() {
-    return asyncq.eachSeries(extratorrentShowProviders, async provider => {
-      try {
-        Scraper._util.setStatus(`Scraping ${provider.name}`);
-        const extratorrentProvider = new extratorrentShow(provider.name, Scraper._debug);
-        const extratorrentShows = await extratorrentProvider.search(provider);
-        console.log(`${provider.name}: Done.`);
-        return extratorrentShows;
-      } catch (err) {
-        return Scraper._util.onError(err);
-      }
-    });
-  };
-
-  /**
    * Start scraping from YTS.
    * @returns {Array} A list of all the scraped movies.
    */
@@ -122,6 +142,24 @@ export default class Scraper {
     } catch (err) {
       return Scraper._util.onError(err);
     }
+  };
+
+  /**
+   * Start anime scraping from ExtraTorrent.
+   * @returns {Array} A list of all the scraped movies.
+   */
+  _scrapeExtraTorrentAnime() {
+    return asyncq.eachSeries(extratorrentAnimeProviders, async provider => {
+      try {
+        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        const extratorrentProvider = new extratorrentAnime(provider.name, Scraper._debug);
+        const extratorrentAnimes = await extratorrentProvider.search(provider);
+        console.log(`${provider.name}: Done.`);
+        return extratorrentAnimes;
+      } catch (err) {
+        return Scraper._util.onError(err);
+      }
+    });
   };
 
   /**
@@ -166,8 +204,12 @@ export default class Scraper {
       this._scrapeEZTVShows,
       this._scrapeExtraTorrentShows,
       // this._scrapeKATShows,
-      this._scrapeYTSMovies,
+
+      this._scrapeExtraTorrentMovies,
       // this._scrapeKATMovies,
+      this._scrapeYTSMovies,
+
+      this._scrapeExtraTorrentAnime,
       this._scrapeHorribelSubsAnime,
       // this._scrapeKATAnime
     ], scraper => scraper()).then(value => Scraper._util.setStatus()).then(res => asyncq.eachSeries(collections, collection => Scraper._util.exportCollection(collection))).catch(err => Scraper._util.onError(`Error while scraping: ${err}`));

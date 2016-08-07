@@ -4,7 +4,6 @@ import EztvAPI from "eztv-api-pt";
 
 import Extractor from "../extractors/showextractor";
 import Util from "../../util";
-
 import { maxWebRequest } from "../../config/constants";
 
 /** Class for scraping shows from https://eztv.ag/. */

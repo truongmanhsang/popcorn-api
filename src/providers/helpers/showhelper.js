@@ -3,7 +3,6 @@ import asyncq from "async-q";
 
 import Show from "../../models/Show";
 import Util from "../../util";
-
 import { trakt } from "../../config/constants";
 
 /** Class for saving shows. */

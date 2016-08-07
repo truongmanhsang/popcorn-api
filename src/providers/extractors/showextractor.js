@@ -4,7 +4,6 @@ import asyncq from "async-q";
 import BaseExtractor from "./baseextractor";
 import Helper from "../helpers/showhelper";
 import Util from "../../util";
-
 import { maxWebRequest, showMap } from "../../config/constants";
 
 /** Class for extracting TV shows from torrents. */
@@ -95,9 +94,9 @@ export default class Extractor extends BaseExtractor {
    * @returns {Object} - Information about a show from the torrent.
    */
   _getShowData(torrent) {
-    const seasonBased = /(.*).[sS](\d{2})[eE](\d{2})/;
-    const vtv = /(.*).(\d{1,2})[x](\d{2})/;
-    const dateBased = /(.*).(\d{4}).(\d{2}.\d{2})/;
+    const seasonBased = /(.*).[sS](\d{2})[eE](\d{2})/i;
+    const vtv = /(.*).(\d{1,2})[x](\d{2})/i;
+    const dateBased = /(.*).(\d{4}).(\d{2}.\d{2})/i;
     if (torrent.title.match(seasonBased)) {
       return this._extractShow(torrent, seasonBased, false);
     } else if (torrent.title.match(vtv)) {

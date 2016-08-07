@@ -6,7 +6,6 @@ import Anime from "../models/Anime";
 import Movie from "../models/Movie";
 import Show from "../models/Show";
 import Util from "../util";
-
 import { server, statusFile, tempDir, updatedFile } from "../config/constants";
 import { name, repository, version } from "../../package.json";
 
