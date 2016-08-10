@@ -1,13 +1,21 @@
 language: node_js
+
 node_js:
   - "6"
+
 services: mongodb
+
 git:
   submodules: false
+
 before_script:
-  - npm install -g gulp
+  - npm i -g gulp
+  - npm i
+  - npm i -g
+  - popcorn-api --server &
+
 script:
-  - gulp
   - npm test
+
 after_script:
   - "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
