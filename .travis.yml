@@ -11,7 +11,7 @@ git:
 before_script:
   - npm i -g gulp
   - gulp build
-  - ./build/popcorn-api.js --server
+  - ./build/popcorn-api.js --server &
 
 script:
   - npm test
