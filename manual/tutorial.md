@@ -172,7 +172,7 @@ The regular expression needs to get a `title`, `episode` and a `quality` propert
 ```javascript
 _getAnimeData(torrent) {
   const secondSeason = /\[horriblesubs\].(.*).S(\d)...(\d{2,3}).\[(\d{3,4}p)\]/i; // [HorribleSubs] Fairy Tail S2 - 70 [1080p].mkv
-  const oneSeason = /\[horriblesubs\].(.*)...(\d{2,3}).\[(\d{3,4}p)\]/i // [HorribleSubs] Gangsta - 06 [480p].mkv
+  const oneSeason = /\[horriblesubs\].(.*)...(\d{2,3}).\[(\d{3,4}p)\]/i; // [HorribleSubs] Gangsta - 06 [480p].mkv
   if (torrent.title.match(secondSeason)) {
     return this._extractAnime(torrent, secondSeason);
   } else if (torrent.title.match(oneSeason) {

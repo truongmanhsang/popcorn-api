@@ -8,7 +8,7 @@ import Util from "../../util";
 /** Class for scraping shows from https://extratorrent.cc/. */
 export default class ExtraTorrent {
 
-   /**
+   /**logger
     * Create an extratorrent object.
     * @param {String} name - The name of the torrent provider.
     * @param {Boolean} debug - Debug mode for extra output.
@@ -40,7 +40,7 @@ export default class ExtraTorrent {
    */
   async search(provider) {
     try {
-      console.log(`${this.name} : Starting scraping...`);
+      logger.log(`${this.name} : Starting scraping...`);
       provider.query.category = "tv";
 
       return await this._extractor.search(provider);

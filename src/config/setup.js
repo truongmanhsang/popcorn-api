@@ -15,7 +15,7 @@ export default class Setup {
    * @param {Express} app - The ExpresssJS instance.
    * @param {Boolean} pretty - Pretty output with Winston logging.
    */
-  constructor(app, pretty) {
+  constructor(app, pretty, verbose) {
     // Used to extract data from query strings.
     RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 
@@ -29,14 +29,18 @@ export default class Setup {
     app.use(bodyParser.json());
 
     // Enables compression of response bodies.
-    app.use(compress({threshold: 1400, level: 4, memLevel: 3}));
+    app.use(compress({
+      threshold: 1400,
+      level: 4,
+      memLevel: 3
+    }));
 
     // Enable response time tracking for HTTP request.
     app.use(responseTime());
 
     // Enable HTTP request logging.
     // app.use(Logger.expressLogger);
-    if (pretty) app.use(Logger.expressLogger);
+    if (pretty && !verbose) app.use(Logger.expressLogger);
   }
 
   /** Connection and configuration of the MongoDB database. */

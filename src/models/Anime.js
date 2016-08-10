@@ -27,7 +27,10 @@ const AnimeSchema = new mongoose.Schema({
   type: String,
   num_episodes: Number,
   last_updated: Number,
-  latest_episode: {type: Number, default: 0},
+  latest_episode: {
+    type: Number,
+    default: 0
+  },
   images: {
     banner: String,
     fanart: String,

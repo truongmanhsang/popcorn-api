@@ -78,7 +78,14 @@ export default class Extractor extends BaseExtractor {
       provider: this.name
     };
 
-    const anime = { animeTitle, slug, torrentLink: torrent.link, season, episode, quality };
+    const anime = {
+      animeTitle,
+      slug,
+      torrentLink: torrent.link,
+      season,
+      episode,
+      quality
+    };
     anime.episodes = {};
 
     if (!anime.episodes[season]) anime.episodes[season] = {};
@@ -96,10 +103,16 @@ export default class Extractor extends BaseExtractor {
    */
   _getAnimeData(torrent) {
     const secondSeason = /\[horriblesubs\].(.*).S(\d)...(\d{2,3}).\[(\d{3,4}p)\]/i;
+    const oneSeason = /\[horriblesubs\].(.*)...(\d{2,3}).\[(\d{3,4}p)\]/i;
+    const animerg = /\[animerg\]\s+(\D+)\s\-\s(\d{3}|\d{2})\D+(\d{3,4}p)/i;
     if (torrent.title.match(secondSeason)) {
       return this._extractAnime(torrent, secondSeason);
+    } else if  (torrent.title.match(oneSeason)) {
+      return this._extractAnime(torrent, oneSeason);
+    } else if (torrent.title.match(animerg)) {
+      return this._extractAnime(torrent, animerg);
     } else {
-      console.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
+      logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
   };
 
@@ -159,7 +172,7 @@ export default class Extractor extends BaseExtractor {
       const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
       if (!totalPages) return this._util.onError(`${this.name}: total_pages returned: '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
-      console.log(`${this.name}: Total pages ${totalPages}`);
+      logger.log(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);
       const animes = await this._getAllAnimes(torrents);

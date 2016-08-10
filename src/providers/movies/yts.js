@@ -93,7 +93,10 @@ export default class YTS {
           }
         });
 
-        return { imdb_id: movie.imdb_code, torrents };
+        return {
+          imdb_id: movie.imdb_code,
+          torrents
+        };
       }
     });
   };
@@ -134,7 +137,7 @@ export default class YTS {
       let movies = [];
       return await asyncq.timesSeries(totalPages, async page => {
         try {
-          console.log(`${this.name}: Starting searching YTS on page ${page + 1} out of ${totalPages}`);
+          logger.log(`${this.name}: Starting searching YTS on page ${page + 1} out of ${totalPages}`);
           const onePage = await this._getOnePage(page);
           movies = movies.concat(onePage);
         } catch (err) {
@@ -152,7 +155,7 @@ export default class YTS {
    */
   async search() {
     try {
-      console.log(`${this.name}: Starting scraping...`);
+      logger.log(`${this.name}: Starting scraping...`);
       const movies = await this._getMovies();
       return await asyncq.eachLimit(movies, maxWebRequest, async ytsMovie => {
         if (ytsMovie && ytsMovie.imdb_id) {

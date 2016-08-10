@@ -26,7 +26,7 @@ export default class HorribleSubs {
        * @type {HorribleSubsAPI}
        * @see https://github.com/ChrisAlderson/horriblesubs-api
        */
-    this._horriblesubs = new HorribleSubsAPI({debug});
+    this._horriblesubs = new HorribleSubsAPI({ debug });
 
     /**
        * The extractor object for getting show data on torrents.
@@ -47,9 +47,9 @@ export default class HorribleSubs {
      */
   async search() {
     try {
-      console.log(`${this.name}: Starting scraping...`);
+      logger.log(`${this.name}: Starting scraping...`);
       const animes = await this._horriblesubs.getAllAnime();
-      console.log(`${this.name}: Found ${animes.length} anime shows.`);
+      logger.log(`${this.name}: Found ${animes.length} anime shows.`);
 
       return await asyncq.mapLimit(animes, maxWebRequest, async anime => {
         try {

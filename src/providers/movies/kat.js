@@ -41,7 +41,7 @@ export default class KAT {
   async search(provider) {
     try {
       if (!provider.query.language) return this._util.onError(`Provider with name: '${this.name}' does not have a language set!`);
-      console.log(`${this.name}: Starting scraping...`);
+      logger.log(`${this.name}: Starting scraping...`);
       provider.query.category = "movies";
 
       return await this._extractor.search(provider);

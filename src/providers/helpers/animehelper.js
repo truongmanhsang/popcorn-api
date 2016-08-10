@@ -91,10 +91,10 @@ export default class Helper {
   async _updateEpisodes(anime) {
     try {
       const found = await Anime.findOne({
-          _id: anime._id
-        }).exec();
+        _id: anime._id
+      }).exec();
       if (found) {
-        console.log(`${this.name}: '${found.title}' is an existing anime.`);
+        logger.log(`${this.name}: '${found.title}' is an existing anime.`);
         for (let i = 0; i < found.episodes.length; i++) {
           let matching = anime.episodes
             .filter(animeEpisode => animeEpisode.episode === found.episodes[i].episode);
@@ -110,7 +110,7 @@ export default class Helper {
 
         return await this._updateNumEpisodes(anime);
       } else {
-        console.log(`${this.name}: '${anime.title}' is a new anime!`);
+        logger.log(`${this.name}: '${anime.title}' is a new anime!`);
         const newAnime = await new Anime(anime).save();
         return await this._updateNumEpisodes(newAnime);
       }
@@ -181,7 +181,7 @@ export default class Helper {
             loved: 100,
             votes: 0,
             watching: 0,
-            percentage: (Math.round(hummingbirdAnime.community_rating * 10)) * 2,
+            percentage: (Math.round(hummingbirdAnime.community_rating * 10)) * 2
           },
           type,
           num_episodes: 0,

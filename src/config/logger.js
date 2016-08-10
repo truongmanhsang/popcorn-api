@@ -8,50 +8,63 @@ import winston from "winston";
 import { tempDir } from "./constants";
 import { name } from "../../package.json";
 
-/** Class for overriding the default console object. */
+/** Class for configuring logging. */
 export default class Logger {
 
   /** Create a logger object. */
-  constructor() {
+  constructor(pretty, verbose) {
+    /**
+     * Pretty mode.
+     * @type {Boolean}
+     */
+    Logger._pretty = pretty;
+
+    /**
+     * Verbose mode.
+     * @type {Boolean}
+     */
+    Logger._verbose = verbose;
+
      // Create the temp directory if it does not exists.
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
 
-    /**
-     * The Winston instance.
-     * @type {Object}
-     */
-    Logger.logger = new winston.Logger({
-      transports: [
-        new winston.transports.Console({
-          name,
-          formatter: Logger._consoleFormatter,
-          handleExceptions: true,
-          prettyPrint: true
-        }),
-        new winston.transports.File({
-          filename: path.join(tempDir, `${name}.log`),
-          level: "warn",
-          json: false,
-          formatter: Logger._fileFormatter,
-          maxsize: 5242880,
-          handleExceptions: true
-        })
-      ],
-      exitOnError: false
-    });
+    if (Logger._pretty) {
+      /**
+       * The Winston instance.
+       * @type {Object}
+       */
+      Logger.logger = new winston.Logger({
+        transports: [
+          new winston.transports.Console({
+            name,
+            formatter: Logger._consoleFormatter,
+            handleExceptions: true,
+            prettyPrint: true
+          }),
+          new winston.transports.File({
+            filename: path.join(tempDir, `${name}.log`),
+            level: "warn",
+            json: false,
+            formatter: Logger._fileFormatter,
+            maxsize: 5242880,
+            handleExceptions: true
+          })
+        ],
+        exitOnError: false
+      });
 
-    /**
-     * The Express Winston instance.
-     * @type {Object}
-     */
-    Logger.expressLogger = new expressWinston.logger({winstonInstance: Logger.logger, expressFormat: true});
+      /**
+       * The Express Winston instance.
+       * @type {Object}
+       */
+      Logger.expressLogger = new expressWinston.logger({
+        winstonInstance: Logger.logger,
+        expressFormat: true
+      });
+    }
 
     // Override the console functions.
-    console.log = msg => Logger.logger.info(msg);
-    console.error = msg => Logger.logger.error(msg);
-    console.warn = msg => Logger.logger.warn(msg);
-    console.info = msg => Logger.logger.info(msg);
-    console.debug = msg => Logger.logger.debug(msg);
+    Logger._createLogger(this._pretty);
   };
 
   /**
@@ -118,6 +131,27 @@ export default class Logger {
       level: args.level,
       msg: args.message,
       time: new Date().toISOString()
+    });
+  };
+
+  /**
+   * Function to create a global logger object based on the properties of the Logger class.
+   */
+  static _createLogger() {
+    const levels = ["log", "error", "warn", "info", "debug"];
+    if (!global.logger) global.logger = {};
+
+    levels.map(level => {
+      if (Logger._pretty) {
+        global.logger[level] = msg => {
+          level = level === "log" ? "info" : "log";
+          if (!Logger._verbose) Logger.logger[level](msg);
+        };
+      } else {
+        global.logger[level] = msg => {
+          if (!Logger._verbose) console[level](msg);
+        };
+      }
     });
   };
 

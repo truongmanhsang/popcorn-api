@@ -38,10 +38,12 @@ export default class Helper {
       new: true,
       upsert: true
     }).exec();
+
     const distinct = await Show.distinct("episodes.season", {
       _id: saved._id
     }).exec();
     saved.num_seasons = distinct.length;
+
     return await Show.findOneAndUpdate({
       _id: saved._id
     }, saved, {
@@ -94,10 +96,10 @@ export default class Helper {
     try {
 
       const found = await Show.findOne({
-          _id: show._id
-        }).exec();
+        _id: show._id
+      }).exec();
       if (found) {
-        console.log(`${this.name}: '${found.title}' is an existing show.`);
+        logger.log(`${this.name}: '${found.title}' is an existing show.`);
         for (let i = 0; i < found.episodes.length; i++) {
           let matching = show.episodes
             .filter(showEpisode => showEpisode.season === found.episodes[i].season)
@@ -114,7 +116,7 @@ export default class Helper {
 
         return await this._updateNumSeasons(show);
       } else {
-        console.log(`${this.name}: '${show.title}' is a new show!`);
+        logger.log(`${this.name}: '${show.title}' is a new show!`);
         const newShow = await new Show(show).save();
         return await this._updateNumSeasons(newShow);
       }
@@ -135,7 +137,13 @@ export default class Helper {
     try {
       seasonNumber = parseInt(seasonNumber);
       if (!isNaN(seasonNumber) && seasonNumber.toString().length <= 2) {
-        const season = await trakt.seasons.season({id: slug, season: seasonNumber, extended: "full"});
+
+        const season = await trakt.seasons.season({
+          id: slug,
+          season: seasonNumber,
+          extended: "full"
+        });
+
         for (let episodeData in season) {
           episodeData = season[episodeData];
           if (episodes[seasonNumber] && episodes[seasonNumber][episodeData.number]) {
@@ -173,7 +181,10 @@ export default class Helper {
    */
   async getTraktInfo(slug) {
     try {
-      const traktShow = await trakt.shows.summary({id: slug, extended: "full,images"});
+      const traktShow = await trakt.shows.summary({
+        id: slug,
+        extended: "full,images"
+      });
       const traktWatchers = await trakt.shows.watching({id: slug});
 
       let watching = 0;

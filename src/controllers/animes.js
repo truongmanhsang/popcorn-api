@@ -77,7 +77,11 @@ export default class Animes {
         .then(docs => res.json(docs))
         .catch(err => next(err));
     } else {
-      const query = {num_episodes: {$gt: 0}};
+      const query = {
+        num_episodes: {
+          $gt: 0
+        }
+      };
       const data = req.query;
 
       if (!data.order) data.order = -1;
@@ -92,7 +96,10 @@ export default class Animes {
         const words = data.keywords.split(" ");
         let regex = "^";
         for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        query.title = {$regex: new RegExp(`${regex}.*`),$options: "gi"};
+        query.title = {
+          $regex: new RegExp(`${regex}.*`),
+          $options: "gi"
+        };
       }
 
       if (data.sort) {
@@ -140,7 +147,11 @@ export default class Animes {
    * @returns {Anime} - The details of a single anime.
    */
   getAnime(req, res, next) {
-    return Anime.findOne({_id: req.params.id}, {latest_episode: 0}).exec()
+    return Anime.findOne({
+        _id: req.params.id
+      }, {
+        latest_episode: 0
+      }).exec()
       .then(docs => res.json(docs))
       .catch(err => next(err));
   };

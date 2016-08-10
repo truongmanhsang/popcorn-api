@@ -77,7 +77,15 @@ export default class Extractor extends BaseExtractor {
       provider: this.name
     };
 
-    const show = { showTitle, slug, torrentLink: torrent.link, season, episode, quality, dateBased };
+    const show = {
+      showTitle,
+      slug,
+      torrentLink: torrent.link,
+      season,
+      episode,
+      quality,
+      dateBased
+    };
     show.episodes = {};
 
     if (!show.episodes[season]) show.episodes[season] = {};
@@ -104,7 +112,7 @@ export default class Extractor extends BaseExtractor {
     } else if (torrent.title.match(dateBased)) {
       return this._extractShow(torrent, dateBased, true);
     } else {
-      console.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
+      logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
   };
 
@@ -166,7 +174,7 @@ export default class Extractor extends BaseExtractor {
       const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
       if (!totalPages) return this._util.onError(`${this.name}: total_pages returned; '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
-      console.log(`${this.name}: Total pages ${totalPages}`);
+      logger.log(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);
       const shows = await this._getAllShows(torrents);

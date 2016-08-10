@@ -43,14 +43,14 @@ export default class BaseExtractor {
       await asyncq.timesSeries(totalPages, async page => {
         try {
           provider.query.page = page + 1;
-          console.log(`${this.name}: Starting searching ${this.name} on page ${provider.query.page} out of ${totalPages}`);
+          logger.log(`${this.name}: Starting searching ${this.name} on page ${provider.query.page} out of ${totalPages}`);
           const result = await this._contentProvider.search(provider.query);
           torrents = torrents.concat(result.results);
         } catch (err) {
           return this._util.onError(err);
         }
       });
-      console.log(`${this.name}: Found ${torrents.length} torrents.`);
+      logger.log(`${this.name}: Found ${torrents.length} torrents.`);
       return torrents;
     } catch (err) {
       return this._util.onError(err);

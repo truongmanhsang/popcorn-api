@@ -25,7 +25,7 @@ export default class CLI {
     /**
      * The util object with general functions.
      * @type {Util}
-     */
+      */
     this._util = new Util();
 
     // Setup the CLI program.
@@ -39,23 +39,23 @@ export default class CLI {
 
     // Extra output on top of the default help output
     program.on("--help", () => {
-      console.log("  Examples:");
-      console.log("");
-      console.log("    $ popcorn-api -c <anime|movie|show>");
-      console.log("    $ popcorn-api --content <anime|movie|show>");
-      console.log("");
-      console.log("    $ popcorn-api -r");
-      console.log("    $ popcorn-api --run");
-      console.log("");
-      console.log("    $ popcorn-api -s");
-      console.log("    $ popcorn-api --server");
-      console.log("");
-      console.log("    $ popcorn-api -e <anime|movie|show>");
-      console.log("    $ popcorn-api --export <anime|movie|show>");
-      console.log("");
-      console.log("    $ popcorn-api -i <path-to-json>");
-      console.log("    $ popcorn-api --import <path-to-json>");
-      console.log("");
+      logger.log("  Examples:");
+      logger.log("");
+      logger.log("    $ popcorn-api -c <anime|movie|show>");
+      logger.log("    $ popcorn-api --content <anime|movie|show>");
+      logger.log("");
+      logger.log("    $ popcorn-api -r");
+      logger.log("    $ popcorn-api --run");
+      logger.log("");
+      logger.log("    $ popcorn-api -s");
+      logger.log("    $ popcorn-api --server");
+      logger.log("");
+      logger.log("    $ popcorn-api -e <anime|movie|show>");
+      logger.log("    $ popcorn-api --export <anime|movie|show>");
+      logger.log("");
+      logger.log("    $ popcorn-api -i <path-to-json>");
+      logger.log("    $ popcorn-api --import <path-to-json>");
+      logger.log("");
     });
 
     // Parse the command line arguments.
@@ -94,7 +94,7 @@ export default class CLI {
       pattern: /^([a-zA-Z]{2})/i,
       message: "Not a valid language",
       required: true
-    }
+    };
 
     // The quality property.
     const quality = {
@@ -330,7 +330,7 @@ export default class CLI {
           const index = collection.lastIndexOf(".");
           collection = collection.substring(0, index);
           this._util.importCollection(collection, program.import)
-            .catch(err => console.error(err));
+            .catch(err => logger.error(err));
         } else if (result.confirm.match(/^(n|no)/i)) {
           process.exit(0);
         }
@@ -341,9 +341,19 @@ export default class CLI {
   /** Run the CLI program. */
   run() {
     if (program.run) {
-      new Index({start: true, pretty: false, debug: false});
+      new Index({
+        start: true,
+        pretty: true,
+        verbose: false,
+        debug: false
+      });
     } else if (program.server) {
-      new Index({start: false, pretty: true, debug: false});
+      new Index({
+        start: false,
+        pretty: true,
+        verbose: false,
+        debug: false
+      });
     } else if (program.content) {
       prompt.start();
       Setup.connectMongoDB();

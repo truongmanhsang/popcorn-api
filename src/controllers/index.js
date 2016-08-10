@@ -6,8 +6,17 @@ import Anime from "../models/Anime";
 import Movie from "../models/Movie";
 import Show from "../models/Show";
 import Util from "../util";
-import { server, statusFile, tempDir, updatedFile } from "../config/constants";
-import { name, repository, version } from "../../package.json";
+import {
+  server,
+  statusFile,
+  tempDir,
+  updatedFile
+} from "../config/constants";
+import {
+  name,
+  repository,
+  version
+} from "../../package.json";
 
 /** class for displaying information about the server the API is running on. */
 export default class Index {
@@ -51,18 +60,32 @@ export default class Index {
    */
   async getIndex(req, res, next) {
     try {
-      const { updated } = JSON.parse(fs.readFileSync(path.join(tempDir, updatedFile), "utf8")),
-        { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), "utf8")),
-        commit = await Index._util.executeCommand("git rev-parse --short HEAD"),
-        totalAnimes = await Anime.count({num_episodes: {$gt: 0}}).exec(),
-        totalMovies = await Movie.count().exec(),
-        totalShows = await Show.count({num_seasons: {$gt: 0}}).exec();
+      const { updated } = JSON.parse(fs.readFileSync(path.join(tempDir, updatedFile), "utf8"));
+      const { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), "utf8"));
+      const commit = await Index._util.executeCommand("git rev-parse --short HEAD");
+      const totalAnimes = await Anime.count({
+        num_episodes: {
+          $gt: 0
+        }
+      }).exec();
+      const totalMovies = await Movie.count().exec();
+      const totalShows = await Show.count({
+        num_seasons: {
+          $gt: 0
+        }
+      }).exec();
 
       return res.json({
-        repo: repository.url, server, status,
-        totalAnimes, totalMovies, totalShows,
-        updated, uptime: process.uptime() | 0,
-        version, commit
+        repo: repository.url,
+        server,
+        status,
+        totalAnimes,
+        totalMovies,
+        totalShows,
+        updated,
+        uptime: process.uptime() | 0,
+        version,
+        commit
       });
     } catch (err) {
       return next(err);

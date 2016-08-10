@@ -47,9 +47,9 @@ export default class EZTV {
    */
   async search() {
     try {
-      console.log(`${this.name}: Starting scraping...`);
+      logger.log(`${this.name}: Starting scraping...`);
       const shows = await this._eztv.getAllShows();
-      console.log(`${this.name}: Found ${shows.length} shows.`);
+      logger.log(`${this.name}: Found ${shows.length} shows.`);
 
       return await asyncq.mapLimit(shows, maxWebRequest, async show => {
         try {

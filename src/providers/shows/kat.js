@@ -13,41 +13,45 @@ export default class KAT {
    * @param {String} name - The name of the torrent provider.
    * @param {Boolean} debug - Debug mode for extra output.
    */
- constructor(name, debug) {
-   /**
-    * The name of the torrent provider.
-    * @type {String}
-    */
-   this.name = name;
+  constructor(name, debug) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}
+     */
+    this.name = name;
 
-   /**
-    * The extractor object for getting show data on torrents.
-    * @type {Extractor}
-    */
-   this._extractor = new Extractor(this.name, new KatAPI({ debug }), debug);
+    const katAPI = new KatAPI({
+      debug
+    });
 
-   /**
-    * The util object with general functions.
-    * @type {Util}
-    */
-   this._util = new Util();
- };
+    /**
+     * The extractor object for getting show data on torrents.
+     * @type {Extractor}
+     */
+    this._extractor = new Extractor(this.name, katAPI, debug);
 
- /**
-  * Returns a list of all the inserted torrents.
-  * @param {Object} provider - The provider to query https://kat.cr/.
-  * @returns {Array} - A list of scraped shows.
-  */
- async search(provider) {
-   try {
-     console.log(`${this.name} : Starting scraping...`);
-     provider.query.category = "tv";
-     provider.query.language = "en";
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    this._util = new Util();
+  };
 
-     return await this._extractor.search(provider);
-   } catch (err) {
-     return this._util.onError(err);
-   }
- };
+  /**
+   * Returns a list of all the inserted torrents.
+   * @param {Object} provider - The provider to query https://kat.cr/.
+   * @returns {Array} - A list of scraped shows.
+   */
+  async search(provider) {
+    try {
+      logger.log(`${this.name} : Starting scraping...`);
+      provider.query.category = "tv";
+      provider.query.language = "en";
+
+      return await this._extractor.search(provider);
+    } catch (err) {
+      return this._util.onError(err);
+    }
+  };
 
 };

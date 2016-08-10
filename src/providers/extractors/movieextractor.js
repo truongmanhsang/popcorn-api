@@ -63,7 +63,15 @@ export default class Extractor extends BaseExtractor {
 
     const size = torrent.size ? torrent.size : torrent.fileSize;
 
-    const movie = { movieTitle, slug, slugYear: `${slug}-${year}`, torrentLink: torrent.link, year, quality, language };
+    const movie = {
+      movieTitle,
+      slug,
+      slugYear: `${slug}-${year}`,
+      torrentLink: torrent.link,
+      year,
+      quality,
+      language
+    };
     movie.torrents = {};
 
     movie.torrents[language] = {};
@@ -96,7 +104,7 @@ export default class Extractor extends BaseExtractor {
     } else if (torrent.title.match(withYear)) {
       return this._extractMovie(torrent, language, withYear);
     } else {
-      console.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
+      logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
   };
 
@@ -155,7 +163,7 @@ export default class Extractor extends BaseExtractor {
       const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
       if (!totalPages) return this._util.onError(`${this.name}: total_pages returned: '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
-      console.log(`${this.name}: Total pages ${totalPages}`);
+      logger.log(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);
       const movies = await this._getAllMovies(torrents, provider.query.language);

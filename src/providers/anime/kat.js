@@ -40,7 +40,7 @@ export default class KAT {
    */
   async search(provider) {
     try {
-      console.log(`${this.name}: Starting scraping...`);
+      logger.log(`${this.name}: Starting scraping...`);
       provider.query.category = "english-translated";
 
       return await this._extractor.search(provider);

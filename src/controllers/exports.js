@@ -28,6 +28,7 @@ export default class Exports {
   getExport(req, res, next) {
     const collection = req.params.collection;
     let err;
+
     if (collection.match(/(anime)$|(movie)$|(show)$/i)) {
       const jsonFile = path.join(tempDir, `${collection}s.json`);
       if (!fs.existsSync(jsonFile)) {
