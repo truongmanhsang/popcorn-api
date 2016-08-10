@@ -10,9 +10,8 @@ git:
 
 before_script:
   - npm i -g gulp
-  - npm i
-  - npm i -g
-  - popcorn-api --server &
+  - gulp build
+  - ./build/popcorn-api --server
 
 script:
   - npm test
