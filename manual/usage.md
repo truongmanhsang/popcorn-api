@@ -12,6 +12,8 @@ The following commands are defined in the `package.json`:
  $ npm run server-dev                   # Same as above, but in development mode.
  $ npm run forever                      # Run Popcorn API with the 'forever' module.
  $ npm run docs                         # Generate the documentation of the API.
+ $ npm run test                         # Execute the tests
+ $ npm run coverage                     # Generate coverage with Coveralls.
 ```
 
 ## Gulp

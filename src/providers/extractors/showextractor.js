@@ -40,7 +40,6 @@ export default class Extractor extends BaseExtractor {
     try {
       const newShow = await this._helper.getTraktInfo(show.slug);
       if (newShow && newShow._id) {
-        if (show.episodes.dateBased) delete show.episodes.dateBased;
         delete show.episodes[0];
         return await this._helper.addEpisodes(newShow, show.episodes, show.slug);
       }

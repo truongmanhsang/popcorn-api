@@ -4,7 +4,7 @@
 [![Dependency Status](https://david-dm.org/popcorn-official/popcorn-api.svg)](https://david-dm.org/popcorn-official/popcorn-api)
 [![devDependency Status](https://david-dm.org/popcorn-official/popcorn-api/dev-status.svg)](https://david-dm.org/popcorn-official/popcorn-api#info=devDependencies)
 [![document](https://popcorn-official.github.io/popcorn-api/badge.svg)](https://popcorn-official.github.io/popcorn-api/source.html)
-[![Coverage Status](https://coveralls.io/repos/popcorn-official/popcorn-api/badge.svg)](https://coveralls.io/r/popcorn-official/popcorn-api)
+[![Coverage Status](https://coveralls.io/repos/github/popcorn-official/popcorn-api/badge.svg)](https://coveralls.io/r/popcorn-official/popcorn-api)
 
 Popcorn API is developed to make it easier for anyone to create their own version of [Popcorn Time](http://popcorntime.sh). It contains:
 
@@ -27,6 +27,14 @@ Popcorn API is developed to make it easier for anyone to create their own versio
 # Manual
 
 Checkout the [manual](https://popcorn-official.github.io/popcorn-api/manual/index.html) to find out more about this project. Or checkout the documentation for the API routes [here](http://docs.popcornofficial.apiary.io/).
+
+# TODO
+
+ - [ ] Add more tests to the project.
+ - [ ] Add the ability to swap various content and metadata providers (similar to butter-providers).
+ - [ ] Redo YTS provider with its own module.
+ - [ ] Research [rarbg.to](https://rarbg.to/) as a content provider.
+ - [ ] Research [isohunt.to](https://isohunt.to/) as a content provider.
 
 # License
 

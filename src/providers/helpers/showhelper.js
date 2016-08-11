@@ -3,7 +3,7 @@ import asyncq from "async-q";
 
 import Show from "../../models/Show";
 import Util from "../../util";
-import { trakt } from "../../config/constants";
+import { trakt, tvdb } from "../../config/constants";
 
 /** Class for saving shows. */
 export default class Helper {
@@ -94,7 +94,6 @@ export default class Helper {
    */
   async _updateEpisodes(show) {
     try {
-
       const found = await Show.findOne({
         _id: show._id
       }).exec();
@@ -126,35 +125,86 @@ export default class Helper {
   };
 
   /**
-   * Adds one season to a show.
+   * Adds one seasonal season to a show.
    * @param {Show} show - The show to add the torrents to.
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
    * @param {String} slug - The slug of the show.
    * @returns {Show} - A new show with seasons.
    */
-  async _addSeason(show, episodes, seasonNumber, slug) {
+  async _addSeasonalSeason(show, episodes, seasonNumber, slug) {
     try {
       seasonNumber = parseInt(seasonNumber);
-      if (!isNaN(seasonNumber) && seasonNumber.toString().length <= 2) {
+      const season = await trakt.seasons.season({
+        id: slug,
+        season: seasonNumber,
+        extended: "full"
+      });
 
-        const season = await trakt.seasons.season({
-          id: slug,
-          season: seasonNumber,
-          extended: "full"
-        });
+      for (let episodeData in season) {
+        episodeData = season[episodeData];
+        if (episodes[seasonNumber] && episodes[seasonNumber][episodeData.number]) {
+          const episode = {
+            tvdb_id: episodeData.ids["tvdb"],
+            season: episodeData.season,
+            episode: episodeData.number,
+            title: episodeData.title,
+            overview: episodeData.overview,
+            date_based: false,
+            first_aired: new Date(episodeData.first_aired).getTime() / 1000.0,
+            watched: {
+              watched: false
+            },
+            torrents: {}
+          };
 
-        for (let episodeData in season) {
-          episodeData = season[episodeData];
-          if (episodes[seasonNumber] && episodes[seasonNumber][episodeData.number]) {
+          if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
+
+          episode.torrents = episodes[seasonNumber][episodeData.number];
+          episode.torrents[0] = episodes[seasonNumber][episodeData.number]["480p"] ? episodes[seasonNumber][episodeData.number]["480p"] : episodes[seasonNumber][episodeData.number]["720p"];
+          show.episodes.push(episode);
+        }
+      }
+
+      return show;
+    } catch (err) {
+      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+    }
+  };
+
+  /**
+   * Adds one datebased season to a show.
+   * @param {Show} show - The show to add the torrents to.
+   * @param {Object} episodes - The episodes containing the torrents.
+   * @param {Integer} seasonNumber - The season number.
+   * @param {String} slug - The slug of the show.
+   * @returns {Show} - A new show with seasons.
+   */
+  async _addDateBasedSeason(show, episodes, seasonNumber, slug) {
+    try {
+      if (show.tvdb_id) {
+        const tvdbShow = await tvdb.getSeriesAllById(show.tvdb_id);
+        for (let episodeData in tvdbShow.Episodes) {
+          episodeData = tvdbShow.Episodes[episodeData];
+
+          const firstAired = new Date(episodeData.FirstAired);
+
+          let day = firstAired.getDate();
+          day = day < 10 ? `0${day}` : day;
+          let month = (firstAired.getMonth() + 1)
+          month = month < 10 ? `0${month}` : month;
+
+          const episodeNumber = `${month}-${day}`;
+
+          if (episodes[seasonNumber] && episodes[seasonNumber][episodeNumber]) {
             const episode = {
-              tvdb_id: episodeData.ids["tvdb"],
-              season: episodeData.season,
-              episode: episodeData.number,
-              title: episodeData.title,
-              overview: episodeData.overview,
-              date_based: false,
-              first_aired: new Date(episodeData.first_aired).getTime() / 1000.0,
+              tvdb_id: episodeData.id,
+              season: episodeData.SeasonNumber,
+              episode: episodeData.EpisodeNumber,
+              title: episodeData.EpisodeName,
+              overview: episodeData.Overview,
+              date_based: true,
+              first_aired: new Date(firstAired).getTime() / 1000.0,
               watched: {
                 watched: false
               },
@@ -163,14 +213,32 @@ export default class Helper {
 
             if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
 
-            episode.torrents = episodes[seasonNumber][episodeData.number];
-            episode.torrents[0] = episodes[seasonNumber][episodeData.number]["480p"] ? episodes[seasonNumber][episodeData.number]["480p"] : episodes[seasonNumber][episodeData.number]["720p"];
+            episode.torrents = episodes[seasonNumber][episodeNumber];
+            episode.torrents[0] = episodes[seasonNumber][episodeNumber]["480p"] ? episodes[seasonNumber][episodeNumber]["480p"] : episodes[seasonNumber][episodeNumber]["720p"];
             show.episodes.push(episode);
           }
         }
       }
+
+      return show;
     } catch (err) {
-      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this._util.onError(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`);
+    }
+  };
+
+  /**
+   * Adds one season to a show.
+   * @param {Show} show - The show to add the torrents to.
+   * @param {Object} episodes - The episodes containing the torrents.
+   * @param {Integer} seasonNumber - The season number.
+   * @param {String} slug - The slug of the show.
+   * @returns {Show} - A new show with seasons.
+   */
+  async _addSeason(show, episodes, seasonNumber, slug) {
+    if (episodes.dateBased) {
+      return await this._addDateBasedSeason(show, episodes, seasonNumber, slug);
+    } else {
+      return await this._addSeasonalSeason(show, episodes, seasonNumber, slug);
     }
   };
 

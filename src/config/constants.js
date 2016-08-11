@@ -1,6 +1,7 @@
 // Import the neccesary modules.
 import path from "path";
 import Trakt from "trakt.tv";
+import TVDB from "node-tvdb";
 
 /**
  * Map object for correcting anime slugs.
@@ -262,6 +263,12 @@ export const timeZone = "America/Los_Angeles";
  * @type {Trakt}
  */
 export const trakt = new Trakt({client_id: "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907"});
+
+/**
+ * A configured TVDB API.
+ * @type {TVDB}
+ */
+export const tvdb = new TVDB("B17D23818D6E884D");
 
 /**
  * The name of the updated file holding the `updated` value for the index page. Default is `lastUpdated.json`.
