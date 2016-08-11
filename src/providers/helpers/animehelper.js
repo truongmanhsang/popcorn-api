@@ -9,8 +9,9 @@ import Util from "../../util";
 export default class Helper {
 
   /**
-   * Create an helper object for anime.
-   * @param {String} name - The name of the helper.
+   * Create an helper object for anime content.
+   * @param {String} name - The name of the content provider.
+   * @param {?Boolean} debug - Debug mode for extra output.
    */
   constructor(name, debug) {
     /**
@@ -57,7 +58,7 @@ export default class Helper {
    * @returns {Anime} - An anime with merged torrents.
    */
   _updateEpisode(matching, found, anime, quality) {
-    let index = anime.episodes.indexOf(matching);
+    const index = anime.episodes.indexOf(matching);
 
     if (found.torrents[quality] && matching.torrents[quality]) {
       let update = false;
@@ -125,7 +126,6 @@ export default class Helper {
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
    * @param {String} slug - The slug of the anime.
-   * @returns {Anime} - A new anime with seasons.
    */
   async _addSeason(anime, episodes, seasonNumber, slug) {
     try {

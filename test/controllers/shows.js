@@ -8,7 +8,7 @@ const { port } = require("../../build/config/constants");
 chai.use(chaiHttp);
 
 /** @test {Shows} */
-describe("Shows:", ()=> {
+describe("Shows:", () => {
 
   let page, show;
 
@@ -28,13 +28,15 @@ describe("Shows:", ()=> {
       }).catch(err => done(err));
   });
 
-//"test": "mocha --timeout 15000 --recursive --compilers js:babel-register",
-
   /** @test {Shows#getPage} */
   it("GET /shows/:page", done => {
     chai.request(`http://localhost:${port}`)
       .get(`/shows/${page}`)
-      // .query()
+      .query({
+        sort: "seeds",
+        genre: "All",
+        order: -1
+      })
       .then(res => {
         expect(res).to.have.status(200);
         expect(res).to.be.json;

@@ -29,7 +29,7 @@ export default class Util {
   /**
    * Execute a command from within the root folder.
    * @param {String} cmd - The command to execute.
-   * @returns {String} - The output of the command.
+   * @returns {Promise} - The output of the command.
    */
   executeCommand(cmd) {
     return new Promise((resolve, reject) => {
@@ -45,7 +45,7 @@ export default class Util {
   /**
    * Export a collection to a JSON file.
    * @param {String} collection - The collection to export.
-   * @returns {String} - The output of the mongoexport command.
+   * @returns {Promise} - The output of the mongoexport command.
    */
   exportCollection(collection) {
     const jsonFile = path.join(tempDir, `${collection}s.json`);
@@ -58,7 +58,7 @@ export default class Util {
    * Import a json file to a collection.
    * @param {String} collection - The collection to import.
    * @param {String} jsonFile - The json file to import..
-   * @returns {String} - The output of the mongoimport command.
+   * @returns {Promise} - The output of the mongoimport command.
    */
   importCollection(collection, jsonFile) {
     if (!path.isAbsolute(jsonFile)) jsonFile = path.join(process.cwd(), jsonFile);

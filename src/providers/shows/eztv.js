@@ -10,9 +10,9 @@ import { maxWebRequest } from "../../config/constants";
 export default class EZTV {
 
   /**
-   * Create an eztv object.
+   * Create an eztv object for show content.
    * @param {String} name - The name of the torrent provider.
-   * @param {Boolean} debug - Debug mode for extra output.
+   * @param {?Boolean} debug - Debug mode for extra output.
    */
   constructor(name, debug) {
     /**
@@ -43,7 +43,7 @@ export default class EZTV {
 
   /**
    * Returns a list of all the inserted torrents.
-   * @returns {Array} - A list of scraped shows.
+   * @returns {Show[]} - A list of scraped shows.
    */
   async search() {
     try {

@@ -7,9 +7,9 @@ import Util from "../../util";
 export default class BaseExtractor {
 
    /**
-    * Create an extratorrent object.
-    * @param {String} name - The name of the torrent provider.
-    * @param {Object} contentProvider - The content provider used by the extractor.
+    * Create a base extractor object.
+    * @param {String} name - The name of the content provider.
+    * @param {Object} contentProvider - The content provider to extract content from.
     */
   constructor(name, contentProvider) {
     /**

@@ -10,9 +10,10 @@ import { maxWebRequest, animeMap } from "../../config/constants";
 export default class Extractor extends BaseExtractor {
 
   /**
-   * Create an extractor object for anime shows.
-   * @param {String} name - The name of the torrent provider.
-   * @param {Boolean} debug - Debug mode for extra output.
+   * Create an extractor object for anime content.
+   * @param {String} name - The name of the content provider.
+   * @param {Object} contentProvider - The content provider to extract content from.
+   * @param {?Boolean} debug - Debug mode for extra output.
    */
   constructor(name, contentProvider, debug) {
     super(name, contentProvider);
@@ -160,7 +161,7 @@ export default class Extractor extends BaseExtractor {
   /**
    * Returns a list of all the inserted torrents.
    * @param {Object} provider - The provider to query the content provider.
-   * @returns {Array} - A list of scraped anime shows.
+   * @returns {Anime[]} - A list of scraped anime shows.
    */
   async search(provider) {
     try {

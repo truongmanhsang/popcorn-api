@@ -8,11 +8,11 @@ import Util from "../../util";
 /** Class for scraping movies from https://extratorrent.cc/. */
 export default class ExtraTorrent {
 
-   /**
-    * Create an extratorrent object.
-    * @param {String} name - The name of the torrent provider.
-    * @param {Boolean} debug - Debug mode for extra output.
-    */
+  /**
+   * Create an extratorrent object for movie content.
+   * @param {String} name - The name of the content provider.
+   * @param {?Boolean} debug - Debug mode for extra output.
+   */
   constructor(name, debug) {
     /**
      * The name of the torrent provider.
@@ -36,7 +36,7 @@ export default class ExtraTorrent {
   /**
    * Returns a list of all the inserted torrents.
    * @param {Object} provider - The provider to query https://extratorrent.cc/.
-   * @returns {Array} - A list of scraped movies.
+   * @returns {Movie[]} - A list of scraped movies.
    */
   async search(provider) {
     try {

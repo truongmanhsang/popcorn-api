@@ -9,8 +9,8 @@ import { trakt } from "../../config/constants";
 export default class Helper {
 
   /**
-   * Create an helper object for movies.
-   * @param {String} name - The name of the helper.
+   * Create an helper object for movie content.
+   * @param {String} name - The name of the content provider.
    */
   constructor(name) {
     /**
@@ -101,8 +101,7 @@ export default class Helper {
    * @returns {Movie} - A movie with torrents attached.
    */
   addTorrents(movie, torrents) {
-    return asyncq.each(Object.keys(torrents),
-        torrent => movie.torrents[torrent] = torrents[torrent])
+    return asyncq.each(Object.keys(torrents), torrent => movie.torrents[torrent] = torrents[torrent])
       .then(value => this._updateMovie(movie));
   };
 

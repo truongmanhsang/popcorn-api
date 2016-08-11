@@ -10,10 +10,10 @@ import { maxWebRequest } from "../../config/constants";
 export default class HorribleSubs {
 
   /**
-     * Create an horriblesubs object.
-     * @param {String} name - The name of the torrent provider.
-     * @param {Boolean} debug - Debug mode for extra output.
-     */
+   * Create an horriblesubs object for anime content.
+   * @param {String} name - The name of the content provider.
+   * @param {?Boolean} debug - Debug mode for extra output.
+   */
   constructor(name, debug) {
     /**
        * The name of the torrent provider.
@@ -43,7 +43,7 @@ export default class HorribleSubs {
 
   /**
      * Returns a list of all the inserted torrents.
-     * @returns {Array} - A list of scraped animes.
+     * @returns {Anime[]} - A list of scraped animes.
      */
   async search() {
     try {

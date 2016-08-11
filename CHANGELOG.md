@@ -3,7 +3,7 @@
  - **New features:**
    - Added extractors to extract torrents and content data from content providers.
    - Added ExtraTorrent as a content provider with the [extratorrent-api](https://github.com/ChrisAlderson/extratorrent-api) module.
-   - DateBased shows are now included in the scrape. #8.
+   - DateBased shows are now included in the scrape. [#8](https://github.com/popcorn-official/popcorn-api/issues/8).
 
  - **Notes:**
    - Added tests for the controllers.

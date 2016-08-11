@@ -113,7 +113,8 @@ Each show from the `getAllShows` can be passed into the `getShowData` method to 
   id: "449",
   slug: "tt1811399",
   episodes:
-   { "1":
+    dateBased: false,
+    { "1":
       { "1":
          { "480p":
             { url: "magnet:?xt=urn:btih:LMJXHHNOW33Z3YGXJLCTJZ23WK2D6VO4&dn=10.OClock.Live.S01E01.WS.PDTV.XviD-PVR&tr=udp://tracker.openbittorrent.com:80&tr=udp://open.demonii.com:80&tr=udp://tracker.coppersurfer.tk:80&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://exodus.desync.com:6969",
@@ -355,10 +356,14 @@ The torrents are structured in a particular way. In the torrents object you firs
 
 Metadata providers are providers which get data on a movie or get seasonal information from a show. Popcorn API uses two API services to get its metadata on anime, movies and shows.
 
-### Trakt.tv
+### [Trakt.tv](https://trakt.tv/)
 
 [Trakt.tv](https://trakt.tv/) is the metadata provider for movies and shows. It uses a module from [Jean van Kasteel](https://github.com/vankasteelj) called [Trakt.tv](https://github.com/vankasteelj/trakt.tv). For more information about the Trakt API you can click [here](http://docs.trakt.apiary.io/).
 
-### Hummingbird.me
+### [TheTVDB.com](https://thetvdb.com/)
+
+[TheTVDB.com](https://thetvdb.com/) is the metadata provider for shows which have are datebased like '@Midnight'. It uses a module from [Ed Wellbrook](https://github.com/edwellbrook) called [node-tvdb](https://github.com/edwellbrook/node-tvdb). For more information about the TVBDB API you can click [here](https://www.thetvdb.com/wiki/index.php/Programmers_API).
+
+### [Hummingbird.me](https://hummingbird.me)
 
 [Hummingbird.me](https://hummingbird.me) is the metadata provider for anime. It uses the [hummingbird-api](https://github.com/ChrisAlderson/hummingbird-api) module. For more information about the Hummingbird API you can click [here](https://github.com/hummingbird-me/hummingbird/wiki).

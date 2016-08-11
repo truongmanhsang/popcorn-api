@@ -77,9 +77,9 @@ export default class Index {
 
   /**
    * Function to start the API.
-   * @param {Boolean} [start=true] - Start the scraping.
+   * @param {?Boolean} start - Start the scraping.
    */
-  static _startAPI(start = true) {
+  static _startAPI(start) {
     if (cluster.isMaster) { // Check is the cluster is the master
       // Clear the log files from the temp directory.
       Index._util.resetLog();

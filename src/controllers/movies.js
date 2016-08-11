@@ -33,7 +33,7 @@ export default class Movies {
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Array} - A list of pages which are available.
+   * @returns {String[]} - A list of pages which are available.
    */
   getMovies(req, res, next) {
     return Movie.count().exec().then(count => {
@@ -51,7 +51,7 @@ export default class Movies {
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Array} - The contents of one page.
+   * @returns {Movie[]} - The contents of one page.
    */
   getPage(req, res, next) {
     const page = req.params.page - 1;

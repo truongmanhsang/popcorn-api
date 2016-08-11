@@ -9,8 +9,8 @@ import { trakt, tvdb } from "../../config/constants";
 export default class Helper {
 
   /**
-   * Create an helper object for shows.
-   * @param {String} name - The name of the helper.
+   * Create an helper object for show content.
+   * @param {String} name - The name of the content provider.
    */
   constructor(name) {
     /**
@@ -61,7 +61,7 @@ export default class Helper {
    * @returns {Show} - A show with merged torrents.
    */
   _updateEpisode(matching, found, show, quality) {
-    let index = show.episodes.indexOf(matching);
+    const index = show.episodes.indexOf(matching);
 
     if (found.torrents[quality] && matching.torrents[quality]) {
       let update = false;
@@ -130,7 +130,6 @@ export default class Helper {
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
    * @param {String} slug - The slug of the show.
-   * @returns {Show} - A new show with seasons.
    */
   async _addSeasonalSeason(show, episodes, seasonNumber, slug) {
     try {
@@ -165,8 +164,6 @@ export default class Helper {
           show.episodes.push(episode);
         }
       }
-
-      return show;
     } catch (err) {
       return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
@@ -178,7 +175,6 @@ export default class Helper {
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
    * @param {String} slug - The slug of the show.
-   * @returns {Show} - A new show with seasons.
    */
   async _addDateBasedSeason(show, episodes, seasonNumber, slug) {
     try {
@@ -219,8 +215,6 @@ export default class Helper {
           }
         }
       }
-
-      return show;
     } catch (err) {
       return this._util.onError(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`);
     }

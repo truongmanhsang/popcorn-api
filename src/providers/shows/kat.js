@@ -9,9 +9,9 @@ import Util from "../../util";
 export default class KAT {
 
   /**
-   * Create a kat object for shows.
+   * Create a kat object for show content.
    * @param {String} name - The name of the torrent provider.
-   * @param {Boolean} debug - Debug mode for extra output.
+   * @param {?Boolean} debug - Debug mode for extra output.
    */
   constructor(name, debug) {
     /**
@@ -20,15 +20,11 @@ export default class KAT {
      */
     this.name = name;
 
-    const katAPI = new KatAPI({
-      debug
-    });
-
     /**
      * The extractor object for getting show data on torrents.
      * @type {Extractor}
      */
-    this._extractor = new Extractor(this.name, katAPI, debug);
+    this._extractor = new Extractor(this.name, new KatAPI({ debug }), debug);
 
     /**
      * The util object with general functions.
@@ -40,7 +36,7 @@ export default class KAT {
   /**
    * Returns a list of all the inserted torrents.
    * @param {Object} provider - The provider to query https://kat.cr/.
-   * @returns {Array} - A list of scraped shows.
+   * @returns {Show[]} - A list of scraped shows.
    */
   async search(provider) {
     try {

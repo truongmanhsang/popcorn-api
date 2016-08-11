@@ -11,7 +11,11 @@ import { name } from "../../package.json";
 /** Class for configuring logging. */
 export default class Logger {
 
-  /** Create a logger object. */
+  /**
+   * Create a logger object.
+   * @param {?Boolean} [verbose] - Debug mode for no output.
+   * @param {?Boolean} [debug] - Debug mode for extra output.
+   */
   constructor(pretty, verbose) {
     /**
      * Pretty mode.
@@ -63,7 +67,7 @@ export default class Logger {
       });
     }
 
-    // Override the console functions.
+    // Create the logger object.
     Logger._createLogger(this._pretty);
   };
 

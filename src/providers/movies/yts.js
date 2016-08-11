@@ -10,9 +10,8 @@ import Util from "../../util";
 export default class YTS {
 
   /**
-   * Create a yts object.
-   * @param {String} name - The name of the torrent provider.
-   * @param {Boolean} debug - Debug mode for extra output.
+   * Create a yts object for movie content.
+   * @param {String} name - The name of the content provider.
    */
   constructor(name) {
     /**
@@ -151,7 +150,7 @@ export default class YTS {
 
   /**
    * Returns a list of all the inserted torrents.
-   * @returns {Array} - A list of scraped movies.
+   * @returns {Movie[]} - A list of scraped movies.
    */
   async search() {
     try {

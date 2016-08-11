@@ -36,7 +36,7 @@ export default class Index {
    * @param {Response} res - The express response object.
    * @param {String} path - The path to the file.
    * @param {String} file - The name of the file.
-   * @returns {Object} - A file to display in the browser.
+   * @returns {JSON | File} - A file to display in the browser.
    */
   static _displayFile(req, res, root, file) {
     if (fs.existsSync(path.join(root, file))) {

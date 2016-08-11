@@ -11,9 +11,10 @@ import { maxWebRequest, movieMap } from "../../config/constants";
 export default class Extractor extends BaseExtractor {
 
   /**
-   * Create an extractor object for movies.
-   * @param {String} name - The name of the torrent provider.
-   * @param {Boolean} debug - Debug mode for extra output.
+   * Create an extractor object for movie content.
+   * @param {String} name - The name of the content provider.
+   * @param {Object} contentProvider - The content provider to extract content from.
+   * @param {?Boolean} debug - Debug mode for extra output.
    */
   constructor(name, contentProvider, debug) {
     super(name, contentProvider);
@@ -150,7 +151,7 @@ export default class Extractor extends BaseExtractor {
   /**
    * Returns a list of all the inserted torrents.
    * @param {Object} provider - The provider to query content provider.
-   * @returns {Array} - A list of scraped movies.
+   * @returns {Movie[]} - A list of scraped movies.
    */
   async search(provider) {
     try {

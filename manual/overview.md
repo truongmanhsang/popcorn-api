@@ -5,7 +5,6 @@
 [![devDependency Status](https://david-dm.org/popcorn-official/popcorn-api/dev-status.svg)](https://david-dm.org/popcorn-official/popcorn-api#info=devDependencies)
 [![document](https://popcorn-official.github.io/popcorn-api/badge.svg)](https://popcorn-official.github.io/popcorn-api/source.html)
 
-
 Popcorn API is developed to make it easier for anyone to create their own version of [Popcorn Time](http://popcorntime.sh). It contains:
 
 - Metadata about movies (taken from Trakt).
@@ -25,16 +24,23 @@ The API has the following folder structure.
 
 ```
 .
-├── docs                 # Folder with the ESDoc generated documentation for the API.
-├── manual               # Folder with markdown files used by the documentation.
-└── src                  # Holding the ES6 source code
-    ├── config           # Configuration
-    ├── controllers      # REST Controllers
-    ├── models           # Models
-    └── providers        # Providers
-        ├── anime        # Anime providers
-        ├── movie        # Movie providers
-        └── show         # Show providers
+├── docs                          # Folder with the ESDoc generated documentation for the API.
+├── manual                        # Folder with markdown files used by the documentation.
+└── src                           # Holding the ES6 source code
+    ├── config                    # Configuration
+    ├── controllers               # REST Controllers
+    ├── models                    # Models
+    ├── providers                 # Providers
+        ├── anime                 # Anime providers
+        ├── extractors            # Torrent extractors
+        ├── helpers               # Helpers to insert data
+        ├── movies                # Movie providers
+        └── shows                 # Show providers
+    ├── cli.js                    # CLI part of the API
+    ├── index.js                  # Starting point of the API
+    ├── popcorn-api.js            # Entry for the command line
+    ├── scraper.js                # Scrape for content
+    └── util.js                   # Useful utilities
 ```
 
 # Versioning
@@ -49,7 +55,6 @@ Constructed with the following guidelines:
 - A new _minor_ release indicates a normal change that maintains backwards compatibility.
 - A new _patch_ release indicates a bugfix or small change which does not affect compatibility.
 - A new _build_ release indicates this is a pre-release of the version.
-
 
 # License
 
