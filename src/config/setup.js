@@ -12,8 +12,9 @@ export default class Setup {
 
   /**
    * Setup the Express service.
+   * @param {Express} app - The ExpresssJS instance.
+   * @param {?Boolean} [pretty] - Pretty output with Winston logging.
    * @param {?Boolean} [verbose] - Debug mode for no output.
-   * @param {?Boolean} [debug] - Debug mode for extra output.
    */
   constructor(app, pretty, verbose) {
     // Used to extract data from query strings.
@@ -39,7 +40,6 @@ export default class Setup {
     app.use(responseTime());
 
     // Enable HTTP request logging.
-    // app.use(Logger.expressLogger);
     if (pretty && !verbose) app.use(Logger.expressLogger);
   }
 

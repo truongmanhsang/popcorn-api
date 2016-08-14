@@ -26,7 +26,7 @@ export default class Scraper {
 
   /**
    * Create a scraper object.
-   * @param {Boolean} debug - Debug mode for extra output.
+   * @param {?Boolean} debug - Debug mode for extra output.
    */
   constructor(debug) {
     /**
@@ -37,7 +37,7 @@ export default class Scraper {
 
     /**
      * Debug mode for extra output.
-     * @type {Object}
+     * @type {Boolean}
      */
     Scraper._debug = debug;
   };
@@ -52,7 +52,7 @@ export default class Scraper {
         Scraper._util.setStatus(`Scraping ${provider.name}`);
         const extratorrentProvider = new extratorrentShow(provider.name, Scraper._debug);
         const extratorrentShows = await extratorrentProvider.search(provider);
-        logger.log(`${provider.name}: Done.`);
+        logger.info(`${provider.name}: Done.`);
         return extratorrentShows;
       } catch (err) {
         return Scraper._util.onError(err);
@@ -69,7 +69,7 @@ export default class Scraper {
       const eztv = new EZTV("EZTV", Scraper._debug);
       Scraper._util.setStatus(`Scraping ${eztv.name}`);
       const eztvShows = await eztv.search();
-      logger.log(`${eztv.name}: Done.`);
+      logger.info(`${eztv.name}: Done.`);
       return eztvShows;
     } catch (err) {
       return Scraper._util.onError(err);
@@ -86,7 +86,7 @@ export default class Scraper {
         Scraper._util.setStatus(`Scraping ${provider.name}`);
         const katProvider = new katShow(provider.name, Scraper._debug);
         const katShows = await katProvider.search(provider);
-        logger.log(`${provider.name}: Done.`);
+        logger.info(`${provider.name}: Done.`);
         return katShows;
       } catch (err) {
         return Scraper._util.onError(err);
@@ -104,7 +104,7 @@ export default class Scraper {
         Scraper._util.setStatus(`Scraping ${provider.name}`);
         const extratorrentProvider = new extratorrentMovie(provider.name, Scraper._debug);
         const extratorrentMovies = await extratorrentProvider.search(provider);
-        logger.log(`${provider.name}: Done.`);
+        logger.info(`${provider.name}: Done.`);
         return extratorrentMovies;
       } catch (err) {
         return Scraper._util.onError(err);
@@ -114,7 +114,7 @@ export default class Scraper {
 
   /**
    * Start movie scraping from KAT.
-   * @returns {Moviep[]} A list of all the scraped movies.
+   * @returns {Movie[]} A list of all the scraped movies.
    */
   _scrapeKATMovies() {
     return asyncq.concatSeries(katMovieProviders, async provider => {
@@ -122,7 +122,7 @@ export default class Scraper {
         Scraper._util.setStatus(`Scraping ${provider.name}`);
         const katProvider = new katMovie(provider.name, Scraper._debug);
         const katShows = await katProvider.search(provider);
-        logger.log(`${provider.name}: Done.`);
+        logger.info(`${provider.name}: Done.`);
         return katShows;
       } catch (err) {
         return Scraper._util.onError(err);
@@ -139,7 +139,7 @@ export default class Scraper {
       const yts = new YTS("YTS");
       Scraper._util.setStatus(`Scraping ${yts.name}`);
       const ytsMovies = await yts.search();
-      logger.log(`${yts.name}: Done.`);
+      logger.info(`${yts.name}: Done.`);
       return ytsMovies;
     } catch (err) {
       return Scraper._util.onError(err);
@@ -156,7 +156,7 @@ export default class Scraper {
         Scraper._util.setStatus(`Scraping ${provider.name}`);
         const extratorrentProvider = new extratorrentAnime(provider.name, Scraper._debug);
         const extratorrentAnimes = await extratorrentProvider.search(provider);
-        logger.log(`${provider.name}: Done.`);
+        logger.info(`${provider.name}: Done.`);
         return extratorrentAnimes;
       } catch (err) {
         return Scraper._util.onError(err);
@@ -173,7 +173,7 @@ export default class Scraper {
       const horribleSubs = new HorribleSubs("HorribleSubs", Scraper._debug);
       Scraper._util.setStatus(`Scraping ${horribleSubs.name}`);
       const horribleSubsAnime = await horribleSubs.search();
-      logger.log(`${horribleSubs.name}: Done.`);
+      logger.info(`${horribleSubs.name}: Done.`);
       return horribleSubsAnime;
     } catch (err) {
       return Scraper._util.onError(err);
@@ -190,9 +190,9 @@ export default class Scraper {
         Scraper._util.setStatus(`Scraping ${provider.name}`);
         const katProvider = new katAnime(provider.name, Scraper._debug);
         const katAnimes = await katProvider.search(provider);
-        logger.log(`${provider.name}: Done.`);
+        logger.info(`${provider.name}: Done.`);
         return katAnimes;
-      } catch (err) {
+      } catch (err) { 
         return Scraper._util.onError(err);
       }
     });
@@ -215,8 +215,8 @@ export default class Scraper {
       this._scrapeHorribleSubsAnime
       // this._scrapeKATAnime
     ], scraper => scraper())
-      .then(value => Scraper._util.setStatus())
-      .then(res => asyncq.eachSeries(collections, collection => Scraper._util.exportCollection(collection)))
+      .then(() => Scraper._util.setStatus())
+      .then(() => asyncq.eachSeries(collections, collection => Scraper._util.exportCollection(collection)))
       .catch(err => Scraper._util.onError(`Error while scraping: ${err}`));
   };
 

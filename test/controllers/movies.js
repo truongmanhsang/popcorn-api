@@ -1,9 +1,9 @@
-const chai = require("chai");
-const chaiHttp = require("chai-http");
-const { expect } = require("chai");
+import chai from "chai";
+import chaiHttp from "chai-http";
+import { expect } from "chai";
 
-const Index = require("../../build/index");
-const { port } = require("../../build/config/constants");
+import Index from "../../src/index";
+import { port } from "../../src/config/constants";
 
 chai.use(chaiHttp);
 

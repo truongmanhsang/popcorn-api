@@ -40,7 +40,7 @@ export default class ExtraTorrent {
    */
   async search(provider) {
     try {
-      logger.log(`${this.name} : Starting scraping...`);
+      logger.info(`${this.name}: Starting scraping...`);
       provider.query.category = "tv";
 
       return await this._extractor.search(provider);

@@ -39,23 +39,23 @@ export default class CLI {
 
     // Extra output on top of the default help output
     program.on("--help", () => {
-      logger.log("  Examples:");
-      logger.log("");
-      logger.log("    $ popcorn-api -c <anime|movie|show>");
-      logger.log("    $ popcorn-api --content <anime|movie|show>");
-      logger.log("");
-      logger.log("    $ popcorn-api -r");
-      logger.log("    $ popcorn-api --run");
-      logger.log("");
-      logger.log("    $ popcorn-api -s");
-      logger.log("    $ popcorn-api --server");
-      logger.log("");
-      logger.log("    $ popcorn-api -e <anime|movie|show>");
-      logger.log("    $ popcorn-api --export <anime|movie|show>");
-      logger.log("");
-      logger.log("    $ popcorn-api -i <path-to-json>");
-      logger.log("    $ popcorn-api --import <path-to-json>");
-      logger.log("");
+      logger.info("  Examples:");
+      logger.info("");
+      logger.info("    $ popcorn-api -c <anime|movie|show>");
+      logger.info("    $ popcorn-api --content <anime|movie|show>");
+      logger.info("");
+      logger.info("    $ popcorn-api -r");
+      logger.info("    $ popcorn-api --run");
+      logger.info("");
+      logger.info("    $ popcorn-api -s");
+      logger.info("    $ popcorn-api --server");
+      logger.info("");
+      logger.info("    $ popcorn-api -e <anime|movie|show>");
+      logger.info("    $ popcorn-api --export <anime|movie|show>");
+      logger.info("");
+      logger.info("    $ popcorn-api -i <path-to-json>");
+      logger.info("    $ popcorn-api --import <path-to-json>");
+      logger.info("");
     });
 
     // Parse the command line arguments.

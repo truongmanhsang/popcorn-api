@@ -22,7 +22,12 @@ import { cronTime, master, port, timeZone, workers } from "./config/constants";
  *
  * @example
  * // Or override the default configuration of the Index class.
- * const index = new Index({start: true, pretty: true, debug: false});
+ * const index = new Index({
+ *    start: true,
+ *    pretty: true,
+ *    verbose: false,
+ *    debug: false
+ * });
  */
 export default class Index {
 
@@ -101,7 +106,7 @@ export default class Index {
         // WARNING: Domain module is pending deprication: https://nodejs.org/api/domain.html
         const scope = domain.create();
         scope.run(() => {
-          logger.log("API started");
+          logger.info("API started");
           try {
             new CronJob({
               cronTime,
@@ -130,7 +135,7 @@ export default class Index {
    */
   static closeAPI() {
     Index._server.close(() => {
-      logger.log("Closed out remaining connections.");
+      logger.info("Closed out remaining connections.");
       process.exit();
     });
   };

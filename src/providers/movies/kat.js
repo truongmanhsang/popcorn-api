@@ -40,8 +40,11 @@ export default class KAT {
    */
   async search(provider) {
     try {
-      if (!provider.query.language) return this._util.onError(`Provider with name: '${this.name}' does not have a language set!`);
-      logger.log(`${this.name}: Starting scraping...`);
+      logger.info(`${this.name}: Starting scraping...`);
+      provider.query.page = 1;
+      provider.query.verified = 1;
+      provider.query.adult_filter = 1;
+      provider.query.language = provider.query.language ? provider.query.language : "en";
       provider.query.category = "movies";
 
       return await this._extractor.search(provider);

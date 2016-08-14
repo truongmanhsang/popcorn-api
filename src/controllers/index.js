@@ -34,7 +34,7 @@ export default class Index {
    * Displays a given file.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
-   * @param {String} path - The path to the file.
+   * @param {String} root - The path to the file.
    * @param {String} file - The name of the file.
    * @returns {JSON | File} - A file to display in the browser.
    */
@@ -56,7 +56,7 @@ export default class Index {
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Object} - General information about the server.
+   * @returns {JSON} - General information about the server.
    */
   async getIndex(req, res, next) {
     try {

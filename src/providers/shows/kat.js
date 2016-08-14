@@ -40,7 +40,10 @@ export default class KAT {
    */
   async search(provider) {
     try {
-      logger.log(`${this.name} : Starting scraping...`);
+      logger.info(`${this.name}: Starting scraping...`);
+      provider.query.page = 1;
+      provider.query.verified = 1;
+      provider.query.adult_filter = 1;
       provider.query.category = "tv";
       provider.query.language = "en";
 

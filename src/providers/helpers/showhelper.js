@@ -98,7 +98,7 @@ export default class Helper {
         _id: show._id
       }).exec();
       if (found) {
-        logger.log(`${this.name}: '${found.title}' is an existing show.`);
+        logger.info(`${this.name}: '${found.title}' is an existing show.`);
         for (let i = 0; i < found.episodes.length; i++) {
           let matching = show.episodes
             .filter(showEpisode => showEpisode.season === found.episodes[i].season)
@@ -115,7 +115,7 @@ export default class Helper {
 
         return await this._updateNumSeasons(show);
       } else {
-        logger.log(`${this.name}: '${show.title}' is a new show!`);
+        logger.info(`${this.name}: '${show.title}' is a new show!`);
         const newShow = await new Show(show).save();
         return await this._updateNumSeasons(newShow);
       }
@@ -187,7 +187,7 @@ export default class Helper {
 
           let day = firstAired.getDate();
           day = day < 10 ? `0${day}` : day;
-          let month = (firstAired.getMonth() + 1)
+          let month = (firstAired.getMonth() + 1);
           month = month < 10 ? `0${month}` : month;
 
           const episodeNumber = `${month}-${day}`;

@@ -4,6 +4,7 @@
 [![Dependency Status](https://david-dm.org/popcorn-official/popcorn-api.svg)](https://david-dm.org/popcorn-official/popcorn-api)
 [![devDependency Status](https://david-dm.org/popcorn-official/popcorn-api/dev-status.svg)](https://david-dm.org/popcorn-official/popcorn-api#info=devDependencies)
 [![document](https://popcorn-official.github.io/popcorn-api/badge.svg)](https://popcorn-official.github.io/popcorn-api/source.html)
+[![Coverage Status](https://coveralls.io/repos/github/popcorn-official/popcorn-api/badge.svg)](https://coveralls.io/r/popcorn-official/popcorn-api)
 
 Popcorn API is developed to make it easier for anyone to create their own version of [Popcorn Time](http://popcorntime.sh). It contains:
 
@@ -16,7 +17,7 @@ Popcorn API is developed to make it easier for anyone to create their own versio
 
 # Documentation
 
-Documentation for the code can be generated with the command `npm run docs`. This will automatically generate the documentation which will be located in the `docs` directory. The `index.html` page will be the starting point. You can also view the documentation online right [here](https://popcorn-official.github.io/popcorn-api/manual/index.html).
+Documentation for the code can be generated with the command `npm run docs`. This will automatically generate the documentation which will be located in the `docs` directory. The `index.html` page will be the starting point. You can also view the documentation online right [here](https://popcorn-official.github.io/popcorn-api/manual/index.html). Or checkout the documentation for the API routes [here](http://docs.popcornofficial.apiary.io/).
 
 # Folder structure
 

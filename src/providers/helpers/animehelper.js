@@ -95,7 +95,7 @@ export default class Helper {
         _id: anime._id
       }).exec();
       if (found) {
-        logger.log(`${this.name}: '${found.title}' is an existing anime.`);
+        logger.info(`${this.name}: '${found.title}' is an existing anime.`);
         for (let i = 0; i < found.episodes.length; i++) {
           let matching = anime.episodes
             .filter(animeEpisode => animeEpisode.episode === found.episodes[i].episode);
@@ -111,7 +111,7 @@ export default class Helper {
 
         return await this._updateNumEpisodes(anime);
       } else {
-        logger.log(`${this.name}: '${anime.title}' is a new anime!`);
+        logger.info(`${this.name}: '${anime.title}' is a new anime!`);
         const newAnime = await new Anime(anime).save();
         return await this._updateNumEpisodes(newAnime);
       }

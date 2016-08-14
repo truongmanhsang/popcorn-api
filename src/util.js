@@ -35,7 +35,7 @@ export default class Util {
     return new Promise((resolve, reject) => {
       childProcess.exec(cmd, {
         cwd: __dirname
-      }, (err, stdout, stderr) => {
+      }, (err, stdout) => {
         if (err) return reject(err);
         return resolve(stdout.split("\n").join(""));
       });
@@ -49,7 +49,7 @@ export default class Util {
    */
   exportCollection(collection) {
     const jsonFile = path.join(tempDir, `${collection}s.json`);
-    logger.log(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
+    logger.info(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
 
     return this.executeCommand(`mongoexport --db ${dbName} --collection ${collection}s --out "${jsonFile}"`);
   };
@@ -64,7 +64,7 @@ export default class Util {
     if (!path.isAbsolute(jsonFile)) jsonFile = path.join(process.cwd(), jsonFile);
     if (!fs.existsSync(jsonFile)) throw new Error(`Error: no such file found for '${jsonFile}'`);
 
-    logger.log(`Importing collection: '${collection}', from: '${jsonFile}'`);
+    logger.info(`Importing collection: '${collection}', from: '${jsonFile}'`);
 
     return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection} --file "${jsonFile}" --upsert`);
   };

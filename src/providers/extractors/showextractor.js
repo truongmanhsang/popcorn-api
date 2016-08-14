@@ -165,15 +165,11 @@ export default class Extractor extends BaseExtractor {
    */
   async search(provider) {
     try {
-      provider.query.page = 1;
-      provider.query.verified = 1;
-      provider.query.adult_filter = 1;
-
       const getTotalPages = await this._contentProvider.search(provider.query);
       const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
       if (!totalPages) return this._util.onError(`${this.name}: total_pages returned; '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
-      logger.log(`${this.name}: Total pages ${totalPages}`);
+      logger.info(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);
       const shows = await this._getAllShows(torrents);

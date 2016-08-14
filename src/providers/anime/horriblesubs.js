@@ -16,40 +16,40 @@ export default class HorribleSubs {
    */
   constructor(name, debug) {
     /**
-       * The name of the torrent provider.
-       * @type {String}
-       */
+     * The name of the torrent provider.
+     * @type {String}
+     */
     this.name = name;
 
     /**
-       * A configured HorribleSubs API.
-       * @type {HorribleSubsAPI}
-       * @see https://github.com/ChrisAlderson/horriblesubs-api
-       */
+     * A configured HorribleSubs API.
+     * @type {HorribleSubsAPI}
+     * @see https://github.com/ChrisAlderson/horriblesubs-api
+     */
     this._horriblesubs = new HorribleSubsAPI({ debug });
 
     /**
-       * The extractor object for getting show data on torrents.
-       * @type {Extractor}
-       */
+     * The extractor object for getting show data on torrents.
+     * @type {Extractor}
+     */
     this._extractor = new Extractor(this.name, this._horriblesubs, debug);
 
     /**
-       * The util object with general functions.
-       * @type {Util}
-       */
+     * The util object with general functions.
+     * @type {Util}
+     */
     this._util = new Util();
   };
 
   /**
-     * Returns a list of all the inserted torrents.
-     * @returns {Anime[]} - A list of scraped animes.
-     */
+   * Returns a list of all the inserted torrents.
+   * @returns {Anime[]} - A list of scraped animes.
+   */
   async search() {
     try {
-      logger.log(`${this.name}: Starting scraping...`);
+      logger.info(`${this.name}: Starting scraping...`);
       const animes = await this._horriblesubs.getAllAnime();
-      logger.log(`${this.name}: Found ${animes.length} anime shows.`);
+      logger.info(`${this.name}: Found ${animes.length} anime shows.`);
 
       return await asyncq.mapLimit(animes, maxWebRequest, async anime => {
         try {

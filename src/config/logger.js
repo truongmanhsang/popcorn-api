@@ -1,9 +1,9 @@
 // Import the neccesary modules.
-import expressWinston from "express-winston";
+import ExpressWinston from "express-winston";
 import fs from "fs";
 import path from "path";
 import sprintf from "sprintf";
-import winston from "winston";
+import Winston from "winston";
 
 import { tempDir } from "./constants";
 import { name } from "../../package.json";
@@ -32,23 +32,35 @@ export default class Logger {
      // Create the temp directory if it does not exists.
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
 
+    /**
+     * The log levels Winston will be using.
+     * @type {Object}
+     */
+    Logger._levels = {
+      error: 0,
+      warn: 1,
+      info: 2,
+      debug: 3
+    };
+
     if (Logger._pretty) {
       /**
        * The Winston instance.
-       * @type {Object}
+       * @external {Winston} https://github.com/winstonjs/winston
        */
-      Logger.logger = new winston.Logger({
+      Logger.logger = new Winston.Logger({
         transports: [
-          new winston.transports.Console({
+          new Winston.transports.Console({
             name,
+            levels: Logger._levels,
             formatter: Logger._consoleFormatter,
             handleExceptions: true,
             prettyPrint: true
           }),
-          new winston.transports.File({
+          new Winston.transports.File({
             filename: path.join(tempDir, `${name}.log`),
-            level: "warn",
             json: false,
+            level: "warn",
             formatter: Logger._fileFormatter,
             maxsize: 5242880,
             handleExceptions: true
@@ -59,9 +71,9 @@ export default class Logger {
 
       /**
        * The Express Winston instance.
-       * @type {Object}
+       * @external {ExpressWinston} http://bithavoc.io/express-winston/
        */
-      Logger.expressLogger = new expressWinston.logger({
+      Logger.expressLogger = new ExpressWinston.logger({
         winstonInstance: Logger.logger,
         expressFormat: true
       });
@@ -142,13 +154,11 @@ export default class Logger {
    * Function to create a global logger object based on the properties of the Logger class.
    */
   static _createLogger() {
-    const levels = ["log", "error", "warn", "info", "debug"];
     if (!global.logger) global.logger = {};
 
-    levels.map(level => {
+    Object.keys(Logger._levels).map(level => {
       if (Logger._pretty) {
         global.logger[level] = msg => {
-          level = level === "log" ? "info" : "log";
           if (!Logger._verbose) Logger.logger[level](msg);
         };
       } else {
