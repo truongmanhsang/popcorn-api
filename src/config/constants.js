@@ -131,6 +131,14 @@ export const katShowProviders = [
 ];
 
 /**
+ * The providers for scraping Nyaa for anime.
+ * @type {Array}
+ */
+export const nyaaAnimeProviders = [
+  {name: "Commie", query: {user: 76430, filter: "trusted_only"}}
+];
+
+/**
  * Check if this instance of the API is the master. Default is `true`.
  * @type {Boolean}
  */

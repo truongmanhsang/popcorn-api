@@ -33,7 +33,6 @@ Checkout the [manual](https://popcorn-official.github.io/popcorn-api/manual/inde
  - [ ] Add more tests to the project.
  - [ ] Add the ability to swap various content and metadata providers (similar to butter-providers).
  - [ ] Redo YTS provider with its own module.
- - [ ] Research [rarbg.to](https://rarbg.to/) as a content provider.
  - [ ] Research [isohunt.to](https://isohunt.to/) as a content provider.
 
 # License

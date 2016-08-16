@@ -21,7 +21,8 @@ scrape() {
 
     this._scrapeExtratorrentAnime,
     this._scrapeKATAnime,
-    this._scrapeHorribelSubsAnime
+    this._scrapeHorribelSubsAnime,
+    this._scrapeNyaaAnime
   ], scraper => scraper()).then(value => Scraper._util.setStatus())
     .catch(err => Scraper._util.onError(`Error while scraping: ${err}`));
 };
@@ -33,11 +34,12 @@ Popcorn API gets its torrent content from various sources. Here you can see wher
 
 |              | Anime | Movie | Show |
 |--------------|-------|-------|------|
-| [[ExtraTorrent](https://extratorrent.cc)         |X*      |X      | X    |
-| [EZTV](https://eztv.ag/)         |       |       | X    |
-| [Horriblesubs](https://horriblesubs.info/) | X     |       |      |
-| [KAT](https://kat.cr/)**          | X     | X     | X    |
-| [YTS](https://yts.ag/)          |       | X     |      | |
+| [[ExtraTorrent](https://extratorrent.cc)    | X*    | X     | X    |
+| [EZTV](https://eztv.ag/)                    |       |       | X    |
+| [Horriblesubs](https://horriblesubs.info/)  | X     |       |      |
+| [KAT](https://kat.cr/)**                    | X     | X     | X    |
+| [Nyaa](https://nyaa.se/)                    | X     |       |      |
+| [YTS](https://yts.ag/)                      |       | X     |      | |
 
 * Anime can be scraped from ExtraTorrent, but currently this is not done. The reason for this is because it is very ineffective to scrape anime torrents from [ExtraTorrent](https://extratorrent.cc/). The ineffectiveness is due to a lack of good ExtraTorrent providers.
 
@@ -209,6 +211,10 @@ All three types of content can be scraped from [kat.cr](https://kat.cr/) through
   }
 }
 ```
+
+# Nyaa
+
+TODO: write about [nyaa.se] scraping.
 
 If you want to make a provider for [kat.cr](https://kat.cr/) it is highly recommended you try it fist in the browser by manually going to [kat.cr](https://kat.cr/) and search for the content. This is because the title of the torrent will be subjected to regular expressions to grab the needed data for the [helper](#helpers) to insert the torrents into the MongoDB database.
 

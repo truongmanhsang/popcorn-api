@@ -9,6 +9,7 @@ import extratorrentShow from "./providers/shows/extratorrent";
 import katAnime from "./providers/anime/kat";
 import katMovie from "./providers/movies/kat";
 import katShow from "./providers/shows/kat";
+import Nyaa from "./providers/anime/nyaa";
 import YTS from "./providers/movies/yts";
 import Util from "./util";
 import {
@@ -18,7 +19,8 @@ import {
   extratorrentShowProviders,
   katAnimeProviders,
   katMovieProviders,
-  katShowProviders
+  katShowProviders,
+  nyaaAnimeProviders
 } from "./config/constants";
 
 /** Class for scraping movies and shows. */
@@ -192,7 +194,25 @@ export default class Scraper {
         const katAnimes = await katProvider.search(provider);
         logger.info(`${provider.name}: Done.`);
         return katAnimes;
-      } catch (err) { 
+      } catch (err) {
+        return Scraper._util.onError(err);
+      }
+    });
+  };
+
+  /**
+   * Start scraping from Nyaa.
+   * @returns {Anime[]} A list of all the scraped anime.
+   */
+  async _scrapeNyaaAnime() {
+    return asyncq.concatSeries(nyaaAnimeProviders, async provider => {
+      try {
+        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        const nyaaProvider = new Nyaa(provider.name, Scraper._debug);
+        const nyaaAnimes = await nyaaProvider.search(provider);
+        logger.info(`${provider.name}: Done.`);
+        return nyaaAnimes;
+      } catch (err) {
         return Scraper._util.onError(err);
       }
     });
@@ -203,17 +223,18 @@ export default class Scraper {
     Scraper._util.setLastUpdated();
 
     asyncq.eachSeries([
-      this._scrapeEZTVShows,
-      this._scrapeExtraTorrentShows,
+      // this._scrapeEZTVShows,
+      // this._scrapeExtraTorrentShows,
       // this._scrapeKATShows,
 
-      this._scrapeExtraTorrentMovies,
+      // this._scrapeExtraTorrentMovies,
       // this._scrapeKATMovies,
-      this._scrapeYTSMovies,
+      // this._scrapeYTSMovies,
 
       this._scrapeExtraTorrentAnime,
-      this._scrapeHorribleSubsAnime
-      // this._scrapeKATAnime
+      // this._scrapeHorribleSubsAnime,
+      // this._scrapeKATAnime,
+      this._scrapeNyaaAnime
     ], scraper => scraper())
       .then(() => Scraper._util.setStatus())
       .then(() => asyncq.eachSeries(collections, collection => Scraper._util.exportCollection(collection)))

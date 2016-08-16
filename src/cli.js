@@ -39,23 +39,23 @@ export default class CLI {
 
     // Extra output on top of the default help output
     program.on("--help", () => {
-      logger.info("  Examples:");
-      logger.info("");
-      logger.info("    $ popcorn-api -c <anime|movie|show>");
-      logger.info("    $ popcorn-api --content <anime|movie|show>");
-      logger.info("");
-      logger.info("    $ popcorn-api -r");
-      logger.info("    $ popcorn-api --run");
-      logger.info("");
-      logger.info("    $ popcorn-api -s");
-      logger.info("    $ popcorn-api --server");
-      logger.info("");
-      logger.info("    $ popcorn-api -e <anime|movie|show>");
-      logger.info("    $ popcorn-api --export <anime|movie|show>");
-      logger.info("");
-      logger.info("    $ popcorn-api -i <path-to-json>");
-      logger.info("    $ popcorn-api --import <path-to-json>");
-      logger.info("");
+      console.info("  Examples:");
+      console.info("");
+      console.info("    $ popcorn-api -c <anime|movie|show>");
+      console.info("    $ popcorn-api --content <anime|movie|show>");
+      console.info("");
+      console.info("    $ popcorn-api -r");
+      console.info("    $ popcorn-api --run");
+      console.info("");
+      console.info("    $ popcorn-api -s");
+      console.info("    $ popcorn-api --server");
+      console.info("");
+      console.info("    $ popcorn-api -e <anime|movie|show>");
+      console.info("    $ popcorn-api --export <anime|movie|show>");
+      console.info("");
+      console.info("    $ popcorn-api -i <path-to-json>");
+      console.info("    $ popcorn-api --import <path-to-json>");
+      console.info("");
     });
 
     // Parse the command line arguments.
@@ -188,7 +188,7 @@ export default class CLI {
   _animePrompt() {
     prompt.get(this._showSchema, async(err, result) => {
       if (err) {
-        util.onError(`An error occurred: ${err}`);
+        console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
@@ -201,7 +201,7 @@ export default class CLI {
             process.exit(0);
           }
         } catch (err) {
-          this._util.onError(`An error occurred: ${err}`);
+          console.error(`An error occurred: ${err}`);
           process.exit(1);
         }
       }
@@ -243,7 +243,7 @@ export default class CLI {
   _moviePrompt() {
     prompt.get(this._movieSchema, async(err, result) => {
       if (err) {
-        util.onError(`An error occurred: ${err}`);
+        console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
@@ -256,7 +256,7 @@ export default class CLI {
             process.exit(0);
           }
         } catch (err) {
-          this._util.onError(`An error occurred: ${err}`);
+          console.error(`An error occurred: ${err}`);
           process.exit(1);
         }
       }
@@ -298,7 +298,7 @@ export default class CLI {
   _showPrompt() {
     prompt.get(this._showSchema, async(err, result) => {
       if (err) {
-        this._util.onError(`An error occurred: ${err}`);
+        console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
@@ -311,7 +311,7 @@ export default class CLI {
             process.exit(0);
           }
         } catch (err) {
-          this._util.onError(`An error occurred: ${err}`);
+          console.error(`An error occurred: ${err}`);
           process.exit(1);
         }
       }
@@ -322,7 +322,7 @@ export default class CLI {
   _importPrompt() {
     prompt.get(this._importSchema, (err, result) => {
       if (err) {
-        this._util.onError(`An error occured: ${err}`);
+        console.error(`An error occured: ${err}`);
         process.exit(1);
       } else {
         if (result.confirm.match(/^(y|yes)/i)) {
@@ -330,7 +330,7 @@ export default class CLI {
           const index = collection.lastIndexOf(".");
           collection = collection.substring(0, index);
           this._util.importCollection(collection, program.import)
-            .catch(err => logger.error(err));
+            .catch(err => console.error(err));
         } else if (result.confirm.match(/^(n|no)/i)) {
           process.exit(0);
         }
@@ -368,7 +368,7 @@ export default class CLI {
     } else if (program.import) {
       this._importPrompt();
     } else {
-      this._util.onError("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
+      console.error("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
       program.help();
     }
   };

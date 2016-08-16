@@ -1,6 +1,6 @@
 {
   "name": "popcorn-api",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Popcorn Time API is developed to make it easier for anyone to create their own version of Popcorn Time.",
   "dependencies": {
     "async-q": "^0.3.1",
@@ -18,8 +18,9 @@
     "horriblesubs-api": "^1.0.2",
     "hummingbird-api": "^1.0.9",
     "kat-api-pt": "^1.0.12",
-    "mongoose": "^4.5.8",
+    "mongoose": "^4.5.9",
     "node-tvdb": "^2.0.11",
+    "nyaa-api-pt": "^1.0.5",
     "parse-torrent": "^5.8.1",
     "prompt": "^1.0.0",
     "request": "^2.74.0",
@@ -27,7 +28,8 @@
     "sprintf": "^0.1.5",
     "torrent-tracker-health": "^1.0.0",
     "trakt.tv": "^1.4.2",
-    "winston": "^2.2.0"
+    "winston": "^2.2.0",
+    "yts.to": "^0.1.4"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",
@@ -39,7 +41,7 @@
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "coveralls": "^2.11.12",
-    "del": "^2.2.1",
+    "del": "^2.2.2",
     "esdoc": "^0.4.8",
     "esdoc-es7-plugin": "0.0.3",
     "forever": "^0.15.2",

@@ -4,6 +4,7 @@
    - Added extractors to extract torrents and content data from content providers.
    - Added ExtraTorrent as a content provider with the [extratorrent-api](https://github.com/ChrisAlderson/extratorrent-api) module.
    - DateBased shows are now included in the scrape. [#8](https://github.com/popcorn-official/popcorn-api/issues/8).
+   - Added Nyaa as a content provider for anime with the [nyaa-api-pt](https://github.com/ChrisAlderson/nyaa-api-pt) module.
 
  - **Notes:**
    - Added tests for the controllers.
