@@ -262,18 +262,18 @@ The regular expression needs to get a `title`, `episode` and a `quality` propert
 
 ```javascript
 _getAnimeData(torrent) {
-  const secondSeason = /\[horriblesubs\].(.*).S(\d)...(\d{2,3}).\[(\d{3,4}p)\]/i; // [HorribleSubs] Fairy Tail S2 - 70 [1080p].mkv
-  const oneSeason = /\[horriblesubs\].(.*)...(\d{2,3}).\[(\d{3,4}p)\]/i; // [HorribleSubs] Gangsta - 06 [480p].mkv
-  const animerg = /\[animerg\]\s+(\D+)\s\-\s(\d{3}|\d{2})\D+(\d{3,4}p)/i; // [AnimeRG] Handa-kun - 05 [480p] [KaMi]
-  const FFFcommie = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i; //[Commie] Battery - 05 [38EC4270].mkv
-  if (torrent.title.match(secondSeason)) {
+  const secondSeasonQuality = /\[.*\].(.*)\W+S(\d)...(\d{2,3})\W+(\d{3,4}p)/i; // [HorribleSubs] Fairy Tail S2 - 70 [1080p].mkv
+  const oneSeasonQuality = /\[.*\].(\D+)...(\d{2,3})\W+(\d{3,4}p)/i; // [HorribleSubs] Gangsta - 06 [480p].mkv
+  const secondSeason = /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i; // [Commie] The World God Only Knows S2 - 12 [C0A4301E].mkv
+  const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i; // [Commie] Battery - 05 [38EC4270].mkv
+  if (torrent.title.match(secondSeasonQuality)) {
+   return this._extractAnime(torrent, secondSeasonQuality);
+ } else if (torrent.title.match(oneSeasonQuality)) {
+   return this._extractAnime(torrent, oneSeasonQuality);
+ } else if (torrent.title.match(secondSeason)) {
     return this._extractAnime(torrent, secondSeason);
   } else if  (torrent.title.match(oneSeason)) {
     return this._extractAnime(torrent, oneSeason);
-  } else if (torrent.title.match(animerg)) {
-    return this._extractAnime(torrent, animerg);
-  } else if (torrent.title.match(FFFcommie)) {
-    return this._extractAnime(torrent, FFFcommie);
   } else {
     logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
   }

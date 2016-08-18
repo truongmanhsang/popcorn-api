@@ -97,7 +97,7 @@ Gives information about a single anime show based on the given id.
   "runtime": "24",
   "status": "Finished Airing",
   "type": "show",
-  "num_episodes": 12,
+  "num_seasons": 1,
   "last_updated": 1469804168091,
   "__v": 0,
   "episodes": [

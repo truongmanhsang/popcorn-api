@@ -8,6 +8,7 @@
 
  - **Notes:**
    - Added tests for the controllers.
+   - Changed `num_episodes` to `num_seasons` for the `Anime` model.
 
 # 2.1.0 - You weeaboos - 2 August 2016
 
