@@ -15,7 +15,7 @@
     "express-winston": "^2.0.0",
     "extratorrent-api": "^1.0.2",
     "eztv-api-pt": "^1.0.9",
-    "horriblesubs-api": "^1.0.2",
+    "horriblesubs-api": "^1.0.3",
     "hummingbird-api": "^1.0.9",
     "kat-api-pt": "^1.0.12",
     "mongoose": "^4.5.9",
@@ -28,8 +28,7 @@
     "sprintf": "^0.1.5",
     "torrent-tracker-health": "^1.0.0",
     "trakt.tv": "^1.4.2",
-    "winston": "^2.2.0",
-    "yts.to": "^0.1.4"
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",

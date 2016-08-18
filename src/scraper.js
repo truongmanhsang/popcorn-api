@@ -223,15 +223,15 @@ export default class Scraper {
     Scraper._util.setLastUpdated();
 
     asyncq.eachSeries([
-      // this._scrapeEZTVShows,
-      // this._scrapeExtraTorrentShows,
+      this._scrapeEZTVShows,
+      this._scrapeExtraTorrentShows,
       // this._scrapeKATShows,
 
-      // this._scrapeExtraTorrentMovies,
+      this._scrapeExtraTorrentMovies,
       // this._scrapeKATMovies,
-      // this._scrapeYTSMovies,
+      this._scrapeYTSMovies,
 
-      // this._scrapeExtraTorrentAnime,
+      this._scrapeExtraTorrentAnime,
       this._scrapeHorribleSubsAnime,
       // this._scrapeKATAnime,
       this._scrapeNyaaAnime
