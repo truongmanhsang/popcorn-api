@@ -20,7 +20,7 @@
     "kat-api-pt": "^1.0.12",
     "mongoose": "^4.5.9",
     "node-tvdb": "^2.0.11",
-    "nyaa-api-pt": "^1.0.5",
+    "nyaa-api-pt": "^1.0.6",
     "parse-torrent": "^5.8.1",
     "prompt": "^1.0.0",
     "request": "^2.74.0",

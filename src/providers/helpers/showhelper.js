@@ -27,7 +27,7 @@ export default class Helper {
   };
 
   /**
-   * Update the number of seasons of a given show
+   * Update the number of seasons of a given show.
    * @param {Show} show - The show to update the number of seasons.
    * @returns {Show} - A newly updated show.
    */

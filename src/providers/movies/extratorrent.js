@@ -42,6 +42,7 @@ export default class ExtraTorrent {
     try {
       logger.info(`${this.name}: Starting scraping...`);
       provider.query.category = "movies";
+      provider.query.page = 1;
 
       return await this._extractor.search(provider);
     } catch (err) {

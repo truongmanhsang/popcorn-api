@@ -25,7 +25,7 @@ const AnimeSchema = new mongoose.Schema({
     hated: Number
   },
   type: String,
-  num_episodes: Number,
+  num_seasons: Number,
   last_updated: Number,
   latest_episode: {
     type: Number,

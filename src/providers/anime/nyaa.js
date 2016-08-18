@@ -43,6 +43,7 @@ export default class ExtraTorrent {
       logger.info(`${this.name}: Starting scraping...`);
       provider.query.category = "anime";
       provider.query.sub_categories = "english_translated";
+      provider.query.offset = 1;
 
       return await this._extractor.search(provider);
     } catch (err) {

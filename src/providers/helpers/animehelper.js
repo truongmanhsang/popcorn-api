@@ -35,15 +35,26 @@ export default class Helper {
   };
 
   /**
-   * Update the number of episodes of a given anime
-   * @param {Anime} anime - The anime to update the number of episodes.
+   * Update the number of seasons of a given anime.
+   * @param {Anime} anime - The anime to update the number of seasons.
    * @returns {Anime} - A newly updated anime.
    */
-  async _updateNumEpisodes(anime) {
-    anime.num_episodes = anime.episodes.length;
-    return await Anime.findOneAndUpdate({
+  async _updateNumSeasons(anime) {
+    const saved = await Anime.findOneAndUpdate({
       _id: anime._id
     }, anime, {
+      new: true,
+      upsert: true
+    }).exec();
+
+    const distinct = await Anime.distinct("episodes.season", {
+      _id: saved._id
+    }).exec();
+    saved.num_seasons = distinct.length;
+
+    return await Anime.findOneAndUpdate({
+      _id: saved._id
+    }, saved, {
       new: true,
       upsert: true
     }).exec();
@@ -109,11 +120,11 @@ export default class Helper {
           }
         }
 
-        return await this._updateNumEpisodes(anime);
+        return await this._updateNumSeasons(anime);
       } else {
         logger.info(`${this.name}: '${anime.title}' is a new anime!`);
         const newAnime = await new Anime(anime).save();
-        return await this._updateNumEpisodes(newAnime);
+        return await this._updateNumSeasons(newAnime);
       }
     } catch (err) {
       return this._util.onError(err);
@@ -184,7 +195,7 @@ export default class Helper {
             percentage: (Math.round(hummingbirdAnime.community_rating * 10)) * 2
           },
           type,
-          num_episodes: 0,
+          num_seasons: 0,
           last_updated: Number(new Date()),
           images: {
             banner: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : "images/posterholder.png",

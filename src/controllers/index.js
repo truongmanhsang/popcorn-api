@@ -64,7 +64,7 @@ export default class Index {
       const { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), "utf8"));
       const commit = await Index._util.executeCommand("git rev-parse --short HEAD");
       const totalAnimes = await Anime.count({
-        num_episodes: {
+        num_seasons: {
           $gt: 0
         }
       }).exec();

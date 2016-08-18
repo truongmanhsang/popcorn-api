@@ -42,8 +42,10 @@ export default class BaseExtractor {
       let torrents = [];
       await asyncq.timesSeries(totalPages, async page => {
         try {
-          provider.query.page = page + 1;
-          logger.info(`${this.name}: Starting searching ${this.name} on page ${provider.query.page} out of ${totalPages}`);
+          if (provider.query.page) provider.query.page = page + 1;
+          if (provider.query.offset) provider.query.offset = page + 1;
+
+          logger.info(`${this.name}: Starting searching ${this.name} on page ${page + 1} out of ${totalPages}`);
           const result = await this._contentProvider.search(provider.query);
           torrents = torrents.concat(result.results);
         } catch (err) {

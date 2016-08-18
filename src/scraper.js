@@ -218,7 +218,7 @@ export default class Scraper {
     });
   };
 
-  /** Initiate the scraping for EZTV and KAT. */
+  /** Initiate the scraping. */
   scrape() {
     Scraper._util.setLastUpdated();
 
@@ -231,8 +231,8 @@ export default class Scraper {
       // this._scrapeKATMovies,
       // this._scrapeYTSMovies,
 
-      this._scrapeExtraTorrentAnime,
-      // this._scrapeHorribleSubsAnime,
+      // this._scrapeExtraTorrentAnime,
+      this._scrapeHorribleSubsAnime,
       // this._scrapeKATAnime,
       this._scrapeNyaaAnime
     ], scraper => scraper())

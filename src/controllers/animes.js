@@ -23,7 +23,8 @@ export default class Animes {
       type: 1,
       item_data: 1,
       rating: 1,
-      genres: 1
+      genres: 1,
+      num_seasons: 1
     };
   };
 
@@ -36,7 +37,7 @@ export default class Animes {
    */
   getAnimes(req, res, next) {
     return Anime.count({
-      num_episodes: {
+      num_seasons: {
         $gt: 0
       }
     }).exec().then(count => {
@@ -63,7 +64,7 @@ export default class Animes {
     if (req.params.page.match(/all/i)) {
       return Anime.aggregate([{
           $match: {
-            num_episodes: {
+            num_seasons: {
               $gt: 0
             }
           }
@@ -78,7 +79,7 @@ export default class Animes {
         .catch(err => next(err));
     } else {
       const query = {
-        num_episodes: {
+        num_seasons: {
           $gt: 0
         }
       };

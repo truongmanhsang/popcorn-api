@@ -7,14 +7,7 @@ import TVDB from "node-tvdb";
  * Map object for correcting anime slugs.
  * @type {Object}
  */
-export const animeMap = {
-  "kabaneri-of-the-iron-fortress": "koutetsujou-no-kabaneri",
-  "luck-&-logic": "luck-logic",
-  "naruto-shippuuden": "naruto-shippuden",
-  "norn9norn+nonet": "norn9-norn-nonet",
-  "sailor-moon-crystal": "bishoujo-senshi-sailor-moon-crystal",
-  "yuruyuri": "yuru-yuri"
-};
+export const animeMap = {};
 
 /**
  * An array of the supported collections for mongodb.
@@ -135,7 +128,9 @@ export const katShowProviders = [
  * @type {Array}
  */
 export const nyaaAnimeProviders = [
-  {name: "Commie", query: {user: 76430, filter: "trusted_only"}}
+  {name: "Commie", query: {term: "mkv", user: 76430, filter: "trusted_only"}},
+  {name: "FFF", query: {term: "mkv", user: 73859, filter: "trusted_only"}},
+  {name: "gg", query: {term: "mkv", user: 9001, filter: "trusted_only"}}
 ];
 
 /**

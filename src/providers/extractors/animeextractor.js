@@ -63,12 +63,11 @@ export default class Extractor extends BaseExtractor {
 
     const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : "480p";
 
-    let season, episode;
+    let season = 1;
+    let episode;
     if (torrent.title.match(regex).length >= 5) {
-      season = parseInt(torrent.title.match(regex)[2], 10);
       episode = parseInt(torrent.title.match(regex)[3], 10);
     } else {
-      season = 1;
       episode = parseInt(torrent.title.match(regex)[2], 10);
     }
 
@@ -102,23 +101,23 @@ export default class Extractor extends BaseExtractor {
    * @param {Object} torrent - A torrent object to extract anime information from.
    * @returns {Object} - Information about an anime from the torrent.
    */
-  _getAnimeData(torrent) {
-    const secondSeason = /\[horriblesubs\].(.*).S(\d)...(\d{2,3}).\[(\d{3,4}p)\]/i;
-    const oneSeason = /\[horriblesubs\].(.*)...(\d{2,3}).\[(\d{3,4}p)\]/i;
-    const animerg = /\[animerg\]\s+(\D+)\s\-\s(\d{3}|\d{2})\D+(\d{3,4}p)/i;
-    const commie = /\[Commie\].(\D+)...(\d{2,3}).*\.mkv/i;
-    if (torrent.title.match(secondSeason)) {
-      return this._extractAnime(torrent, secondSeason);
-    } else if  (torrent.title.match(oneSeason)) {
-      return this._extractAnime(torrent, oneSeason);
-    } else if (torrent.title.match(animerg)) {
-      return this._extractAnime(torrent, animerg);
-    } else if (torrent.title.match(commie)) {
-      return this._extractAnime(torrent, commie);
-    } else {
-      logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
-    }
-  };
+   _getAnimeData(torrent) {
+     const secondSeasonQuality = /\[.*\].(.*)\W+S(\d)...(\d{2,3})\W+(\d{3,4}p)/i;
+     const oneSeasonQuality = /\[.*\].(\D+)...(\d{2,3})\W+(\d{3,4}p)/i;
+     const secondSeason = /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i;
+     const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i;
+     if (torrent.title.match(secondSeasonQuality)) {
+      return this._extractAnime(torrent, secondSeasonQuality);
+    } else if (torrent.title.match(oneSeasonQuality)) {
+      return this._extractAnime(torrent, oneSeasonQuality);
+    } else if (torrent.title.match(secondSeason)) {
+       return this._extractAnime(torrent, secondSeason);
+     } else if  (torrent.title.match(oneSeason)) {
+       return this._extractAnime(torrent, oneSeason);
+     } else {
+       logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
+     }
+   };
 
   /**
    * Puts all the found animes from the torrents in an array.
@@ -175,7 +174,6 @@ export default class Extractor extends BaseExtractor {
       logger.info(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);
-      console.log(torrents.length);
       const animes = await this._getAllAnimes(torrents);
       return await asyncq.mapLimit(animes, maxWebRequest, anime => this.getAnime(anime));
     } catch (err) {
