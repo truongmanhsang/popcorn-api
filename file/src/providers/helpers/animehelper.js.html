@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/providers/helpers/animehelper.js | Popcorn API API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/popcorn-official/popcorn-api.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli.js~CLI.html">CLI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/index.js~Index.html">Index</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/scraper.js~Scraper.html">Scraper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/util.js~Util.html">Util</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">config</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/routes.js~Routes.html">Routes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/setup.js~Setup.html">Setup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Promise">Promise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animeMap">animeMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-collections">collections</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cronTime">cronTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbHosts">dbHosts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-dbName">dbName</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentAnimeProviders">extratorrentAnimeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentMovieProviders">extratorrentMovieProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentShowProviders">extratorrentShowProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeProviders">katAnimeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katMovieProviders">katMovieProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowProviders">katShowProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-master">master</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieMap">movieMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-nyaaAnimeProviders">nyaaAnimeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-showMap">showMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tvdb">tvdb</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webRequestTimeout">webRequestTimeout</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-workers">workers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://bithavoc.io/express-winston/">ExpressWinston</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/winstonjs/winston">Winston</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">controllers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/animes.js~Animes.html">Animes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/exports.js~Exports.html">Exports</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/index.js~Index.html">Index</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/movies.js~Movies.html">Movies</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/controllers/shows.js~Shows.html">Shows</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">models</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Anime">Anime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Movie">Movie</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Show">Show</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/anime</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/extratorrent.js~ExtraTorrent.html">ExtraTorrent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/horriblesubs.js~HorribleSubs.html">HorribleSubs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/kat.js~KAT.html">KAT</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/anime/nyaa.js~ExtraTorrent.html">ExtraTorrent</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/extractors</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/extractors/animeextractor.js~Extractor.html">Extractor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/extractors/baseextractor.js~BaseExtractor.html">BaseExtractor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/extractors/movieextractor.js~Extractor.html">Extractor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/extractors/showextractor.js~Extractor.html">Extractor</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/helpers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/helpers/animehelper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/helpers/moviehelper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/helpers/showhelper.js~Helper.html">Helper</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/movies</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movies/extratorrent.js~ExtraTorrent.html">ExtraTorrent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movies/kat.js~KAT.html">KAT</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/movies/yts.js~YTS.html">YTS</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">providers/shows</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/shows/extratorrent.js~ExtraTorrent.html">ExtraTorrent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/shows/eztv.js~EZTV.html">EZTV</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/providers/shows/kat.js~KAT.html">KAT</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/providers/helpers/animehelper.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
+import asyncq from &quot;async-q&quot;;
+import HummingbirdAPI from &quot;hummingbird-api&quot;;
+
+import Anime from &quot;../../models/Anime&quot;;
+import Util from &quot;../../util&quot;;
+
+/** class for saving anime shows. */
+export default class Helper {
+
+  /**
+   * Create an helper object for anime content.
+   * @param {String} name - The name of the content provider.
+   * @param {?Boolean} debug - Debug mode for extra output.
+   */
+  constructor(name, debug) {
+    /**
+     * The name of the torrent provider.
+     * @type {String}
+     */
+    this.name = name;
+
+    /**
+     * A configured HummingBird API.
+     * @type {HummingbirdAPI}
+     * @see https://github.com/ChrisAlderson/hummingbird-api
+     */
+    this._hummingbird = new HummingbirdAPI({ debug });
+
+    /**
+     * The util object with general functions.
+     * @type {Util}
+     */
+    this._util = new Util();
+  };
+
+  /**
+   * Update the number of seasons of a given anime.
+   * @param {Anime} anime - The anime to update the number of seasons.
+   * @returns {Anime} - A newly updated anime.
+   */
+  async _updateNumSeasons(anime) {
+    const saved = await Anime.findOneAndUpdate({
+      _id: anime._id
+    }, anime, {
+      new: true,
+      upsert: true
+    }).exec();
+
+    const distinct = await Anime.distinct(&quot;episodes.season&quot;, {
+      _id: saved._id
+    }).exec();
+    saved.num_seasons = distinct.length;
+
+    return await Anime.findOneAndUpdate({
+      _id: saved._id
+    }, saved, {
+      new: true,
+      upsert: true
+    }).exec();
+  };
+
+  /**
+   * Update the torrents for an existing anime.
+   * @param {Object} matching - The matching episode of new the anime.
+   * @param {Object} found - The matching episode existing anime.
+   * @param {Anime} anime - The anime to merge the episodes to.
+   * @param {String} quality - The quality of the torrent.
+   * @returns {Anime} - An anime with merged torrents.
+   */
+  _updateEpisode(matching, found, anime, quality) {
+    const index = anime.episodes.indexOf(matching);
+
+    if (found.torrents[quality] &amp;&amp; matching.torrents[quality]) {
+      let update = false;
+
+      if (found.torrents[quality].seeds &gt; matching.torrents[quality].seeds) {
+        update = true;
+      } else if (matching.torrents[quality].seeds &gt; found.torrents[quality].seeds) {
+        update = false;
+      } else if (found.torrents[quality].url === matching.torrents[quality].url) {
+        update = true;
+      }
+
+      if (update) {
+        if (quality === &quot;480p&quot;) matching.torrents[&quot;0&quot;] = found.torrents[quality];
+        matching.torrents[quality] = found.torrents[quality];
+      }
+    } else if (found.torrents[quality] &amp;&amp; !matching.torrents[quality]) {
+      if (quality === &quot;480p&quot;) matching.torrents[&quot;0&quot;] = found.torrents[quality];
+      matching.torrents[quality] = found.torrents[quality];
+    }
+
+    anime.episodes.splice(index, 1, matching);
+    return anime;
+  };
+
+  /**
+   * Update a given anime with it&apos;s associated episodes.
+   * @param {Anime} anime - The anime to update its episodes.
+   * @returns {Anime} - A newly updated anime.
+   */
+  async _updateEpisodes(anime) {
+    try {
+      const found = await Anime.findOne({
+        _id: anime._id
+      }).exec();
+      if (found) {
+        logger.info(`${this.name}: &apos;${found.title}&apos; is an existing anime.`);
+        for (let i = 0; i &lt; found.episodes.length; i++) {
+          let matching = anime.episodes
+            .filter(animeEpisode =&gt; animeEpisode.episode === found.episodes[i].episode);
+
+          if (matching.length != 0) {
+            anime = this._updateEpisode(matching[0], found.episodes[i], anime, &quot;480p&quot;);
+            anime = this._updateEpisode(matching[0], found.episodes[i], anime, &quot;720p&quot;);
+            anime = this._updateEpisode(matching[0], found.episodes[i], anime, &quot;1080p&quot;);
+          } else {
+            anime.episodes.push(found.episodes[i]);
+          }
+        }
+
+        return await this._updateNumSeasons(anime);
+      } else {
+        logger.info(`${this.name}: &apos;${anime.title}&apos; is a new anime!`);
+        const newAnime = await new Anime(anime).save();
+        return await this._updateNumSeasons(newAnime);
+      }
+    } catch (err) {
+      return this._util.onError(err);
+    }
+  };
+
+  /**
+   * Adds one season to a anime.
+   * @param {Anime} anime - The anime to add the torrents to.
+   * @param {Object} episodes - The episodes containing the torrents.
+   * @param {Integer} seasonNumber - The season number.
+   * @param {String} slug - The slug of the anime.
+   */
+  async _addSeason(anime, episodes, seasonNumber, slug) {
+    try {
+      await asyncq.each(Object.keys(episodes[seasonNumber]), episodeNumber =&gt; {
+        const episode = {
+          title: `Episode ${episodeNumber}`,
+          torrents: {},
+          season: seasonNumber,
+          episode: episodeNumber,
+          overview: `We still don&apos;t have single episode overviews for anime&#x2026; Sorry`,
+          tvdb_id: `${anime._id}-1-${episodeNumber}`
+        };
+
+        episode.torrents = episodes[seasonNumber][episodeNumber];
+        episode.torrents[0] = episodes[seasonNumber][episodeNumber][&quot;480p&quot;] ? episodes[seasonNumber][episodeNumber][&quot;480p&quot;] : episodes[seasonNumber][episodeNumber][&quot;720p&quot;];
+        anime.episodes.push(episode);
+      });
+    } catch (err) {
+      return this._util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: &apos;${slug}&apos;`);
+    }
+  };
+
+  /**
+   * Get info from Hummingbird and make a new anime object.
+   * @param {String} slug - The slug to query https://hummingbird.me/.
+   * @returns {Anime} - A new anime without the episodes attached.
+   */
+  async getHummingbirdInfo(slug) {
+    try {
+      const hummingbirdAnime = await this._hummingbird.Anime.getAnime(slug);
+
+      let type;
+      if (hummingbirdAnime.show_type.match(/tv/i)) {
+        type = &quot;show&quot;;
+      } else {
+        type = &quot;movie&quot;;
+      }
+
+      const genres = hummingbirdAnime.genres.map(genre =&gt; genre.name);
+
+      if (hummingbirdAnime &amp;&amp; hummingbirdAnime.id) {
+        return {
+          _id: hummingbirdAnime.id,
+          mal_id: hummingbirdAnime.mal_id,
+          title: hummingbirdAnime.title,
+          year: new Date(hummingbirdAnime.started_airing).getFullYear(),
+          slug: hummingbirdAnime.slug,
+          synopsis: hummingbirdAnime.synopsis,
+          runtime: hummingbirdAnime.episode_length,
+          status: hummingbirdAnime.status,
+          rating: {
+            hated: 100,
+            loved: 100,
+            votes: 0,
+            watching: 0,
+            percentage: (Math.round(hummingbirdAnime.community_rating * 10)) * 2
+          },
+          type,
+          num_seasons: 0,
+          last_updated: Number(new Date()),
+          images: {
+            banner: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : &quot;images/posterholder.png&quot;,
+            fanart: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : &quot;images/posterholder.png&quot;,
+            poster: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : &quot;images/posterholder.png&quot;
+          },
+          genres: genres !== null ? genres : [&quot;unknown&quot;],
+          episodes: []
+        };
+      }
+    } catch (err) {
+      return this._util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: &apos;${slug}&apos;`);
+    }
+  };
+
+  /**
+   * Adds episodes to a anime.
+   * @param {Show} anime - The anime to add the torrents to.
+   * @param {Object} episodes - The episodes containing the torrents.
+   * @param {String} slug - The slug of the anime.
+   * @returns {Anime} - A anime with updated torrents.
+   */
+  async addEpisodes(anime, episodes, slug) {
+    try {
+      await asyncq.each(Object.keys(episodes), seasonNumber =&gt; this._addSeason(anime, episodes, seasonNumber, slug));
+      return await this._updateEpisodes(anime);
+    } catch (err) {
+      return this._util.onError(err);
+    }
+  };
+
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 194,
-  "actualCount": 194,
+  "expectCount": 245,
+  "actualCount": 245,
   "files": {
     "src/models/Anime.js": {
       "expectCount": 1,
@@ -13,14 +13,19 @@
       "actualCount": 6,
       "undocumentLines": []
     },
+    "src/providers/extractors/baseextractor.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
     "src/cli.js": {
       "expectCount": 14,
       "actualCount": 14,
       "undocumentLines": []
     },
-    "src/providers/show/eztv.js": {
-      "expectCount": 8,
-      "actualCount": 8,
+    "src/providers/shows/eztv.js": {
+      "expectCount": 7,
+      "actualCount": 7,
       "undocumentLines": []
     },
     "src/controllers/exports.js": {
@@ -28,29 +33,64 @@
       "actualCount": 4,
       "undocumentLines": []
     },
-    "src/providers/anime/helper.js": {
+    "src/providers/anime/extratorrent.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/providers/movies/extratorrent.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/providers/anime/nyaa.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/providers/shows/extratorrent.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/providers/extractors/movieextractor.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/providers/extractors/animeextractor.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/providers/extractors/showextractor.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/providers/helpers/showhelper.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "src/providers/helpers/moviehelper.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/providers/helpers/animehelper.js": {
       "expectCount": 11,
       "actualCount": 11,
       "undocumentLines": []
     },
-    "src/providers/show/helper.js": {
-      "expectCount": 10,
-      "actualCount": 10,
-      "undocumentLines": []
-    },
-    "src/providers/movie/helper.js": {
-      "expectCount": 8,
-      "actualCount": 8,
-      "undocumentLines": []
-    },
     "src/providers/anime/horriblesubs.js": {
-      "expectCount": 8,
-      "actualCount": 8,
+      "expectCount": 7,
+      "actualCount": 7,
       "undocumentLines": []
     },
     "src/index.js": {
-      "expectCount": 3,
-      "actualCount": 3,
+      "expectCount": 4,
+      "actualCount": 4,
       "undocumentLines": []
     },
     "src/controllers/index.js": {
@@ -58,24 +98,24 @@
       "actualCount": 5,
       "undocumentLines": []
     },
-    "src/providers/movie/kat.js": {
-      "expectCount": 12,
-      "actualCount": 12,
+    "src/providers/shows/kat.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/providers/movies/kat.js": {
+      "expectCount": 6,
+      "actualCount": 6,
       "undocumentLines": []
     },
     "src/providers/anime/kat.js": {
-      "expectCount": 12,
-      "actualCount": 12,
-      "undocumentLines": []
-    },
-    "src/providers/show/kat.js": {
-      "expectCount": 12,
-      "actualCount": 12,
+      "expectCount": 6,
+      "actualCount": 6,
       "undocumentLines": []
     },
     "src/config/logger.js": {
-      "expectCount": 6,
-      "actualCount": 6,
+      "expectCount": 7,
+      "actualCount": 7,
       "undocumentLines": []
     },
     "src/models/Movie.js": {
@@ -89,8 +129,8 @@
       "undocumentLines": []
     },
     "src/config/constants.js": {
-      "expectCount": 22,
-      "actualCount": 22,
+      "expectCount": 28,
+      "actualCount": 28,
       "undocumentLines": []
     },
     "src/config/routes.js": {
@@ -99,8 +139,8 @@
       "undocumentLines": []
     },
     "src/scraper.js": {
-      "expectCount": 9,
-      "actualCount": 9,
+      "expectCount": 13,
+      "actualCount": 13,
       "undocumentLines": []
     },
     "src/config/setup.js": {
@@ -123,7 +163,7 @@
       "actualCount": 12,
       "undocumentLines": []
     },
-    "src/providers/movie/yts.js": {
+    "src/providers/movies/yts.js": {
       "expectCount": 11,
       "actualCount": 11,
       "undocumentLines": []

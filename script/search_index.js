@@ -12,15 +12,21 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "popcorn-api/src/providers/extractors/baseextractor.js~baseextractor",
+    "class/src/providers/extractors/baseextractor.js~BaseExtractor.html",
+    "<span>BaseExtractor</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/extractors/baseextractor.js</span>",
+    "class"
+  ],
+  [
     "popcorn-api/src/cli.js~cli",
     "class/src/cli.js~CLI.html",
     "<span>CLI</span> <span class=\"search-result-import-path\">popcorn-api/src/cli.js</span>",
     "class"
   ],
   [
-    "popcorn-api/src/providers/show/eztv.js~eztv",
-    "class/src/providers/show/eztv.js~EZTV.html",
-    "<span>EZTV</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/show/eztv.js</span>",
+    "popcorn-api/src/providers/shows/eztv.js~eztv",
+    "class/src/providers/shows/eztv.js~EZTV.html",
+    "<span>EZTV</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/shows/eztv.js</span>",
     "class"
   ],
   [
@@ -30,21 +36,63 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "popcorn-api/src/providers/anime/helper.js~helper",
-    "class/src/providers/anime/helper.js~Helper.html",
-    "<span>Helper</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/anime/helper.js</span>",
+    "popcorn-api/src/providers/anime/extratorrent.js~extratorrent",
+    "class/src/providers/anime/extratorrent.js~ExtraTorrent.html",
+    "<span>ExtraTorrent</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/anime/extratorrent.js</span>",
     "class"
   ],
   [
-    "popcorn-api/src/providers/movie/helper.js~helper",
-    "class/src/providers/movie/helper.js~Helper.html",
-    "<span>Helper</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/movie/helper.js</span>",
+    "popcorn-api/src/providers/anime/nyaa.js~extratorrent",
+    "class/src/providers/anime/nyaa.js~ExtraTorrent.html",
+    "<span>ExtraTorrent</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/anime/nyaa.js</span>",
     "class"
   ],
   [
-    "popcorn-api/src/providers/show/helper.js~helper",
-    "class/src/providers/show/helper.js~Helper.html",
-    "<span>Helper</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/show/helper.js</span>",
+    "popcorn-api/src/providers/movies/extratorrent.js~extratorrent",
+    "class/src/providers/movies/extratorrent.js~ExtraTorrent.html",
+    "<span>ExtraTorrent</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/movies/extratorrent.js</span>",
+    "class"
+  ],
+  [
+    "popcorn-api/src/providers/shows/extratorrent.js~extratorrent",
+    "class/src/providers/shows/extratorrent.js~ExtraTorrent.html",
+    "<span>ExtraTorrent</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/shows/extratorrent.js</span>",
+    "class"
+  ],
+  [
+    "popcorn-api/src/providers/extractors/animeextractor.js~extractor",
+    "class/src/providers/extractors/animeextractor.js~Extractor.html",
+    "<span>Extractor</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/extractors/animeextractor.js</span>",
+    "class"
+  ],
+  [
+    "popcorn-api/src/providers/extractors/movieextractor.js~extractor",
+    "class/src/providers/extractors/movieextractor.js~Extractor.html",
+    "<span>Extractor</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/extractors/movieextractor.js</span>",
+    "class"
+  ],
+  [
+    "popcorn-api/src/providers/extractors/showextractor.js~extractor",
+    "class/src/providers/extractors/showextractor.js~Extractor.html",
+    "<span>Extractor</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/extractors/showextractor.js</span>",
+    "class"
+  ],
+  [
+    "popcorn-api/src/providers/helpers/animehelper.js~helper",
+    "class/src/providers/helpers/animehelper.js~Helper.html",
+    "<span>Helper</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/helpers/animehelper.js</span>",
+    "class"
+  ],
+  [
+    "popcorn-api/src/providers/helpers/moviehelper.js~helper",
+    "class/src/providers/helpers/moviehelper.js~Helper.html",
+    "<span>Helper</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/helpers/moviehelper.js</span>",
+    "class"
+  ],
+  [
+    "popcorn-api/src/providers/helpers/showhelper.js~helper",
+    "class/src/providers/helpers/showhelper.js~Helper.html",
+    "<span>Helper</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/helpers/showhelper.js</span>",
     "class"
   ],
   [
@@ -72,15 +120,15 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "popcorn-api/src/providers/movie/kat.js~kat",
-    "class/src/providers/movie/kat.js~KAT.html",
-    "<span>KAT</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/movie/kat.js</span>",
+    "popcorn-api/src/providers/movies/kat.js~kat",
+    "class/src/providers/movies/kat.js~KAT.html",
+    "<span>KAT</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/movies/kat.js</span>",
     "class"
   ],
   [
-    "popcorn-api/src/providers/show/kat.js~kat",
-    "class/src/providers/show/kat.js~KAT.html",
-    "<span>KAT</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/show/kat.js</span>",
+    "popcorn-api/src/providers/shows/kat.js~kat",
+    "class/src/providers/shows/kat.js~KAT.html",
+    "<span>KAT</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/shows/kat.js</span>",
     "class"
   ],
   [
@@ -144,15 +192,15 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "popcorn-api/src/providers/movie/yts.js~yts",
-    "class/src/providers/movie/yts.js~YTS.html",
-    "<span>YTS</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/movie/yts.js</span>",
+    "popcorn-api/src/providers/movies/yts.js~yts",
+    "class/src/providers/movies/yts.js~YTS.html",
+    "<span>YTS</span> <span class=\"search-result-import-path\">popcorn-api/src/providers/movies/yts.js</span>",
     "class"
   ],
   [
-    "popcorn-api/src/config/constants.js~animeproviders",
-    "variable/index.html#static-variable-animeProviders",
-    "<span>animeProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "popcorn-api/src/config/constants.js~animemap",
+    "variable/index.html#static-variable-animeMap",
+    "<span>animeMap</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
     "variable"
   ],
   [
@@ -180,15 +228,39 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "popcorn-api/src/config/constants.js~katanimemap",
-    "variable/index.html#static-variable-katAnimeMap",
-    "<span>katAnimeMap</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "popcorn-api/src/config/constants.js~extratorrentanimeproviders",
+    "variable/index.html#static-variable-extratorrentAnimeProviders",
+    "<span>extratorrentAnimeProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
     "variable"
   ],
   [
-    "popcorn-api/src/config/constants.js~katshowmap",
-    "variable/index.html#static-variable-katShowMap",
-    "<span>katShowMap</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "popcorn-api/src/config/constants.js~extratorrentmovieproviders",
+    "variable/index.html#static-variable-extratorrentMovieProviders",
+    "<span>extratorrentMovieProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
+    "popcorn-api/src/config/constants.js~extratorrentshowproviders",
+    "variable/index.html#static-variable-extratorrentShowProviders",
+    "<span>extratorrentShowProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
+    "popcorn-api/src/config/constants.js~katanimeproviders",
+    "variable/index.html#static-variable-katAnimeProviders",
+    "<span>katAnimeProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
+    "popcorn-api/src/config/constants.js~katmovieproviders",
+    "variable/index.html#static-variable-katMovieProviders",
+    "<span>katMovieProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
+    "popcorn-api/src/config/constants.js~katshowproviders",
+    "variable/index.html#static-variable-katShowProviders",
+    "<span>katShowProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
     "variable"
   ],
   [
@@ -204,9 +276,15 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "popcorn-api/src/config/constants.js~movieproviders",
-    "variable/index.html#static-variable-movieProviders",
-    "<span>movieProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "popcorn-api/src/config/constants.js~moviemap",
+    "variable/index.html#static-variable-movieMap",
+    "<span>movieMap</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
+    "popcorn-api/src/config/constants.js~nyaaanimeproviders",
+    "variable/index.html#static-variable-nyaaAnimeProviders",
+    "<span>nyaaAnimeProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
     "variable"
   ],
   [
@@ -228,9 +306,9 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "popcorn-api/src/config/constants.js~showproviders",
-    "variable/index.html#static-variable-showProviders",
-    "<span>showProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "popcorn-api/src/config/constants.js~showmap",
+    "variable/index.html#static-variable-showMap",
+    "<span>showMap</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
     "variable"
   ],
   [
@@ -258,6 +336,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "popcorn-api/src/config/constants.js~tvdb",
+    "variable/index.html#static-variable-tvdb",
+    "<span>tvdb</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
     "popcorn-api/src/config/constants.js~updatedfile",
     "variable/index.html#static-variable-updatedFile",
     "<span>updatedFile</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
@@ -274,6 +358,36 @@ window.esdocSearchIndex = [
     "variable/index.html#static-variable-workers",
     "<span>workers</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
     "variable"
+  ],
+  [
+    "animes src/controllers/animes.js~animes,animes",
+    "test-file/test/controllers/animes.js.html#lineNumber11",
+    "Animes:",
+    "test"
+  ],
+  [
+    "animes#getanime src/controllers/animes.js~animes#getanime,animes#getanime",
+    "test-file/test/controllers/animes.js.html#lineNumber44",
+    "Animes: GET /anime/:id",
+    "test"
+  ],
+  [
+    "animes#getanimes src/controllers/animes.js~animes#getanimes,animes#getanimes",
+    "test-file/test/controllers/animes.js.html#lineNumber21",
+    "Animes: GET /animes",
+    "test"
+  ],
+  [
+    "animes#getpage src/controllers/animes.js~animes#getpage,animes#getpage",
+    "test-file/test/controllers/animes.js.html#lineNumber32",
+    "Animes: GET /animes/:page",
+    "test"
+  ],
+  [
+    "animes#getrandomanime src/controllers/animes.js~animes#getrandomanime,animes#getrandomanime",
+    "test-file/test/controllers/animes.js.html#lineNumber55",
+    "Animes: GET /random/anime",
+    "test"
   ],
   [
     "builtinexternal/ecmascriptexternal.js~array",
@@ -606,6 +720,84 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "index src/controllers/index.js~index,index",
+    "test-file/test/controllers/index.js.html#lineNumber11",
+    "Index:",
+    "test"
+  ],
+  [
+    "index#getindex src/controllers/index.js~index#getindex,index#getindex",
+    "test-file/test/controllers/index.js.html#lineNumber14",
+    "Index: GET /",
+    "test"
+  ],
+  [
+    "index#geterrorlog src/controllers/index.js~index#geterrorlog,index#geterrorlog",
+    "test-file/test/controllers/index.js.html#lineNumber25",
+    "Index: GET /logs/error",
+    "test"
+  ],
+  [
+    "movies src/controllers/movies.js~movies,movies",
+    "test-file/test/controllers/movies.js.html#lineNumber11",
+    "Movies:",
+    "test"
+  ],
+  [
+    "movies#getmovie src/controllers/movies.js~movies#getmovie,movies#getmovie",
+    "test-file/test/controllers/movies.js.html#lineNumber44",
+    "Movies: GET /movie/:id",
+    "test"
+  ],
+  [
+    "movies#getmovies src/controllers/movies.js~movies#getmovies,movies#getmovies",
+    "test-file/test/controllers/movies.js.html#lineNumber21",
+    "Movies: GET /movies",
+    "test"
+  ],
+  [
+    "movies#getpage src/controllers/movies.js~movies#getpage,movies#getpage",
+    "test-file/test/controllers/movies.js.html#lineNumber32",
+    "Movies: GET /movies/:page",
+    "test"
+  ],
+  [
+    "movies#getrandommovie src/controllers/movies.js~movies#getrandommovie,movies#getrandommovie",
+    "test-file/test/controllers/movies.js.html#lineNumber55",
+    "Movies: GET /random/movie",
+    "test"
+  ],
+  [
+    "shows src/controllers/shows.js~shows,shows",
+    "test-file/test/controllers/shows.js.html#lineNumber11",
+    "Shows:",
+    "test"
+  ],
+  [
+    "shows#getrandomshow src/controllers/shows.js~shows#getrandomshow,shows#getrandomshow",
+    "test-file/test/controllers/shows.js.html#lineNumber59",
+    "Shows: GET /random/show",
+    "test"
+  ],
+  [
+    "shows#getshow src/controllers/shows.js~shows#getshow,shows#getshow",
+    "test-file/test/controllers/shows.js.html#lineNumber48",
+    "Shows: GET /show/:id",
+    "test"
+  ],
+  [
+    "shows#getshows src/controllers/shows.js~shows#getshows,shows#getshows",
+    "test-file/test/controllers/shows.js.html#lineNumber21",
+    "Shows: GET /shows",
+    "test"
+  ],
+  [
+    "shows#getpage src/controllers/shows.js~shows#getpage,shows#getpage",
+    "test-file/test/controllers/shows.js.html#lineNumber32",
+    "Shows: GET /shows/:page",
+    "test"
+  ],
+  [
     "src/cli.js",
     "file/src/cli.js.html",
     "src/cli.js",
@@ -702,6 +894,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/config/logger.js~expresswinston",
+    "external/index.html",
+    "src/config/logger.js~ExpressWinston",
+    "external"
+  ],
+  [
     "src/config/logger.js~logger#constructor",
     "class/src/config/logger.js~Logger.html#instance-constructor-constructor",
     "src/config/logger.js~Logger#constructor",
@@ -720,6 +918,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/config/logger.js~logger._createlogger",
+    "class/src/config/logger.js~Logger.html#static-method-_createLogger",
+    "src/config/logger.js~Logger._createLogger",
+    "method"
+  ],
+  [
     "src/config/logger.js~logger._fileformatter",
     "class/src/config/logger.js~Logger.html#static-method-_fileFormatter",
     "src/config/logger.js~Logger._fileFormatter",
@@ -730,6 +934,12 @@ window.esdocSearchIndex = [
     "class/src/config/logger.js~Logger.html#static-method-_getLevelColor",
     "src/config/logger.js~Logger._getLevelColor",
     "method"
+  ],
+  [
+    "src/config/logger.js~winston",
+    "external/index.html",
+    "src/config/logger.js~Winston",
+    "external"
   ],
   [
     "src/config/routes.js",
@@ -948,6 +1158,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/index.js~index.closeapi",
+    "class/src/index.js~Index.html#static-method-closeAPI",
+    "src/index.js~Index.closeAPI",
+    "method"
+  ],
+  [
     "src/models/anime.js",
     "file/src/models/Anime.js.html",
     "src/models/Anime.js",
@@ -972,70 +1188,40 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/providers/anime/helper.js",
-    "file/src/providers/anime/helper.js.html",
-    "src/providers/anime/helper.js",
+    "src/providers/anime/extratorrent.js",
+    "file/src/providers/anime/extratorrent.js.html",
+    "src/providers/anime/extratorrent.js",
     "file"
   ],
   [
-    "src/providers/anime/helper.js~helper#_addseason",
-    "class/src/providers/anime/helper.js~Helper.html#instance-method-_addSeason",
-    "src/providers/anime/helper.js~Helper#_addSeason",
-    "method"
-  ],
-  [
-    "src/providers/anime/helper.js~helper#_hummingbird",
-    "class/src/providers/anime/helper.js~Helper.html#instance-member-_hummingbird",
-    "src/providers/anime/helper.js~Helper#_hummingbird",
+    "src/providers/anime/extratorrent.js~extratorrent#_extractor",
+    "class/src/providers/anime/extratorrent.js~ExtraTorrent.html#instance-member-_extractor",
+    "src/providers/anime/extratorrent.js~ExtraTorrent#_extractor",
     "member"
   ],
   [
-    "src/providers/anime/helper.js~helper#_updateepisode",
-    "class/src/providers/anime/helper.js~Helper.html#instance-method-_updateEpisode",
-    "src/providers/anime/helper.js~Helper#_updateEpisode",
-    "method"
-  ],
-  [
-    "src/providers/anime/helper.js~helper#_updateepisodes",
-    "class/src/providers/anime/helper.js~Helper.html#instance-method-_updateEpisodes",
-    "src/providers/anime/helper.js~Helper#_updateEpisodes",
-    "method"
-  ],
-  [
-    "src/providers/anime/helper.js~helper#_updatenumepisodes",
-    "class/src/providers/anime/helper.js~Helper.html#instance-method-_updateNumEpisodes",
-    "src/providers/anime/helper.js~Helper#_updateNumEpisodes",
-    "method"
-  ],
-  [
-    "src/providers/anime/helper.js~helper#_util",
-    "class/src/providers/anime/helper.js~Helper.html#instance-member-_util",
-    "src/providers/anime/helper.js~Helper#_util",
+    "src/providers/anime/extratorrent.js~extratorrent#_util",
+    "class/src/providers/anime/extratorrent.js~ExtraTorrent.html#instance-member-_util",
+    "src/providers/anime/extratorrent.js~ExtraTorrent#_util",
     "member"
   ],
   [
-    "src/providers/anime/helper.js~helper#addepisodes",
-    "class/src/providers/anime/helper.js~Helper.html#instance-method-addEpisodes",
-    "src/providers/anime/helper.js~Helper#addEpisodes",
+    "src/providers/anime/extratorrent.js~extratorrent#constructor",
+    "class/src/providers/anime/extratorrent.js~ExtraTorrent.html#instance-constructor-constructor",
+    "src/providers/anime/extratorrent.js~ExtraTorrent#constructor",
     "method"
   ],
   [
-    "src/providers/anime/helper.js~helper#constructor",
-    "class/src/providers/anime/helper.js~Helper.html#instance-constructor-constructor",
-    "src/providers/anime/helper.js~Helper#constructor",
-    "method"
-  ],
-  [
-    "src/providers/anime/helper.js~helper#gethummingbirdinfo",
-    "class/src/providers/anime/helper.js~Helper.html#instance-method-getHummingbirdInfo",
-    "src/providers/anime/helper.js~Helper#getHummingbirdInfo",
-    "method"
-  ],
-  [
-    "src/providers/anime/helper.js~helper#name",
-    "class/src/providers/anime/helper.js~Helper.html#instance-member-name",
-    "src/providers/anime/helper.js~Helper#name",
+    "src/providers/anime/extratorrent.js~extratorrent#name",
+    "class/src/providers/anime/extratorrent.js~ExtraTorrent.html#instance-member-name",
+    "src/providers/anime/extratorrent.js~ExtraTorrent#name",
     "member"
+  ],
+  [
+    "src/providers/anime/extratorrent.js~extratorrent#search",
+    "class/src/providers/anime/extratorrent.js~ExtraTorrent.html#instance-method-search",
+    "src/providers/anime/extratorrent.js~ExtraTorrent#search",
+    "method"
   ],
   [
     "src/providers/anime/horriblesubs.js",
@@ -1044,15 +1230,9 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/providers/anime/horriblesubs.js~horriblesubs#_getanime",
-    "class/src/providers/anime/horriblesubs.js~HorribleSubs.html#instance-method-_getAnime",
-    "src/providers/anime/horriblesubs.js~HorribleSubs#_getAnime",
-    "method"
-  ],
-  [
-    "src/providers/anime/horriblesubs.js~horriblesubs#_helper",
-    "class/src/providers/anime/horriblesubs.js~HorribleSubs.html#instance-member-_helper",
-    "src/providers/anime/horriblesubs.js~HorribleSubs#_helper",
+    "src/providers/anime/horriblesubs.js~horriblesubs#_extractor",
+    "class/src/providers/anime/horriblesubs.js~HorribleSubs.html#instance-member-_extractor",
+    "src/providers/anime/horriblesubs.js~HorribleSubs#_extractor",
     "member"
   ],
   [
@@ -1092,45 +1272,9 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/providers/anime/kat.js~kat#_extractanime",
-    "class/src/providers/anime/kat.js~KAT.html#instance-method-_extractAnime",
-    "src/providers/anime/kat.js~KAT#_extractAnime",
-    "method"
-  ],
-  [
-    "src/providers/anime/kat.js~kat#_getallkatanimes",
-    "class/src/providers/anime/kat.js~KAT.html#instance-method-_getAllKATAnimes",
-    "src/providers/anime/kat.js~KAT#_getAllKATAnimes",
-    "method"
-  ],
-  [
-    "src/providers/anime/kat.js~kat#_getalltorrents",
-    "class/src/providers/anime/kat.js~KAT.html#instance-method-_getAllTorrents",
-    "src/providers/anime/kat.js~KAT#_getAllTorrents",
-    "method"
-  ],
-  [
-    "src/providers/anime/kat.js~kat#_getanime",
-    "class/src/providers/anime/kat.js~KAT.html#instance-method-_getAnime",
-    "src/providers/anime/kat.js~KAT#_getAnime",
-    "method"
-  ],
-  [
-    "src/providers/anime/kat.js~kat#_getanimedata",
-    "class/src/providers/anime/kat.js~KAT.html#instance-method-_getAnimeData",
-    "src/providers/anime/kat.js~KAT#_getAnimeData",
-    "method"
-  ],
-  [
-    "src/providers/anime/kat.js~kat#_helper",
-    "class/src/providers/anime/kat.js~KAT.html#instance-member-_helper",
-    "src/providers/anime/kat.js~KAT#_helper",
-    "member"
-  ],
-  [
-    "src/providers/anime/kat.js~kat#_kat",
-    "class/src/providers/anime/kat.js~KAT.html#instance-member-_kat",
-    "src/providers/anime/kat.js~KAT#_kat",
+    "src/providers/anime/kat.js~kat#_extractor",
+    "class/src/providers/anime/kat.js~KAT.html#instance-member-_extractor",
+    "src/providers/anime/kat.js~KAT#_extractor",
     "member"
   ],
   [
@@ -1158,369 +1302,675 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/providers/movie/helper.js",
-    "file/src/providers/movie/helper.js.html",
-    "src/providers/movie/helper.js",
+    "src/providers/anime/nyaa.js",
+    "file/src/providers/anime/nyaa.js.html",
+    "src/providers/anime/nyaa.js",
     "file"
   ],
   [
-    "src/providers/movie/helper.js~helper#_updatemovie",
-    "class/src/providers/movie/helper.js~Helper.html#instance-method-_updateMovie",
-    "src/providers/movie/helper.js~Helper#_updateMovie",
-    "method"
-  ],
-  [
-    "src/providers/movie/helper.js~helper#_updatetorrent",
-    "class/src/providers/movie/helper.js~Helper.html#instance-method-_updateTorrent",
-    "src/providers/movie/helper.js~Helper#_updateTorrent",
-    "method"
-  ],
-  [
-    "src/providers/movie/helper.js~helper#_util",
-    "class/src/providers/movie/helper.js~Helper.html#instance-member-_util",
-    "src/providers/movie/helper.js~Helper#_util",
+    "src/providers/anime/nyaa.js~extratorrent#_extractor",
+    "class/src/providers/anime/nyaa.js~ExtraTorrent.html#instance-member-_extractor",
+    "src/providers/anime/nyaa.js~ExtraTorrent#_extractor",
     "member"
   ],
   [
-    "src/providers/movie/helper.js~helper#addtorrents",
-    "class/src/providers/movie/helper.js~Helper.html#instance-method-addTorrents",
-    "src/providers/movie/helper.js~Helper#addTorrents",
-    "method"
-  ],
-  [
-    "src/providers/movie/helper.js~helper#constructor",
-    "class/src/providers/movie/helper.js~Helper.html#instance-constructor-constructor",
-    "src/providers/movie/helper.js~Helper#constructor",
-    "method"
-  ],
-  [
-    "src/providers/movie/helper.js~helper#gettraktinfo",
-    "class/src/providers/movie/helper.js~Helper.html#instance-method-getTraktInfo",
-    "src/providers/movie/helper.js~Helper#getTraktInfo",
-    "method"
-  ],
-  [
-    "src/providers/movie/helper.js~helper#name",
-    "class/src/providers/movie/helper.js~Helper.html#instance-member-name",
-    "src/providers/movie/helper.js~Helper#name",
+    "src/providers/anime/nyaa.js~extratorrent#_util",
+    "class/src/providers/anime/nyaa.js~ExtraTorrent.html#instance-member-_util",
+    "src/providers/anime/nyaa.js~ExtraTorrent#_util",
     "member"
   ],
   [
-    "src/providers/movie/kat.js",
-    "file/src/providers/movie/kat.js.html",
-    "src/providers/movie/kat.js",
+    "src/providers/anime/nyaa.js~extratorrent#constructor",
+    "class/src/providers/anime/nyaa.js~ExtraTorrent.html#instance-constructor-constructor",
+    "src/providers/anime/nyaa.js~ExtraTorrent#constructor",
+    "method"
+  ],
+  [
+    "src/providers/anime/nyaa.js~extratorrent#name",
+    "class/src/providers/anime/nyaa.js~ExtraTorrent.html#instance-member-name",
+    "src/providers/anime/nyaa.js~ExtraTorrent#name",
+    "member"
+  ],
+  [
+    "src/providers/anime/nyaa.js~extratorrent#search",
+    "class/src/providers/anime/nyaa.js~ExtraTorrent.html#instance-method-search",
+    "src/providers/anime/nyaa.js~ExtraTorrent#search",
+    "method"
+  ],
+  [
+    "src/providers/extractors/animeextractor.js",
+    "file/src/providers/extractors/animeextractor.js.html",
+    "src/providers/extractors/animeextractor.js",
     "file"
   ],
   [
-    "src/providers/movie/kat.js~kat#_extractmovie",
-    "class/src/providers/movie/kat.js~KAT.html#instance-method-_extractMovie",
-    "src/providers/movie/kat.js~KAT#_extractMovie",
+    "src/providers/extractors/animeextractor.js~extractor#_extractanime",
+    "class/src/providers/extractors/animeextractor.js~Extractor.html#instance-method-_extractAnime",
+    "src/providers/extractors/animeextractor.js~Extractor#_extractAnime",
     "method"
   ],
   [
-    "src/providers/movie/kat.js~kat#_getallkatmovies",
-    "class/src/providers/movie/kat.js~KAT.html#instance-method-_getAllKATMovies",
-    "src/providers/movie/kat.js~KAT#_getAllKATMovies",
+    "src/providers/extractors/animeextractor.js~extractor#_getallanimes",
+    "class/src/providers/extractors/animeextractor.js~Extractor.html#instance-method-_getAllAnimes",
+    "src/providers/extractors/animeextractor.js~Extractor#_getAllAnimes",
     "method"
   ],
   [
-    "src/providers/movie/kat.js~kat#_getalltorrents",
-    "class/src/providers/movie/kat.js~KAT.html#instance-method-_getAllTorrents",
-    "src/providers/movie/kat.js~KAT#_getAllTorrents",
+    "src/providers/extractors/animeextractor.js~extractor#_getanimedata",
+    "class/src/providers/extractors/animeextractor.js~Extractor.html#instance-method-_getAnimeData",
+    "src/providers/extractors/animeextractor.js~Extractor#_getAnimeData",
     "method"
   ],
   [
-    "src/providers/movie/kat.js~kat#_getmovie",
-    "class/src/providers/movie/kat.js~KAT.html#instance-method-_getMovie",
-    "src/providers/movie/kat.js~KAT#_getMovie",
-    "method"
-  ],
-  [
-    "src/providers/movie/kat.js~kat#_getmoviedata",
-    "class/src/providers/movie/kat.js~KAT.html#instance-method-_getMovieData",
-    "src/providers/movie/kat.js~KAT#_getMovieData",
-    "method"
-  ],
-  [
-    "src/providers/movie/kat.js~kat#_helper",
-    "class/src/providers/movie/kat.js~KAT.html#instance-member-_helper",
-    "src/providers/movie/kat.js~KAT#_helper",
+    "src/providers/extractors/animeextractor.js~extractor#_helper",
+    "class/src/providers/extractors/animeextractor.js~Extractor.html#instance-member-_helper",
+    "src/providers/extractors/animeextractor.js~Extractor#_helper",
     "member"
   ],
   [
-    "src/providers/movie/kat.js~kat#_kat",
-    "class/src/providers/movie/kat.js~KAT.html#instance-member-_kat",
-    "src/providers/movie/kat.js~KAT#_kat",
+    "src/providers/extractors/animeextractor.js~extractor#_util",
+    "class/src/providers/extractors/animeextractor.js~Extractor.html#instance-member-_util",
+    "src/providers/extractors/animeextractor.js~Extractor#_util",
     "member"
   ],
   [
-    "src/providers/movie/kat.js~kat#_util",
-    "class/src/providers/movie/kat.js~KAT.html#instance-member-_util",
-    "src/providers/movie/kat.js~KAT#_util",
-    "member"
-  ],
-  [
-    "src/providers/movie/kat.js~kat#constructor",
-    "class/src/providers/movie/kat.js~KAT.html#instance-constructor-constructor",
-    "src/providers/movie/kat.js~KAT#constructor",
+    "src/providers/extractors/animeextractor.js~extractor#constructor",
+    "class/src/providers/extractors/animeextractor.js~Extractor.html#instance-constructor-constructor",
+    "src/providers/extractors/animeextractor.js~Extractor#constructor",
     "method"
   ],
   [
-    "src/providers/movie/kat.js~kat#name",
-    "class/src/providers/movie/kat.js~KAT.html#instance-member-name",
-    "src/providers/movie/kat.js~KAT#name",
-    "member"
-  ],
-  [
-    "src/providers/movie/kat.js~kat#search",
-    "class/src/providers/movie/kat.js~KAT.html#instance-method-search",
-    "src/providers/movie/kat.js~KAT#search",
+    "src/providers/extractors/animeextractor.js~extractor#getanime",
+    "class/src/providers/extractors/animeextractor.js~Extractor.html#instance-method-getAnime",
+    "src/providers/extractors/animeextractor.js~Extractor#getAnime",
     "method"
   ],
   [
-    "src/providers/movie/yts.js",
-    "file/src/providers/movie/yts.js.html",
-    "src/providers/movie/yts.js",
+    "src/providers/extractors/animeextractor.js~extractor#search",
+    "class/src/providers/extractors/animeextractor.js~Extractor.html#instance-method-search",
+    "src/providers/extractors/animeextractor.js~Extractor#search",
+    "method"
+  ],
+  [
+    "src/providers/extractors/baseextractor.js",
+    "file/src/providers/extractors/baseextractor.js.html",
+    "src/providers/extractors/baseextractor.js",
     "file"
   ],
   [
-    "src/providers/movie/yts.js~yts#_formatpage",
-    "class/src/providers/movie/yts.js~YTS.html#instance-method-_formatPage",
-    "src/providers/movie/yts.js~YTS#_formatPage",
-    "method"
-  ],
-  [
-    "src/providers/movie/yts.js~yts#_getmovies",
-    "class/src/providers/movie/yts.js~YTS.html#instance-method-_getMovies",
-    "src/providers/movie/yts.js~YTS#_getMovies",
-    "method"
-  ],
-  [
-    "src/providers/movie/yts.js~yts#_getonepage",
-    "class/src/providers/movie/yts.js~YTS.html#instance-method-_getOnePage",
-    "src/providers/movie/yts.js~YTS#_getOnePage",
-    "method"
-  ],
-  [
-    "src/providers/movie/yts.js~yts#_gettotalpages",
-    "class/src/providers/movie/yts.js~YTS.html#instance-method-_getTotalPages",
-    "src/providers/movie/yts.js~YTS#_getTotalPages",
-    "method"
-  ],
-  [
-    "src/providers/movie/yts.js~yts#_helper",
-    "class/src/providers/movie/yts.js~YTS.html#instance-member-_helper",
-    "src/providers/movie/yts.js~YTS#_helper",
+    "src/providers/extractors/baseextractor.js~baseextractor#_contentprovider",
+    "class/src/providers/extractors/baseextractor.js~BaseExtractor.html#instance-member-_contentProvider",
+    "src/providers/extractors/baseextractor.js~BaseExtractor#_contentProvider",
     "member"
   ],
   [
-    "src/providers/movie/yts.js~yts#_request",
-    "class/src/providers/movie/yts.js~YTS.html#instance-member-_request",
-    "src/providers/movie/yts.js~YTS#_request",
-    "member"
-  ],
-  [
-    "src/providers/movie/yts.js~yts#_util",
-    "class/src/providers/movie/yts.js~YTS.html#instance-member-_util",
-    "src/providers/movie/yts.js~YTS#_util",
-    "member"
-  ],
-  [
-    "src/providers/movie/yts.js~yts#constructor",
-    "class/src/providers/movie/yts.js~YTS.html#instance-constructor-constructor",
-    "src/providers/movie/yts.js~YTS#constructor",
+    "src/providers/extractors/baseextractor.js~baseextractor#_getalltorrents",
+    "class/src/providers/extractors/baseextractor.js~BaseExtractor.html#instance-method-_getAllTorrents",
+    "src/providers/extractors/baseextractor.js~BaseExtractor#_getAllTorrents",
     "method"
   ],
   [
-    "src/providers/movie/yts.js~yts#name",
-    "class/src/providers/movie/yts.js~YTS.html#instance-member-name",
-    "src/providers/movie/yts.js~YTS#name",
+    "src/providers/extractors/baseextractor.js~baseextractor#_util",
+    "class/src/providers/extractors/baseextractor.js~BaseExtractor.html#instance-member-_util",
+    "src/providers/extractors/baseextractor.js~BaseExtractor#_util",
     "member"
   ],
   [
-    "src/providers/movie/yts.js~yts#search",
-    "class/src/providers/movie/yts.js~YTS.html#instance-method-search",
-    "src/providers/movie/yts.js~YTS#search",
+    "src/providers/extractors/baseextractor.js~baseextractor#constructor",
+    "class/src/providers/extractors/baseextractor.js~BaseExtractor.html#instance-constructor-constructor",
+    "src/providers/extractors/baseextractor.js~BaseExtractor#constructor",
     "method"
   ],
   [
-    "src/providers/show/eztv.js",
-    "file/src/providers/show/eztv.js.html",
-    "src/providers/show/eztv.js",
+    "src/providers/extractors/baseextractor.js~baseextractor#name",
+    "class/src/providers/extractors/baseextractor.js~BaseExtractor.html#instance-member-name",
+    "src/providers/extractors/baseextractor.js~BaseExtractor#name",
+    "member"
+  ],
+  [
+    "src/providers/extractors/movieextractor.js",
+    "file/src/providers/extractors/movieextractor.js.html",
+    "src/providers/extractors/movieextractor.js",
     "file"
   ],
   [
-    "src/providers/show/eztv.js~eztv#_eztv",
-    "class/src/providers/show/eztv.js~EZTV.html#instance-member-_eztv",
-    "src/providers/show/eztv.js~EZTV#_eztv",
-    "member"
-  ],
-  [
-    "src/providers/show/eztv.js~eztv#_getshow",
-    "class/src/providers/show/eztv.js~EZTV.html#instance-method-_getShow",
-    "src/providers/show/eztv.js~EZTV#_getShow",
+    "src/providers/extractors/movieextractor.js~extractor#_extractmovie",
+    "class/src/providers/extractors/movieextractor.js~Extractor.html#instance-method-_extractMovie",
+    "src/providers/extractors/movieextractor.js~Extractor#_extractMovie",
     "method"
   ],
   [
-    "src/providers/show/eztv.js~eztv#_helper",
-    "class/src/providers/show/eztv.js~EZTV.html#instance-member-_helper",
-    "src/providers/show/eztv.js~EZTV#_helper",
-    "member"
-  ],
-  [
-    "src/providers/show/eztv.js~eztv#_util",
-    "class/src/providers/show/eztv.js~EZTV.html#instance-member-_util",
-    "src/providers/show/eztv.js~EZTV#_util",
-    "member"
-  ],
-  [
-    "src/providers/show/eztv.js~eztv#constructor",
-    "class/src/providers/show/eztv.js~EZTV.html#instance-constructor-constructor",
-    "src/providers/show/eztv.js~EZTV#constructor",
+    "src/providers/extractors/movieextractor.js~extractor#_getallmovies",
+    "class/src/providers/extractors/movieextractor.js~Extractor.html#instance-method-_getAllMovies",
+    "src/providers/extractors/movieextractor.js~Extractor#_getAllMovies",
     "method"
   ],
   [
-    "src/providers/show/eztv.js~eztv#name",
-    "class/src/providers/show/eztv.js~EZTV.html#instance-member-name",
-    "src/providers/show/eztv.js~EZTV#name",
-    "member"
-  ],
-  [
-    "src/providers/show/eztv.js~eztv#search",
-    "class/src/providers/show/eztv.js~EZTV.html#instance-method-search",
-    "src/providers/show/eztv.js~EZTV#search",
+    "src/providers/extractors/movieextractor.js~extractor#_getmovie",
+    "class/src/providers/extractors/movieextractor.js~Extractor.html#instance-method-_getMovie",
+    "src/providers/extractors/movieextractor.js~Extractor#_getMovie",
     "method"
   ],
   [
-    "src/providers/show/helper.js",
-    "file/src/providers/show/helper.js.html",
-    "src/providers/show/helper.js",
+    "src/providers/extractors/movieextractor.js~extractor#_getmoviedata",
+    "class/src/providers/extractors/movieextractor.js~Extractor.html#instance-method-_getMovieData",
+    "src/providers/extractors/movieextractor.js~Extractor#_getMovieData",
+    "method"
+  ],
+  [
+    "src/providers/extractors/movieextractor.js~extractor#_helper",
+    "class/src/providers/extractors/movieextractor.js~Extractor.html#instance-member-_helper",
+    "src/providers/extractors/movieextractor.js~Extractor#_helper",
+    "member"
+  ],
+  [
+    "src/providers/extractors/movieextractor.js~extractor#_util",
+    "class/src/providers/extractors/movieextractor.js~Extractor.html#instance-member-_util",
+    "src/providers/extractors/movieextractor.js~Extractor#_util",
+    "member"
+  ],
+  [
+    "src/providers/extractors/movieextractor.js~extractor#constructor",
+    "class/src/providers/extractors/movieextractor.js~Extractor.html#instance-constructor-constructor",
+    "src/providers/extractors/movieextractor.js~Extractor#constructor",
+    "method"
+  ],
+  [
+    "src/providers/extractors/movieextractor.js~extractor#search",
+    "class/src/providers/extractors/movieextractor.js~Extractor.html#instance-method-search",
+    "src/providers/extractors/movieextractor.js~Extractor#search",
+    "method"
+  ],
+  [
+    "src/providers/extractors/showextractor.js",
+    "file/src/providers/extractors/showextractor.js.html",
+    "src/providers/extractors/showextractor.js",
     "file"
   ],
   [
-    "src/providers/show/helper.js~helper#_addseason",
-    "class/src/providers/show/helper.js~Helper.html#instance-method-_addSeason",
-    "src/providers/show/helper.js~Helper#_addSeason",
+    "src/providers/extractors/showextractor.js~extractor#_extractshow",
+    "class/src/providers/extractors/showextractor.js~Extractor.html#instance-method-_extractShow",
+    "src/providers/extractors/showextractor.js~Extractor#_extractShow",
     "method"
   ],
   [
-    "src/providers/show/helper.js~helper#_updateepisode",
-    "class/src/providers/show/helper.js~Helper.html#instance-method-_updateEpisode",
-    "src/providers/show/helper.js~Helper#_updateEpisode",
+    "src/providers/extractors/showextractor.js~extractor#_getallshows",
+    "class/src/providers/extractors/showextractor.js~Extractor.html#instance-method-_getAllShows",
+    "src/providers/extractors/showextractor.js~Extractor#_getAllShows",
     "method"
   ],
   [
-    "src/providers/show/helper.js~helper#_updateepisodes",
-    "class/src/providers/show/helper.js~Helper.html#instance-method-_updateEpisodes",
-    "src/providers/show/helper.js~Helper#_updateEpisodes",
+    "src/providers/extractors/showextractor.js~extractor#_getshowdata",
+    "class/src/providers/extractors/showextractor.js~Extractor.html#instance-method-_getShowData",
+    "src/providers/extractors/showextractor.js~Extractor#_getShowData",
     "method"
   ],
   [
-    "src/providers/show/helper.js~helper#_updatenumseasons",
-    "class/src/providers/show/helper.js~Helper.html#instance-method-_updateNumSeasons",
-    "src/providers/show/helper.js~Helper#_updateNumSeasons",
-    "method"
-  ],
-  [
-    "src/providers/show/helper.js~helper#_util",
-    "class/src/providers/show/helper.js~Helper.html#instance-member-_util",
-    "src/providers/show/helper.js~Helper#_util",
+    "src/providers/extractors/showextractor.js~extractor#_helper",
+    "class/src/providers/extractors/showextractor.js~Extractor.html#instance-member-_helper",
+    "src/providers/extractors/showextractor.js~Extractor#_helper",
     "member"
   ],
   [
-    "src/providers/show/helper.js~helper#addepisodes",
-    "class/src/providers/show/helper.js~Helper.html#instance-method-addEpisodes",
-    "src/providers/show/helper.js~Helper#addEpisodes",
-    "method"
-  ],
-  [
-    "src/providers/show/helper.js~helper#constructor",
-    "class/src/providers/show/helper.js~Helper.html#instance-constructor-constructor",
-    "src/providers/show/helper.js~Helper#constructor",
-    "method"
-  ],
-  [
-    "src/providers/show/helper.js~helper#gettraktinfo",
-    "class/src/providers/show/helper.js~Helper.html#instance-method-getTraktInfo",
-    "src/providers/show/helper.js~Helper#getTraktInfo",
-    "method"
-  ],
-  [
-    "src/providers/show/helper.js~helper#name",
-    "class/src/providers/show/helper.js~Helper.html#instance-member-name",
-    "src/providers/show/helper.js~Helper#name",
+    "src/providers/extractors/showextractor.js~extractor#_util",
+    "class/src/providers/extractors/showextractor.js~Extractor.html#instance-member-_util",
+    "src/providers/extractors/showextractor.js~Extractor#_util",
     "member"
   ],
   [
-    "src/providers/show/kat.js",
-    "file/src/providers/show/kat.js.html",
-    "src/providers/show/kat.js",
+    "src/providers/extractors/showextractor.js~extractor#constructor",
+    "class/src/providers/extractors/showextractor.js~Extractor.html#instance-constructor-constructor",
+    "src/providers/extractors/showextractor.js~Extractor#constructor",
+    "method"
+  ],
+  [
+    "src/providers/extractors/showextractor.js~extractor#getshow",
+    "class/src/providers/extractors/showextractor.js~Extractor.html#instance-method-getShow",
+    "src/providers/extractors/showextractor.js~Extractor#getShow",
+    "method"
+  ],
+  [
+    "src/providers/extractors/showextractor.js~extractor#search",
+    "class/src/providers/extractors/showextractor.js~Extractor.html#instance-method-search",
+    "src/providers/extractors/showextractor.js~Extractor#search",
+    "method"
+  ],
+  [
+    "src/providers/helpers/animehelper.js",
+    "file/src/providers/helpers/animehelper.js.html",
+    "src/providers/helpers/animehelper.js",
     "file"
   ],
   [
-    "src/providers/show/kat.js~kat#_extractshow",
-    "class/src/providers/show/kat.js~KAT.html#instance-method-_extractShow",
-    "src/providers/show/kat.js~KAT#_extractShow",
+    "src/providers/helpers/animehelper.js~helper#_addseason",
+    "class/src/providers/helpers/animehelper.js~Helper.html#instance-method-_addSeason",
+    "src/providers/helpers/animehelper.js~Helper#_addSeason",
     "method"
   ],
   [
-    "src/providers/show/kat.js~kat#_getallkatshows",
-    "class/src/providers/show/kat.js~KAT.html#instance-method-_getAllKATShows",
-    "src/providers/show/kat.js~KAT#_getAllKATShows",
-    "method"
-  ],
-  [
-    "src/providers/show/kat.js~kat#_getalltorrents",
-    "class/src/providers/show/kat.js~KAT.html#instance-method-_getAllTorrents",
-    "src/providers/show/kat.js~KAT#_getAllTorrents",
-    "method"
-  ],
-  [
-    "src/providers/show/kat.js~kat#_getshow",
-    "class/src/providers/show/kat.js~KAT.html#instance-method-_getShow",
-    "src/providers/show/kat.js~KAT#_getShow",
-    "method"
-  ],
-  [
-    "src/providers/show/kat.js~kat#_getshowdata",
-    "class/src/providers/show/kat.js~KAT.html#instance-method-_getShowData",
-    "src/providers/show/kat.js~KAT#_getShowData",
-    "method"
-  ],
-  [
-    "src/providers/show/kat.js~kat#_helper",
-    "class/src/providers/show/kat.js~KAT.html#instance-member-_helper",
-    "src/providers/show/kat.js~KAT#_helper",
+    "src/providers/helpers/animehelper.js~helper#_hummingbird",
+    "class/src/providers/helpers/animehelper.js~Helper.html#instance-member-_hummingbird",
+    "src/providers/helpers/animehelper.js~Helper#_hummingbird",
     "member"
   ],
   [
-    "src/providers/show/kat.js~kat#_kat",
-    "class/src/providers/show/kat.js~KAT.html#instance-member-_kat",
-    "src/providers/show/kat.js~KAT#_kat",
-    "member"
-  ],
-  [
-    "src/providers/show/kat.js~kat#_util",
-    "class/src/providers/show/kat.js~KAT.html#instance-member-_util",
-    "src/providers/show/kat.js~KAT#_util",
-    "member"
-  ],
-  [
-    "src/providers/show/kat.js~kat#constructor",
-    "class/src/providers/show/kat.js~KAT.html#instance-constructor-constructor",
-    "src/providers/show/kat.js~KAT#constructor",
+    "src/providers/helpers/animehelper.js~helper#_updateepisode",
+    "class/src/providers/helpers/animehelper.js~Helper.html#instance-method-_updateEpisode",
+    "src/providers/helpers/animehelper.js~Helper#_updateEpisode",
     "method"
   ],
   [
-    "src/providers/show/kat.js~kat#name",
-    "class/src/providers/show/kat.js~KAT.html#instance-member-name",
-    "src/providers/show/kat.js~KAT#name",
+    "src/providers/helpers/animehelper.js~helper#_updateepisodes",
+    "class/src/providers/helpers/animehelper.js~Helper.html#instance-method-_updateEpisodes",
+    "src/providers/helpers/animehelper.js~Helper#_updateEpisodes",
+    "method"
+  ],
+  [
+    "src/providers/helpers/animehelper.js~helper#_updatenumseasons",
+    "class/src/providers/helpers/animehelper.js~Helper.html#instance-method-_updateNumSeasons",
+    "src/providers/helpers/animehelper.js~Helper#_updateNumSeasons",
+    "method"
+  ],
+  [
+    "src/providers/helpers/animehelper.js~helper#_util",
+    "class/src/providers/helpers/animehelper.js~Helper.html#instance-member-_util",
+    "src/providers/helpers/animehelper.js~Helper#_util",
     "member"
   ],
   [
-    "src/providers/show/kat.js~kat#search",
-    "class/src/providers/show/kat.js~KAT.html#instance-method-search",
-    "src/providers/show/kat.js~KAT#search",
+    "src/providers/helpers/animehelper.js~helper#addepisodes",
+    "class/src/providers/helpers/animehelper.js~Helper.html#instance-method-addEpisodes",
+    "src/providers/helpers/animehelper.js~Helper#addEpisodes",
+    "method"
+  ],
+  [
+    "src/providers/helpers/animehelper.js~helper#constructor",
+    "class/src/providers/helpers/animehelper.js~Helper.html#instance-constructor-constructor",
+    "src/providers/helpers/animehelper.js~Helper#constructor",
+    "method"
+  ],
+  [
+    "src/providers/helpers/animehelper.js~helper#gethummingbirdinfo",
+    "class/src/providers/helpers/animehelper.js~Helper.html#instance-method-getHummingbirdInfo",
+    "src/providers/helpers/animehelper.js~Helper#getHummingbirdInfo",
+    "method"
+  ],
+  [
+    "src/providers/helpers/animehelper.js~helper#name",
+    "class/src/providers/helpers/animehelper.js~Helper.html#instance-member-name",
+    "src/providers/helpers/animehelper.js~Helper#name",
+    "member"
+  ],
+  [
+    "src/providers/helpers/moviehelper.js",
+    "file/src/providers/helpers/moviehelper.js.html",
+    "src/providers/helpers/moviehelper.js",
+    "file"
+  ],
+  [
+    "src/providers/helpers/moviehelper.js~helper#_updatemovie",
+    "class/src/providers/helpers/moviehelper.js~Helper.html#instance-method-_updateMovie",
+    "src/providers/helpers/moviehelper.js~Helper#_updateMovie",
+    "method"
+  ],
+  [
+    "src/providers/helpers/moviehelper.js~helper#_updatetorrent",
+    "class/src/providers/helpers/moviehelper.js~Helper.html#instance-method-_updateTorrent",
+    "src/providers/helpers/moviehelper.js~Helper#_updateTorrent",
+    "method"
+  ],
+  [
+    "src/providers/helpers/moviehelper.js~helper#_util",
+    "class/src/providers/helpers/moviehelper.js~Helper.html#instance-member-_util",
+    "src/providers/helpers/moviehelper.js~Helper#_util",
+    "member"
+  ],
+  [
+    "src/providers/helpers/moviehelper.js~helper#addtorrents",
+    "class/src/providers/helpers/moviehelper.js~Helper.html#instance-method-addTorrents",
+    "src/providers/helpers/moviehelper.js~Helper#addTorrents",
+    "method"
+  ],
+  [
+    "src/providers/helpers/moviehelper.js~helper#constructor",
+    "class/src/providers/helpers/moviehelper.js~Helper.html#instance-constructor-constructor",
+    "src/providers/helpers/moviehelper.js~Helper#constructor",
+    "method"
+  ],
+  [
+    "src/providers/helpers/moviehelper.js~helper#gettraktinfo",
+    "class/src/providers/helpers/moviehelper.js~Helper.html#instance-method-getTraktInfo",
+    "src/providers/helpers/moviehelper.js~Helper#getTraktInfo",
+    "method"
+  ],
+  [
+    "src/providers/helpers/moviehelper.js~helper#name",
+    "class/src/providers/helpers/moviehelper.js~Helper.html#instance-member-name",
+    "src/providers/helpers/moviehelper.js~Helper#name",
+    "member"
+  ],
+  [
+    "src/providers/helpers/showhelper.js",
+    "file/src/providers/helpers/showhelper.js.html",
+    "src/providers/helpers/showhelper.js",
+    "file"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#_adddatebasedseason",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_addDateBasedSeason",
+    "src/providers/helpers/showhelper.js~Helper#_addDateBasedSeason",
+    "method"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#_addseason",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_addSeason",
+    "src/providers/helpers/showhelper.js~Helper#_addSeason",
+    "method"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#_addseasonalseason",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_addSeasonalSeason",
+    "src/providers/helpers/showhelper.js~Helper#_addSeasonalSeason",
+    "method"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#_updateepisode",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_updateEpisode",
+    "src/providers/helpers/showhelper.js~Helper#_updateEpisode",
+    "method"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#_updateepisodes",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_updateEpisodes",
+    "src/providers/helpers/showhelper.js~Helper#_updateEpisodes",
+    "method"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#_updatenumseasons",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_updateNumSeasons",
+    "src/providers/helpers/showhelper.js~Helper#_updateNumSeasons",
+    "method"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#_util",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-member-_util",
+    "src/providers/helpers/showhelper.js~Helper#_util",
+    "member"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#addepisodes",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-addEpisodes",
+    "src/providers/helpers/showhelper.js~Helper#addEpisodes",
+    "method"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#constructor",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-constructor-constructor",
+    "src/providers/helpers/showhelper.js~Helper#constructor",
+    "method"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#gettraktinfo",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-getTraktInfo",
+    "src/providers/helpers/showhelper.js~Helper#getTraktInfo",
+    "method"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#name",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-member-name",
+    "src/providers/helpers/showhelper.js~Helper#name",
+    "member"
+  ],
+  [
+    "src/providers/movies/extratorrent.js",
+    "file/src/providers/movies/extratorrent.js.html",
+    "src/providers/movies/extratorrent.js",
+    "file"
+  ],
+  [
+    "src/providers/movies/extratorrent.js~extratorrent#_extractor",
+    "class/src/providers/movies/extratorrent.js~ExtraTorrent.html#instance-member-_extractor",
+    "src/providers/movies/extratorrent.js~ExtraTorrent#_extractor",
+    "member"
+  ],
+  [
+    "src/providers/movies/extratorrent.js~extratorrent#_util",
+    "class/src/providers/movies/extratorrent.js~ExtraTorrent.html#instance-member-_util",
+    "src/providers/movies/extratorrent.js~ExtraTorrent#_util",
+    "member"
+  ],
+  [
+    "src/providers/movies/extratorrent.js~extratorrent#constructor",
+    "class/src/providers/movies/extratorrent.js~ExtraTorrent.html#instance-constructor-constructor",
+    "src/providers/movies/extratorrent.js~ExtraTorrent#constructor",
+    "method"
+  ],
+  [
+    "src/providers/movies/extratorrent.js~extratorrent#name",
+    "class/src/providers/movies/extratorrent.js~ExtraTorrent.html#instance-member-name",
+    "src/providers/movies/extratorrent.js~ExtraTorrent#name",
+    "member"
+  ],
+  [
+    "src/providers/movies/extratorrent.js~extratorrent#search",
+    "class/src/providers/movies/extratorrent.js~ExtraTorrent.html#instance-method-search",
+    "src/providers/movies/extratorrent.js~ExtraTorrent#search",
+    "method"
+  ],
+  [
+    "src/providers/movies/kat.js",
+    "file/src/providers/movies/kat.js.html",
+    "src/providers/movies/kat.js",
+    "file"
+  ],
+  [
+    "src/providers/movies/kat.js~kat#_extractor",
+    "class/src/providers/movies/kat.js~KAT.html#instance-member-_extractor",
+    "src/providers/movies/kat.js~KAT#_extractor",
+    "member"
+  ],
+  [
+    "src/providers/movies/kat.js~kat#_util",
+    "class/src/providers/movies/kat.js~KAT.html#instance-member-_util",
+    "src/providers/movies/kat.js~KAT#_util",
+    "member"
+  ],
+  [
+    "src/providers/movies/kat.js~kat#constructor",
+    "class/src/providers/movies/kat.js~KAT.html#instance-constructor-constructor",
+    "src/providers/movies/kat.js~KAT#constructor",
+    "method"
+  ],
+  [
+    "src/providers/movies/kat.js~kat#name",
+    "class/src/providers/movies/kat.js~KAT.html#instance-member-name",
+    "src/providers/movies/kat.js~KAT#name",
+    "member"
+  ],
+  [
+    "src/providers/movies/kat.js~kat#search",
+    "class/src/providers/movies/kat.js~KAT.html#instance-method-search",
+    "src/providers/movies/kat.js~KAT#search",
+    "method"
+  ],
+  [
+    "src/providers/movies/yts.js",
+    "file/src/providers/movies/yts.js.html",
+    "src/providers/movies/yts.js",
+    "file"
+  ],
+  [
+    "src/providers/movies/yts.js~yts#_formatpage",
+    "class/src/providers/movies/yts.js~YTS.html#instance-method-_formatPage",
+    "src/providers/movies/yts.js~YTS#_formatPage",
+    "method"
+  ],
+  [
+    "src/providers/movies/yts.js~yts#_getmovies",
+    "class/src/providers/movies/yts.js~YTS.html#instance-method-_getMovies",
+    "src/providers/movies/yts.js~YTS#_getMovies",
+    "method"
+  ],
+  [
+    "src/providers/movies/yts.js~yts#_getonepage",
+    "class/src/providers/movies/yts.js~YTS.html#instance-method-_getOnePage",
+    "src/providers/movies/yts.js~YTS#_getOnePage",
+    "method"
+  ],
+  [
+    "src/providers/movies/yts.js~yts#_gettotalpages",
+    "class/src/providers/movies/yts.js~YTS.html#instance-method-_getTotalPages",
+    "src/providers/movies/yts.js~YTS#_getTotalPages",
+    "method"
+  ],
+  [
+    "src/providers/movies/yts.js~yts#_helper",
+    "class/src/providers/movies/yts.js~YTS.html#instance-member-_helper",
+    "src/providers/movies/yts.js~YTS#_helper",
+    "member"
+  ],
+  [
+    "src/providers/movies/yts.js~yts#_request",
+    "class/src/providers/movies/yts.js~YTS.html#instance-member-_request",
+    "src/providers/movies/yts.js~YTS#_request",
+    "member"
+  ],
+  [
+    "src/providers/movies/yts.js~yts#_util",
+    "class/src/providers/movies/yts.js~YTS.html#instance-member-_util",
+    "src/providers/movies/yts.js~YTS#_util",
+    "member"
+  ],
+  [
+    "src/providers/movies/yts.js~yts#constructor",
+    "class/src/providers/movies/yts.js~YTS.html#instance-constructor-constructor",
+    "src/providers/movies/yts.js~YTS#constructor",
+    "method"
+  ],
+  [
+    "src/providers/movies/yts.js~yts#name",
+    "class/src/providers/movies/yts.js~YTS.html#instance-member-name",
+    "src/providers/movies/yts.js~YTS#name",
+    "member"
+  ],
+  [
+    "src/providers/movies/yts.js~yts#search",
+    "class/src/providers/movies/yts.js~YTS.html#instance-method-search",
+    "src/providers/movies/yts.js~YTS#search",
+    "method"
+  ],
+  [
+    "src/providers/shows/extratorrent.js",
+    "file/src/providers/shows/extratorrent.js.html",
+    "src/providers/shows/extratorrent.js",
+    "file"
+  ],
+  [
+    "src/providers/shows/extratorrent.js~extratorrent#_extractor",
+    "class/src/providers/shows/extratorrent.js~ExtraTorrent.html#instance-member-_extractor",
+    "src/providers/shows/extratorrent.js~ExtraTorrent#_extractor",
+    "member"
+  ],
+  [
+    "src/providers/shows/extratorrent.js~extratorrent#_util",
+    "class/src/providers/shows/extratorrent.js~ExtraTorrent.html#instance-member-_util",
+    "src/providers/shows/extratorrent.js~ExtraTorrent#_util",
+    "member"
+  ],
+  [
+    "src/providers/shows/extratorrent.js~extratorrent#constructor",
+    "class/src/providers/shows/extratorrent.js~ExtraTorrent.html#instance-constructor-constructor",
+    "src/providers/shows/extratorrent.js~ExtraTorrent#constructor",
+    "method"
+  ],
+  [
+    "src/providers/shows/extratorrent.js~extratorrent#name",
+    "class/src/providers/shows/extratorrent.js~ExtraTorrent.html#instance-member-name",
+    "src/providers/shows/extratorrent.js~ExtraTorrent#name",
+    "member"
+  ],
+  [
+    "src/providers/shows/extratorrent.js~extratorrent#search",
+    "class/src/providers/shows/extratorrent.js~ExtraTorrent.html#instance-method-search",
+    "src/providers/shows/extratorrent.js~ExtraTorrent#search",
+    "method"
+  ],
+  [
+    "src/providers/shows/eztv.js",
+    "file/src/providers/shows/eztv.js.html",
+    "src/providers/shows/eztv.js",
+    "file"
+  ],
+  [
+    "src/providers/shows/eztv.js~eztv#_extractor",
+    "class/src/providers/shows/eztv.js~EZTV.html#instance-member-_extractor",
+    "src/providers/shows/eztv.js~EZTV#_extractor",
+    "member"
+  ],
+  [
+    "src/providers/shows/eztv.js~eztv#_eztv",
+    "class/src/providers/shows/eztv.js~EZTV.html#instance-member-_eztv",
+    "src/providers/shows/eztv.js~EZTV#_eztv",
+    "member"
+  ],
+  [
+    "src/providers/shows/eztv.js~eztv#_util",
+    "class/src/providers/shows/eztv.js~EZTV.html#instance-member-_util",
+    "src/providers/shows/eztv.js~EZTV#_util",
+    "member"
+  ],
+  [
+    "src/providers/shows/eztv.js~eztv#constructor",
+    "class/src/providers/shows/eztv.js~EZTV.html#instance-constructor-constructor",
+    "src/providers/shows/eztv.js~EZTV#constructor",
+    "method"
+  ],
+  [
+    "src/providers/shows/eztv.js~eztv#name",
+    "class/src/providers/shows/eztv.js~EZTV.html#instance-member-name",
+    "src/providers/shows/eztv.js~EZTV#name",
+    "member"
+  ],
+  [
+    "src/providers/shows/eztv.js~eztv#search",
+    "class/src/providers/shows/eztv.js~EZTV.html#instance-method-search",
+    "src/providers/shows/eztv.js~EZTV#search",
+    "method"
+  ],
+  [
+    "src/providers/shows/kat.js",
+    "file/src/providers/shows/kat.js.html",
+    "src/providers/shows/kat.js",
+    "file"
+  ],
+  [
+    "src/providers/shows/kat.js~kat#_extractor",
+    "class/src/providers/shows/kat.js~KAT.html#instance-member-_extractor",
+    "src/providers/shows/kat.js~KAT#_extractor",
+    "member"
+  ],
+  [
+    "src/providers/shows/kat.js~kat#_util",
+    "class/src/providers/shows/kat.js~KAT.html#instance-member-_util",
+    "src/providers/shows/kat.js~KAT#_util",
+    "member"
+  ],
+  [
+    "src/providers/shows/kat.js~kat#constructor",
+    "class/src/providers/shows/kat.js~KAT.html#instance-constructor-constructor",
+    "src/providers/shows/kat.js~KAT#constructor",
+    "method"
+  ],
+  [
+    "src/providers/shows/kat.js~kat#name",
+    "class/src/providers/shows/kat.js~KAT.html#instance-member-name",
+    "src/providers/shows/kat.js~KAT#name",
+    "member"
+  ],
+  [
+    "src/providers/shows/kat.js~kat#search",
+    "class/src/providers/shows/kat.js~KAT.html#instance-method-search",
+    "src/providers/shows/kat.js~KAT#search",
     "method"
   ],
   [
@@ -1536,9 +1986,27 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/scraper.js~scraper#_scrapehorribelsubsanime",
-    "class/src/scraper.js~Scraper.html#instance-method-_scrapeHorribelSubsAnime",
-    "src/scraper.js~Scraper#_scrapeHorribelSubsAnime",
+    "src/scraper.js~scraper#_scrapeextratorrentanime",
+    "class/src/scraper.js~Scraper.html#instance-method-_scrapeExtraTorrentAnime",
+    "src/scraper.js~Scraper#_scrapeExtraTorrentAnime",
+    "method"
+  ],
+  [
+    "src/scraper.js~scraper#_scrapeextratorrentmovies",
+    "class/src/scraper.js~Scraper.html#instance-method-_scrapeExtraTorrentMovies",
+    "src/scraper.js~Scraper#_scrapeExtraTorrentMovies",
+    "method"
+  ],
+  [
+    "src/scraper.js~scraper#_scrapeextratorrentshows",
+    "class/src/scraper.js~Scraper.html#instance-method-_scrapeExtraTorrentShows",
+    "src/scraper.js~Scraper#_scrapeExtraTorrentShows",
+    "method"
+  ],
+  [
+    "src/scraper.js~scraper#_scrapehorriblesubsanime",
+    "class/src/scraper.js~Scraper.html#instance-method-_scrapeHorribleSubsAnime",
+    "src/scraper.js~Scraper#_scrapeHorribleSubsAnime",
     "method"
   ],
   [
@@ -1557,6 +2025,12 @@ window.esdocSearchIndex = [
     "src/scraper.js~scraper#_scrapekatshows",
     "class/src/scraper.js~Scraper.html#instance-method-_scrapeKATShows",
     "src/scraper.js~Scraper#_scrapeKATShows",
+    "method"
+  ],
+  [
+    "src/scraper.js~scraper#_scrapenyaaanime",
+    "class/src/scraper.js~Scraper.html#instance-method-_scrapeNyaaAnime",
+    "src/scraper.js~Scraper#_scrapeNyaaAnime",
     "method"
   ],
   [
@@ -1648,5 +2122,29 @@ window.esdocSearchIndex = [
     "class/src/util.js~Util.html#instance-method-setStatus",
     "src/util.js~Util#setStatus",
     "method"
+  ],
+  [
+    "test/controllers/animes.js",
+    "test-file/test/controllers/animes.js.html",
+    "test/controllers/animes.js",
+    "testFile"
+  ],
+  [
+    "test/controllers/index.js",
+    "test-file/test/controllers/index.js.html",
+    "test/controllers/index.js",
+    "testFile"
+  ],
+  [
+    "test/controllers/movies.js",
+    "test-file/test/controllers/movies.js.html",
+    "test/controllers/movies.js",
+    "testFile"
+  ],
+  [
+    "test/controllers/shows.js",
+    "test-file/test/controllers/shows.js.html",
+    "test/controllers/shows.js",
+    "testFile"
   ]
 ]

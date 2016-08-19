@@ -18,7 +18,7 @@
   <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
-  
+  <a href="test.html" data-ice="testLink">Test</a>
   <a data-ice="repoURL" href="https://github.com/popcorn-official/popcorn-api.git" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
@@ -56,6 +56,7 @@
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/tutorial.html#tutorial" data-ice="link">Tutorial</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#scraper" data-ice="link">Scraper</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#content-providers" data-ice="link">Content Providers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#extratorrent" data-ice="link">ExtraTorrent</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#eztv" data-ice="link">EZTV</a></li>
 <li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getallshows" data-ice="link">getAllShows</a></li>
 <li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getshowdata" data-ice="link">getShowData</a></li>
@@ -63,16 +64,20 @@
 <li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getallanime" data-ice="link">getAllAnime</a></li>
 <li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getanimedata" data-ice="link">getAnimeData</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#kat" data-ice="link">KAT</a></li>
-<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#anime" data-ice="link">Anime</a></li>
-<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#movie" data-ice="link">Movie</a></li>
-<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#show" data-ice="link">Show</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#nyaa" data-ice="link">Nyaa</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#yts" data-ice="link">YTS</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#extractors" data-ice="link">Extractors</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#base-extractor" data-ice="link">Base Extractor</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#anime-extractor" data-ice="link">Anime Extractor</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#movie-extractor" data-ice="link">Movie Extractor</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#show-extractor" data-ice="link">Show Extractor</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#helpers" data-ice="link">Helpers</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#anime-show" data-ice="link">Anime &amp; Show</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#movie" data-ice="link">Movie</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#anime-show-helpers" data-ice="link">Anime &amp; Show Helpers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#movie-helper" data-ice="link">Movie Helper</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#metadata-providers" data-ice="link">Metadata Providers</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#trakt-tv" data-ice="link">Trakt.tv</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#hummingbird-me" data-ice="link">Hummingbird.me</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#-trakt-tv-https-trakt-tv-" data-ice="link">Trakt.tv</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#-thetvdb-com-https-thetvdb-com-" data-ice="link">TheTVDB.com</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#-hummingbird-me-https-hummingbird-me-" data-ice="link">Hummingbird.me</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="usage">
@@ -111,13 +116,15 @@
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#class" data-ice="link">Class</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#variable" data-ice="link">Variable</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#external" data-ice="link">External</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="changelog">
     <h1 class="manual-toc-title"><a href="manual/changelog.html" data-ice="title">Changelog</a></h1>
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-1-0-you-weeaboos-2-august-2016" data-ice="link">2.1.0 - You weeaboos - 2 August 2016</a></li>
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-2-0-extra-torrents-11-august-2016" data-ice="link">2.2.0 - Extra Torrents? - 11 August 2016</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-1-0-you-weeaboos-2-august-2016" data-ice="link">2.1.0 - You weeaboos - 2 August 2016</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-whatcha-babbling-about-20-june-2016" data-ice="link">2.0.0 - Whatcha Babbling about? - 20 June 2016</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#1-1-0-wanna-catch-a-movie-20-march-2016" data-ice="link">1.1.0 - Wanna catch a movie? - 20 March 2016</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#1-0-2-wanna-retry-14-march-2016" data-ice="link">1.0.2 - Wanna retry? - 14 March 2016</a></li>
@@ -155,6 +162,7 @@
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/tutorial.html#tutorial" data-ice="link">Tutorial</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#scraper" data-ice="link">Scraper</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#content-providers" data-ice="link">Content Providers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#extratorrent" data-ice="link">ExtraTorrent</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#eztv" data-ice="link">EZTV</a></li>
 <li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getallshows" data-ice="link">getAllShows</a></li>
 <li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getshowdata" data-ice="link">getShowData</a></li>
@@ -162,16 +170,20 @@
 <li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getallanime" data-ice="link">getAllAnime</a></li>
 <li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#getanimedata" data-ice="link">getAnimeData</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#kat" data-ice="link">KAT</a></li>
-<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#anime" data-ice="link">Anime</a></li>
-<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#movie" data-ice="link">Movie</a></li>
-<li data-ice="manualNav" class="indent-h4"><span class="manual-dot"></span><a href="manual/tutorial.html#show" data-ice="link">Show</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#nyaa" data-ice="link">Nyaa</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#yts" data-ice="link">YTS</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#extractors" data-ice="link">Extractors</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#base-extractor" data-ice="link">Base Extractor</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#anime-extractor" data-ice="link">Anime Extractor</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#movie-extractor" data-ice="link">Movie Extractor</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#show-extractor" data-ice="link">Show Extractor</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#helpers" data-ice="link">Helpers</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#anime-show" data-ice="link">Anime &amp; Show</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#movie" data-ice="link">Movie</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#anime-show-helpers" data-ice="link">Anime &amp; Show Helpers</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#movie-helper" data-ice="link">Movie Helper</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#metadata-providers" data-ice="link">Metadata Providers</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#trakt-tv" data-ice="link">Trakt.tv</a></li>
-<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#hummingbird-me" data-ice="link">Hummingbird.me</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#-trakt-tv-https-trakt-tv-" data-ice="link">Trakt.tv</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#-thetvdb-com-https-thetvdb-com-" data-ice="link">TheTVDB.com</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#-hummingbird-me-https-hummingbird-me-" data-ice="link">Hummingbird.me</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="usage">
@@ -210,13 +222,15 @@
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#class" data-ice="link">Class</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#variable" data-ice="link">Variable</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#external" data-ice="link">External</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="changelog">
     <h1 class="manual-toc-title"><a href="manual/changelog.html" data-ice="title">Changelog</a></h1>
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-1-0-you-weeaboos-2-august-2016" data-ice="link">2.1.0 - You weeaboos - 2 August 2016</a></li>
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-2-0-extra-torrents-11-august-2016" data-ice="link">2.2.0 - Extra Torrents? - 11 August 2016</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-1-0-you-weeaboos-2-august-2016" data-ice="link">2.1.0 - You weeaboos - 2 August 2016</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-whatcha-babbling-about-20-june-2016" data-ice="link">2.0.0 - Whatcha Babbling about? - 20 June 2016</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#1-1-0-wanna-catch-a-movie-20-march-2016" data-ice="link">1.1.0 - Wanna catch a movie? - 20 March 2016</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#1-0-2-wanna-retry-14-march-2016" data-ice="link">1.0.2 - Wanna retry? - 14 March 2016</a></li>
@@ -228,7 +242,7 @@
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>
