@@ -32,8 +32,8 @@ scrape() {
 
 Popcorn API gets its torrent content from various sources. Here you can see where the content is coming from.
 
-|              | Anime | Movie | Show |
-|--------------|-------|-------|------|
+|                                             | Anime | Movie | Show |
+|---------------------------------------------|-------|-------|------|
 | [ExtraTorrent](https://extratorrent.cc)     | X [1] | X     | X    |
 | [EZTV](https://eztv.ag/)                    |       |       | X    |
 | [Horriblesubs](https://horriblesubs.info/)  | X     |       |      |

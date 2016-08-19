@@ -242,8 +242,8 @@ export const extratorrentAnimeProviders = [];
  * @type {Array}
  */
 export const extratorrentMovieProviders = [
-  {name: "ETRG BRRip", query: {with_words: "etrg x264 brrip"}},
-  {name: "ETRG BluRay", query: {with_words: "etrg x264 bluray"}},
+  // {name: "ETRG BRRip", query: {with_words: "etrg x264 brrip"}},
+  // {name: "ETRG BluRay", query: {with_words: "etrg x264 bluray"}},
   {name: "YIFY", query: {with_words: "x264 yify brrip"}}
 ];
 
