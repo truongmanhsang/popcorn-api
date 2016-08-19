@@ -57,8 +57,8 @@ export default class Extractor extends BaseExtractor {
   _extractAnime(torrent, regex) {
     let animeTitle = torrent.title.match(regex)[1];
     if (animeTitle.endsWith(" ")) animeTitle = animeTitle.substring(0, animeTitle.length - 1);
-    animeTitle = animeTitle.replace(/\./g, " ");
-    let slug = animeTitle.replace(/[!]/gi, "").replace(/\s-\s/gi, "").replace(/\s+/g, "-").toLowerCase();
+    animeTitle = animeTitle.replace(/\_/g, " ").replace(/\./g, " ");
+    let slug = animeTitle.replace(/[!\'\~\,]/gi, "").replace(/\s-\s?/gi, "").replace(/\s+/g, "-").toLowerCase();
     slug = slug in animeMap ? animeMap[slug] : slug;
 
     const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : "480p";
@@ -102,9 +102,9 @@ export default class Extractor extends BaseExtractor {
    * @returns {Object} - Information about an anime from the torrent.
    */
    _getAnimeData(torrent) {
-     const secondSeasonQuality = /\[.*\].(.*)\W+S(\d)...(\d{2,3})\W+(\d{3,4}p)/i;
+     const secondSeasonQuality = /\[.*\].(.*).S?(\d)...(\d{2,3})\W+(\d{3,4}p)/i;
      const oneSeasonQuality = /\[.*\].(\D+)...(\d{2,3})\W+(\d{3,4}p)/i;
-     const secondSeason = /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i;
+     const secondSeason = /\[.*\].(\D+).S?(\d+)...(\d{2,3}).*\.mkv/i;
      const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i;
      if (torrent.title.match(secondSeasonQuality)) {
       return this._extractAnime(torrent, secondSeasonQuality);
