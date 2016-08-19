@@ -65,7 +65,7 @@ export default class Extractor extends BaseExtractor {
 
     let season = 1;
     let episode;
-    if (torrent.title.match(regex).length >= 5) {
+    if (torrent.title.match(regex).length >= 4) {
       episode = parseInt(torrent.title.match(regex)[3], 10);
     } else {
       episode = parseInt(torrent.title.match(regex)[2], 10);
@@ -102,15 +102,9 @@ export default class Extractor extends BaseExtractor {
    * @returns {Object} - Information about an anime from the torrent.
    */
    _getAnimeData(torrent) {
-     const secondSeasonQuality = /\[.*\].(.*).S?(\d)...(\d{2,3})\W+(\d{3,4}p)/i;
-     const oneSeasonQuality = /\[.*\].(\D+)...(\d{2,3})\W+(\d{3,4}p)/i;
-     const secondSeason = /\[.*\].(\D+).S?(\d+)...(\d{2,3}).*\.mkv/i;
+     const secondSeason = /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i;
      const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i;
-     if (torrent.title.match(secondSeasonQuality)) {
-      return this._extractAnime(torrent, secondSeasonQuality);
-    } else if (torrent.title.match(oneSeasonQuality)) {
-      return this._extractAnime(torrent, oneSeasonQuality);
-    } else if (torrent.title.match(secondSeason)) {
+     if (torrent.title.match(secondSeason)) {
        return this._extractAnime(torrent, secondSeason);
      } else if  (torrent.title.match(oneSeason)) {
        return this._extractAnime(torrent, oneSeason);
