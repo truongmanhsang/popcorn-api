@@ -1,9 +1,27 @@
 language: node_js
+
 node_js:
   - "6"
-services: mongodb
+
+addons:
+  apt:
+    sources:
+      - mongodb-upstart
+      - mongodb-3.2-precise
+    packages:
+      - mongodb-org-server
+      - mongodb-org-shell
+
 git:
   submodules: false
+
 before_script:
-  - npm install -g gulp
-script: gulp
+  - npm i -g gulp
+  - gulp build
+  - npm run server-dev &
+
+script:
+  - npm test
+
+after_script:
+  - npm run coverage

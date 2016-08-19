@@ -3,21 +3,20 @@ import asyncq from "async-q";
 import req from "request";
 import Movie from "../../models/Movie";
 import { maxWebRequest, webRequestTimeout } from "../../config/constants";
-import Helper from "./helper";
+import Helper from "../helpers/moviehelper";
 import Util from "../../util";
 
 /** Class for scraping movies from https://yts.ag/. */
 export default class YTS {
 
   /**
-   * Create a yts object.
-   * @param {String} name - The name of the torrent provider.
-   * @param {Boolean} debug - Debug mode for extra output.
+   * Create a yts object for movie content.
+   * @param {String} name - The name of the content provider.
    */
   constructor(name) {
     /**
      * The name of the torrent provider.
-     * @type {String}  The name of the torrent provider.
+     * @type {String}
      */
     this.name = name;
 
@@ -93,7 +92,10 @@ export default class YTS {
           }
         });
 
-        return { imdb_id: movie.imdb_code, torrents };
+        return {
+          imdb_id: movie.imdb_code,
+          torrents
+        };
       }
     });
   };
@@ -134,13 +136,13 @@ export default class YTS {
       let movies = [];
       return await asyncq.timesSeries(totalPages, async page => {
         try {
-          console.log(`${this.name}: Starting searching YTS on page ${page + 1} out of ${totalPages}`);
+          logger.info(`${this.name}: Starting searching YTS on page ${page + 1} out of ${totalPages}`);
           const onePage = await this._getOnePage(page);
           movies = movies.concat(onePage);
         } catch (err) {
           return this._util.onError(err);
         }
-      }).then(value => movies);
+      }).then(() => movies);
     } catch (err) {
       return this._util.onError(err);
     }
@@ -148,11 +150,11 @@ export default class YTS {
 
   /**
    * Returns a list of all the inserted torrents.
-   * @returns {Array} - A list of scraped movies.
+   * @returns {Movie[]} - A list of scraped movies.
    */
   async search() {
     try {
-      console.log(`${this.name}: Starting scraping...`);
+      logger.info(`${this.name}: Starting scraping...`);
       const movies = await this._getMovies();
       return await asyncq.eachLimit(movies, maxWebRequest, async ytsMovie => {
         if (ytsMovie && ytsMovie.imdb_id) {

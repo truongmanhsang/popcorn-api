@@ -31,7 +31,7 @@ export default class Shows {
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Array} - A list of pages which are available.
+   * @returns {String[]} - A list of pages which are available.
    */
   getShows(req, res, next) {
     return Show.count({
@@ -53,7 +53,7 @@ export default class Shows {
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Array} - The contents of one page.
+   * @returns {Show[]} - The contents of one page.
    */
   getPage(req, res, next) {
     const page = req.params.page - 1;
@@ -76,7 +76,11 @@ export default class Shows {
         .then(docs => res.json(docs))
         .catch(err => next(err));
     } else {
-      const query = {num_seasons: {$gt: 0}};
+      const query = {
+        num_seasons: {
+          $gt: 0
+        }
+      };
       const data = req.query;
 
       if (!data.order) data.order = -1;
@@ -91,7 +95,10 @@ export default class Shows {
         const words = data.keywords.split(" ");
         let regex = "^";
         for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        query.title = { $regex: new RegExp(`${regex}.*`), $options: "gi" };
+        query.title = {
+          $regex: new RegExp(`${regex}.*`),
+          $options: "gi"
+        };
       }
 
       if (data.sort) {
@@ -143,10 +150,12 @@ export default class Shows {
    */
   getShow(req, res, next) {
     return Show.findOne({
-      _id: req.params.id
-    }, {latest_episode: 0}).exec()
-    .then(docs => res.json(docs))
-    .catch(err => next(err));
+        _id: req.params.id
+      }, {
+        latest_episode: 0
+      }).exec()
+      .then(docs => res.json(docs))
+      .catch(err => next(err));
   };
 
   /**

@@ -1,18 +1,18 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
-import KatAPI from "kat-api-pt";
+import NyaaAPI from "nyaa-api-pt";
 
 import Extractor from "../extractors/animeextractor";
 import Util from "../../util";
 
-/** Class for scraping anime shows from https://kat.cr/. */
-export default class KAT {
+/** Class for scraping anime shows from https://extratorrent.cc/. */
+export default class ExtraTorrent {
 
-  /**
-   * Create a kat object for anime content.
-   * @param {String} name - The name of the content provider.
-   * @param {?Boolean} debug - Debug mode for extra output.
-   */
+   /**
+    * Create an extratorrent object for anime content.
+    * @param {String} name - The name of the content provider.
+    * @param {?Boolean} debug - Debug mode for extra output.
+    */
   constructor(name, debug) {
     /**
      * The name of the torrent provider.
@@ -24,7 +24,7 @@ export default class KAT {
      * The extractor object for getting anime data on torrents.
      * @type {Extractor}
      */
-    this._extractor = new Extractor(this.name, new KatAPI({ debug }), debug);
+    this._extractor = new Extractor(this.name, new NyaaAPI({ debug }), debug);
 
     /**
      * The util object with general functions.
@@ -35,20 +35,19 @@ export default class KAT {
 
   /**
    * Returns a list of all the inserted torrents.
-   * @param {Object} provider - The provider to query https://kat.cr/.
+   * @param {Object} provider - The provider to query https://extratorrent.cc/.
    * @returns {Anime[]} - A list of scraped anime shows.
    */
   async search(provider) {
     try {
       logger.info(`${this.name}: Starting scraping...`);
-      provider.query.page = 1;
-      provider.query.verified = 1;
-      provider.query.adult_filter = 1;
-      provider.query.category = "english-translated";
+      provider.query.category = "anime";
+      provider.query.sub_category = "english_translated";
+      provider.query.offset = 1;
 
       return await this._extractor.search(provider);
     } catch (err) {
-      this._util.onError(err);
+      return this._util.onError(err);
     }
   };
 

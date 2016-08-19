@@ -4,7 +4,7 @@
 [![Dependency Status](https://david-dm.org/popcorn-official/popcorn-api.svg)](https://david-dm.org/popcorn-official/popcorn-api)
 [![devDependency Status](https://david-dm.org/popcorn-official/popcorn-api/dev-status.svg)](https://david-dm.org/popcorn-official/popcorn-api#info=devDependencies)
 [![document](https://popcorn-official.github.io/popcorn-api/badge.svg)](https://popcorn-official.github.io/popcorn-api/source.html)
-
+[![Coverage Status](https://coveralls.io/repos/github/popcorn-official/popcorn-api/badge.svg)](https://coveralls.io/r/popcorn-official/popcorn-api)
 
 Popcorn API is developed to make it easier for anyone to create their own version of [Popcorn Time](http://popcorntime.sh). It contains:
 
@@ -17,7 +17,7 @@ Popcorn API is developed to make it easier for anyone to create their own versio
 
 # Documentation
 
-Documentation for the code can be generated with the command `npm run docs`. This will automatically generate the documentation which will be located in the `docs` directory. The `index.html` page will be the starting point. You can also view the documentation online right [here](https://popcorn-official.github.io/popcorn-api/manual/index.html).
+Documentation for the code can be generated with the command `npm run docs`. This will automatically generate the documentation which will be located in the `docs` directory. The `index.html` page will be the starting point. You can also view the documentation online right [here](https://popcorn-official.github.io/popcorn-api/manual/index.html). Or checkout the documentation for the API routes [here](http://docs.popcornofficial.apiary.io/).
 
 # Folder structure
 
@@ -25,16 +25,23 @@ The API has the following folder structure.
 
 ```
 .
-├── docs                 # Folder with the ESDoc generated documentation for the API.
-├── manual               # Folder with markdown files used by the documentation.
-└── src                  # Holding the ES6 source code
-    ├── config           # Configuration
-    ├── controllers      # REST Controllers
-    ├── models           # Models
-    └── providers        # Providers
-        ├── anime        # Anime providers
-        ├── movie        # Movie providers
-        └── show         # Show providers
+├── docs                          # Folder with the ESDoc generated documentation for the API.
+├── manual                        # Folder with markdown files used by the documentation.
+└── src                           # Holding the ES6 source code
+    ├── config                    # Configuration
+    ├── controllers               # REST Controllers
+    ├── models                    # Models
+    ├── providers                 # Providers
+        ├── anime                 # Anime providers
+        ├── extractors            # Torrent extractors
+        ├── helpers               # Helpers to insert data
+        ├── movies                # Movie providers
+        └── shows                 # Show providers
+    ├── cli.js                    # CLI part of the API
+    ├── index.js                  # Starting point of the API
+    ├── popcorn-api.js            # Entry for the command line
+    ├── scraper.js                # Scrape for content
+    └── util.js                   # Useful utilities
 ```
 
 # Versioning
@@ -49,7 +56,6 @@ Constructed with the following guidelines:
 - A new _minor_ release indicates a normal change that maintains backwards compatibility.
 - A new _patch_ release indicates a bugfix or small change which does not affect compatibility.
 - A new _build_ release indicates this is a pre-release of the version.
-
 
 # License
 

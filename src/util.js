@@ -29,11 +29,13 @@ export default class Util {
   /**
    * Execute a command from within the root folder.
    * @param {String} cmd - The command to execute.
-   * @returns {String} - The output of the command.
+   * @returns {Promise} - The output of the command.
    */
   executeCommand(cmd) {
     return new Promise((resolve, reject) => {
-      childProcess.exec(cmd, {cwd: __dirname}, (err, stdout, stderr) => {
+      childProcess.exec(cmd, {
+        cwd: __dirname
+      }, (err, stdout) => {
         if (err) return reject(err);
         return resolve(stdout.split("\n").join(""));
       });
@@ -43,11 +45,11 @@ export default class Util {
   /**
    * Export a collection to a JSON file.
    * @param {String} collection - The collection to export.
-   * @returns {String} - The output of the mongoexport command.
+   * @returns {Promise} - The output of the mongoexport command.
    */
   exportCollection(collection) {
     const jsonFile = path.join(tempDir, `${collection}s.json`);
-    console.log(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
+    logger.info(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
 
     return this.executeCommand(`mongoexport --db ${dbName} --collection ${collection}s --out "${jsonFile}"`);
   };
@@ -56,13 +58,13 @@ export default class Util {
    * Import a json file to a collection.
    * @param {String} collection - The collection to import.
    * @param {String} jsonFile - The json file to import..
-   * @returns {String} - The output of the mongoimport command.
+   * @returns {Promise} - The output of the mongoimport command.
    */
   importCollection(collection, jsonFile) {
     if (!path.isAbsolute(jsonFile)) jsonFile = path.join(process.cwd(), jsonFile);
     if (!fs.existsSync(jsonFile)) throw new Error(`Error: no such file found for '${jsonFile}'`);
 
-    console.log(`Importing collection: '${collection}', from: '${jsonFile}'`);
+    logger.info(`Importing collection: '${collection}', from: '${jsonFile}'`);
 
     return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection} --file "${jsonFile}" --upsert`);
   };
@@ -73,7 +75,7 @@ export default class Util {
    * @returns {Error} - A new error with the given error message.
    */
   onError(errorMessage) {
-    console.error(errorMessage);
+    logger.error(errorMessage);
     return new Error(errorMessage);
   };
 
@@ -114,7 +116,9 @@ export default class Util {
    * @param {String} [updated=Date.now()] - The epoch time when the API last started scraping.
    */
   setLastUpdated(updated = (Math.floor(new Date().getTime() / 1000))) {
-    fs.writeFile(path.join(tempDir, updatedFile), JSON.stringify({ updated }));
+    fs.writeFile(path.join(tempDir, updatedFile), JSON.stringify({
+      updated
+    }));
   };
 
   /**
@@ -122,7 +126,9 @@ export default class Util {
    * @param {String} [status=Idle] - The status which will be set to in the `status.json` file.
    */
   setStatus(status = "Idle") {
-    fs.writeFile(path.join(tempDir, statusFile), JSON.stringify({ status }));
+    fs.writeFile(path.join(tempDir, statusFile), JSON.stringify({
+      status
+    }));
   };
 
 };

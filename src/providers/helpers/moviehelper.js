@@ -9,13 +9,13 @@ import { trakt } from "../../config/constants";
 export default class Helper {
 
   /**
-   * Create an helper object.
-   * @param {String} name - The name of the helper.
+   * Create an helper object for movie content.
+   * @param {String} name - The name of the content provider.
    */
   constructor(name) {
     /**
      * The name of the torrent provider.
-     * @type {String}  The name of the torrent provider.
+     * @type {String}
      */
     this.name = name;
 
@@ -34,31 +34,31 @@ export default class Helper {
    * @param {String} quality - The quality of the torrent.
    * @return {Movie} - A movie with merged torrents.
    */
-   _updateTorrent(movie, found, language, quality) {
-     let update = false;
+  _updateTorrent(movie, found, language, quality) {
+    let update = false;
 
-     if (found.torrents[language] && movie.torrents[language]) {
-       if (found.torrents[language][quality] && movie.torrents[language][quality]) {
-         if (found.torrents[language][quality].seed > movie.torrents[language][quality].seed) {
-           update = true;
-         } else if (movie.torrents[language][quality].seed > found.torrents[language][quality].seed) {
-           update = false;
-         } else if (found.torrents[language][quality].url === movie.torrents[language][quality].url) {
-           update = true;
-         }
-       } else if (found.torrents[language][quality] && !movie.torrents[language][quality]) {
-         update = true;
-       }
-     } else if (found.torrents[language] && !movie.torrents[language]) {
-       if (found.torrents[language][quality]) {
-         movie.torrents[language] = {};
-         update = true;
-       }
-     }
+    if (found.torrents[language] && movie.torrents[language]) {
+      if (found.torrents[language][quality] && movie.torrents[language][quality]) {
+        if (found.torrents[language][quality].seed > movie.torrents[language][quality].seed) {
+          update = true;
+        } else if (movie.torrents[language][quality].seed > found.torrents[language][quality].seed) {
+          update = false;
+        } else if (found.torrents[language][quality].url === movie.torrents[language][quality].url) {
+          update = true;
+        }
+      } else if (found.torrents[language][quality] && !movie.torrents[language][quality]) {
+        update = true;
+      }
+    } else if (found.torrents[language] && !movie.torrents[language]) {
+      if (found.torrents[language][quality]) {
+        movie.torrents[language] = {};
+        update = true;
+      }
+    }
 
-     if (update) movie.torrents[language][quality] = found.torrents[language][quality];
-     return movie;
-   };
+    if (update) movie.torrents[language][quality] = found.torrents[language][quality];
+    return movie;
+  };
 
   /**
    * @description Update a given movie.
@@ -73,7 +73,7 @@ export default class Helper {
         _id: movie._id
       }).exec();
       if (found) {
-        console.log(`${this.name}: '${found.title}' is an existing movie.`);
+        logger.info(`${this.name}: '${found.title}' is an existing movie.`);
 
         if (found.torrents) {
           Object.keys(found.torrents).forEach(language => {
@@ -86,7 +86,7 @@ export default class Helper {
           _id: movie._id
         }, movie).exec();
       } else {
-        console.log(`${this.name}: '${movie.title}' is a new movie!`);
+        logger.info(`${this.name}: '${movie.title}' is a new movie!`);
         return await new Movie(movie).save();
       }
     } catch (err) {
@@ -101,9 +101,8 @@ export default class Helper {
    * @returns {Movie} - A movie with torrents attached.
    */
   addTorrents(movie, torrents) {
-    return asyncq.each(Object.keys(torrents),
-        torrent => movie.torrents[torrent] = torrents[torrent])
-      .then(value => this._updateMovie(movie));
+    return asyncq.each(Object.keys(torrents), torrent => movie.torrents[torrent] = torrents[torrent])
+      .then(() => this._updateMovie(movie));
   };
 
   /**
@@ -113,7 +112,10 @@ export default class Helper {
    */
   async getTraktInfo(slug) {
     try {
-      const traktMovie = await trakt.movies.summary({id: slug, extended: "full,images"});
+      const traktMovie = await trakt.movies.summary({
+        id: slug,
+        extended: "full,images"
+      });
       const traktWatchers = await trakt.movies.watching({id: slug});
 
       let watching = 0;

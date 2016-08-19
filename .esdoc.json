@@ -12,6 +12,11 @@
   "package": "./package.json",
   "coverage": true,
   "includeSource": true,
+  "test": {
+    "type": "mocha",
+    "source": "./test",
+    "includes": [".js$"]
+  },
   "title": "Popcorn API",
   "plugins": [{
     "name": "esdoc-es7-plugin"

@@ -2,14 +2,14 @@
 import asyncq from "async-q";
 import KatAPI from "kat-api-pt";
 
-import Extractor from "../extractors/animeextractor";
+import Extractor from "../extractors/movieextractor";
 import Util from "../../util";
 
-/** Class for scraping anime shows from https://kat.cr/. */
+/** Class for scraping movies from https://kat.cr/. */
 export default class KAT {
 
   /**
-   * Create a kat object for anime content.
+   * Create a kat object for movie content.
    * @param {String} name - The name of the content provider.
    * @param {?Boolean} debug - Debug mode for extra output.
    */
@@ -21,7 +21,7 @@ export default class KAT {
     this.name = name;
 
     /**
-     * The extractor object for getting anime data on torrents.
+     * The extractor object for getting show data on torrents.
      * @type {Extractor}
      */
     this._extractor = new Extractor(this.name, new KatAPI({ debug }), debug);
@@ -36,7 +36,7 @@ export default class KAT {
   /**
    * Returns a list of all the inserted torrents.
    * @param {Object} provider - The provider to query https://kat.cr/.
-   * @returns {Anime[]} - A list of scraped anime shows.
+   * @returns {Movie[]} - A list of scraped movies.
    */
   async search(provider) {
     try {
@@ -44,7 +44,8 @@ export default class KAT {
       provider.query.page = 1;
       provider.query.verified = 1;
       provider.query.adult_filter = 1;
-      provider.query.category = "english-translated";
+      provider.query.language = provider.query.language ? provider.query.language : "en";
+      provider.query.category = "movies";
 
       return await this._extractor.search(provider);
     } catch (err) {

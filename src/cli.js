@@ -7,11 +7,11 @@ import prompt from "prompt";
 import torrentHealth from "torrent-tracker-health";
 
 import Index from "./index";
-import AnimeHelper from "./providers/anime/helper";
-import MovieHelper from "./providers/movie/helper";
+import AnimeHelper from "./providers/helpers/animehelper";
+import MovieHelper from "./providers/helpers/moviehelper";
+import ShowHelper from "./providers/helpers/showhelper";
 import packageJSON from "../package.json";
 import Setup from "./config/setup";
-import ShowHelper from "./providers/show/helper";
 import Util from "./util";
 
 /** Class The class for the command line interface. */
@@ -25,7 +25,7 @@ export default class CLI {
     /**
      * The util object with general functions.
      * @type {Util}
-     */
+      */
     this._util = new Util();
 
     // Setup the CLI program.
@@ -39,23 +39,23 @@ export default class CLI {
 
     // Extra output on top of the default help output
     program.on("--help", () => {
-      console.log("  Examples:");
-      console.log("");
-      console.log("    $ popcorn-api -c <anime|movie|show>");
-      console.log("    $ popcorn-api --content <anime|movie|show>");
-      console.log("");
-      console.log("    $ popcorn-api -r");
-      console.log("    $ popcorn-api --run");
-      console.log("");
-      console.log("    $ popcorn-api -s");
-      console.log("    $ popcorn-api --server");
-      console.log("");
-      console.log("    $ popcorn-api -e <anime|movie|show>");
-      console.log("    $ popcorn-api --export <anime|movie|show>");
-      console.log("");
-      console.log("    $ popcorn-api -i <path-to-json>");
-      console.log("    $ popcorn-api --import <path-to-json>");
-      console.log("");
+      console.info("  Examples:");
+      console.info("");
+      console.info("    $ popcorn-api -c <anime|movie|show>");
+      console.info("    $ popcorn-api --content <anime|movie|show>");
+      console.info("");
+      console.info("    $ popcorn-api -r");
+      console.info("    $ popcorn-api --run");
+      console.info("");
+      console.info("    $ popcorn-api -s");
+      console.info("    $ popcorn-api --server");
+      console.info("");
+      console.info("    $ popcorn-api -e <anime|movie|show>");
+      console.info("    $ popcorn-api --export <anime|movie|show>");
+      console.info("");
+      console.info("    $ popcorn-api -i <path-to-json>");
+      console.info("    $ popcorn-api --import <path-to-json>");
+      console.info("");
     });
 
     // Parse the command line arguments.
@@ -94,7 +94,7 @@ export default class CLI {
       pattern: /^([a-zA-Z]{2})/i,
       message: "Not a valid language",
       required: true
-    }
+    };
 
     // The quality property.
     const quality = {
@@ -188,7 +188,7 @@ export default class CLI {
   _animePrompt() {
     prompt.get(this._showSchema, async(err, result) => {
       if (err) {
-        util.onError(`An error occurred: ${err}`);
+        console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
@@ -201,7 +201,7 @@ export default class CLI {
             process.exit(0);
           }
         } catch (err) {
-          this._util.onError(`An error occurred: ${err}`);
+          console.error(`An error occurred: ${err}`);
           process.exit(1);
         }
       }
@@ -243,7 +243,7 @@ export default class CLI {
   _moviePrompt() {
     prompt.get(this._movieSchema, async(err, result) => {
       if (err) {
-        util.onError(`An error occurred: ${err}`);
+        console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
@@ -256,7 +256,7 @@ export default class CLI {
             process.exit(0);
           }
         } catch (err) {
-          this._util.onError(`An error occurred: ${err}`);
+          console.error(`An error occurred: ${err}`);
           process.exit(1);
         }
       }
@@ -298,7 +298,7 @@ export default class CLI {
   _showPrompt() {
     prompt.get(this._showSchema, async(err, result) => {
       if (err) {
-        this._util.onError(`An error occurred: ${err}`);
+        console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
@@ -311,7 +311,7 @@ export default class CLI {
             process.exit(0);
           }
         } catch (err) {
-          this._util.onError(`An error occurred: ${err}`);
+          console.error(`An error occurred: ${err}`);
           process.exit(1);
         }
       }
@@ -322,7 +322,7 @@ export default class CLI {
   _importPrompt() {
     prompt.get(this._importSchema, (err, result) => {
       if (err) {
-        this._util.onError(`An error occured: ${err}`);
+        console.error(`An error occured: ${err}`);
         process.exit(1);
       } else {
         if (result.confirm.match(/^(y|yes)/i)) {
@@ -341,9 +341,19 @@ export default class CLI {
   /** Run the CLI program. */
   run() {
     if (program.run) {
-      new Index({start: true, pretty: true, debug: false});
+      new Index({
+        start: true,
+        pretty: true,
+        verbose: false,
+        debug: false
+      });
     } else if (program.server) {
-      new Index({start: false, pretty: true, debug: false});
+      new Index({
+        start: false,
+        pretty: true,
+        verbose: false,
+        debug: false
+      });
     } else if (program.content) {
       prompt.start();
       Setup.connectMongoDB();
@@ -358,7 +368,7 @@ export default class CLI {
     } else if (program.import) {
       this._importPrompt();
     } else {
-      this._util.onError("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
+      console.error("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
       program.help();
     }
   };

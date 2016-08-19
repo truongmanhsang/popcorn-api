@@ -1,22 +1,23 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 import HorribleSubsAPI from "horriblesubs-api";
-import { maxWebRequest } from "../../config/constants";
-import Helper from "./helper";
+
+import Extractor from "../extractors/animeextractor";
 import Util from "../../util";
+import { maxWebRequest } from "../../config/constants";
 
 /** Class for scraping anime from https://horriblesubs.info/. */
 export default class HorribleSubs {
 
   /**
-   * Create a horriblesubs object.
-   * @param {String} name - The name of the torrent provider.
-   * @param {Boolean} debug - Debug mode for extra output.
+   * Create an horriblesubs object for anime content.
+   * @param {String} name - The name of the content provider.
+   * @param {?Boolean} debug - Debug mode for extra output.
    */
   constructor(name, debug) {
     /**
      * The name of the torrent provider.
-     * @type {String}  The name of the torrent provider.
+     * @type {String}
      */
     this.name = name;
 
@@ -28,10 +29,10 @@ export default class HorribleSubs {
     this._horriblesubs = new HorribleSubsAPI({ debug });
 
     /**
-     * The helper object for adding anime shows.
-     * @type {Helper}
+     * The extractor object for getting show data on torrents.
+     * @type {Extractor}
      */
-    this._helper = new Helper(this.name, debug);
+    this._extractor = new Extractor(this.name, this._horriblesubs, debug);
 
     /**
      * The util object with general functions.
@@ -41,38 +42,19 @@ export default class HorribleSubs {
   };
 
   /**
-   * Get a complete anime show.
-   * @param {Object} horribleSubsAnime - anime data from horriblesubs.
-   * @returns {Anime} - A complete anime show.
-   */
-  async _getAnime(horribleSubsAnime) {
-    try {
-      if (horribleSubsAnime) {
-        horribleSubsAnime = await this._horriblesubs.getAnimeData(horribleSubsAnime);
-        const newAnime = await this._helper.getHummingbirdInfo(horribleSubsAnime.slug);
-
-        if (newAnime && newAnime._id) {
-          delete horribleSubsAnime.episodes[0];
-          return await this._helper.addEpisodes(newAnime, horribleSubsAnime.episodes, horribleSubsAnime.slug);
-        }
-      }
-    } catch (err) {
-      return this._util.onError(err);
-    }
-  };
-
-  /**
    * Returns a list of all the inserted torrents.
-   * @returns {Array} - A list of scraped animes.
+   * @returns {Anime[]} - A list of scraped animes.
    */
   async search() {
     try {
-      console.log(`${this.name}: Starting scraping...`);
-      const horribleSubsAnimes = await this._horriblesubs.getAllAnime();
-      console.log(`${this.name}: Found ${horribleSubsAnimes.length} anime shows.`);
-      return await asyncq.mapLimit(horribleSubsAnimes, maxWebRequest, async horribleSubsAnime => {
+      logger.info(`${this.name}: Starting scraping...`);
+      const animes = await this._horriblesubs.getAllAnime();
+      logger.info(`${this.name}: Found ${animes.length} anime shows.`);
+
+      return await asyncq.mapLimit(animes, maxWebRequest, async anime => {
         try {
-          return await this._getAnime(horribleSubsAnime);
+          anime = await this._horriblesubs.getAnimeData(anime);
+          return await this._extractor.getAnime(anime);
         } catch (err) {
           return this._util.onError(err);
         }

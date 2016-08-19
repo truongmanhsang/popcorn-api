@@ -23,7 +23,8 @@ export default class Animes {
       type: 1,
       item_data: 1,
       rating: 1,
-      genres: 1
+      genres: 1,
+      num_seasons: 1
     };
   };
 
@@ -32,11 +33,11 @@ export default class Animes {
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Array} - A list of pages which are available.
+   * @returns {String[]} - A list of pages which are available.
    */
   getAnimes(req, res, next) {
     return Anime.count({
-      num_episodes: {
+      num_seasons: {
         $gt: 0
       }
     }).exec().then(count => {
@@ -54,7 +55,7 @@ export default class Animes {
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Array} - The contents of one page.
+   * @returns {Anime[]} - The contents of one page.
    */
   getPage(req, res, next) {
     const page = req.params.page - 1;
@@ -63,7 +64,7 @@ export default class Animes {
     if (req.params.page.match(/all/i)) {
       return Anime.aggregate([{
           $match: {
-            num_episodes: {
+            num_seasons: {
               $gt: 0
             }
           }
@@ -77,7 +78,11 @@ export default class Animes {
         .then(docs => res.json(docs))
         .catch(err => next(err));
     } else {
-      const query = {num_episodes: {$gt: 0}};
+      const query = {
+        num_seasons: {
+          $gt: 0
+        }
+      };
       const data = req.query;
 
       if (!data.order) data.order = -1;
@@ -92,7 +97,10 @@ export default class Animes {
         const words = data.keywords.split(" ");
         let regex = "^";
         for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        query.title = {$regex: new RegExp(`${regex}.*`),$options: "gi"};
+        query.title = {
+          $regex: new RegExp(`${regex}.*`),
+          $options: "gi"
+        };
       }
 
       if (data.sort) {
@@ -140,7 +148,11 @@ export default class Animes {
    * @returns {Anime} - The details of a single anime.
    */
   getAnime(req, res, next) {
-    return Anime.findOne({_id: req.params.id}, {latest_episode: 0}).exec()
+    return Anime.findOne({
+        _id: req.params.id
+      }, {
+        latest_episode: 0
+      }).exec()
       .then(docs => res.json(docs))
       .catch(err => next(err));
   };

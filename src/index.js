@@ -1,9 +1,10 @@
 // Import the neccesary modules.
 import cluster from "cluster";
-import { CronJob } from "cron";
 import domain from "domain";
 import Express from "express";
+import http from "http";
 import os from "os";
+import { CronJob } from "cron";
 
 import Logger from "./config/logger";
 import Routes from "./config/routes";
@@ -15,13 +16,18 @@ import { cronTime, master, port, timeZone, workers } from "./config/constants";
 /**
  * Class for starting the API.
  *
- * @example <caption></caption>
+ * @example
  * // Simply start the API by creating a new instance of the Index class.
  * const index = new Index();
  *
  * @example
  * // Or override the default configuration of the Index class.
- * const index = new Index({start: true, pretty: true, debug: false});
+ * const index = new Index({
+ *    start: true,
+ *    pretty: true,
+ *    verbose: false,
+ *    debug: false
+ * });
  */
 export default class Index {
 
@@ -30,9 +36,10 @@ export default class Index {
    * @param {Object} config - Configuration for the API.
    * @param {Boolean} [config.start=true] - Start the scraping process.
    * @param {Boolean} [config.pretty=true] - Pretty output with Winston logging.
+   * @param {Boolean} [config.verbose=false] - Debug mode for no output.
    * @param {Boolean} [config.debug=false] - Debug mode for extra output.
    */
-  constructor({start = true, pretty = true, debug = false} = {}) {
+  constructor({ start = true, pretty = true, verbose = false, debug = false } = {}) {
     /**
      * The express object.
      * @type {Express}
@@ -51,20 +58,23 @@ export default class Index {
      */
     Index._scraper = new Scraper(debug);
 
-    // Create a new logger class & override the console object with Winston.
-    if (pretty) {
-      /**
-       * The logger object to configure the logging.
-       * @type {Logger}
-       */
-      Index._logger = new Logger();
-    }
+    /**
+     * The logger object to configure the logging.
+     * @type {Logger}
+     */
+    Index._logger = new Logger(pretty, verbose);
 
     // Setup the MongoDB configuration and ExpressJS configuration.
-    const _setup = new Setup(Index._app, pretty);
+    new Setup(Index._app, pretty, verbose);
 
     // Setup the API routes.
-    const _routes = new Routes(Index._app);
+    new Routes(Index._app);
+
+    /**
+     * The http server object.
+     * @type {Object}
+     */
+    Index._server = http.createServer(Index._app);
 
     // Start the API.
     Index._startAPI(start);
@@ -72,10 +82,9 @@ export default class Index {
 
   /**
    * Function to start the API.
-   * @param {Boolean} [start=true] - Start the scraping.
+   * @param {?Boolean} start - Start the scraping.
    */
-  static _startAPI(start = true) {
-
+  static _startAPI(start) {
     if (cluster.isMaster) { // Check is the cluster is the master
       // Clear the log files from the temp directory.
       Index._util.resetLog();
@@ -97,10 +106,11 @@ export default class Index {
         // WARNING: Domain module is pending deprication: https://nodejs.org/api/domain.html
         const scope = domain.create();
         scope.run(() => {
-          console.log("API started");
+          logger.info("API started");
           try {
             new CronJob({
-              cronTime, timeZone,
+              cronTime,
+              timeZone,
               onComplete: () => Index._util.setStatus(),
               onTick: () => Index._scraper.scrape(),
               start: true
@@ -116,8 +126,18 @@ export default class Index {
         scope.on("error", err => Index._util.onError(err));
       }
     } else {
-      Index._app.listen(port);
+      Index._server.listen(port);
     }
+  };
+
+  /**
+   * Function to stop the API from running.
+   */
+  static closeAPI() {
+    Index._server.close(() => {
+      logger.info("Closed out remaining connections.");
+      process.exit();
+    });
   };
 
 };

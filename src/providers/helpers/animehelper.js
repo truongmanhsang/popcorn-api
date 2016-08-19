@@ -9,13 +9,14 @@ import Util from "../../util";
 export default class Helper {
 
   /**
-   * Create an helper object.
-   * @param {String} name - The name of the helper.
+   * Create an helper object for anime content.
+   * @param {String} name - The name of the content provider.
+   * @param {?Boolean} debug - Debug mode for extra output.
    */
   constructor(name, debug) {
     /**
      * The name of the torrent provider.
-     * @type {String}  The name of the torrent provider.
+     * @type {String}
      */
     this.name = name;
 
@@ -34,15 +35,26 @@ export default class Helper {
   };
 
   /**
-   * Update the number of episodes of a given anime
-   * @param {Anime} anime - The anime to update the number of episodes.
+   * Update the number of seasons of a given anime.
+   * @param {Anime} anime - The anime to update the number of seasons.
    * @returns {Anime} - A newly updated anime.
    */
-  async _updateNumEpisodes(anime) {
-    anime.num_episodes = anime.episodes.length;
-    return await Anime.findOneAndUpdate({
+  async _updateNumSeasons(anime) {
+    const saved = await Anime.findOneAndUpdate({
       _id: anime._id
     }, anime, {
+      new: true,
+      upsert: true
+    }).exec();
+
+    const distinct = await Anime.distinct("episodes.season", {
+      _id: saved._id
+    }).exec();
+    saved.num_seasons = distinct.length;
+
+    return await Anime.findOneAndUpdate({
+      _id: saved._id
+    }, saved, {
       new: true,
       upsert: true
     }).exec();
@@ -57,7 +69,7 @@ export default class Helper {
    * @returns {Anime} - An anime with merged torrents.
    */
   _updateEpisode(matching, found, anime, quality) {
-    let index = anime.episodes.indexOf(matching);
+    const index = anime.episodes.indexOf(matching);
 
     if (found.torrents[quality] && matching.torrents[quality]) {
       let update = false;
@@ -91,10 +103,10 @@ export default class Helper {
   async _updateEpisodes(anime) {
     try {
       const found = await Anime.findOne({
-          _id: anime._id
-        }).exec();
+        _id: anime._id
+      }).exec();
       if (found) {
-        console.log(`${this.name}: '${found.title}' is an existing anime.`);
+        logger.info(`${this.name}: '${found.title}' is an existing anime.`);
         for (let i = 0; i < found.episodes.length; i++) {
           let matching = anime.episodes
             .filter(animeEpisode => animeEpisode.episode === found.episodes[i].episode);
@@ -108,11 +120,11 @@ export default class Helper {
           }
         }
 
-        return await this._updateNumEpisodes(anime);
+        return await this._updateNumSeasons(anime);
       } else {
-        console.log(`${this.name}: '${anime.title}' is a new anime!`);
+        logger.info(`${this.name}: '${anime.title}' is a new anime!`);
         const newAnime = await new Anime(anime).save();
-        return await this._updateNumEpisodes(newAnime);
+        return await this._updateNumSeasons(newAnime);
       }
     } catch (err) {
       return this._util.onError(err);
@@ -125,7 +137,6 @@ export default class Helper {
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
    * @param {String} slug - The slug of the anime.
-   * @returns {Anime} - A new anime with seasons.
    */
   async _addSeason(anime, episodes, seasonNumber, slug) {
     try {
@@ -181,10 +192,10 @@ export default class Helper {
             loved: 100,
             votes: 0,
             watching: 0,
-            percentage: (Math.round(hummingbirdAnime.community_rating * 10)) * 2,
+            percentage: (Math.round(hummingbirdAnime.community_rating * 10)) * 2
           },
           type,
-          num_episodes: 0,
+          num_seasons: 0,
           last_updated: Number(new Date()),
           images: {
             banner: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : "images/posterholder.png",

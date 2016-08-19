@@ -1,57 +1,86 @@
 // Import the neccesary modules.
-import expressWinston from "express-winston";
+import ExpressWinston from "express-winston";
 import fs from "fs";
 import path from "path";
 import sprintf from "sprintf";
-import winston from "winston";
+import Winston from "winston";
 
 import { tempDir } from "./constants";
 import { name } from "../../package.json";
 
-/** Class for overriding the default console object. */
+/** Class for configuring logging. */
 export default class Logger {
 
-  /** Create a logger object. */
-  constructor() {
+  /**
+   * Create a logger object.
+   * @param {?Boolean} [verbose] - Debug mode for no output.
+   * @param {?Boolean} [debug] - Debug mode for extra output.
+   */
+  constructor(pretty, verbose) {
+    /**
+     * Pretty mode.
+     * @type {Boolean}
+     */
+    Logger._pretty = pretty;
+
+    /**
+     * Verbose mode.
+     * @type {Boolean}
+     */
+    Logger._verbose = verbose;
+
      // Create the temp directory if it does not exists.
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
 
     /**
-     * The Winston instance.
+     * The log levels Winston will be using.
      * @type {Object}
      */
-    Logger.logger = new winston.Logger({
-      transports: [
-        new winston.transports.Console({
-          name,
-          formatter: Logger._consoleFormatter,
-          handleExceptions: true,
-          prettyPrint: true
-        }),
-        new winston.transports.File({
-          filename: path.join(tempDir, `${name}.log`),
-          level: "warn",
-          json: false,
-          formatter: Logger._fileFormatter,
-          maxsize: 5242880,
-          handleExceptions: true
-        })
-      ],
-      exitOnError: false
-    });
+    Logger._levels = {
+      error: 0,
+      warn: 1,
+      info: 2,
+      debug: 3
+    };
 
-    /**
-     * The Express Winston instance.
-     * @type {Object}
-     */
-    Logger.expressLogger = new expressWinston.logger({winstonInstance: Logger.logger, expressFormat: true});
+    if (Logger._pretty) {
+      /**
+       * The Winston instance.
+       * @external {Winston} https://github.com/winstonjs/winston
+       */
+      Logger.logger = new Winston.Logger({
+        transports: [
+          new Winston.transports.Console({
+            name,
+            levels: Logger._levels,
+            formatter: Logger._consoleFormatter,
+            handleExceptions: true,
+            prettyPrint: true
+          }),
+          new Winston.transports.File({
+            filename: path.join(tempDir, `${name}.log`),
+            json: false,
+            level: "warn",
+            formatter: Logger._fileFormatter,
+            maxsize: 5242880,
+            handleExceptions: true
+          })
+        ],
+        exitOnError: false
+      });
 
-    // Override the console functions.
-    console.log = msg => Logger.logger.info(msg);
-    console.error = msg => Logger.logger.error(msg);
-    console.warn = msg => Logger.logger.warn(msg);
-    console.info = msg => Logger.logger.info(msg);
-    console.debug = msg => Logger.logger.debug(msg);
+      /**
+       * The Express Winston instance.
+       * @external {ExpressWinston} http://bithavoc.io/express-winston/
+       */
+      Logger.expressLogger = new ExpressWinston.logger({
+        winstonInstance: Logger.logger,
+        expressFormat: true
+      });
+    }
+
+    // Create the logger object.
+    Logger._createLogger(this._pretty);
   };
 
   /**
@@ -118,6 +147,25 @@ export default class Logger {
       level: args.level,
       msg: args.message,
       time: new Date().toISOString()
+    });
+  };
+
+  /**
+   * Function to create a global logger object based on the properties of the Logger class.
+   */
+  static _createLogger() {
+    if (!global.logger) global.logger = {};
+
+    Object.keys(Logger._levels).map(level => {
+      if (Logger._pretty) {
+        global.logger[level] = msg => {
+          if (!Logger._verbose) Logger.logger[level](msg);
+        };
+      } else {
+        global.logger[level] = msg => {
+          if (!Logger._verbose) console[level](msg);
+        };
+      }
     });
   };
 
