@@ -80,7 +80,7 @@ export default class Logger {
     }
 
     // Create the logger object.
-    Logger._createLogger(this._pretty);
+    Logger._createLogger();
   };
 
   /**

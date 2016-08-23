@@ -10,6 +10,7 @@ import Index from "./index";
 import AnimeHelper from "./providers/helpers/animehelper";
 import MovieHelper from "./providers/helpers/moviehelper";
 import ShowHelper from "./providers/helpers/showhelper";
+import Logger from "./config/logger";
 import packageJSON from "../package.json";
 import Setup from "./config/setup";
 import Util from "./util";
@@ -22,6 +23,18 @@ export default class CLI {
    * @param {String} [providerName=CLI] - The default provider name.
    */
   constructor(providerName = "CLI") {
+    /**
+     * The name of the CLI provider.
+     * @type {String}
+     */
+    CLI._providerName = providerName;
+
+    /**
+     * The logger object to configure the logging.
+     * @type {Logger}
+     */
+    CLI._logger = new Logger();
+
     /**
      * The util object with general functions.
      * @type {Util}
@@ -138,7 +151,7 @@ export default class CLI {
      */
     this._animeSchema = {
       properties: {
-        "imdb": hummingbirdId,
+        "hummingbirdId": hummingbirdId,
         "season": season,
         "episode": episode,
         "torrent": torrent,
@@ -186,17 +199,17 @@ export default class CLI {
 
   /** Adds a show to the database through the CLI. */
   _animePrompt() {
-    prompt.get(this._showSchema, async(err, result) => {
+    prompt.get(this._animeSchema, async(err, result) => {
       if (err) {
         console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
           const { hummingbirdId, season, episode, quality, torrent } = result;
-          const animeHelper = new AnimeHelper(providerName);
+          const animeHelper = new AnimeHelper(CLI._providerName);
           const newAnime = await animeHelper.getHummingbirdInfo(hummingbirdId);
           if (newAnime && newAnime._id) {
-            const data = await getShowTorrentDataRemote(torrent, quality, season, episode);
+            const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
             await animeHelper.addEpisodes(newAnime, data, hummingbirdId);
             process.exit(0);
           }
@@ -231,7 +244,7 @@ export default class CLI {
             peer: peers,
             size: result.length,
             filesize: bytes(result.length),
-            provider: providerName
+            provider: CLI._providerName
           };
           return resolve(data);
         }).catch(err => reject(err));
@@ -248,10 +261,10 @@ export default class CLI {
       } else {
         try {
           const { imdb, quality, language, torrent } = result;
-          const movieHelper = new MovieHelper(providerName);
+          const movieHelper = new MovieHelper(CLI._providerName);
           const newMovie = await movieHelper.getTraktInfo(imdb);
           if (newMovie && newMovie._id) {
-            const data = await getMovieTorrentDataRemote(torrent, language, quality);
+            const data = await this._getMovieTorrentDataRemote(torrent, language, quality);
             await movieHelper.addTorrents(newMovie, data);
             process.exit(0);
           }
@@ -286,7 +299,7 @@ export default class CLI {
             url: magnet,
             seeds,
             peers,
-            provider: providerName
+            provider: CLI._providerName
           };
           return resolve(data);
         }).catch(err => reject(err));
@@ -303,10 +316,10 @@ export default class CLI {
       } else {
         try {
           const { imdb, season, episode, quality, torrent } = result;
-          const showHelper = new ShowHelper(providerName);
+          const showHelper = new ShowHelper(CLI._providerName);
           const newShow = await showHelper.getTraktInfo(imdb);
           if (newShow && newShow._id) {
-            const data = await getShowTorrentDataRemote(torrent, quality, season, episode);
+            const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
             await showHelper.addEpisodes(newShow, data, imdb);
             process.exit(0);
           }
@@ -362,6 +375,10 @@ export default class CLI {
         this._showPrompt();
       } else if (program.content.match(/^(movie)/i)) {
         this._moviePrompt();
+      } else if (program.content.match(/^(anime)/i)) {
+        this._animePrompt();
+      } else {
+        console.error(`\n  \x1b[31mError:\x1b[36m No valid value given for adding content: '${program.content}'\x1b[0m`)
       }
     } else if (program.export) {
       this._util.exportCollection(program.export);

@@ -82,6 +82,7 @@
    - Disabled `/shows/search/`, `/shows/update/`, `/shows/last_updated` routes as they don't seem to be used by Popcorn Time.
    - Made scraping EZTV faster by merging the `getShowDetails` and `getAllEpisodes` functions.
    - Required NodeJS version was changed in 1.0.2 to NodeJS v.5.0.0.
+   - Fixed several issues with adding content through the CLI.
 
 # 1.0.2 - Wanna retry? - 14 March 2016
 
