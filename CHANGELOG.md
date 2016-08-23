@@ -1,9 +1,16 @@
+# 2.2.1 - That's for later - 23 August 2016
+
+ - **Bug fixes:**
+   - Fixed an issue where the API could return an anime with the type `movie`.
+   - Fixed an issue where a season of a date based show could be `0`.
+   - Fixed an issue where date based shows where not added correctly.
+
 # 2.2.0 - Extra Torrents? - 11 August 2016
 
  - **New features:**
    - Added extractors to extract torrents and content data from content providers.
    - Added ExtraTorrent as a content provider with the [extratorrent-api](https://github.com/ChrisAlderson/extratorrent-api) module.
-   - DateBased shows are now included in the scrape. [#8](https://github.com/popcorn-official/popcorn-api/issues/8).
+   - DateBased shows are now included in the scrape [#8](https://github.com/popcorn-official/popcorn-api/issues/8).
    - Added Nyaa as a content provider for anime with the [nyaa-api-pt](https://github.com/ChrisAlderson/nyaa-api-pt) module.
 
  - **Notes:**
@@ -19,7 +26,7 @@
 
  - **Bug fixes:**
    - Fixed search not working correctly.
-   - Fixed #25.
+   - Fixed MongoDB sorting limitation [#25](https://github.com/popcorn-official/popcorn-api/issues/25).
 
  - **Notes:**
    - Moved documentation over to ESDoc.
