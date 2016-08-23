@@ -39,7 +39,8 @@ export default class Animes {
     return Anime.count({
       num_seasons: {
         $gt: 0
-      }
+      },
+      type: "show"
     }).exec().then(count => {
       const pages = Math.round(count / pageSize);
       const docs = [];
@@ -66,7 +67,8 @@ export default class Animes {
           $match: {
             num_seasons: {
               $gt: 0
-            }
+            },
+            type: "show"
           }
         }, {
           $project: Animes._projection
@@ -81,7 +83,8 @@ export default class Animes {
       const query = {
         num_seasons: {
           $gt: 0
-        }
+        },
+        type: "show"
       };
       const data = req.query;
 
@@ -149,7 +152,8 @@ export default class Animes {
    */
   getAnime(req, res, next) {
     return Anime.findOne({
-        _id: req.params.id
+        _id: req.params.id,
+        type: "show"
       }, {
         latest_episode: 0
       }).exec()
@@ -166,6 +170,10 @@ export default class Animes {
    */
   getRandomAnime(req, res, next) {
     return Anime.aggregate([{
+        $match: {
+          type: "show"
+        }
+      }, {
         $project: Animes._projection
       }, {
         $sample: {

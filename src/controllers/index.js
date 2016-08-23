@@ -66,7 +66,8 @@ export default class Index {
       const totalAnimes = await Anime.count({
         num_seasons: {
           $gt: 0
-        }
+        },
+        type: "show"
       }).exec();
       const totalMovies = await Movie.count().exec();
       const totalShows = await Show.count({

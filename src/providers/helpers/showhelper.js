@@ -183,56 +183,37 @@ export default class Helper {
         for (let episodeData in tvdbShow.Episodes) {
           episodeData = tvdbShow.Episodes[episodeData];
 
-          const firstAired = new Date(episodeData.FirstAired);
+          if (episodes[seasonNumber]) {
+            Object.keys(episodes[seasonNumber]).map(episodeNumber => {
+              if (`${seasonNumber}-${episodeNumber}` === episodeData.FirstAired) {
+                const episode = {
+                    tvdb_id: episodeData.id,
+                    season: episodeData.SeasonNumber,
+                    episode: episodeData.EpisodeNumber,
+                    title: episodeData.EpisodeName,
+                    overview: episodeData.Overview,
+                    date_based: true,
+                    first_aired: new Date(episodeData.FirstAired).getTime() / 1000.0,
+                    watched: {
+                      watched: false
+                    },
+                    torrents: {}
+                  };
 
-          let day = firstAired.getDate();
-          day = day < 10 ? `0${day}` : day;
-          let month = (firstAired.getMonth() + 1);
-          month = month < 10 ? `0${month}` : month;
+                  if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
 
-          const episodeNumber = `${month}-${day}`;
-
-          if (episodes[seasonNumber] && episodes[seasonNumber][episodeNumber]) {
-            const episode = {
-              tvdb_id: episodeData.id,
-              season: episodeData.SeasonNumber,
-              episode: episodeData.EpisodeNumber,
-              title: episodeData.EpisodeName,
-              overview: episodeData.Overview,
-              date_based: true,
-              first_aired: new Date(firstAired).getTime() / 1000.0,
-              watched: {
-                watched: false
-              },
-              torrents: {}
-            };
-
-            if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
-
-            episode.torrents = episodes[seasonNumber][episodeNumber];
-            episode.torrents[0] = episodes[seasonNumber][episodeNumber]["480p"] ? episodes[seasonNumber][episodeNumber]["480p"] : episodes[seasonNumber][episodeNumber]["720p"];
-            show.episodes.push(episode);
+                  if (episode.season > 0) {
+                    episode.torrents = episodes[seasonNumber][episodeNumber];
+                    episode.torrents[0] = episodes[seasonNumber][episodeNumber]["480p"] ? episodes[seasonNumber][episodeNumber]["480p"] : episodes[seasonNumber][episodeNumber]["720p"];
+                    show.episodes.push(episode);
+                  }
+              }
+            });
           }
         }
       }
     } catch (err) {
       return this._util.onError(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`);
-    }
-  };
-
-  /**
-   * Adds one season to a show.
-   * @param {Show} show - The show to add the torrents to.
-   * @param {Object} episodes - The episodes containing the torrents.
-   * @param {Integer} seasonNumber - The season number.
-   * @param {String} slug - The slug of the show.
-   * @returns {Show} - A new show with seasons.
-   */
-  async _addSeason(show, episodes, seasonNumber, slug) {
-    if (episodes.dateBased) {
-      return await this._addDateBasedSeason(show, episodes, seasonNumber, slug);
-    } else {
-      return await this._addSeasonalSeason(show, episodes, seasonNumber, slug);
     }
   };
 
@@ -300,7 +281,15 @@ export default class Helper {
    */
   async addEpisodes(show, episodes, slug) {
     try {
-      await asyncq.each(Object.keys(episodes), seasonNumber => this._addSeason(show, episodes, seasonNumber, slug));
+      const dateBased = episodes.dateBased;
+      delete episodes.dateBased;
+
+      if (dateBased) {
+        await asyncq.each(Object.keys(episodes), seasonNumber => this._addDateBasedSeason(show, episodes, seasonNumber, slug));
+      } else {
+        await asyncq.each(Object.keys(episodes), seasonNumber => this._addSeasonalSeason(show, episodes, seasonNumber, slug));
+      }
+
       return await this._updateEpisodes(show);
     } catch (err) {
       return this._util.onError(err);
