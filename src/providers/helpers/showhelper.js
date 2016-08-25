@@ -104,6 +104,8 @@ export default class Helper {
             .filter(showEpisode => showEpisode.season === found.episodes[i].season)
             .filter(showEpisode => showEpisode.episode === found.episodes[i].episode);
 
+            if (found.episodes[i].first_aired > show.latest_episode) show.latest_episode = found.episodes[i].first_aired;
+
           if (matching.length != 0) {
             show = this._updateEpisode(matching[0], found.episodes[i], show, "480p");
             show = this._updateEpisode(matching[0], found.episodes[i], show, "720p");
