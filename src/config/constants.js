@@ -1,4 +1,5 @@
 // Import the neccesary modules.
+import Fanart from "fanart.tv-api";
 import path from "path";
 import Trakt from "trakt.tv";
 import TVDB from "node-tvdb";
@@ -276,6 +277,16 @@ export const extratorrentShowProviders = [
 ];
 
 /**
+ * A configured Fanart API.
+ * @type {Trakt}
+ * @see https://github.com/vankasteelj/trakt.tv
+ */
+
+const fanartAPI = new Fanart({
+  api_key: "bd2753f04538b01479e39e695308b921"
+});
+
+/**
  * The providers for scraping KAT for anime.
  * @type {Array}
  */
@@ -463,12 +474,16 @@ export const timeZone = "America/Los_Angeles";
 /**
  * A configured Trakt API.
  * @type {Trakt}
+ * @see https://github.com/vankasteelj/trakt.tv
  */
-export const trakt = new Trakt({client_id: "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907"});
+export const trakt = new Trakt({
+  client_id: "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907"
+});
 
 /**
  * A configured TVDB API.
  * @type {TVDB}
+ * @see https://github.com/edwellbrook/node-tvdb
  */
 export const tvdb = new TVDB("B17D23818D6E884D");
 
