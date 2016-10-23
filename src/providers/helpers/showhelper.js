@@ -3,7 +3,7 @@ import asyncq from "async-q";
 
 import Show from "../../models/Show";
 import Util from "../../util";
-import { trakt, tvdb } from "../../config/constants";
+import { fanart, trakt, tvdb } from "../../config/constants";
 
 /** Class for saving shows. */
 export default class Helper {
@@ -235,8 +235,12 @@ export default class Helper {
       let watching = 0;
       if (traktWatchers !== null) watching = traktWatchers.length;
 
+      let fanartImages = null;
+      if (traktShow && traktShow.ids["tvdb"]) fanartImages = await fanart.getShowImages(traktShow.ids["tvdb"]);
+
       if (traktShow && traktShow.ids["imdb"]) {
-        return {
+        const holder = "images/posterholder.png";
+        const newShow = {
           _id: traktShow.ids["imdb"],
           imdb_id: traktShow.ids["imdb"],
           tvdb_id: traktShow.ids["tvdb"],
@@ -261,13 +265,21 @@ export default class Helper {
           last_updated: Number(new Date()),
           latest_episode: 0,
           images: {
-            banner: traktShow.images.banner.full !== null ? traktShow.images.banner.full : "images/posterholder.png",
-            fanart: traktShow.images.fanart.full !== null ? traktShow.images.fanart.full : "images/posterholder.png",
-            poster: traktShow.images.poster.full !== null ? traktShow.images.poster.full : "images/posterholder.png"
+            banner: holder,
+            fanart: holder,
+            poster: holder
           },
           genres: traktShow.genres !== null ? traktShow.genres : ["unknown"],
           episodes: []
         };
+
+        if (fanartImages) {
+          newShow.images.banner = fanartImages.tvbanner ? fanartImages.tvbanner[0].url : holder;
+          newShow.images.fanart = fanartImages.showbackground ? fanartImages.showbackground[0].url : fanartImages.clearart ? fanartImages.clearart[0].url : holder;
+          newShow.images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
+        }
+
+        return newShow;
       }
     } catch (err) {
       return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);

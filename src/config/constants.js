@@ -282,7 +282,7 @@ export const extratorrentShowProviders = [
  * @see https://github.com/vankasteelj/trakt.tv
  */
 
-const fanartAPI = new Fanart({
+export const fanart = new Fanart({
   api_key: "bd2753f04538b01479e39e695308b921"
 });
 
