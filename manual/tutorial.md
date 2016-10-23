@@ -404,3 +404,6 @@ Metadata providers are providers which get data on a movie or get seasonal infor
 ### [Hummingbird.me](https://hummingbird.me)
 
 [Hummingbird.me](https://hummingbird.me) is the metadata provider for anime. It uses the [hummingbird-api](https://github.com/ChrisAlderson/hummingbird-api) module. For more information about the Hummingbird API you can click [here](https://github.com/hummingbird-me/hummingbird/wiki).
+
+### [Fanart.tv](https://fanart.tv/)
+[Fanart.tv](https://fanart.tv/) is the provider of the images used by movies and shows. It uses the [fanart.tv-api](https://github.com/ChrisAlderson/fanart.tv-api/). For more information about the Fanart API you can click [here](http://docs.fanarttv.apiary.io/#).
