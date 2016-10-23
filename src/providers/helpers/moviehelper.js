@@ -3,7 +3,7 @@ import asyncq from "async-q";
 
 import Movie from "../../models/Movie";
 import Util from "../../util";
-import { trakt } from "../../config/constants";
+import { fanart, trakt } from "../../config/constants";
 
 /** Class for saving movies. */
 export default class Helper {
@@ -121,8 +121,12 @@ export default class Helper {
       let watching = 0;
       if (traktWatchers !== null) watching = traktWatchers.length;
 
+      let fanartImages = null;
+      if (traktMovie && traktMovie.ids["imdb"]) fanartImages = await fanart.getMovieImages(traktMovie.ids["imdb"]);
+
       if (traktMovie && traktMovie.ids["imdb"]) {
-        return {
+        const holder = "images/posterholder.png";
+        const newMovie = {
           _id: traktMovie.ids["imdb"],
           imdb_id: traktMovie.ids["imdb"],
           title: traktMovie.title,
@@ -140,9 +144,9 @@ export default class Helper {
           country: traktMovie.language,
           last_updated: Number(new Date()),
           images: {
-            banner: traktMovie.images.banner.full !== null ? traktMovie.images.banner.full : "images/posterholder.png",
-            fanart: traktMovie.images.fanart.full !== null ? traktMovie.images.fanart.full : "images/posterholder.png",
-            poster: traktMovie.images.poster.full !== null ? traktMovie.images.poster.full : "images/posterholder.png"
+            banner: holder,
+            fanart: holder,
+            poster: holder
           },
           genres: traktMovie.genres !== null ? traktMovie.genres : ["unknown"],
           released: new Date(traktMovie.released).getTime() / 1000.0,
@@ -150,6 +154,14 @@ export default class Helper {
           certification: traktMovie.certification,
           torrents: {}
         };
+
+        if (fanartImages) {
+          newMovie.images.banner = fanartImages.moviebanner ? fanartImages.moviebanner[0].url : holder;
+          newMovie.images.fanart = fanartImages.moviebackground ? fanartImages.moviebackground[0].url : fanartImages.hdmovieclearart ? fanartImages.hdmovieclearart[0].url : holder;
+          newMovie.images.poster = fanartImages.movieposter ? fanartImages.movieposter[0].url : holder;
+        }
+
+        return newMovie;
       }
     } catch (err) {
       return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
