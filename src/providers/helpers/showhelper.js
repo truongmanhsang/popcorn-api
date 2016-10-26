@@ -220,6 +220,38 @@ export default class Helper {
   };
 
   /**
+   * Get images from Fanart.tv on thetvdb.com.
+   * @param {Integer} tvdb_id - The tvdb id of the show you want the images from.
+   * @returns {Object} - Object with a banner, fanart and poster images.
+   */
+  async _getImages(tvdb_id) {
+    const holder = "images/posterholder.png"
+    const images = {
+      banner: holder,
+      fanart: holder,
+      poster: holder
+    };
+
+    try {
+      const fanartImages = await fanart.getShowImages(tvdb_id);
+      images.banner = fanartImages.tvbanner ? fanartImages.tvbanner[0].url : holder;
+      images.fanart = fanartImages.showbackground ? fanartImages.showbackground[0].url : fanartImages.clearart ? fanartImages.clearart[0].url : holder;
+      images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
+    } catch (err) {
+      try {
+        const tvdbImages = await tvdb.getSeriesById(tvdb_id);
+        images.banner = tvdbImages.banner ? `http://thetvdb.com/banners/${tvdbImages.banner}` : holder;
+        images.fanart = tvdbImages.fanart? `http://thetvdb.com/banners/${tvdbImages.fanart}` : holder;
+        images.poster = tvdbImages.poster ? `http://thetvdb.com/banners/${tvdbImages.poster}` : holder;
+      } catch (err) {
+        return this._util.onError(`Images: Could not find images on: ${err.path || err} with tvdb_id: '${tvdb_id}'`);
+      }
+    }
+
+    return images;
+  }
+
+  /**
    * Get info from Trakt and make a new show object.
    * @param {String} slug - The slug to query https://trakt.tv/.
    * @returns {Show} - A new show without the episodes attached.
@@ -228,19 +260,17 @@ export default class Helper {
     try {
       const traktShow = await trakt.shows.summary({
         id: slug,
-        extended: "full,images"
+        extended: "full"
       });
-      const traktWatchers = await trakt.shows.watching({id: slug});
+      const traktWatchers = await trakt.shows.watching({
+        id: slug
+      });
 
       let watching = 0;
       if (traktWatchers !== null) watching = traktWatchers.length;
 
-      let fanartImages = null;
-      if (traktShow && traktShow.ids["tvdb"]) fanartImages = await fanart.getShowImages(traktShow.ids["tvdb"]);
-
-      if (traktShow && traktShow.ids["imdb"]) {
-        const holder = "images/posterholder.png";
-        const newShow = {
+      if (traktShow && traktShow.ids["imdb"] && traktShow.ids["tvdb"]) {
+        return {
           _id: traktShow.ids["imdb"],
           imdb_id: traktShow.ids["imdb"],
           tvdb_id: traktShow.ids["tvdb"],
@@ -264,22 +294,10 @@ export default class Helper {
           num_seasons: 0,
           last_updated: Number(new Date()),
           latest_episode: 0,
-          images: {
-            banner: holder,
-            fanart: holder,
-            poster: holder
-          },
+          images: await this._getImages(traktShow.ids["tvdb"]),
           genres: traktShow.genres !== null ? traktShow.genres : ["unknown"],
           episodes: []
         };
-
-        if (fanartImages) {
-          newShow.images.banner = fanartImages.tvbanner ? fanartImages.tvbanner[0].url : holder;
-          newShow.images.fanart = fanartImages.showbackground ? fanartImages.showbackground[0].url : fanartImages.clearart ? fanartImages.clearart[0].url : holder;
-          newShow.images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
-        }
-
-        return newShow;
       }
     } catch (err) {
       return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
