@@ -1,6 +1,7 @@
 // Import the neccesary modules.
 import Fanart from "fanart.tv-api";
 import path from "path";
+import OMDB from "omdb-api-pt";
 import Trakt from "trakt.tv";
 import TVDB from "node-tvdb";
 
@@ -341,6 +342,13 @@ export const nyaaAnimeProviders = [
   {name: "FFF", query: {term: "mkv", user: 73859, filter: "trusted_only"}},
   {name: "gg", query: {term: "mkv", user: 9001, filter: "trusted_only"}}
 ];
+
+/**
+ * A configured OMDB API.
+ * @type {OMDB}
+ * @see https://github.com/ChrisAlderson/omdb-api-pt
+ */
+export const omdb = new OMDB();
 
 /**
  * Check if this instance of the API is the master. Default is `true`.

@@ -21,6 +21,7 @@
     "mongoose": "^4.6.4",
     "node-tvdb": "^2.0.16",
     "nyaa-api-pt": "^1.0.8",
+    "omdb-api-pt": "^1.0.0",
     "parse-torrent": "^5.8.1",
     "prompt": "^1.0.0",
     "request": "^2.75.0",
