@@ -1,3 +1,12 @@
+# 2.2.2 - The key is in the words - 26 October 2016
+
+- **Bug fixes:**
+  - Removed special characters when searching with keywords [#44](https://github.com/popcorn-official/popcorn-api/issues/44).
+
+- **Notes:**
+  - Movie images are now coming from Fanart.tv or OMDB.
+  - Show images are now coming from Fanart.tv or TVDB.
+
 # 2.2.1 - That's for later - 23 August 2016
 
  - **Bug fixes:**
