@@ -57,7 +57,8 @@ export default class Extractor extends BaseExtractor {
     let movieTitle = torrent.title.match(regex)[1];
     if (movieTitle.endsWith(" ")) movieTitle = movieTitle.substring(0, movieTitle.length - 1);
     movieTitle = movieTitle.replace(/\./g, " ");
-    let slug = movieTitle.replace(/\s+/g, "-").toLowerCase();
+    let slug = movieTitle.replace(/[^a-zA-Z0-9 ]/gi, "").replace(/\s+/g, "-").toLowerCase();
+    if (slug.endsWith("-")) slug = slug.substring(0, slug.length - 1);
     slug = slug in movieMap ? movieMap[slug] : slug;
     const year = torrent.title.match(regex)[2];
     const quality = torrent.title.match(regex)[3];

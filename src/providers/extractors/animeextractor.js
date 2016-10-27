@@ -58,7 +58,8 @@ export default class Extractor extends BaseExtractor {
     let animeTitle = torrent.title.match(regex)[1];
     if (animeTitle.endsWith(" ")) animeTitle = animeTitle.substring(0, animeTitle.length - 1);
     animeTitle = animeTitle.replace(/\_/g, " ").replace(/\./g, " ");
-    let slug = animeTitle.replace(/[!\'\~\,]/gi, "").replace(/\s-\s?/gi, "").replace(/\s+/g, "-").toLowerCase();
+    let slug = animeTitle.replace(/[^a-zA-Z0-9 ]/gi, "").replace(/\s+/g, "-").toLowerCase();
+    if (slug.endsWith("-")) slug = slug.substring(0, slug.length - 1);
     slug = slug in animeMap ? animeMap[slug] : slug;
 
     const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : "480p";
