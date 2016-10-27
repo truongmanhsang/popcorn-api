@@ -96,7 +96,7 @@ export default class Shows {
         let regex = "^";
 
         for (let w in words) {
-          words[w] = words[w].replace(/[^a-zA-Z]/g, "");
+          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, "");
           regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
         }
 
