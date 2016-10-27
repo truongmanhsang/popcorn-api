@@ -224,10 +224,10 @@ export default class Scraper {
 
     asyncq.eachSeries([
       this._scrapeEZTVShows,
-      // this._scrapeExtraTorrentShows,
+      this._scrapeExtraTorrentShows,
       // this._scrapeKATShows,
 
-      // this._scrapeExtraTorrentMovies,
+      this._scrapeExtraTorrentMovies,
       // this._scrapeKATMovies,
       this._scrapeYTSMovies,
 
