@@ -27,7 +27,7 @@ export default class HorribleSubs {
      * @see https://github.com/ChrisAlderson/horriblesubs-api
      */
     this._horriblesubs = new HorribleSubsAPI({
-      cloudflare: true
+      cloudflare: true,
       debug
     });
 
