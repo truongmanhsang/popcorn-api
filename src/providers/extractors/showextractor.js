@@ -70,7 +70,7 @@ export default class Extractor extends BaseExtractor {
     const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : "480p";
 
     const episodeTorrent = {
-      url: torrent.torrent_link ? torrent.torrent_link : torrent.magnet,
+      url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
       seeds: torrent.seeds ? torrent.seeds : 0,
       peers: torrent.peers ? torrent.peers : 0,
       provider: this.name
@@ -166,9 +166,9 @@ export default class Extractor extends BaseExtractor {
   async search(provider) {
     try {
       const getTotalPages = await this._contentProvider.search(provider.query);
-      const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
+      let totalPages = getTotalPages.total_pages; // Change to 'const' for production.
       if (!totalPages) return this._util.onError(`${this.name}: total_pages returned; '${totalPages}'`);
-      // totalPages = 3; // For testing purposes only.
+      totalPages = 3; // For testing purposes only.
       logger.info(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);

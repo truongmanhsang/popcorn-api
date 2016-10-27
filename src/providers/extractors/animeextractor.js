@@ -72,7 +72,7 @@ export default class Extractor extends BaseExtractor {
     }
 
     const episodeTorrent = {
-      url: torrent.torrent_link ? torrent.torrent_link : torrent.magnet,
+      url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
       seeds: torrent.seeds ? torrent.seeds : 0,
       peers: torrent.peers ? torrent.peers : 0,
       provider: this.name
