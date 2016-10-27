@@ -274,7 +274,7 @@ export const extratorrentShowProviders = [
   {name: "ETHD 720p", query: {with_words: "ethd hdtv x264 720p"}},
 
   // 1080p
-  {name: "1080p", query: {width_words: "hdtv x264 1080p"}}
+  {name: "1080p", query: {with_words: "hdtv x264 1080p"}}
 ];
 
 /**
