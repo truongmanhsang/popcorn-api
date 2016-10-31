@@ -48,6 +48,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentAnimeProviders">extratorrentAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentMovieProviders">extratorrentMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentShowProviders">extratorrentShowProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-fanart">fanart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeProviders">katAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katMovieProviders">katMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowProviders">katShowProviders</a></span></span></li>
@@ -55,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieMap">movieMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-nyaaAnimeProviders">nyaaAnimeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-omdb">omdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
@@ -195,7 +197,12 @@ export default class Shows {
       if (data.keywords) {
         const words = data.keywords.split(&quot; &quot;);
         let regex = &quot;^&quot;;
-        for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+
+        for (let w in words) {
+          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, &quot;&quot;);
+          regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+        }
+
         query.title = {
           $regex: new RegExp(`${regex}.*`),
           $options: &quot;gi&quot;

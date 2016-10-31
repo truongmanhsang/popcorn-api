@@ -48,6 +48,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentAnimeProviders">extratorrentAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentMovieProviders">extratorrentMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentShowProviders">extratorrentShowProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-fanart">fanart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeProviders">katAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katMovieProviders">katMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowProviders">katShowProviders</a></span></span></li>
@@ -55,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieMap">movieMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-nyaaAnimeProviders">nyaaAnimeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-omdb">omdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
@@ -140,7 +142,8 @@ export default class Animes {
     return Anime.count({
       num_seasons: {
         $gt: 0
-      }
+      },
+      type: &quot;show&quot;
     }).exec().then(count =&gt; {
       const pages = Math.round(count / pageSize);
       const docs = [];
@@ -167,7 +170,8 @@ export default class Animes {
           $match: {
             num_seasons: {
               $gt: 0
-            }
+            },
+            type: &quot;show&quot;
           }
         }, {
           $project: Animes._projection
@@ -182,7 +186,8 @@ export default class Animes {
       const query = {
         num_seasons: {
           $gt: 0
-        }
+        },
+        type: &quot;show&quot;
       };
       const data = req.query;
 
@@ -197,7 +202,12 @@ export default class Animes {
       if (data.keywords) {
         const words = data.keywords.split(&quot; &quot;);
         let regex = &quot;^&quot;;
-        for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+
+        for (let w in words) {
+          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, &quot;&quot;);
+          regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+        }
+
         query.title = {
           $regex: new RegExp(`${regex}.*`),
           $options: &quot;gi&quot;
@@ -250,7 +260,8 @@ export default class Animes {
    */
   getAnime(req, res, next) {
     return Anime.findOne({
-        _id: req.params.id
+        _id: req.params.id,
+        type: &quot;show&quot;
       }, {
         latest_episode: 0
       }).exec()
@@ -267,6 +278,10 @@ export default class Animes {
    */
   getRandomAnime(req, res, next) {
     return Anime.aggregate([{
+        $match: {
+          type: &quot;show&quot;
+        }
+      }, {
         $project: Animes._projection
       }, {
         $sample: {

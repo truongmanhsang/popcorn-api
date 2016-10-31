@@ -48,6 +48,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentAnimeProviders">extratorrentAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentMovieProviders">extratorrentMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentShowProviders">extratorrentShowProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-fanart">fanart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeProviders">katAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katMovieProviders">katMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowProviders">katShowProviders</a></span></span></li>
@@ -55,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieMap">movieMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-nyaaAnimeProviders">nyaaAnimeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-omdb">omdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
@@ -100,7 +102,9 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/config/constants.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
+import Fanart from &quot;fanart.tv-api&quot;;
 import path from &quot;path&quot;;
+import OMDB from &quot;omdb-api-pt&quot;;
 import Trakt from &quot;trakt.tv&quot;;
 import TVDB from &quot;node-tvdb&quot;;
 
@@ -373,8 +377,18 @@ export const extratorrentShowProviders = [
   {name: &quot;ETHD 720p&quot;, query: {with_words: &quot;ethd hdtv x264 720p&quot;}},
 
   // 1080p
-  {name: &quot;1080p&quot;, query: {width_words: &quot;hdtv x264 1080p&quot;}}
+  {name: &quot;1080p&quot;, query: {with_words: &quot;hdtv x264 1080p&quot;}}
 ];
+
+/**
+ * A configured Fanart API.
+ * @type {Trakt}
+ * @see https://github.com/vankasteelj/trakt.tv
+ */
+
+export const fanart = new Fanart({
+  api_key: &quot;bd2753f04538b01479e39e695308b921&quot;
+});
 
 /**
  * The providers for scraping KAT for anime.
@@ -431,6 +445,13 @@ export const nyaaAnimeProviders = [
   {name: &quot;FFF&quot;, query: {term: &quot;mkv&quot;, user: 73859, filter: &quot;trusted_only&quot;}},
   {name: &quot;gg&quot;, query: {term: &quot;mkv&quot;, user: 9001, filter: &quot;trusted_only&quot;}}
 ];
+
+/**
+ * A configured OMDB API.
+ * @type {OMDB}
+ * @see https://github.com/ChrisAlderson/omdb-api-pt
+ */
+export const omdb = new OMDB();
 
 /**
  * Check if this instance of the API is the master. Default is `true`.
@@ -564,12 +585,16 @@ export const timeZone = &quot;America/Los_Angeles&quot;;
 /**
  * A configured Trakt API.
  * @type {Trakt}
+ * @see https://github.com/vankasteelj/trakt.tv
  */
-export const trakt = new Trakt({client_id: &quot;70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907&quot;});
+export const trakt = new Trakt({
+  client_id: &quot;70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907&quot;
+});
 
 /**
  * A configured TVDB API.
  * @type {TVDB}
+ * @see https://github.com/edwellbrook/node-tvdb
  */
 export const tvdb = new TVDB(&quot;B17D23818D6E884D&quot;);
 

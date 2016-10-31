@@ -48,6 +48,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentAnimeProviders">extratorrentAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentMovieProviders">extratorrentMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentShowProviders">extratorrentShowProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-fanart">fanart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeProviders">katAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katMovieProviders">katMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowProviders">katShowProviders</a></span></span></li>
@@ -55,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieMap">movieMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-nyaaAnimeProviders">nyaaAnimeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-omdb">omdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
@@ -111,6 +113,7 @@ import Index from &quot;./index&quot;;
 import AnimeHelper from &quot;./providers/helpers/animehelper&quot;;
 import MovieHelper from &quot;./providers/helpers/moviehelper&quot;;
 import ShowHelper from &quot;./providers/helpers/showhelper&quot;;
+import Logger from &quot;./config/logger&quot;;
 import packageJSON from &quot;../package.json&quot;;
 import Setup from &quot;./config/setup&quot;;
 import Util from &quot;./util&quot;;
@@ -123,6 +126,18 @@ export default class CLI {
    * @param {String} [providerName=CLI] - The default provider name.
    */
   constructor(providerName = &quot;CLI&quot;) {
+    /**
+     * The name of the CLI provider.
+     * @type {String}
+     */
+    CLI._providerName = providerName;
+
+    /**
+     * The logger object to configure the logging.
+     * @type {Logger}
+     */
+    CLI._logger = new Logger();
+
     /**
      * The util object with general functions.
      * @type {Util}
@@ -239,7 +254,7 @@ export default class CLI {
      */
     this._animeSchema = {
       properties: {
-        &quot;imdb&quot;: hummingbirdId,
+        &quot;hummingbirdId&quot;: hummingbirdId,
         &quot;season&quot;: season,
         &quot;episode&quot;: episode,
         &quot;torrent&quot;: torrent,
@@ -287,17 +302,17 @@ export default class CLI {
 
   /** Adds a show to the database through the CLI. */
   _animePrompt() {
-    prompt.get(this._showSchema, async(err, result) =&gt; {
+    prompt.get(this._animeSchema, async(err, result) =&gt; {
       if (err) {
         console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
           const { hummingbirdId, season, episode, quality, torrent } = result;
-          const animeHelper = new AnimeHelper(providerName);
+          const animeHelper = new AnimeHelper(CLI._providerName);
           const newAnime = await animeHelper.getHummingbirdInfo(hummingbirdId);
           if (newAnime &amp;&amp; newAnime._id) {
-            const data = await getShowTorrentDataRemote(torrent, quality, season, episode);
+            const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
             await animeHelper.addEpisodes(newAnime, data, hummingbirdId);
             process.exit(0);
           }
@@ -332,7 +347,7 @@ export default class CLI {
             peer: peers,
             size: result.length,
             filesize: bytes(result.length),
-            provider: providerName
+            provider: CLI._providerName
           };
           return resolve(data);
         }).catch(err =&gt; reject(err));
@@ -349,10 +364,10 @@ export default class CLI {
       } else {
         try {
           const { imdb, quality, language, torrent } = result;
-          const movieHelper = new MovieHelper(providerName);
+          const movieHelper = new MovieHelper(CLI._providerName);
           const newMovie = await movieHelper.getTraktInfo(imdb);
           if (newMovie &amp;&amp; newMovie._id) {
-            const data = await getMovieTorrentDataRemote(torrent, language, quality);
+            const data = await this._getMovieTorrentDataRemote(torrent, language, quality);
             await movieHelper.addTorrents(newMovie, data);
             process.exit(0);
           }
@@ -387,7 +402,7 @@ export default class CLI {
             url: magnet,
             seeds,
             peers,
-            provider: providerName
+            provider: CLI._providerName
           };
           return resolve(data);
         }).catch(err =&gt; reject(err));
@@ -404,10 +419,10 @@ export default class CLI {
       } else {
         try {
           const { imdb, season, episode, quality, torrent } = result;
-          const showHelper = new ShowHelper(providerName);
+          const showHelper = new ShowHelper(CLI._providerName);
           const newShow = await showHelper.getTraktInfo(imdb);
           if (newShow &amp;&amp; newShow._id) {
-            const data = await getShowTorrentDataRemote(torrent, quality, season, episode);
+            const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
             await showHelper.addEpisodes(newShow, data, imdb);
             process.exit(0);
           }
@@ -463,6 +478,10 @@ export default class CLI {
         this._showPrompt();
       } else if (program.content.match(/^(movie)/i)) {
         this._moviePrompt();
+      } else if (program.content.match(/^(anime)/i)) {
+        this._animePrompt();
+      } else {
+        console.error(`\n  \x1b[31mError:\x1b[36m No valid value given for adding content: &apos;${program.content}&apos;\x1b[0m`)
       }
     } else if (program.export) {
       this._util.exportCollection(program.export);

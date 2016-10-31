@@ -48,6 +48,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentAnimeProviders">extratorrentAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentMovieProviders">extratorrentMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentShowProviders">extratorrentShowProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-fanart">fanart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeProviders">katAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katMovieProviders">katMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowProviders">katShowProviders</a></span></span></li>
@@ -55,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieMap">movieMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-nyaaAnimeProviders">nyaaAnimeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-omdb">omdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
@@ -158,7 +160,8 @@ export default class Extractor extends BaseExtractor {
     let movieTitle = torrent.title.match(regex)[1];
     if (movieTitle.endsWith(&quot; &quot;)) movieTitle = movieTitle.substring(0, movieTitle.length - 1);
     movieTitle = movieTitle.replace(/\./g, &quot; &quot;);
-    let slug = movieTitle.replace(/\s+/g, &quot;-&quot;).toLowerCase();
+    let slug = movieTitle.replace(/[^a-zA-Z0-9 ]/gi, &quot;&quot;).replace(/\s+/g, &quot;-&quot;).toLowerCase();
+    if (slug.endsWith(&quot;-&quot;)) slug = slug.substring(0, slug.length - 1);
     slug = slug in movieMap ? movieMap[slug] : slug;
     const year = torrent.title.match(regex)[2];
     const quality = torrent.title.match(regex)[3];
@@ -178,7 +181,7 @@ export default class Extractor extends BaseExtractor {
 
     movie.torrents[language] = {};
     movie.torrents[language][quality] = {
-      url: torrent.torrent_link ? torrent.torrent_link : torrent.magnet,
+      url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
       seed: torrent.seeds ? torrent.seeds : 0,
       peer: torrent.peers ? torrent.peers : 0,
       size: bytes(size.replace(/\s/g, &quot;&quot;)),

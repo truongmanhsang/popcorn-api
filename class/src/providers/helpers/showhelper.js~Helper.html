@@ -48,6 +48,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentAnimeProviders">extratorrentAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentMovieProviders">extratorrentMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentShowProviders">extratorrentShowProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-fanart">fanart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeProviders">katAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katMovieProviders">katMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowProviders">katShowProviders</a></span></span></li>
@@ -55,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieMap">movieMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-nyaaAnimeProviders">nyaaAnimeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-omdb">omdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
@@ -336,13 +338,13 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_addSeason">_addSeason</a></span></span><span data-ice="signature">(show: <span><a href="variable/index.html#static-variable-Show">Show</a></span>, episodes: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, seasonNumber: <span>Integer</span>, slug: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span><a href="variable/index.html#static-variable-Show">Show</a></span></span>
+           <span data-ice="name"><span><a href="class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_addSeasonalSeason">_addSeasonalSeason</a></span></span><span data-ice="signature">(show: <span><a href="variable/index.html#static-variable-Show">Show</a></span>, episodes: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, seasonNumber: <span>Integer</span>, slug: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span>*</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Adds one season to a show.</p>
+        <div data-ice="description"><p>Adds one seasonal season to a show.</p>
 </div>
       </div>
     </td>
@@ -362,13 +364,13 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_addSeasonalSeason">_addSeasonalSeason</a></span></span><span data-ice="signature">(show: <span><a href="variable/index.html#static-variable-Show">Show</a></span>, episodes: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, seasonNumber: <span>Integer</span>, slug: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_getImages">_getImages</a></span></span><span data-ice="signature">(tvdb_id: <span>Integer</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Adds one seasonal season to a show.</p>
+        <div data-ice="description"><p>Get images from Fanart.tv on thetvdb.com.</p>
 </div>
       </div>
     </td>
@@ -624,7 +626,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber301">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber314">source</a></span></span>
     </span>
   </h3>
 
@@ -707,7 +709,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber244">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber259">source</a></span></span>
     </span>
   </h3>
 
@@ -778,7 +780,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber179">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber181">source</a></span></span>
     </span>
   </h3>
 
@@ -857,96 +859,6 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-_addSeason">
-    <span class="access" data-ice="access">private</span>
-    
-    
-    
-    
-    <span data-ice="name">_addSeason</span><span data-ice="signature">(show: <span><a href="variable/index.html#static-variable-Show">Show</a></span>, episodes: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, seasonNumber: <span>Integer</span>, slug: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span><a href="variable/index.html#static-variable-Show">Show</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber231">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>Adds one season to a show.</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">show</td>
-      <td data-ice="type"><span><a href="variable/index.html#static-variable-Show">Show</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>The show to add the torrents to.</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">episodes</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>The episodes containing the torrents.</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">seasonNumber</td>
-      <td data-ice="type"><span>Integer</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>The season number.</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">slug</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>The slug of the show.</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tr>
-        <td class="return-type" data-ice="returnType"><span><a href="variable/index.html#static-variable-Show">Show</a></span></td>
-        <td class="return-desc" data-ice="returnDescription"><p>A new show with seasons.</p>
-</td>
-      </tr>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-_addSeasonalSeason">
     <span class="access" data-ice="access">private</span>
     
@@ -957,7 +869,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber134">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber136">source</a></span></span>
     </span>
   </h3>
 
@@ -1016,6 +928,75 @@
       <tr>
         <td class="return-type" data-ice="returnType"><span>*</span></td>
         
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-_getImages">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    <span data-ice="name">_getImages</span><span data-ice="signature">(tvdb_id: <span>Integer</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber227">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get images from Fanart.tv on thetvdb.com.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">tvdb_id</td>
+      <td data-ice="type"><span>Integer</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The tvdb id of the show you want the images from.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>Object with a banner, fanart and poster images.</p>
+</td>
       </tr>
     </table>
     <div data-ice="returnProperties">

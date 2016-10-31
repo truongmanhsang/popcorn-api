@@ -1,7 +1,7 @@
 {
   "type": "Program",
   "start": 0,
-  "end": 128,
+  "end": 121,
   "loc": {
     "start": {
       "line": 1,
@@ -16,8 +16,8 @@
   "body": [
     {
       "type": "ImportDeclaration",
-      "start": 57,
-      "end": 81,
+      "start": 54,
+      "end": 78,
       "loc": {
         "start": {
           "line": 4,
@@ -31,8 +31,8 @@
       "specifiers": [
         {
           "type": "ImportDefaultSpecifier",
-          "start": 64,
-          "end": 67,
+          "start": 61,
+          "end": 64,
           "loc": {
             "start": {
               "line": 4,
@@ -45,8 +45,8 @@
           },
           "local": {
             "type": "Identifier",
-            "start": 64,
-            "end": 67,
+            "start": 61,
+            "end": 64,
             "loc": {
               "start": {
                 "line": 4,
@@ -66,8 +66,8 @@
       "importKind": "value",
       "source": {
         "type": "Literal",
-        "start": 73,
-        "end": 80,
+        "start": 70,
+        "end": 77,
         "loc": {
           "start": {
             "line": 4,
@@ -106,8 +106,8 @@
         {
           "type": "CommentLine",
           "value": " Import the neccesary modules.",
-          "start": 23,
-          "end": 55,
+          "start": 21,
+          "end": 53,
           "loc": {
             "start": {
               "line": 3,
@@ -119,8 +119,8 @@
             }
           },
           "range": [
-            23,
-            55
+            21,
+            53
           ]
         }
       ],
@@ -128,8 +128,8 @@
         {
           "type": "CommentLine",
           "value": " Run the CLI program.",
-          "start": 85,
-          "end": 108,
+          "start": 80,
+          "end": 103,
           "loc": {
             "start": {
               "line": 6,
@@ -141,16 +141,16 @@
             }
           },
           "range": [
-            85,
-            108
+            80,
+            103
           ]
         }
       ]
     },
     {
       "type": "ExpressionStatement",
-      "start": 110,
-      "end": 126,
+      "start": 104,
+      "end": 120,
       "loc": {
         "start": {
           "line": 7,
@@ -163,8 +163,8 @@
       },
       "expression": {
         "type": "CallExpression",
-        "start": 110,
-        "end": 125,
+        "start": 104,
+        "end": 119,
         "loc": {
           "start": {
             "line": 7,
@@ -177,8 +177,8 @@
         },
         "callee": {
           "type": "MemberExpression",
-          "start": 110,
-          "end": 123,
+          "start": 104,
+          "end": 117,
           "loc": {
             "start": {
               "line": 7,
@@ -191,8 +191,8 @@
           },
           "object": {
             "type": "NewExpression",
-            "start": 110,
-            "end": 119,
+            "start": 104,
+            "end": 113,
             "loc": {
               "start": {
                 "line": 7,
@@ -205,8 +205,8 @@
             },
             "callee": {
               "type": "Identifier",
-              "start": 114,
-              "end": 117,
+              "start": 108,
+              "end": 111,
               "loc": {
                 "start": {
                   "line": 7,
@@ -224,8 +224,8 @@
           },
           "property": {
             "type": "Identifier",
-            "start": 120,
-            "end": 123,
+            "start": 114,
+            "end": 117,
             "loc": {
               "start": {
                 "line": 7,
@@ -248,8 +248,8 @@
         {
           "type": "CommentLine",
           "value": " Run the CLI program.",
-          "start": 85,
-          "end": 108,
+          "start": 80,
+          "end": 103,
           "loc": {
             "start": {
               "line": 6,
@@ -261,8 +261,8 @@
             }
           },
           "range": [
-            85,
-            108
+            80,
+            103
           ]
         }
       ]

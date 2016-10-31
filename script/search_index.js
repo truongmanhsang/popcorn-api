@@ -246,6 +246,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "popcorn-api/src/config/constants.js~fanart",
+    "variable/index.html#static-variable-fanart",
+    "<span>fanart</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
     "popcorn-api/src/config/constants.js~katanimeproviders",
     "variable/index.html#static-variable-katAnimeProviders",
     "<span>katAnimeProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
@@ -285,6 +291,12 @@ window.esdocSearchIndex = [
     "popcorn-api/src/config/constants.js~nyaaanimeproviders",
     "variable/index.html#static-variable-nyaaAnimeProviders",
     "<span>nyaaAnimeProviders</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
+    "popcorn-api/src/config/constants.js~omdb",
+    "variable/index.html#static-variable-omdb",
+    "<span>omdb</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
     "variable"
   ],
   [
@@ -1608,6 +1620,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/providers/helpers/moviehelper.js~helper#_getimages",
+    "class/src/providers/helpers/moviehelper.js~Helper.html#instance-method-_getImages",
+    "src/providers/helpers/moviehelper.js~Helper#_getImages",
+    "method"
+  ],
+  [
     "src/providers/helpers/moviehelper.js~helper#_updatemovie",
     "class/src/providers/helpers/moviehelper.js~Helper.html#instance-method-_updateMovie",
     "src/providers/helpers/moviehelper.js~Helper#_updateMovie",
@@ -1662,15 +1680,15 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/providers/helpers/showhelper.js~helper#_addseason",
-    "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_addSeason",
-    "src/providers/helpers/showhelper.js~Helper#_addSeason",
-    "method"
-  ],
-  [
     "src/providers/helpers/showhelper.js~helper#_addseasonalseason",
     "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_addSeasonalSeason",
     "src/providers/helpers/showhelper.js~Helper#_addSeasonalSeason",
+    "method"
+  ],
+  [
+    "src/providers/helpers/showhelper.js~helper#_getimages",
+    "class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_getImages",
+    "src/providers/helpers/showhelper.js~Helper#_getImages",
     "method"
   ],
   [

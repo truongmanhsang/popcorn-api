@@ -48,6 +48,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentAnimeProviders">extratorrentAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentMovieProviders">extratorrentMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-extratorrentShowProviders">extratorrentShowProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-fanart">fanart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katAnimeProviders">katAnimeProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katMovieProviders">katMovieProviders</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-katShowProviders">katShowProviders</a></span></span></li>
@@ -55,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-maxWebRequest">maxWebRequest</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-movieMap">movieMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-nyaaAnimeProviders">nyaaAnimeProviders</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-omdb">omdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pageSize">pageSize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-port">port</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-server">server</a></span></span></li>
@@ -159,21 +161,22 @@ export default class Extractor extends BaseExtractor {
     let animeTitle = torrent.title.match(regex)[1];
     if (animeTitle.endsWith(&quot; &quot;)) animeTitle = animeTitle.substring(0, animeTitle.length - 1);
     animeTitle = animeTitle.replace(/\_/g, &quot; &quot;).replace(/\./g, &quot; &quot;);
-    let slug = animeTitle.replace(/[!\&apos;\~\,]/gi, &quot;&quot;).replace(/\s-\s?/gi, &quot;&quot;).replace(/\s+/g, &quot;-&quot;).toLowerCase();
+    let slug = animeTitle.replace(/[^a-zA-Z0-9 ]/gi, &quot;&quot;).replace(/\s+/g, &quot;-&quot;).toLowerCase();
+    if (slug.endsWith(&quot;-&quot;)) slug = slug.substring(0, slug.length - 1);
     slug = slug in animeMap ? animeMap[slug] : slug;
 
     const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : &quot;480p&quot;;
 
     let season = 1;
     let episode;
-    if (torrent.title.match(regex).length &gt;= 5) {
+    if (torrent.title.match(regex).length &gt;= 4) {
       episode = parseInt(torrent.title.match(regex)[3], 10);
     } else {
       episode = parseInt(torrent.title.match(regex)[2], 10);
     }
 
     const episodeTorrent = {
-      url: torrent.torrent_link ? torrent.torrent_link : torrent.magnet,
+      url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
       seeds: torrent.seeds ? torrent.seeds : 0,
       peers: torrent.peers ? torrent.peers : 0,
       provider: this.name
@@ -203,15 +206,9 @@ export default class Extractor extends BaseExtractor {
    * @returns {Object} - Information about an anime from the torrent.
    */
    _getAnimeData(torrent) {
-     const secondSeasonQuality = /\[.*\].(.*).S?(\d)...(\d{2,3})\W+(\d{3,4}p)/i;
-     const oneSeasonQuality = /\[.*\].(\D+)...(\d{2,3})\W+(\d{3,4}p)/i;
-     const secondSeason = /\[.*\].(\D+).S?(\d+)...(\d{2,3}).*\.mkv/i;
+     const secondSeason = /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i;
      const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i;
-     if (torrent.title.match(secondSeasonQuality)) {
-      return this._extractAnime(torrent, secondSeasonQuality);
-    } else if (torrent.title.match(oneSeasonQuality)) {
-      return this._extractAnime(torrent, oneSeasonQuality);
-    } else if (torrent.title.match(secondSeason)) {
+     if (torrent.title.match(secondSeason)) {
        return this._extractAnime(torrent, secondSeason);
      } else if  (torrent.title.match(oneSeason)) {
        return this._extractAnime(torrent, oneSeason);
