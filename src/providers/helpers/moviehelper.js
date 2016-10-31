@@ -3,7 +3,7 @@ import asyncq from "async-q";
 
 import Movie from "../../models/Movie";
 import Util from "../../util";
-import { trakt } from "../../config/constants";
+import { fanart, omdb, trakt } from "../../config/constants";
 
 /** Class for saving movies. */
 export default class Helper {
@@ -106,6 +106,42 @@ export default class Helper {
   };
 
   /**
+   * Get images from themoviedb.org or omdbapi.com.
+   * @param {Integer} tmdb_id - The tmdb id of the movie you want the images from.
+   * @param {Integer} imdb_id - The imdb id of the movie you want the images from.
+   * @returns {Object} - Object with a banner, fanart and poster images.
+   */
+  async _getImages(tmdb_id, imdb_id) {
+    const holder = "images/posterholder.png"
+    const images = {
+      banner: holder,
+      fanart: holder,
+      poster: holder
+    };
+
+    try {
+      const fanartImages = await fanart.getMovieImages(tmdb_id);
+      images.banner = fanartImages.moviebanner ? fanartImages.moviebanner[0].url : holder;
+      images.fanart = fanartImages.moviebackground ? fanartImages.moviebackground[0].url : fanartImages.hdmovieclearart ? fanartImages.hdmovieclearart[0].url : holder;
+      images.poster = fanartImages.movieposter ? fanartImages.movieposter[0].url : holder;
+    } catch (err) {
+      try {
+        const omdbImages = await omdb.byID({
+          imdb: imdb_id,
+          type: "movie"
+        });
+        images.banner = omdbImages.Poster ? omdbImages.Poster : holder;
+        images.fanart = omdbImages.Poster? omdbImages.Poster : holder;
+        images.poster = omdbImages.Poster ? omdbImages.Poster : holder;
+      } catch (err) {
+        return this._util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
+      }
+    }
+
+    return images;
+  }
+
+  /**
    * Get info from Trakt and make a new movie object.
    * @param {String} slug - The slug to query trakt.tv.
    * @returns {Movie} - A new movie.
@@ -114,14 +150,14 @@ export default class Helper {
     try {
       const traktMovie = await trakt.movies.summary({
         id: slug,
-        extended: "full,images"
+        extended: "full"
       });
       const traktWatchers = await trakt.movies.watching({id: slug});
 
       let watching = 0;
       if (traktWatchers !== null) watching = traktWatchers.length;
 
-      if (traktMovie && traktMovie.ids["imdb"]) {
+      if (traktMovie && traktMovie.ids["imdb"] && traktMovie.ids["tmdb"]) {
         return {
           _id: traktMovie.ids["imdb"],
           imdb_id: traktMovie.ids["imdb"],
@@ -139,11 +175,7 @@ export default class Helper {
           },
           country: traktMovie.language,
           last_updated: Number(new Date()),
-          images: {
-            banner: traktMovie.images.banner.full !== null ? traktMovie.images.banner.full : "images/posterholder.png",
-            fanart: traktMovie.images.fanart.full !== null ? traktMovie.images.fanart.full : "images/posterholder.png",
-            poster: traktMovie.images.poster.full !== null ? traktMovie.images.poster.full : "images/posterholder.png"
-          },
+          images: await this._getImages(traktMovie.ids["tmdb"], traktMovie.ids["imdb"]),
           genres: traktMovie.genres !== null ? traktMovie.genres : ["unknown"],
           released: new Date(traktMovie.released).getTime() / 1000.0,
           trailer: traktMovie.trailer || false,

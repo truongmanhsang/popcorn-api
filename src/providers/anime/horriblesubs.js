@@ -26,7 +26,10 @@ export default class HorribleSubs {
      * @type {HorribleSubsAPI}
      * @see https://github.com/ChrisAlderson/horriblesubs-api
      */
-    this._horriblesubs = new HorribleSubsAPI({ debug });
+    this._horriblesubs = new HorribleSubsAPI({
+      cloudflare: true,
+      debug
+    });
 
     /**
      * The extractor object for getting show data on torrents.

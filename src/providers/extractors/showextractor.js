@@ -59,7 +59,8 @@ export default class Extractor extends BaseExtractor {
     let showTitle = torrent.title.match(regex)[1];
     if (showTitle.endsWith(" ")) showTitle = showTitle.substring(0, showTitle.length - 1);
     showTitle = showTitle.replace(/\./g, " ");
-    let slug = showTitle.replace(/\s+/g, "-").toLowerCase();
+    let slug = showTitle.replace(/[^a-zA-Z0-9 ]/gi, "").replace(/\s+/g, "-").toLowerCase();
+    if (slug.endsWith("-")) slug = slug.substring(0, slug.length - 1);
     slug = slug in showMap ? showMap[slug] : slug;
     let season = torrent.title.match(regex)[2];
     let episode = torrent.title.match(regex)[3];
@@ -70,7 +71,7 @@ export default class Extractor extends BaseExtractor {
     const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : "480p";
 
     const episodeTorrent = {
-      url: torrent.torrent_link ? torrent.torrent_link : torrent.magnet,
+      url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
       seeds: torrent.seeds ? torrent.seeds : 0,
       peers: torrent.peers ? torrent.peers : 0,
       provider: this.name

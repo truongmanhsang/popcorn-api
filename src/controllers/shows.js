@@ -94,7 +94,12 @@ export default class Shows {
       if (data.keywords) {
         const words = data.keywords.split(" ");
         let regex = "^";
-        for (let w in words) regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+
+        for (let w in words) {
+          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, "");
+          regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+        }
+
         query.title = {
           $regex: new RegExp(`${regex}.*`),
           $options: "gi"
