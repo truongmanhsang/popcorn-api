@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 248,
-  "actualCount": 248,
+  "expectCount": 249,
+  "actualCount": 249,
   "files": {
     "src/models/Anime.js": {
       "expectCount": 1,
@@ -38,12 +38,12 @@
       "actualCount": 6,
       "undocumentLines": []
     },
-    "src/providers/anime/extratorrent.js": {
+    "src/providers/shows/extratorrent.js": {
       "expectCount": 6,
       "actualCount": 6,
       "undocumentLines": []
     },
-    "src/providers/shows/extratorrent.js": {
+    "src/providers/anime/extratorrent.js": {
       "expectCount": 6,
       "actualCount": 6,
       "undocumentLines": []
@@ -51,11 +51,6 @@
     "src/providers/movies/extratorrent.js": {
       "expectCount": 6,
       "actualCount": 6,
-      "undocumentLines": []
-    },
-    "src/providers/extractors/showextractor.js": {
-      "expectCount": 9,
-      "actualCount": 9,
       "undocumentLines": []
     },
     "src/providers/extractors/animeextractor.js": {
@@ -68,12 +63,7 @@
       "actualCount": 9,
       "undocumentLines": []
     },
-    "src/providers/helpers/showhelper.js": {
-      "expectCount": 12,
-      "actualCount": 12,
-      "undocumentLines": []
-    },
-    "src/providers/helpers/moviehelper.js": {
+    "src/providers/extractors/showextractor.js": {
       "expectCount": 9,
       "actualCount": 9,
       "undocumentLines": []
@@ -83,14 +73,19 @@
       "actualCount": 11,
       "undocumentLines": []
     },
+    "src/providers/helpers/moviehelper.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/providers/helpers/showhelper.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
     "src/providers/anime/horriblesubs.js": {
       "expectCount": 7,
       "actualCount": 7,
-      "undocumentLines": []
-    },
-    "src/index.js": {
-      "expectCount": 4,
-      "actualCount": 4,
       "undocumentLines": []
     },
     "src/controllers/index.js": {
@@ -98,17 +93,22 @@
       "actualCount": 5,
       "undocumentLines": []
     },
+    "src/index.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
     "src/providers/anime/kat.js": {
       "expectCount": 6,
       "actualCount": 6,
       "undocumentLines": []
     },
-    "src/providers/movies/kat.js": {
+    "src/providers/shows/kat.js": {
       "expectCount": 6,
       "actualCount": 6,
       "undocumentLines": []
     },
-    "src/providers/shows/kat.js": {
+    "src/providers/movies/kat.js": {
       "expectCount": 6,
       "actualCount": 6,
       "undocumentLines": []
@@ -129,8 +129,8 @@
       "undocumentLines": []
     },
     "src/config/constants.js": {
-      "expectCount": 30,
-      "actualCount": 30,
+      "expectCount": 31,
+      "actualCount": 31,
       "undocumentLines": []
     },
     "src/config/routes.js": {

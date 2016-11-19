@@ -64,6 +64,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tmdb">tmdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tvdb">tvdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
@@ -103,7 +104,6 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/controllers/exports.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
 import fs from &quot;fs&quot;;
-import mime from &quot;mime&quot;;
 import path from &quot;path&quot;;
 
 import Util from &quot;../util&quot;;
@@ -119,16 +119,15 @@ export default class Exports {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Download the export of a collection.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
-   * @param {Function} next - The next function for Express.
    * @returns {Download} - The download of an export of a collection.
    */
-  getExport(req, res, next) {
+  getExport(req, res) {
     const collection = req.params.collection;
     let err;
 
@@ -144,9 +143,9 @@ export default class Exports {
       err = {error: `Error: &apos;${collection}&apos; is not a valid collection to export.`};
       res.status(500).json(err);
     }
-  };
+  }
 
-};
+}
 </code></pre>
 
 </div>

@@ -342,6 +342,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "popcorn-api/src/config/constants.js~tmdb",
+    "variable/index.html#static-variable-tmdb",
+    "<span>tmdb</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
+    "variable"
+  ],
+  [
     "popcorn-api/src/config/constants.js~trakt",
     "variable/index.html#static-variable-trakt",
     "<span>trakt</span> <span class=\"search-result-import-path\">popcorn-api/src/config/constants.js</span>",
@@ -738,15 +744,15 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "index#getindex src/controllers/index.js~index#getindex,index#getindex",
-    "test-file/test/controllers/index.js.html#lineNumber14",
-    "Index: GET /",
-    "test"
-  ],
-  [
     "index#geterrorlog src/controllers/index.js~index#geterrorlog,index#geterrorlog",
     "test-file/test/controllers/index.js.html#lineNumber25",
     "Index: GET /logs/error",
+    "test"
+  ],
+  [
+    "index#getindex src/controllers/index.js~index#getindex,index#getindex",
+    "test-file/test/controllers/index.js.html#lineNumber14",
+    "Index: GET /status",
     "test"
   ],
   [

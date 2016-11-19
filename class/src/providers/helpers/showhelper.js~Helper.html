@@ -64,6 +64,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tmdb">tmdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tvdb">tvdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
@@ -364,7 +365,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_getImages">_getImages</a></span></span><span data-ice="signature">(tvdb_id: <span>Integer</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+           <span data-ice="name"><span><a href="class/src/providers/helpers/showhelper.js~Helper.html#instance-method-_getImages">_getImages</a></span></span><span data-ice="signature">(tmdb_id: <span>Integer</span>, tvdb_id: <span>Integer</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
@@ -626,7 +627,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber314">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber329">source</a></span></span>
     </span>
   </h3>
 
@@ -709,7 +710,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber259">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber274">source</a></span></span>
     </span>
   </h3>
 
@@ -954,11 +955,11 @@
     
     
     
-    <span data-ice="name">_getImages</span><span data-ice="signature">(tvdb_id: <span>Integer</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+    <span data-ice="name">_getImages</span><span data-ice="signature">(tmdb_id: <span>Integer</span>, tvdb_id: <span>Integer</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber227">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/providers/helpers/showhelper.js.html#lineNumber228">source</a></span></span>
     </span>
   </h3>
 
@@ -979,6 +980,13 @@
     <tbody>
     
     <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">tmdb_id</td>
+      <td data-ice="type"><span>Integer</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The tmdb id of the how you want the images from.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">tvdb_id</td>
       <td data-ice="type"><span>Integer</span></td>
       <td data-ice="appendix"></td>

@@ -64,6 +64,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tmdb">tmdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tvdb">tvdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
@@ -844,6 +845,32 @@
     <td>
       <div>
         <p>
+           <span data-ice="name"><span><a href="variable/index.html#static-variable-tmdb">tmdb</a></span></span><span data-ice="signature">: <span>TMDB</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A configured TMDB API.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
            <span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span><span data-ice="signature">: <span>Trakt</span></span>
         </p>
       </div>
@@ -1020,11 +1047,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/models/Movie.js.html#lineNumber41">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/models/Movie.js.html#lineNumber44">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Movie from &apos;<span><a href="file/src/models/Movie.js.html#lineNumber41">popcorn-api/src/models/Movie.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Movie from &apos;<span><a href="file/src/models/Movie.js.html#lineNumber44">popcorn-api/src/models/Movie.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>A model object for movies.</p>
@@ -1061,11 +1088,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber387">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber388">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Promise} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber387">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Promise} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber388">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The promise object to override the mongoose promise object. Default is <code>global.Promise</code>.</p>
@@ -1143,11 +1170,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber12">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber13">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {animeMap} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber12">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {animeMap} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber13">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Map object for correcting anime slugs.</p>
@@ -1184,11 +1211,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber216">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber217">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {collections} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber216">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {collections} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber217">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>An array of the supported collections for mongodb.</p>
@@ -1225,11 +1252,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber222">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber223">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {cronTime} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber222">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {cronTime} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber223">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The cron time for scraping torrents. Default is <code>0 0 *\/6 * * *</code>.</p>
@@ -1266,11 +1293,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber228">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber229">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {dbHosts} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber228">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {dbHosts} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber229">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The host of the server of the database. Default is <code>[&quot;localhost&quot;]</code>.</p>
@@ -1307,11 +1334,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber234">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber235">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {dbName} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber234">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {dbName} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber235">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The name of the database. Default is <code>popcorn</code>.</p>
@@ -1348,11 +1375,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber240">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber241">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {extratorrentAnimeProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber240">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {extratorrentAnimeProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber241">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The providers for scraping ExtraTorrent for anime.</p>
@@ -1389,11 +1416,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber246">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber247">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {extratorrentMovieProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber246">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {extratorrentMovieProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber247">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The providers for scraping ExtraTorrent for movies.</p>
@@ -1430,11 +1457,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber256">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber257">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {extratorrentShowProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber256">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {extratorrentShowProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber257">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The providers for scraping ExtraTorrent for shows.</p>
@@ -1471,11 +1498,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber286">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber287">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {fanart} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber286">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {fanart} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber287">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>A configured Fanart API.</p>
@@ -1512,11 +1539,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber294">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber295">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {katAnimeProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber294">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {katAnimeProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber295">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The providers for scraping KAT for anime.</p>
@@ -1553,11 +1580,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber300">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber301">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {katMovieProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber300">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {katMovieProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber301">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The providers for scraping KAT for movies.</p>
@@ -1594,11 +1621,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber319">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber320">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {katShowProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber319">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {katShowProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber320">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The providers for scraping KAT for shows.</p>
@@ -1635,11 +1662,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber357">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber358">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {master} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber357">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {master} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber358">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Check if this instance of the API is the master. Default is <code>true</code>.</p>
@@ -1676,11 +1703,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber363">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber364">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {maxWebRequest} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber363">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {maxWebRequest} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber364">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The maximum web requests can take place at the same time. Default is <code>2</code>.</p>
@@ -1717,11 +1744,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber369">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber370">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {movieMap} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber369">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {movieMap} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber370">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Map object for correcting movie slugs.</p>
@@ -1758,11 +1785,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber340">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber341">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {nyaaAnimeProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber340">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {nyaaAnimeProviders} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber341">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The providers for scraping Nyaa for anime.</p>
@@ -1799,11 +1826,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber351">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber352">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {omdb} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber351">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {omdb} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber352">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>A configured OMDB API.</p>
@@ -1840,11 +1867,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber375">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber376">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {pageSize} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber375">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {pageSize} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber376">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The amount of object show per page. Default is <code>50</code>.</p>
@@ -1881,11 +1908,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber381">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber382">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {port} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber381">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {port} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber382">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The port on which the API will run on. Default is <code>5000</code>.</p>
@@ -1922,11 +1949,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber393">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber394">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {server} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber393">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {server} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber394">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The name of the server. Default is <code>serv01</code>.</p>
@@ -1963,11 +1990,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber399">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber400">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {showMap} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber399">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {showMap} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber400">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Map object for correcting show slugs.</p>
@@ -2004,11 +2031,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber468">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber469">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {statusFile} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber468">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {statusFile} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber469">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The name of the status file holding the <code>status</code> value for the index page. Default is <code>status.json</code>.</p>
@@ -2045,11 +2072,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber474">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber475">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {tempDir} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber474">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {tempDir} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber475">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The path to the temprary directory.. Default is <code>./tmp</code>.</p>
@@ -2086,11 +2113,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber480">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber481">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {timeZone} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber480">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {timeZone} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber481">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The timezone the conjob will hold. Default is <code>America/Los_Angeles</code>.</p>
@@ -2117,6 +2144,47 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-variable-tmdb">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">tmdb</span><span data-ice="signature">: <span>TMDB</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber488">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {tmdb} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber488">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>A configured TMDB API.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="see"><h4>See:</h4><ul><li><span><a href="https://github.com/sarathkcm/TheMovieDBClient">https://github.com/sarathkcm/TheMovieDBClient</a></span></li></ul></div>
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="static-variable-trakt">
     <span class="access" data-ice="access">public</span>
     
@@ -2127,11 +2195,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber487">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber495">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {trakt} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber487">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {trakt} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber495">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>A configured Trakt API.</p>
@@ -2168,11 +2236,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber496">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber504">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {tvdb} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber496">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {tvdb} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber504">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>A configured TVDB API.</p>
@@ -2209,11 +2277,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber502">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber510">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {updatedFile} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber502">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {updatedFile} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber510">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The name of the updated file holding the <code>updated</code> value for the index page. Default is <code>lastUpdated.json</code>.</p>
@@ -2250,11 +2318,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber508">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber516">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {webRequestTimeout} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber508">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {webRequestTimeout} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber516">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The maximum time a web request may take. Default is <code>2</code> seconds.</p>
@@ -2291,11 +2359,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber514">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/config/constants.js.html#lineNumber522">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {workers} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber514">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {workers} from &apos;<span><a href="file/src/config/constants.js.html#lineNumber522">popcorn-api/src/config/constants.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The amount of workers on the cluster. Default is <code>2</code>.</p>

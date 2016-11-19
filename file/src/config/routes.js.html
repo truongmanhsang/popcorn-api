@@ -64,6 +64,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tmdb">tmdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tvdb">tvdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
@@ -147,14 +148,14 @@ export default class Routes {
     Routes._exports = new Exports();
 
     Routes._setupRoutes(app);
-  };
+  }
 
   /**
    * Setup ExpressJS routing.
    * @param {ExpressJS} app - The ExpresssJS application.
    */
   static _setupRoutes(app) {
-    app.get(&quot;/&quot;, Routes.index.getIndex);
+    app.get(&quot;/status&quot;, Routes.index.getIndex);
     app.get(&quot;/logs/error&quot;, Routes.index.getErrorLog);
 
     app.get(&quot;/animes&quot;, Routes._animes.getAnimes);
@@ -173,9 +174,9 @@ export default class Routes {
     app.get(&quot;/random/show&quot;, Routes._shows.getRandomShow);
 
     app.get(&quot;/exports/:collection&quot;, Routes._exports.getExport);
-  };
+  }
 
-};
+}
 </code></pre>
 
 </div>

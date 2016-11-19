@@ -64,6 +64,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tmdb">tmdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tvdb">tvdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
@@ -135,7 +136,7 @@ export default class Helper {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Update the number of seasons of a given anime.
@@ -161,7 +162,7 @@ export default class Helper {
       new: true,
       upsert: true
     }).exec();
-  };
+  }
 
   /**
    * Update the torrents for an existing anime.
@@ -196,7 +197,7 @@ export default class Helper {
 
     anime.episodes.splice(index, 1, matching);
     return anime;
-  };
+  }
 
   /**
    * Update a given anime with it&apos;s associated episodes.
@@ -232,7 +233,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
   /**
    * Adds one season to a anime.
@@ -260,7 +261,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: &apos;${slug}&apos;`);
     }
-  };
+  }
 
   /**
    * Get info from Hummingbird and make a new anime object.
@@ -312,7 +313,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: &apos;${slug}&apos;`);
     }
-  };
+  }
 
   /**
    * Adds episodes to a anime.
@@ -328,9 +329,9 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
-};
+}
 </code></pre>
 
 </div>

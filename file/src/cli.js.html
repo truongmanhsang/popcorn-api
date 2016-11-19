@@ -64,6 +64,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tmdb">tmdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tvdb">tvdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
@@ -298,7 +299,7 @@ export default class CLI {
         &quot;confirm&quot;: confirm
       }
     };
-  };
+  }
 
   /** Adds a show to the database through the CLI. */
   _animePrompt() {
@@ -322,7 +323,7 @@ export default class CLI {
         }
       }
     });
-  };
+  }
 
   /**
    * Get movie data from a given torrent url.
@@ -353,7 +354,7 @@ export default class CLI {
         }).catch(err =&gt; reject(err));
       });
     });
-  };
+  }
 
   /** Adds a movie to the database through the CLI. */
   _moviePrompt() {
@@ -377,7 +378,7 @@ export default class CLI {
         }
       }
     });
-  };
+  }
 
   /**
    * Get show data from a given torrent url.
@@ -408,7 +409,7 @@ export default class CLI {
         }).catch(err =&gt; reject(err));
       });
     });
-  };
+  }
 
   /** Adds a show to the database through the CLI. */
   _showPrompt() {
@@ -432,7 +433,7 @@ export default class CLI {
         }
       }
     });
-  };
+  }
 
   /** Confimation to import a collection */
   _importPrompt() {
@@ -452,7 +453,7 @@ export default class CLI {
         }
       }
     });
-  };
+  }
 
   /** Run the CLI program. */
   run() {
@@ -491,9 +492,9 @@ export default class CLI {
       console.error(&quot;\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m&quot;);
       program.help();
     }
-  };
+  }
 
-};
+}
 </code></pre>
 
 </div>

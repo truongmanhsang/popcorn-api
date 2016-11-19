@@ -64,6 +64,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tmdb">tmdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tvdb">tvdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
@@ -106,7 +107,7 @@ import asyncq from &quot;async-q&quot;;
 
 import Show from &quot;../../models/Show&quot;;
 import Util from &quot;../../util&quot;;
-import { fanart, trakt, tvdb } from &quot;../../config/constants&quot;;
+import { fanart, trakt, tmdb, tvdb } from &quot;../../config/constants&quot;;
 
 /** Class for saving shows. */
 export default class Helper {
@@ -127,7 +128,7 @@ export default class Helper {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Update the number of seasons of a given show.
@@ -153,7 +154,7 @@ export default class Helper {
       new: true,
       upsert: true
     }).exec();
-  };
+  }
 
   /**
    * Update the torrents for an existing show.
@@ -188,7 +189,7 @@ export default class Helper {
 
     show.episodes.splice(index, 1, matching);
     return show;
-  };
+  }
 
   /**
    * Update a given show with it&apos;s associated episodes.
@@ -227,7 +228,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
   /**
    * Adds one seasonal season to a show.
@@ -272,7 +273,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: &apos;${slug}&apos;`);
     }
-  };
+  }
 
   /**
    * Adds one datebased season to a show.
@@ -320,14 +321,15 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: &apos;${show.tvdb_id}&apos;`);
     }
-  };
+  }
 
   /**
    * Get images from Fanart.tv on thetvdb.com.
+   * @param {Integer} tmdb_id - The tmdb id of the how you want the images from.
    * @param {Integer} tvdb_id - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with a banner, fanart and poster images.
    */
-  async _getImages(tvdb_id) {
+  async _getImages(tmdb_id, tvdb_id) {
     const holder = &quot;images/posterholder.png&quot;
     const images = {
       banner: holder,
@@ -336,10 +338,17 @@ export default class Helper {
     };
 
     try {
-      const fanartImages = await fanart.getShowImages(tvdb_id);
-      images.banner = fanartImages.tvbanner ? fanartImages.tvbanner[0].url : holder;
-      images.fanart = fanartImages.showbackground ? fanartImages.showbackground[0].url : fanartImages.clearart ? fanartImages.clearart[0].url : holder;
-      images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
+      const tmdbData = await tmdb.call(`/tv/${tmdb_id}/images`, {});
+
+      let tmdbPoster = tmdbData[&apos;posters&apos;].filter(poster =&gt; poster.iso_639_1 === &quot;en&quot; || poster.iso_639_1 === null)[0]
+      tmdbPoster = tmdb.getImageUrl(tmdbPoster.file_path, &apos;w500&apos;);
+
+      let tmdbBackdrop = tmdbData[&apos;backdrops&apos;].filter(backdrop =&gt; backdrop.iso_639_1 === &quot;en&quot; || backdrop.iso_639_1 === null)[0];
+      tmdbBackdrop = tmdb.getImageUrl(tmdbBackdrop.file_path, &apos;w500&apos;);
+
+      images.banner = tmdbPoster ? tmdbPoster : holder;
+      images.fanart = tmdbBackdrop ? tmdbBackdrop : holder;
+      images.poster = tmdbPoster ? tmdbPoster : holder;
     } catch (err) {
       try {
         const tvdbImages = await tvdb.getSeriesById(tvdb_id);
@@ -347,7 +356,14 @@ export default class Helper {
         images.fanart = tvdbImages.fanart? `http://thetvdb.com/banners/${tvdbImages.fanart}` : holder;
         images.poster = tvdbImages.poster ? `http://thetvdb.com/banners/${tvdbImages.poster}` : holder;
       } catch (err) {
-        return this._util.onError(`Images: Could not find images on: ${err.path || err} with tvdb_id: &apos;${tvdb_id}&apos;`);
+        try {
+          const fanartImages = await fanart.getShowImages(tvdb_id);
+          images.banner = fanartImages.tvbanner ? fanartImages.tvbanner[0].url : holder;
+          images.fanart = fanartImages.showbackground ? fanartImages.showbackground[0].url : fanartImages.clearart ? fanartImages.clearart[0].url : holder;
+          images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
+        } catch(err) {
+          return this._util.onError(`Images: Could not find images on: ${err.path || err} with id: &apos;${tmdb_id | tvdb_id}&apos;`);
+        }
       }
     }
 
@@ -372,7 +388,7 @@ export default class Helper {
       let watching = 0;
       if (traktWatchers !== null) watching = traktWatchers.length;
 
-      if (traktShow &amp;&amp; traktShow.ids[&quot;imdb&quot;] &amp;&amp; traktShow.ids[&quot;tvdb&quot;]) {
+      if (traktShow &amp;&amp; traktShow.ids[&quot;imdb&quot;] &amp;&amp; traktShow.ids[&quot;tmdb&quot;] &amp;&amp; traktShow.ids[&quot;tvdb&quot;]) {
         return {
           _id: traktShow.ids[&quot;imdb&quot;],
           imdb_id: traktShow.ids[&quot;imdb&quot;],
@@ -397,7 +413,7 @@ export default class Helper {
           num_seasons: 0,
           last_updated: Number(new Date()),
           latest_episode: 0,
-          images: await this._getImages(traktShow.ids[&quot;tvdb&quot;]),
+          images: await this._getImages(traktShow.ids[&quot;tmdb&quot;], traktShow.ids[&quot;tvdb&quot;]),
           genres: traktShow.genres !== null ? traktShow.genres : [&quot;unknown&quot;],
           episodes: []
         };
@@ -405,7 +421,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: &apos;${slug}&apos;`);
     }
-  };
+  }
 
   /**
    * Adds episodes to a show.
@@ -429,9 +445,9 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
-};
+}
 </code></pre>
 
 </div>

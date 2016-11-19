@@ -64,6 +64,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tmdb">tmdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tvdb">tvdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
@@ -103,8 +104,9 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/config/constants.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Import the neccesary modules.
 import Fanart from &quot;fanart.tv-api&quot;;
-import path from &quot;path&quot;;
 import OMDB from &quot;omdb-api-pt&quot;;
+import path from &quot;path&quot;;
+import TMDB from &apos;themoviedbclient&apos;;
 import Trakt from &quot;trakt.tv&quot;;
 import TVDB from &quot;node-tvdb&quot;;
 
@@ -581,6 +583,13 @@ export const tempDir = path.join(process.cwd(), &quot;tmp&quot;);
  * @type {String}
  */
 export const timeZone = &quot;America/Los_Angeles&quot;;
+
+/**
+ * A configured TMDB API.
+ * @type {TMDB}
+ * @see https://github.com/sarathkcm/TheMovieDBClient
+ */
+export const tmdb = new TMDB(&quot;2592f66235042e3e31705e3d56da0a69&quot;);
 
 /**
  * A configured Trakt API.

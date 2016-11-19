@@ -64,6 +64,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-statusFile">statusFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tempDir">tempDir</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-timeZone">timeZone</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tmdb">tmdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-trakt">trakt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-tvdb">tvdb</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-updatedFile">updatedFile</a></span></span></li>
@@ -131,7 +132,7 @@ export default class Index {
      * @type {Util}
      */
     Index._util = new Util();
-  };
+  }
 
   /**
    * Displays a given file.
@@ -152,7 +153,7 @@ export default class Index {
     } else {
       return res.json({error: `Could not find file: &apos;${root}&apos;`});
     }
-  };
+  }
 
   /**
    * Get general information about the server.
@@ -194,7 +195,7 @@ export default class Index {
     } catch (err) {
       return next(err);
     }
-  };
+  }
 
   /**
    * Displays the &apos;popcorn-api.log&apos; file.
@@ -204,9 +205,9 @@ export default class Index {
    */
   getErrorLog(req, res) {
     return Index._displayFile(req, res, tempDir, `${name}.log`);
-  };
+  }
 
-};
+}
 </code></pre>
 
 </div>
