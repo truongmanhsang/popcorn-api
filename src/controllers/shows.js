@@ -24,7 +24,7 @@ export default class Shows {
       num_seasons: 1,
       rating: 1
     };
-  };
+  }
 
   /**
    * Get all the pages.
@@ -46,7 +46,7 @@ export default class Shows {
 
       return res.json(docs);
     }).catch(err => next(err));
-  };
+  }
 
   /**
    * Get one page.
@@ -144,7 +144,7 @@ export default class Shows {
         .then(docs => res.json(docs))
         .catch(err => res.jfson(err));
     }
-  };
+  }
 
   /**
    * Get info from one show.
@@ -161,7 +161,7 @@ export default class Shows {
       }).exec()
       .then(docs => res.json(docs))
       .catch(err => next(err));
-  };
+  }
 
   /**
    * Get a random show.
@@ -182,6 +182,6 @@ export default class Shows {
       }]).exec()
       .then(docs => res.json(docs[0]))
       .catch(err => next(err));
-  };
+  }
 
-};
+}

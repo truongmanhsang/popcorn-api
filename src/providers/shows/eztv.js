@@ -39,7 +39,7 @@ export default class EZTV {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Returns a list of all the inserted torrents.
@@ -62,6 +62,6 @@ export default class EZTV {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
-};
+}

@@ -43,7 +43,7 @@ export default class YTS {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Get the total pages to go through.
@@ -67,7 +67,7 @@ export default class YTS {
         }
       });
     });
-  };
+  }
 
   /**
    * Format data from movies.
@@ -98,7 +98,7 @@ export default class YTS {
         };
       }
     });
-  };
+  }
 
   /**
    * Get formatted data from one page.
@@ -122,7 +122,7 @@ export default class YTS {
         }
       });
     });
-  };
+  }
 
   /**
    * All the found movies.
@@ -146,7 +146,7 @@ export default class YTS {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
   /**
    * Returns a list of all the inserted torrents.
@@ -168,6 +168,6 @@ export default class YTS {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
-};
+}

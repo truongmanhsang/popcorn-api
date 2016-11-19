@@ -29,7 +29,7 @@ export default class Extractor extends BaseExtractor {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Get all the animes.
@@ -46,7 +46,7 @@ export default class Extractor extends BaseExtractor {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
   /**
    * Extract anime information based on a regex.
@@ -95,24 +95,24 @@ export default class Extractor extends BaseExtractor {
       anime.episodes[season][episode][quality] = episodeTorrent;
 
     return anime;
-  };
+  }
 
   /**
    * Get anime info from a given torrent.
    * @param {Object} torrent - A torrent object to extract anime information from.
    * @returns {Object} - Information about an anime from the torrent.
    */
-   _getAnimeData(torrent) {
-     const secondSeason = /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i;
-     const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i;
-     if (torrent.title.match(secondSeason)) {
-       return this._extractAnime(torrent, secondSeason);
-     } else if  (torrent.title.match(oneSeason)) {
-       return this._extractAnime(torrent, oneSeason);
-     } else {
-       logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
-     }
-   };
+  _getAnimeData(torrent) {
+    const secondSeason = /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i;
+    const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i;
+    if (torrent.title.match(secondSeason)) {
+      return this._extractAnime(torrent, secondSeason);
+    } else if  (torrent.title.match(oneSeason)) {
+      return this._extractAnime(torrent, oneSeason);
+    } else {
+      logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
+    }
+  }
 
   /**
    * Puts all the found animes from the torrents in an array.
@@ -153,7 +153,7 @@ export default class Extractor extends BaseExtractor {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
   /**
    * Returns a list of all the inserted torrents.
@@ -174,6 +174,6 @@ export default class Extractor extends BaseExtractor {
     } catch (err) {
       this._util.onError(err);
     }
-  };
+  }
 
-};
+}

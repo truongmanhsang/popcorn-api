@@ -78,7 +78,7 @@ export default class Index {
 
     // Start the API.
     Index._startAPI(start);
-  };
+  }
 
   /**
    * Function to start the API.
@@ -128,7 +128,7 @@ export default class Index {
     } else {
       Index._server.listen(port);
     }
-  };
+  }
 
   /**
    * Function to stop the API from running.
@@ -138,6 +138,6 @@ export default class Index {
       logger.info("Closed out remaining connections.");
       process.exit();
     });
-  };
+  }
 
-};
+}

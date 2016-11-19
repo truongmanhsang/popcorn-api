@@ -44,14 +44,14 @@ export default class Routes {
     Routes._exports = new Exports();
 
     Routes._setupRoutes(app);
-  };
+  }
 
   /**
    * Setup ExpressJS routing.
    * @param {ExpressJS} app - The ExpresssJS application.
    */
   static _setupRoutes(app) {
-    app.get("/", Routes.index.getIndex);
+    app.get("/status", Routes.index.getIndex);
     app.get("/logs/error", Routes.index.getErrorLog);
 
     app.get("/animes", Routes._animes.getAnimes);
@@ -70,6 +70,6 @@ export default class Routes {
     app.get("/random/show", Routes._shows.getRandomShow);
 
     app.get("/exports/:collection", Routes._exports.getExport);
-  };
+  }
 
-};
+}

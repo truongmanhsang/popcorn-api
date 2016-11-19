@@ -1,7 +1,8 @@
 // Import the neccesary modules.
 import Fanart from "fanart.tv-api";
-import path from "path";
 import OMDB from "omdb-api-pt";
+import path from "path";
+import TMDB from 'themoviedbclient';
 import Trakt from "trakt.tv";
 import TVDB from "node-tvdb";
 
@@ -478,6 +479,13 @@ export const tempDir = path.join(process.cwd(), "tmp");
  * @type {String}
  */
 export const timeZone = "America/Los_Angeles";
+
+/**
+ * A configured TMDB API.
+ * @type {TMDB}
+ * @see https://github.com/sarathkcm/TheMovieDBClient
+ */
+export const tmdb = new TMDB("2592f66235042e3e31705e3d56da0a69");
 
 /**
  * A configured Trakt API.

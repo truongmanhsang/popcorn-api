@@ -81,7 +81,7 @@ export default class Logger {
 
     // Create the logger object.
     Logger._createLogger();
-  };
+  }
 
   /**
    * Check if the message is empty and replace it with the meta.
@@ -93,7 +93,7 @@ export default class Logger {
       args.message = JSON.stringify(args.meta);
 
     return args;
-  };
+  }
 
   /**
    * Get the color of the output based on the log level.
@@ -104,21 +104,16 @@ export default class Logger {
     switch (level) {
     case "error":
       return "\x1b[31m";
-      break;
     case "warn":
       return "\x1b[33m";
-      break;
     case "info":
       return "\x1b[36m";
-      break;
     case "debug":
       return "\x1b[34m";
-      break;
     default:
       return "\x1b[36m";
-      break;
     }
-  };
+  }
 
   /**
    * Formatter function which formats the output to the console.
@@ -132,7 +127,7 @@ export default class Logger {
     return sprintf(`\x1b[0m[%s] ${color}%5s:\x1b[0m %2s/%d: \x1b[36m%s\x1b[0m`,
       new Date().toISOString(), args.level.toUpperCase(), name,
       process.pid, args.message);
-  };
+  }
 
   /**
    * Formatter function which formate the output to the log file.
@@ -148,7 +143,7 @@ export default class Logger {
       msg: args.message,
       time: new Date().toISOString()
     });
-  };
+  }
 
   /**
    * Function to create a global logger object based on the properties of the Logger class.
@@ -167,6 +162,6 @@ export default class Logger {
         };
       }
     });
-  };
+  }
 
-};
+}

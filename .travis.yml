@@ -17,6 +17,7 @@ git:
 
 before_script:
   - npm i -g gulp
+  - npm run lint
   - gulp build
   - npm run server-dev &
 

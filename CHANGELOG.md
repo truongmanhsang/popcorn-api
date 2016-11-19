@@ -1,3 +1,15 @@
+# 2.2.3 - Can you see me now? - 19 November 2016
+
+- **New features:**
+  - Added `themoviedbclient` as a provider for images.
+
+- **Bug fixes:**
+  - `trailer` defaults to `null` instead of `false`.
+
+- **Notes:**
+  - Moved `/` to `/status`.
+  - Removed JSCS for ESLint.
+
 # 2.2.2 - The key is in the words - 26 October 2016
 
 - **Bug fixes:**
