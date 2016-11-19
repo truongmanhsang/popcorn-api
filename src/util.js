@@ -118,7 +118,7 @@ export default class Util {
   setLastUpdated(updated = (Math.floor(new Date().getTime() / 1000))) {
     fs.writeFile(path.join(tempDir, updatedFile), JSON.stringify({
       updated
-    }));
+    }), () => {});
   }
 
   /**
@@ -128,7 +128,7 @@ export default class Util {
   setStatus(status = "Idle") {
     fs.writeFile(path.join(tempDir, statusFile), JSON.stringify({
       status
-    }));
+    }), () => {});
   }
 
 }
