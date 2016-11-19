@@ -2,7 +2,7 @@
 
 In this example section you can read about the routes that are provided by Popcorn API.
 
-## Index
+## Status
 
 **GET - `http://localhost:5000/status`**
 
