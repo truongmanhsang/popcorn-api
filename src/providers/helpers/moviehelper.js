@@ -3,7 +3,7 @@ import asyncq from "async-q";
 
 import Movie from "../../models/Movie";
 import Util from "../../util";
-import { fanart, omdb, trakt } from "../../config/constants";
+import { fanart, omdb, tmdb, trakt } from "../../config/constants";
 
 /** Class for saving movies. */
 export default class Helper {
@@ -108,7 +108,7 @@ export default class Helper {
   /**
    * Get images from themoviedb.org or omdbapi.com.
    * @param {Integer} tmdb_id - The tmdb id of the movie you want the images from.
-   * @param {Integer} imdb_id - The imdb id of the movie you want the images from.
+   * @param {String} imdb_id - The imdb id of the movie you want the images from.
    * @returns {Object} - Object with a banner, fanart and poster images.
    */
   async _getImages(tmdb_id, imdb_id) {
@@ -120,10 +120,17 @@ export default class Helper {
     };
 
     try {
-      const fanartImages = await fanart.getMovieImages(tmdb_id);
-      images.banner = fanartImages.moviebanner ? fanartImages.moviebanner[0].url : holder;
-      images.fanart = fanartImages.moviebackground ? fanartImages.moviebackground[0].url : fanartImages.hdmovieclearart ? fanartImages.hdmovieclearart[0].url : holder;
-      images.poster = fanartImages.movieposter ? fanartImages.movieposter[0].url : holder;
+      const tmdbData = await tmdb.call(`/movie/${tmdb_id}/images`, {});
+
+      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === "en" || poster.iso_639_1 === null)[0]
+      tmdbPoster = tmdb.getImageUrl(tmdbPoster.file_path, 'w500');
+
+      let tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === "en" || backdrop.iso_639_1 === null)[0];
+      tmdbBackdrop = tmdb.getImageUrl(tmdbBackdrop.file_path, 'w500');
+
+      images.banner = tmdbPoster ? tmdbPoster : holder;
+      images.fanart = tmdbBackdrop ? tmdbBackdrop : holder;
+      images.poster = tmdbPoster ? tmdbPoster : holder;
     } catch (err) {
       try {
         const omdbImages = await omdb.byID({
@@ -134,7 +141,14 @@ export default class Helper {
         images.fanart = omdbImages.Poster? omdbImages.Poster : holder;
         images.poster = omdbImages.Poster ? omdbImages.Poster : holder;
       } catch (err) {
-        return this._util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
+        try {
+          const fanartImages = await fanart.getMovieImages(tmdb_id);
+          images.banner = fanartImages.moviebanner ? fanartImages.moviebanner[0].url : holder;
+          images.fanart = fanartImages.moviebackground ? fanartImages.moviebackground[0].url : fanartImages.hdmovieclearart ? fanartImages.hdmovieclearart[0].url : holder;
+          images.poster = fanartImages.movieposter ? fanartImages.movieposter[0].url : holder;
+        } catch (err) {
+          return this._util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
+        }
       }
     }
 
