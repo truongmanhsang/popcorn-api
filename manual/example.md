@@ -4,7 +4,7 @@ In this example section you can read about the routes that are provided by Popco
 
 ## Index
 
-**GET - `http://localhost:5000/`**
+**GET - `http://localhost:5000/status`**
 
 Gives some basic information about the server on which the API is running on.
 
