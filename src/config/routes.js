@@ -44,7 +44,7 @@ export default class Routes {
     Routes._exports = new Exports();
 
     Routes._setupRoutes(app);
-  };
+  }
 
   /**
    * Setup ExpressJS routing.
@@ -70,6 +70,6 @@ export default class Routes {
     app.get("/random/show", Routes._shows.getRandomShow);
 
     app.get("/exports/:collection", Routes._exports.getExport);
-  };
+  }
 
-};
+}

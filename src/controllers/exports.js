@@ -1,6 +1,5 @@
 // Import the neccesary modules.
 import fs from "fs";
-import mime from "mime";
 import path from "path";
 
 import Util from "../util";
@@ -16,16 +15,15 @@ export default class Exports {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Download the export of a collection.
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
-   * @param {Function} next - The next function for Express.
    * @returns {Download} - The download of an export of a collection.
    */
-  getExport(req, res, next) {
+  getExport(req, res) {
     const collection = req.params.collection;
     let err;
 
@@ -41,6 +39,6 @@ export default class Exports {
       err = {error: `Error: '${collection}' is not a valid collection to export.`};
       res.status(500).json(err);
     }
-  };
+  }
 
-};
+}

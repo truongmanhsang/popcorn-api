@@ -26,7 +26,7 @@ export default class Movies {
       rating: 1,
       torrents: 1
     };
-  };
+  }
 
   /**
    * Get all the pages.
@@ -44,7 +44,7 @@ export default class Movies {
 
       return res.json(docs);
     }).catch(err => next(err));
-  };
+  }
 
   /**
    * Get one page.
@@ -132,7 +132,7 @@ export default class Movies {
         .then(docs => res.json(docs))
         .catch(err => next(err));
     }
-  };
+  }
 
   /**
    * Get info from one movie.
@@ -153,7 +153,7 @@ export default class Movies {
       }]).exec()
       .then(docs => res.json(docs[0]))
       .catch(err => next(err));
-  };
+  }
 
   /**
    * Get a random movie.
@@ -174,6 +174,6 @@ export default class Movies {
       }]).exec()
       .then(docs => res.json(docs[0]))
       .catch(err => next(err));
-  };
+  }
 
-};
+}

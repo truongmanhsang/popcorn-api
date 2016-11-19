@@ -26,7 +26,7 @@ export default class Animes {
       genres: 1,
       num_seasons: 1
     };
-  };
+  }
 
   /**
    * Get all the pages.
@@ -49,7 +49,7 @@ export default class Animes {
 
       return res.json(docs);
     }).catch(err => next(err));
-  };
+  }
 
   /**
    * Get one page.
@@ -119,12 +119,6 @@ export default class Animes {
           "rating.percentage": parseInt(data.order, 10),
           "rating.votes": parseInt(data.order, 10)
         };
-        // if (data.sort === "trending") sort = {
-        //   "rating.watching": parseInt(data.order, 10)
-        // };
-        // if (data.sort === "updated") sort = {
-        //   "latest_episode": parseInt(data.order, 10)
-        // };
         if (data.sort.match(/year/i)) sort = {
           "year": parseInt(data.order, 10)
         };
@@ -146,7 +140,7 @@ export default class Animes {
         .then(docs => res.json(docs))
         .catch(err => next(err));
     }
-  };
+  }
 
   /**
    * Get info from one anime.
@@ -164,7 +158,7 @@ export default class Animes {
       }).exec()
       .then(docs => res.json(docs))
       .catch(err => next(err));
-  };
+  }
 
   /**
    * Get a random anime.
@@ -189,6 +183,6 @@ export default class Animes {
       }]).exec()
       .then(docs => res.json(docs[0]))
       .catch(err => next(err));
-  };
+  }
 
-};
+}

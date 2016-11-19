@@ -24,7 +24,7 @@ export default class Helper {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Update the torrents for an existing movie.
@@ -58,7 +58,7 @@ export default class Helper {
 
     if (update) movie.torrents[language][quality] = found.torrents[language][quality];
     return movie;
-  };
+  }
 
   /**
    * @description Update a given movie.
@@ -92,7 +92,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
   /**
    * Adds torrents to a movie.
@@ -103,7 +103,7 @@ export default class Helper {
   addTorrents(movie, torrents) {
     return asyncq.each(Object.keys(torrents), torrent => movie.torrents[torrent] = torrents[torrent])
       .then(() => this._updateMovie(movie));
-  };
+  }
 
   /**
    * Get images from themoviedb.org or omdbapi.com.
@@ -200,6 +200,6 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
-  };
+  }
 
-};
+}

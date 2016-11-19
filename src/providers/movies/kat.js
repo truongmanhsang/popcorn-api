@@ -51,6 +51,6 @@ export default class KAT {
     } catch (err) {
       this._util.onError(err);
     }
-  };
+  }
 
-};
+}

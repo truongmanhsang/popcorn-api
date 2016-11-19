@@ -24,7 +24,7 @@ export default class Helper {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Update the number of seasons of a given show.
@@ -50,7 +50,7 @@ export default class Helper {
       new: true,
       upsert: true
     }).exec();
-  };
+  }
 
   /**
    * Update the torrents for an existing show.
@@ -85,7 +85,7 @@ export default class Helper {
 
     show.episodes.splice(index, 1, matching);
     return show;
-  };
+  }
 
   /**
    * Update a given show with it's associated episodes.
@@ -124,7 +124,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
   /**
    * Adds one seasonal season to a show.
@@ -169,7 +169,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
-  };
+  }
 
   /**
    * Adds one datebased season to a show.
@@ -217,7 +217,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`);
     }
-  };
+  }
 
   /**
    * Get images from Fanart.tv on thetvdb.com.
@@ -317,7 +317,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
-  };
+  }
 
   /**
    * Adds episodes to a show.
@@ -341,6 +341,6 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
-};
+}

@@ -67,6 +67,6 @@ export default class Setup {
         }
       }
     });
-  };
+  }
 
-};
+}

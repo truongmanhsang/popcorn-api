@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-eslint": "^7.1.1",
     "babel-plugin-transform-async-to-generator": "^6.16.0",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-plugin-transform-strict-mode": "^6.18.0",
@@ -45,6 +46,7 @@
     "del": "^2.2.2",
     "esdoc": "^0.4.8",
     "esdoc-es7-plugin": "0.0.3",
+    "eslint": "^3.10.2",
     "forever": "^0.15.2",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
@@ -61,7 +63,8 @@
     "server": "node ./build/popcorn-api.js --server",
     "server-dev": "./node_modules/.bin/babel-node ./src/popcorn-api.js --server",
     "forever": "./node_modules/.bin/forever start ./build/popcorn-api.js --run",
-    "docs": "./node_modules/.bin/esdoc -c .esdoc.json"
+    "docs": "./node_modules/.bin/esdoc -c .esdoc.json",
+    "lint": "./node_modules/.bin/eslint src/**/*.js"
   },
   "bin": {
     "popcorn-api": "./build/popcorn-api.js"

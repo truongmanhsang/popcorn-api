@@ -3,7 +3,7 @@ import childProcess from "child_process";
 import fs from "fs";
 import path from "path";
 
-import { dbName, statusFile, tempDir, traktKey, updatedFile } from "./config/constants";
+import { dbName, statusFile, tempDir, updatedFile } from "./config/constants";
 import { name } from "../package.json";
 
 /** Class holding the frequently used functions. */
@@ -15,7 +15,7 @@ export default class Util {
    */
   _createEmptyFile(path) {
     fs.createWriteStream(path).end();
-  };
+  }
 
   /** Create the temporary directory. */
   createTemp() {
@@ -24,7 +24,7 @@ export default class Util {
 
     this._createEmptyFile(path.join(tempDir, statusFile));
     this._createEmptyFile(path.join(tempDir, updatedFile));
-  };
+  }
 
   /**
    * Execute a command from within the root folder.
@@ -40,7 +40,7 @@ export default class Util {
         return resolve(stdout.split("\n").join(""));
       });
     });
-  };
+  }
 
   /**
    * Export a collection to a JSON file.
@@ -52,7 +52,7 @@ export default class Util {
     logger.info(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
 
     return this.executeCommand(`mongoexport --db ${dbName} --collection ${collection}s --out "${jsonFile}"`);
-  };
+  }
 
   /**
    * Import a json file to a collection.
@@ -67,7 +67,7 @@ export default class Util {
     logger.info(`Importing collection: '${collection}', from: '${jsonFile}'`);
 
     return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection} --file "${jsonFile}" --upsert`);
-  };
+  }
 
   /**
    * Error logger function.
@@ -77,13 +77,13 @@ export default class Util {
   onError(errorMessage) {
     logger.error(errorMessage);
     return new Error(errorMessage);
-  };
+  }
 
   /** Reset the default log file. */
   resetLog() {
     const logFile = path.join(tempDir, `${name}.log`);
     if (fs.existsSync(logFile)) fs.unlinkSync(logFile);
-  };
+  }
 
   /**
    * Removes all the files in the temporary directory.
@@ -99,7 +99,7 @@ export default class Util {
         fs.unlinkSync(path.join(tmpPath, file));
       }
     });
-  };
+  }
 
   /**
    * Search for a key in an array of object.
@@ -109,7 +109,7 @@ export default class Util {
    */
   search(key, value) {
     return element => element[key] === value;
-  };
+  }
 
   /**
    * Updates the `lastUpdated.json` file.
@@ -119,7 +119,7 @@ export default class Util {
     fs.writeFile(path.join(tempDir, updatedFile), JSON.stringify({
       updated
     }));
-  };
+  }
 
   /**
    * Updates the `status.json` file.
@@ -129,6 +129,6 @@ export default class Util {
     fs.writeFile(path.join(tempDir, statusFile), JSON.stringify({
       status
     }));
-  };
+  }
 
-};
+}

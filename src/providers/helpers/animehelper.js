@@ -32,7 +32,7 @@ export default class Helper {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Update the number of seasons of a given anime.
@@ -58,7 +58,7 @@ export default class Helper {
       new: true,
       upsert: true
     }).exec();
-  };
+  }
 
   /**
    * Update the torrents for an existing anime.
@@ -93,7 +93,7 @@ export default class Helper {
 
     anime.episodes.splice(index, 1, matching);
     return anime;
-  };
+  }
 
   /**
    * Update a given anime with it's associated episodes.
@@ -129,7 +129,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
   /**
    * Adds one season to a anime.
@@ -157,7 +157,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
-  };
+  }
 
   /**
    * Get info from Hummingbird and make a new anime object.
@@ -209,7 +209,7 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
-  };
+  }
 
   /**
    * Adds episodes to a anime.
@@ -225,6 +225,6 @@ export default class Helper {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
-};
+}
