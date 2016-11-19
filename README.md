@@ -28,13 +28,6 @@ Popcorn API is developed to make it easier for anyone to create their own versio
 
 Checkout the [manual](https://popcorn-official.github.io/popcorn-api/manual/index.html) to find out more about this project. Or checkout the documentation for the API routes [here](http://docs.popcornofficial.apiary.io/).
 
-# TODO
-
- - [ ] Add more tests to the project.
- - [ ] Add the ability to swap various content and metadata providers (similar to butter-providers).
- - [ ] Redo YTS provider with its own module.
- - [ ] Research [isohunt.to](https://isohunt.to/) as a content provider.
-
 # License
 
 MIT License
