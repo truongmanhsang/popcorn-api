@@ -394,16 +394,19 @@ The torrents are structured in a particular way. In the torrents object you firs
 Metadata providers are providers which get data on a movie or get seasonal information from a show. Popcorn API uses two API services to get its metadata on anime, movies and shows.
 
 ### [Trakt.tv](https://trakt.tv/)
-
 [Trakt.tv](https://trakt.tv/) is the metadata provider for movies and shows. It uses a module from [Jean van Kasteel](https://github.com/vankasteelj) called [trakt.tv](https://github.com/vankasteelj/trakt.tv). For more information about the Trakt API you can click [here](http://docs.trakt.apiary.io/).
 
 ### [TheTVDB.com](https://thetvdb.com/)
-
 [TheTVDB.com](https://thetvdb.com/) is the metadata provider for shows which have are datebased like '@Midnight'. It uses a module from [Ed Wellbrook](https://github.com/edwellbrook) called [node-tvdb](https://github.com/edwellbrook/node-tvdb). For more information about the TVBDB API you can click [here](https://www.thetvdb.com/wiki/index.php/Programmers_API).
 
 ### [Hummingbird.me](https://hummingbird.me)
-
 [Hummingbird.me](https://hummingbird.me) is the metadata provider for anime. It uses the [hummingbird-api](https://github.com/ChrisAlderson/hummingbird-api) module. For more information about the Hummingbird API you can click [here](https://github.com/hummingbird-me/hummingbird/wiki).
 
 ### [Fanart.tv](https://fanart.tv/)
 [Fanart.tv](https://fanart.tv/) is the provider of the images used by movies and shows. It uses the [fanart.tv-api](https://github.com/ChrisAlderson/fanart.tv-api/). For more information about the Fanart API you can click [here](http://docs.fanarttv.apiary.io/#).
+
+### [OMDBapi.com](https://www.omdbapi.com/)
+[OMDBapi.com](https://www.omdbapi.com/) is the provider of the images used by movies. It uses the [omdb-api-pt](https://github.com/ChrisAlderson/omdb-api-pt). For more information about the OMDB API you can click [here](https://www.omdbapi.com/).
+
+### [TheMovieDB.org](https://www.themoviedb.org/)
+[TheMovieDB.org](https://www.themoviedb.org/) is the provider for the images used by movies and shows. It uses a module from [sarathkcm](https://github.com/sarathkcm) called [themoviedbclient](https://github.com/sarathkcm/TheMovieDBClient). For more information about The MovieDB you can click [here](https://www.themoviedb.org/documentation/api).

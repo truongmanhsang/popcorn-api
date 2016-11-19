@@ -31,7 +31,7 @@ export default class ExtraTorrent {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Returns a list of all the inserted torrents.
@@ -48,6 +48,6 @@ export default class ExtraTorrent {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
-};
+}

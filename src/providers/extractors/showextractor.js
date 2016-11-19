@@ -29,7 +29,7 @@ export default class Extractor extends BaseExtractor {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Get all the shows.
@@ -46,7 +46,7 @@ export default class Extractor extends BaseExtractor {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
   /**
    * Extract show information based on a regex.
@@ -94,7 +94,7 @@ export default class Extractor extends BaseExtractor {
       show.episodes[season][episode][quality] = episodeTorrent;
 
     return show;
-  };
+  }
 
   /**
    * Get show info from a given torrent.
@@ -114,7 +114,7 @@ export default class Extractor extends BaseExtractor {
     } else {
       logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
-  };
+  }
 
   /**
    * Puts all the found shows from the torrents in an array.
@@ -157,7 +157,7 @@ export default class Extractor extends BaseExtractor {
     } catch (err) {
       this._util.onError(err);
     }
-  };
+  }
 
   /**
    * Returns a list of all the inserted torrents.
@@ -178,6 +178,6 @@ export default class Extractor extends BaseExtractor {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
-};
+}

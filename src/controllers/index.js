@@ -28,7 +28,7 @@ export default class Index {
      * @type {Util}
      */
     Index._util = new Util();
-  };
+  }
 
   /**
    * Displays a given file.
@@ -49,7 +49,7 @@ export default class Index {
     } else {
       return res.json({error: `Could not find file: '${root}'`});
     }
-  };
+  }
 
   /**
    * Get general information about the server.
@@ -91,7 +91,7 @@ export default class Index {
     } catch (err) {
       return next(err);
     }
-  };
+  }
 
   /**
    * Displays the 'popcorn-api.log' file.
@@ -101,6 +101,6 @@ export default class Index {
    */
   getErrorLog(req, res) {
     return Index._displayFile(req, res, tempDir, `${name}.log`);
-  };
+  }
 
-};
+}

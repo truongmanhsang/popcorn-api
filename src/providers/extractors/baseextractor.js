@@ -29,7 +29,7 @@ export default class BaseExtractor {
      * @type {Util}
      */
     this._util = new Util();
-  };
+  }
 
   /**
    * Get all the torrents of a given provider.
@@ -57,6 +57,6 @@ export default class BaseExtractor {
     } catch (err) {
       return this._util.onError(err);
     }
-  };
+  }
 
-};
+}

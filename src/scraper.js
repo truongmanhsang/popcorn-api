@@ -42,7 +42,7 @@ export default class Scraper {
      * @type {Boolean}
      */
     Scraper._debug = debug;
-  };
+  }
 
   /**
    * Start show scraping from ExtraTorrent.
@@ -60,7 +60,7 @@ export default class Scraper {
         return Scraper._util.onError(err);
       }
     });
-  };
+  }
 
   /**
    * Start scraping from EZTV.
@@ -76,7 +76,7 @@ export default class Scraper {
     } catch (err) {
       return Scraper._util.onError(err);
     }
-  };
+  }
 
   /**
    * Start show scraping from KAT.
@@ -94,7 +94,7 @@ export default class Scraper {
         return Scraper._util.onError(err);
       }
     });
-  };
+  }
 
   /**
    * Start movie scraping from ExtraTorrent.
@@ -112,7 +112,7 @@ export default class Scraper {
         return Scraper._util.onError(err);
       }
     });
-  };
+  }
 
   /**
    * Start movie scraping from KAT.
@@ -130,7 +130,7 @@ export default class Scraper {
         return Scraper._util.onError(err);
       }
     });
-  };
+  }
 
   /**
    * Start scraping from YTS.
@@ -146,7 +146,7 @@ export default class Scraper {
     } catch (err) {
       return Scraper._util.onError(err);
     }
-  };
+  }
 
   /**
    * Start anime scraping from ExtraTorrent.
@@ -164,7 +164,7 @@ export default class Scraper {
         return Scraper._util.onError(err);
       }
     });
-  };
+  }
 
   /**
    * Start scraping from HorribleSubs.
@@ -180,7 +180,7 @@ export default class Scraper {
     } catch (err) {
       return Scraper._util.onError(err);
     }
-  };
+  }
 
   /**
    * Start scraping from KAT.
@@ -198,7 +198,7 @@ export default class Scraper {
         return Scraper._util.onError(err);
       }
     });
-  };
+  }
 
   /**
    * Start scraping from Nyaa.
@@ -216,7 +216,7 @@ export default class Scraper {
         return Scraper._util.onError(err);
       }
     });
-  };
+  }
 
   /** Initiate the scraping. */
   scrape() {
@@ -239,6 +239,6 @@ export default class Scraper {
       .then(() => Scraper._util.setStatus())
       .then(() => asyncq.eachSeries(collections, collection => Scraper._util.exportCollection(collection)))
       .catch(err => Scraper._util.onError(`Error while scraping: ${err}`));
-  };
+  }
 
-};
+}

@@ -195,7 +195,7 @@ export default class CLI {
         "confirm": confirm
       }
     };
-  };
+  }
 
   /** Adds a show to the database through the CLI. */
   _animePrompt() {
@@ -219,7 +219,7 @@ export default class CLI {
         }
       }
     });
-  };
+  }
 
   /**
    * Get movie data from a given torrent url.
@@ -250,7 +250,7 @@ export default class CLI {
         }).catch(err => reject(err));
       });
     });
-  };
+  }
 
   /** Adds a movie to the database through the CLI. */
   _moviePrompt() {
@@ -274,7 +274,7 @@ export default class CLI {
         }
       }
     });
-  };
+  }
 
   /**
    * Get show data from a given torrent url.
@@ -305,7 +305,7 @@ export default class CLI {
         }).catch(err => reject(err));
       });
     });
-  };
+  }
 
   /** Adds a show to the database through the CLI. */
   _showPrompt() {
@@ -329,7 +329,7 @@ export default class CLI {
         }
       }
     });
-  };
+  }
 
   /** Confimation to import a collection */
   _importPrompt() {
@@ -349,7 +349,7 @@ export default class CLI {
         }
       }
     });
-  };
+  }
 
   /** Run the CLI program. */
   run() {
@@ -388,6 +388,6 @@ export default class CLI {
       console.error("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
       program.help();
     }
-  };
+  }
 
-};
+}

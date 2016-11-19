@@ -14,6 +14,7 @@ The following commands are defined in the `package.json`:
  $ npm run docs                         # Generate the documentation of the API.
  $ npm run test                         # Execute the tests.
  $ npm run coverage                     # Generate coverage with Coveralls.
+ $ npm run lint                         # Lint 'src' code with eslint.
 ```
 
 ## Gulp
