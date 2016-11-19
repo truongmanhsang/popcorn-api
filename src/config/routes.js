@@ -51,7 +51,7 @@ export default class Routes {
    * @param {ExpressJS} app - The ExpresssJS application.
    */
   static _setupRoutes(app) {
-    app.get("/", Routes.index.getIndex);
+    app.get("/status", Routes.index.getIndex);
     app.get("/logs/error", Routes.index.getErrorLog);
 
     app.get("/animes", Routes._animes.getAnimes);
