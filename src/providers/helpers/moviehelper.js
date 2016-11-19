@@ -192,7 +192,7 @@ export default class Helper {
           images: await this._getImages(traktMovie.ids["tmdb"], traktMovie.ids["imdb"]),
           genres: traktMovie.genres !== null ? traktMovie.genres : ["unknown"],
           released: new Date(traktMovie.released).getTime() / 1000.0,
-          trailer: traktMovie.trailer || false,
+          trailer: traktMovie.trailer || null,
           certification: traktMovie.certification,
           torrents: {}
         };

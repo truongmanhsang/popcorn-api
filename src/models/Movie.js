@@ -32,7 +32,10 @@ const MovieSchema = new mongoose.Schema({
   },
   genres: [],
   released: Number,
-  trailer: String,
+  trailer: {
+    type: String,
+    default: null
+  },
   certification: String,
   torrents: {}
 });
