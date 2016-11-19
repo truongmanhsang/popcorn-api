@@ -11,9 +11,9 @@ chai.use(chaiHttp);
 describe("Index:", ()=> {
 
   /** @test {Index#getIndex} */
-  it("GET /", done => {
+  it("GET /status", done => {
     chai.request(`http://localhost:${port}`)
-      .get("/")
+      .get("/status")
       .then(res => {
         expect(res).to.have.status(200);
         expect(res).to.be.json;
