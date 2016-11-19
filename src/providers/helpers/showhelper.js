@@ -35,9 +35,9 @@ export default class Helper {
     const saved = await Show.findOneAndUpdate({
       _id: show._id
     }, show, {
-      new: true,
-      upsert: true
-    }).exec();
+        new: true,
+        upsert: true
+      }).exec();
 
     const distinct = await Show.distinct("episodes.season", {
       _id: saved._id
@@ -47,9 +47,9 @@ export default class Helper {
     return await Show.findOneAndUpdate({
       _id: saved._id
     }, saved, {
-      new: true,
-      upsert: true
-    }).exec();
+        new: true,
+        upsert: true
+      }).exec();
   }
 
   /**
@@ -104,7 +104,7 @@ export default class Helper {
             .filter(showEpisode => showEpisode.season === found.episodes[i].season)
             .filter(showEpisode => showEpisode.episode === found.episodes[i].episode);
 
-            if (found.episodes[i].first_aired > show.latest_episode) show.latest_episode = found.episodes[i].first_aired;
+          if (found.episodes[i].first_aired > show.latest_episode) show.latest_episode = found.episodes[i].first_aired;
 
           if (matching.length != 0) {
             show = this._updateEpisode(matching[0], found.episodes[i], show, "480p");
@@ -189,26 +189,26 @@ export default class Helper {
             Object.keys(episodes[seasonNumber]).map(episodeNumber => {
               if (`${seasonNumber}-${episodeNumber}` === episodeData.FirstAired) {
                 const episode = {
-                    tvdb_id: episodeData.id,
-                    season: episodeData.SeasonNumber,
-                    episode: episodeData.EpisodeNumber,
-                    title: episodeData.EpisodeName,
-                    overview: episodeData.Overview,
-                    date_based: true,
-                    first_aired: new Date(episodeData.FirstAired).getTime() / 1000.0,
-                    watched: {
-                      watched: false
-                    },
-                    torrents: {}
-                  };
+                  tvdb_id: episodeData.id,
+                  season: episodeData.SeasonNumber,
+                  episode: episodeData.EpisodeNumber,
+                  title: episodeData.EpisodeName,
+                  overview: episodeData.Overview,
+                  date_based: true,
+                  first_aired: new Date(episodeData.FirstAired).getTime() / 1000.0,
+                  watched: {
+                    watched: false
+                  },
+                  torrents: {}
+                };
 
-                  if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
+                if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
 
-                  if (episode.season > 0) {
-                    episode.torrents = episodes[seasonNumber][episodeNumber];
-                    episode.torrents[0] = episodes[seasonNumber][episodeNumber]["480p"] ? episodes[seasonNumber][episodeNumber]["480p"] : episodes[seasonNumber][episodeNumber]["720p"];
-                    show.episodes.push(episode);
-                  }
+                if (episode.season > 0) {
+                  episode.torrents = episodes[seasonNumber][episodeNumber];
+                  episode.torrents[0] = episodes[seasonNumber][episodeNumber]["480p"] ? episodes[seasonNumber][episodeNumber]["480p"] : episodes[seasonNumber][episodeNumber]["720p"];
+                  show.episodes.push(episode);
+                }
               }
             });
           }
@@ -220,13 +220,13 @@ export default class Helper {
   }
 
   /**
-   * Get images from Fanart.tv on thetvdb.com.
+   * Get TV show images.
    * @param {Integer} tmdb_id - The tmdb id of the how you want the images from.
    * @param {Integer} tvdb_id - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with a banner, fanart and poster images.
    */
   async _getImages(tmdb_id, tvdb_id) {
-    const holder = "images/posterholder.png"
+    const holder = "images/posterholder.png";
     const images = {
       banner: holder,
       fanart: holder,
@@ -245,19 +245,39 @@ export default class Helper {
       images.banner = tmdbPoster ? tmdbPoster : holder;
       images.fanart = tmdbBackdrop ? tmdbBackdrop : holder;
       images.poster = tmdbPoster ? tmdbPoster : holder;
+
+      this._checkImages(images, holder);
+
     } catch (err) {
       try {
         const tvdbImages = await tvdb.getSeriesById(tvdb_id);
-        images.banner = tvdbImages.banner ? `http://thetvdb.com/banners/${tvdbImages.banner}` : holder;
-        images.fanart = tvdbImages.fanart? `http://thetvdb.com/banners/${tvdbImages.fanart}` : holder;
-        images.poster = tvdbImages.poster ? `http://thetvdb.com/banners/${tvdbImages.poster}` : holder;
+
+        if (images.banner === holder) {
+          images.banner = tvdbImages.banner ? `http://thetvdb.com/banners/${tvdbImages.banner}` : holder;
+        }
+        if (images.fanart === holder) {
+          images.fanart = tvdbImages.fanart ? `http://thetvdb.com/banners/${tvdbImages.fanart}` : holder;
+        }
+        if (images.poster === holder) {
+          images.poster = tvdbImages.poster ? `http://thetvdb.com/banners/${tvdbImages.poster}` : holder;
+        }
+
+        this._util.checkImages(images, holder);
+
       } catch (err) {
         try {
           const fanartImages = await fanart.getShowImages(tvdb_id);
-          images.banner = fanartImages.tvbanner ? fanartImages.tvbanner[0].url : holder;
-          images.fanart = fanartImages.showbackground ? fanartImages.showbackground[0].url : fanartImages.clearart ? fanartImages.clearart[0].url : holder;
-          images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
-        } catch(err) {
+
+          if (images.banner === holder) {
+            images.banner = fanartImages.tvbanner ? fanartImages.tvbanner[0].url : holder;
+          }
+          if (images.fanart === holder) {
+            images.fanart = fanartImages.showbackground ? fanartImages.showbackground[0].url : fanartImages.clearart ? fanartImages.clearart[0].url : holder;
+          }
+          if (images.poster === holder) {
+            images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
+          }
+        } catch (err) {
           return this._util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id | tvdb_id}'`);
         }
       }
