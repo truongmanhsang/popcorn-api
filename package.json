@@ -1,6 +1,6 @@
 {
   "name": "popcorn-api",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Popcorn Time API is developed to make it easier for anyone to create their own version of Popcorn Time.",
   "dependencies": {
     "async-q": "^0.3.1",
