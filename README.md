@@ -1,4 +1,4 @@
-# Overview
+# Popcorn API
 
 [![Build Status](https://travis-ci.org/popcorn-official/popcorn-api.svg?branch=master)](https://travis-ci.org/popcorn-official/popcorn-api)
 [![Dependency Status](https://david-dm.org/popcorn-official/popcorn-api.svg)](https://david-dm.org/popcorn-official/popcorn-api)
