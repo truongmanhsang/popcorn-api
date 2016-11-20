@@ -35,9 +35,9 @@ export default class Helper {
     const saved = await Show.findOneAndUpdate({
       _id: show._id
     }, show, {
-        new: true,
-        upsert: true
-      }).exec();
+      new: true,
+      upsert: true
+    }).exec();
 
     const distinct = await Show.distinct("episodes.season", {
       _id: saved._id
@@ -47,9 +47,9 @@ export default class Helper {
     return await Show.findOneAndUpdate({
       _id: saved._id
     }, saved, {
-        new: true,
-        upsert: true
-      }).exec();
+      new: true,
+      upsert: true
+    }).exec();
   }
 
   /**
@@ -236,7 +236,7 @@ export default class Helper {
     try {
       const tmdbData = await tmdb.call(`/tv/${tmdb_id}/images`, {});
 
-      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === "en" || poster.iso_639_1 === null)[0]
+      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === "en" || poster.iso_639_1 === null)[0];
       tmdbPoster = tmdb.getImageUrl(tmdbPoster.file_path, 'w500');
 
       let tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === "en" || backdrop.iso_639_1 === null)[0];
@@ -247,7 +247,6 @@ export default class Helper {
       images.poster = tmdbPoster ? tmdbPoster : holder;
 
       this._checkImages(images, holder);
-
     } catch (err) {
       try {
         const tvdbImages = await tvdb.getSeriesById(tvdb_id);
@@ -263,7 +262,6 @@ export default class Helper {
         }
 
         this._util.checkImages(images, holder);
-
       } catch (err) {
         try {
           const fanartImages = await fanart.getShowImages(tvdb_id);
@@ -278,7 +276,7 @@ export default class Helper {
             images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
           }
         } catch (err) {
-          return this._util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id | tvdb_id}'`);
+          this._util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id | tvdb_id}'`);
         }
       }
     }

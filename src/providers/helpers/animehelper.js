@@ -43,9 +43,9 @@ export default class Helper {
     const saved = await Anime.findOneAndUpdate({
       _id: anime._id
     }, anime, {
-        new: true,
-        upsert: true
-      }).exec();
+      new: true,
+      upsert: true
+    }).exec();
 
     const distinct = await Anime.distinct("episodes.season", {
       _id: saved._id
@@ -55,9 +55,9 @@ export default class Helper {
     return await Anime.findOneAndUpdate({
       _id: saved._id
     }, saved, {
-        new: true,
-        upsert: true
-      }).exec();
+      new: true,
+      upsert: true
+    }).exec();
   }
 
   /**

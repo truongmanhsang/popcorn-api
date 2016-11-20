@@ -122,7 +122,7 @@ export default class Helper {
     try {
       const tmdbData = await tmdb.call(`/movie/${tmdb_id}/images`, {});
 
-      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === "en" || poster.iso_639_1 === null)[0]
+      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === "en" || poster.iso_639_1 === null)[0];
       tmdbPoster = tmdb.getImageUrl(tmdbPoster.file_path, 'w500');
 
       let tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === "en" || backdrop.iso_639_1 === null)[0];
@@ -133,7 +133,6 @@ export default class Helper {
       images.poster = tmdbPoster ? tmdbPoster : holder;
 
       this._util.checkImages(images, holder);
-
     } catch (err) {
       try {
         const omdbImages = await omdb.byID({
@@ -152,7 +151,6 @@ export default class Helper {
         }
 
         this._util.checkImages(images, holder);
-
       } catch (err) {
         try {
           const fanartImages = await fanart.getMovieImages(tmdb_id);
@@ -161,15 +159,13 @@ export default class Helper {
             images.banner = fanartImages.moviebanner ? fanartImages.moviebanner[0].url : holder;
           }
           if (images.fanart === holder) {
-            images.fanart = fanartImages.moviebackground
-              ? fanartImages.moviebackground[0].url : fanartImages.hdmovieclearart
-                ? fanartImages.hdmovieclearart[0].url : holder;
+            images.fanart = fanartImages.moviebackground ? fanartImages.moviebackground[0].url : fanartImages.hdmovieclearart ? fanartImages.hdmovieclearart[0].url : holder;
           }
           if (images.poster === holder) {
             images.poster = fanartImages.movieposter ? fanartImages.movieposter[0].url : holder;
           }
         } catch (err) {
-          return this._util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
+          this._util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
         }
       }
     }
