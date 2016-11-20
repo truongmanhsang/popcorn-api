@@ -131,4 +131,18 @@ export default class Util {
     }), () => {});
   }
 
+  /**
+   * Check that all images are fetched from the provider.
+   * @param {Object} images - The images.
+   * @param {String} holder - The image holder.
+   * @throws {Error} - 'An image could not been found'.
+   */
+  checkImages(images, holder) {
+    for (let image of images) {
+      if (image === holder) {
+        throw new Error('An image could not been found');
+      }
+    }
+  }
+  
 }

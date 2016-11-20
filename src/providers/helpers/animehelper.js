@@ -43,9 +43,9 @@ export default class Helper {
     const saved = await Anime.findOneAndUpdate({
       _id: anime._id
     }, anime, {
-      new: true,
-      upsert: true
-    }).exec();
+        new: true,
+        upsert: true
+      }).exec();
 
     const distinct = await Anime.distinct("episodes.season", {
       _id: saved._id
@@ -55,9 +55,9 @@ export default class Helper {
     return await Anime.findOneAndUpdate({
       _id: saved._id
     }, saved, {
-      new: true,
-      upsert: true
-    }).exec();
+        new: true,
+        upsert: true
+      }).exec();
   }
 
   /**
@@ -151,7 +151,8 @@ export default class Helper {
         };
 
         episode.torrents = episodes[seasonNumber][episodeNumber];
-        episode.torrents[0] = episodes[seasonNumber][episodeNumber]["480p"] ? episodes[seasonNumber][episodeNumber]["480p"] : episodes[seasonNumber][episodeNumber]["720p"];
+        episode.torrents[0] = episodes[seasonNumber][episodeNumber]["480p"]
+          ? episodes[seasonNumber][episodeNumber]["480p"] : episodes[seasonNumber][episodeNumber]["720p"];
         anime.episodes.push(episode);
       });
     } catch (err) {
@@ -165,6 +166,8 @@ export default class Helper {
    * @returns {Anime} - A new anime without the episodes attached.
    */
   async getHummingbirdInfo(slug) {
+    const holder = "images/posterholder.png";
+
     try {
       const hummingbirdAnime = await this._hummingbird.Anime.getAnime(slug);
 
@@ -198,9 +201,9 @@ export default class Helper {
           num_seasons: 0,
           last_updated: Number(new Date()),
           images: {
-            banner: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : "images/posterholder.png",
-            fanart: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : "images/posterholder.png",
-            poster: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : "images/posterholder.png"
+            banner: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : holder,
+            fanart: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : holder,
+            poster: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : holder
           },
           genres: genres !== null ? genres : ["unknown"],
           episodes: []
