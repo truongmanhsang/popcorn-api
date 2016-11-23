@@ -40,7 +40,7 @@ export default class Index {
    */
   static _displayFile(req, res, root, file) {
     if (fs.existsSync(path.join(root, file))) {
-      return res.sendFile(file, {
+      return res.status(204).sendFile(file, {
         root,
         headers: {
           "Content-Type": "text/plain; charset=UTF-8"

@@ -6,6 +6,8 @@ import program from "commander";
 import prompt from "prompt";
 import torrentHealth from "torrent-tracker-health";
 
+import optimist from 'optimist';
+
 import Index from "./index";
 import AnimeHelper from "./providers/helpers/animehelper";
 import MovieHelper from "./providers/helpers/moviehelper";
@@ -331,24 +333,39 @@ export default class CLI {
     });
   }
 
+  /**
+   * Execute the import.
+   * @param {String} importing - The collection to import.
+   * @return {Promise} - A promise executing the import.
+   */
+  _executeImport(importing) {
+    let collection = path.basename(importing);
+    const index = collection.lastIndexOf(".");
+    collection = collection.substring(0, index);
+    return this._util.importCollection(collection, importing);
+  }
+
   /** Confimation to import a collection */
   _importPrompt() {
-    prompt.get(this._importSchema, (err, result) => {
-      if (err) {
-        console.error(`An error occured: ${err}`);
-        process.exit(1);
-      } else {
-        if (result.confirm.match(/^(y|yes)/i)) {
-          let collection = path.basename(program.import);
-          const index = collection.lastIndexOf(".");
-          collection = collection.substring(0, index);
-          this._util.importCollection(collection, program.import)
-            .catch(err => console.error(err));
-        } else if (result.confirm.match(/^(n|no)/i)) {
-          process.exit(0);
+    if (process.env.NODE_ENV === "test") {
+      return this._executeImport(program.import)
+        .catch(err => console.error(err));
+    } else {
+      prompt.get(this._importSchema, (err, result) => {
+        if (err) {
+          console.error(`An error occured: ${err}`);
+          process.exit(1);
+        } else {
+          if (result.confirm.match(/^(y|yes)/i)) {
+            return this._executeImport(program.import)
+              .catch(err => console.error(err));
+          } else if (result.confirm.match(/^(n|no)/i)) {
+            process.exit(0);
+          }
         }
-      }
-    });
+      });
+    }
+
   }
 
   /** Run the CLI program. */

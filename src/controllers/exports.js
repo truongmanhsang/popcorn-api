@@ -33,7 +33,7 @@ export default class Exports {
         err = {error: `Error: no such file found for '${jsonFile}'`};
         return res.status(500).json(err);
       } else {
-        return res.download(jsonFile);
+        return res.status(201).download(jsonFile);
       }
     } else {
       err = {error: `Error: '${collection}' is not a valid collection to export.`};
