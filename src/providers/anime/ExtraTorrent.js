@@ -1,9 +1,9 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
-import NyaaAPI from "nyaa-api-pt";
+import ExtraTorrentAPI from "extratorrent-api";
 
-import Extractor from "../extractors/animeextractor";
-import Util from "../../util";
+import Extractor from "../extractors/AnimeExtractor";
+import Util from "../../Util";
 
 /** Class for scraping anime shows from https://extratorrent.cc/. */
 export default class ExtraTorrent {
@@ -24,7 +24,7 @@ export default class ExtraTorrent {
      * The extractor object for getting anime data on torrents.
      * @type {Extractor}
      */
-    this._extractor = new Extractor(this.name, new NyaaAPI({ debug }), debug);
+    this._extractor = new Extractor(this.name, new ExtraTorrentAPI({ debug }), debug);
 
     /**
      * The util object with general functions.
@@ -42,8 +42,7 @@ export default class ExtraTorrent {
     try {
       logger.info(`${this.name}: Starting scraping...`);
       provider.query.category = "anime";
-      provider.query.sub_category = "english_translated";
-      provider.query.offset = 1;
+      provider.query.page = 1;
 
       return await this._extractor.search(provider);
     } catch (err) {

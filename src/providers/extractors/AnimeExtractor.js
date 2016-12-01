@@ -1,9 +1,9 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 
-import BaseExtractor from "./baseextractor";
-import Helper from "../helpers/animehelper";
-import Util from "../../util";
+import BaseExtractor from "./BaseExtractor";
+import Helper from "../helpers/AnimeHelper";
+import Util from "../../Util";
 import { maxWebRequest, animeMap } from "../../config/constants";
 
 /** Class for extracting anime shows from torrents. */

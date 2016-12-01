@@ -6,16 +6,14 @@ import program from "commander";
 import prompt from "prompt";
 import torrentHealth from "torrent-tracker-health";
 
-import optimist from 'optimist';
-
-import Index from "./index";
-import AnimeHelper from "./providers/helpers/animehelper";
-import MovieHelper from "./providers/helpers/moviehelper";
-import ShowHelper from "./providers/helpers/showhelper";
-import Logger from "./config/logger";
+import Index from "./Index";
+import AnimeHelper from "./providers/helpers/AnimeHelper";
+import MovieHelper from "./providers/helpers/MovieHelper";
+import ShowHelper from "./providers/helpers/ShowHelper";
+import Logger from "./config/Logger";
 import packageJSON from "../package.json";
-import Setup from "./config/setup";
-import Util from "./util";
+import Setup from "./config/Setup";
+import Util from "./Util";
 
 /** Class The class for the command line interface. */
 export default class CLI {

@@ -1,10 +1,11 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 import req from "request";
+
 import Movie from "../../models/Movie";
+import Helper from "../helpers/MovieHelper";
+import Util from "../../Util";
 import { maxWebRequest, webRequestTimeout } from "../../config/constants";
-import Helper from "../helpers/moviehelper";
-import Util from "../../util";
 
 /** Class for scraping movies from https://yts.ag/. */
 export default class YTS {

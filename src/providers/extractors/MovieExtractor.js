@@ -2,9 +2,9 @@
 import asyncq from "async-q";
 import bytes from "bytes";
 
-import BaseExtractor from "./baseextractor";
-import Helper from "../helpers/moviehelper";
-import Util from "../../util";
+import BaseExtractor from "./BaseExtractor";
+import Helper from "../helpers/MovieHelper";
+import Util from "../../Util";
 import { maxWebRequest, movieMap } from "../../config/constants";
 
 /** Class for extracting movies from torrents. */

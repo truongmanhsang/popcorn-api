@@ -3,17 +3,15 @@ import Show from "../models/Show";
 import { pageSize } from "../config/constants";
 
 /** class for getting show data from the MongoDB. */
-export default class Shows {
+export default class ShowController {
 
-  /**
-   * Create a shows object.
-   */
+  /** Create a show controller object. */
   constructor() {
     /**
      * Object used for the projections of shows.
      * @type {Object}
      */
-    Shows._projections = {
+    ShowController._projections = {
       _id: 1,
       imdb_id: 1,
       tvdb_id: 1,
@@ -67,7 +65,7 @@ export default class Shows {
             }
           }
         }, {
-          $project: Shows._projections
+          $project: ShowController._projections
         }, {
           $sort: {
             title: -1
@@ -135,7 +133,7 @@ export default class Shows {
         }, {
           $match: query
         }, {
-          $project: Shows._projections
+          $project: ShowController._projections
         }, {
           $skip: offset
         }, {
@@ -172,7 +170,7 @@ export default class Shows {
    */
   getRandomShow(req, res, next) {
     return Show.aggregate([{
-        $project: Shows._projections
+        $project: ShowController._projections
       }, {
         $sample: {
           size: 1

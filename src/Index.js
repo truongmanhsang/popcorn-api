@@ -6,11 +6,11 @@ import http from "http";
 import os from "os";
 import { CronJob } from "cron";
 
-import Logger from "./config/logger";
-import Routes from "./config/routes";
-import Scraper from "./scraper";
-import Setup from "./config/setup";
-import Util from "./util";
+import Logger from "./config/Logger";
+import Routes from "./config/Routes";
+import Scraper from "./Scraper";
+import Setup from "./config/Setup";
+import Util from "./Util";
 import { cronTime, master, port, timeZone, workers } from "./config/constants";
 
 /**

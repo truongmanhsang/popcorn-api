@@ -2,8 +2,8 @@
 import asyncq from "async-q";
 import ExtraTorrentAPI from "extratorrent-api";
 
-import Extractor from "../extractors/showextractor";
-import Util from "../../util";
+import Extractor from "../extractors/ShowExtractor";
+import Util from "../../Util";
 
 /** Class for scraping shows from https://extratorrent.cc/. */
 export default class ExtraTorrent {

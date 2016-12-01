@@ -2,7 +2,7 @@
 import asyncq from "async-q";
 
 import Movie from "../../models/Movie";
-import Util from "../../util";
+import Util from "../../Util";
 import { fanart, omdb, tmdb, trakt } from "../../config/constants";
 
 /** Class for saving movies. */

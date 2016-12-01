@@ -2,8 +2,8 @@
 import asyncq from "async-q";
 import EztvAPI from "eztv-api-pt";
 
-import Extractor from "../extractors/showextractor";
-import Util from "../../util";
+import Extractor from "../extractors/ShowExtractor";
+import Util from "../../Util";
 import { maxWebRequest } from "../../config/constants";
 
 /** Class for scraping shows from https://eztv.ag/. */

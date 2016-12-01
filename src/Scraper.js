@@ -1,17 +1,17 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 
-import EZTV from "./providers/shows/eztv";
-import HorribleSubs from "./providers/anime/horriblesubs";
-import extratorrentAnime from "./providers/anime/extratorrent";
-import extratorrentMovie from "./providers/movies/extratorrent";
-import extratorrentShow from "./providers/shows/extratorrent";
-import katAnime from "./providers/anime/kat";
-import katMovie from "./providers/movies/kat";
-import katShow from "./providers/shows/kat";
-import Nyaa from "./providers/anime/nyaa";
-import YTS from "./providers/movies/yts";
-import Util from "./util";
+import EZTV from "./providers/shows/EZTV";
+import HorribleSubs from "./providers/anime/HorribleSubs";
+import extratorrentAnime from "./providers/anime/ExtraTorrent";
+import extratorrentMovie from "./providers/movies/ExtraTorrent";
+import extratorrentShow from "./providers/shows/ExtraTorrent";
+import katAnime from "./providers/anime/KAT";
+import katMovie from "./providers/movies/KAT";
+import katShow from "./providers/shows/KAT";
+import Nyaa from "./providers/anime/Nyaa";
+import YTS from "./providers/movies/YTS";
+import Util from "./Util";
 import {
   collections,
   extratorrentAnimeProviders,

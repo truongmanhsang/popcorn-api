@@ -2,8 +2,8 @@
 import asyncq from "async-q";
 import KatAPI from "kat-api-pt";
 
-import Extractor from "../extractors/movieextractor";
-import Util from "../../util";
+import Extractor from "../extractors/MovieExtractor";
+import Util from "../../Util";
 
 /** Class for scraping movies from https://kat.cr/. */
 export default class KAT {

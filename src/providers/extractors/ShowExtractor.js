@@ -1,9 +1,9 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 
-import BaseExtractor from "./baseextractor";
-import Helper from "../helpers/showhelper";
-import Util from "../../util";
+import BaseExtractor from "./BaseExtractor";
+import Helper from "../helpers/ShowHelper";
+import Util from "../../Util";
 import { maxWebRequest, showMap } from "../../config/constants";
 
 /** Class for extracting TV shows from torrents. */

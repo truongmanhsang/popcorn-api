@@ -5,7 +5,7 @@ import path from "path";
 import Anime from "../models/Anime";
 import Movie from "../models/Movie";
 import Show from "../models/Show";
-import Util from "../util";
+import Util from "../Util";
 import {
   server,
   statusFile,
@@ -19,15 +19,15 @@ import {
 } from "../../package.json";
 
 /** Class for displaying information about the server the API is running on. */
-export default class Index {
+export default class IndexController {
 
-  /** Create an index object. */
+  /** Create an IndexController object. */
   constructor() {
     /**
      * The util object with general functions.
      * @type {Util}
      */
-    Index._util = new Util();
+    IndexController._util = new Util();
   }
 
   /**
@@ -62,7 +62,7 @@ export default class Index {
     try {
       const { updated } = JSON.parse(fs.readFileSync(path.join(tempDir, updatedFile), "utf8"));
       const { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), "utf8"));
-      const commit = await Index._util.executeCommand("git rev-parse --short HEAD");
+      const commit = await IndexController._util.executeCommand("git rev-parse --short HEAD");
       const totalAnimes = await Anime.count({
         num_seasons: {
           $gt: 0
@@ -100,7 +100,7 @@ export default class Index {
    * @returns {File} - The content of the log file.
    */
   getErrorLog(req, res) {
-    return Index._displayFile(req, res, tempDir, `${name}.log`);
+    return IndexController._displayFile(req, res, tempDir, `${name}.log`);
   }
 
 }

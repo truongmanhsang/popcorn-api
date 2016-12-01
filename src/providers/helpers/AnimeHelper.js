@@ -3,7 +3,7 @@ import asyncq from "async-q";
 import HummingbirdAPI from "hummingbird-api";
 
 import Anime from "../../models/Anime";
-import Util from "../../util";
+import Util from "../../Util";
 
 /** class for saving anime shows. */
 export default class Helper {
