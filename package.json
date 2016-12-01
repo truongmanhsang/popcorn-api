@@ -53,7 +53,6 @@
   "license": "MIT",
   "scripts": {
     "test": "./node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors -R spec test/**/*.js",
-    "coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "prepublish": "./node_modules/.bin/gulp build",
     "start": "node ./build/popcorn-api.js --run",
     "start-dev": "./node_modules/.bin/babel-node ./src/popcorn-api.js --run",
