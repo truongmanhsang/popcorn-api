@@ -18,7 +18,7 @@ import {
   version
 } from "../../package.json";
 
-/** class for displaying information about the server the API is running on. */
+/** Class for displaying information about the server the API is running on. */
 export default class Index {
 
   /** Create an index object. */
