@@ -23,4 +23,3 @@ before_script:
   - npm install -g eslint gulp dredd
   - npm run lint
   - gulp build
-  - npm run server &
