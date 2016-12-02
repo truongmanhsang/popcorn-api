@@ -5,13 +5,10 @@ node_js:
   - '7'
 
 addons:
-
   apt:
-
     sources:
       - mongodb-upstart
       - mongodb-3.2-precise
-
     packages:
       - mongodb-org-server
       - mongodb-org-shell
@@ -23,12 +20,7 @@ git:
   submodules: false
 
 before_script:
+  - npm install -g eslint gulp dredd
   - npm run lint
   - gulp build
-  - npm run server-dev &
-
-script:
-  - dredd
-
-before_install:
-  - npm install -g eslint gulp dredd@stable
+  - npm run server &
