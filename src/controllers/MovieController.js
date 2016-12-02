@@ -37,7 +37,7 @@ export default class MovieController {
    */
   getMovies(req, res, next) {
     return Movie.count().exec().then(count => {
-      const pages = Math.round(count / pageSize);
+      const pages = Math.ceil(count / pageSize);
       const docs = [];
 
       for (let i = 1; i < pages + 1; i++) docs.push(`movies/${i}`);
