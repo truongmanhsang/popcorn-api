@@ -92,9 +92,6 @@ export default class Index {
       // Setup the temporary directory
       Index._util.createTemp();
 
-      // Copy test files.
-      if (process.env.NODE_ENV === "test") this._util.copyTestFiles();
-
       // Fork workers.
       for (let i = 0; i < Math.min(os.cpus().length, workers); i++) cluster.fork();
 
