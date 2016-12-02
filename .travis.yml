@@ -12,6 +12,7 @@ addons:
     packages:
       - mongodb-org-server
       - mongodb-org-shell
+      - mongodb-org-tools
 
 env:
   - NODE_ENV=test
