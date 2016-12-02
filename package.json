@@ -47,8 +47,7 @@
     "eslint": "^3.10.2",
     "forever": "^0.15.2",
     "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "hooks": "^0.3.2"
+    "gulp-babel": "^6.1.2"
   },
   "license": "MIT",
   "scripts": {
