@@ -116,7 +116,7 @@ export default class Index {
               start: true
             });
 
-            Index._util.setLastUpdated("Never");
+            Index._util.setLastUpdated(0);
             Index._util.setStatus();
             if (start) Index._scraper.scrape();
           } catch (err) {
