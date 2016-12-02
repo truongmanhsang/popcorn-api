@@ -20,6 +20,6 @@ git:
   submodules: false
 
 before_script:
-  - npm install -g eslint gulp dredd
+  - npm install -g eslint gulp dredd babel-cli
   - npm run lint
   - gulp build
