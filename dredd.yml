@@ -7,7 +7,7 @@ hookfiles: ./test/hooks.js
 language: nodejs
 sandbox: false
 server: node ./build/popcorn-api.js --server
-server-wait: 30
+server-wait: 10
 init: false
 names: false
 only: []
