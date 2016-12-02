@@ -1,6 +1,6 @@
 import hooks from 'hooks';
-import Util from '../src/Util';
 
+import Util from '../src/Util';
 import Anime from '../src/models/Anime';
 import Movie from '../src/models/Movie';
 import Show from '../src/models/Show';
