@@ -20,6 +20,16 @@ hooks.beforeAll(async(transaction, done) => {
   }
 });
 
+hooks.before('Logs > Error Logs > Get Error Logs', transaction => {
+  transaction.skip = true;
+});
+
+hooks.before('Export > Export > Export Collection', transaction => {
+  transaction.skip = true;
+});
+
+
+
 // copyTestFiles() {
 //   const animePath = path.join(process.cwd(), "test/anime.json");
 //   const moviePath = path.join(process.cwd(), "test/movie.json");
