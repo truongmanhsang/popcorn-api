@@ -24,6 +24,7 @@ git:
   submodules: false
 
 before_script:
+  - sleep 15
   - npm install -g eslint gulp dredd@stable babel-cli
   - npm run lint
   - gulp build
