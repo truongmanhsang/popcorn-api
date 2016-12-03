@@ -14,6 +14,9 @@ addons:
       - mongodb-org-shell
       - mongodb-org-tools
 
+services:
+  - mongodb
+
 env:
   - NODE_ENV=test
 
@@ -21,6 +24,6 @@ git:
   submodules: false
 
 before_script:
-  - npm install -g eslint gulp dredd babel-cli
+  - npm install -g eslint gulp dredd@stable babel-cli
   - npm run lint
   - gulp build
