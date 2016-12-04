@@ -8,6 +8,15 @@ node_js:
   - '6'
   - '7'
 
+addons:
+apt:
+  sources:
+    - mongodb-upstart
+    - mongodb-3.2-precise
+  packages:
+    - mongodb-org-server
+    - mongodb-org-shell
+
 env:
   - NODE_ENV=test
 
@@ -15,7 +24,6 @@ git:
   submodules: false
 
 before_script:
-  - sudo apt-get install mongodb -y
   - mongo --version
   - npm install -g eslint gulp dredd@stable babel-cli
   - npm run lint
