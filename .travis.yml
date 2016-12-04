@@ -1,21 +1,12 @@
+sudo: required
+
+dist: trusty
+
 language: node_js
 
 node_js:
   - '6'
   - '7'
-
-addons:
-  apt:
-    sources:
-      - mongodb-upstart
-      - mongodb-3.2-precise
-    packages:
-      - mongodb-org-server
-      - mongodb-org-shell
-      - mongodb-org-tools
-
-services:
-  - mongodb
 
 env:
   - NODE_ENV=test
@@ -24,7 +15,8 @@ git:
   submodules: false
 
 before_script:
-  - sleep 15
+  - sudo apt-get install mongodb -y
+  - mongo --version
   - npm install -g eslint gulp dredd@stable babel-cli
   - npm run lint
   - gulp build
