@@ -173,8 +173,6 @@ export default class AnimeController {
           type: "show"
         }
       }, {
-        $project: AnimeController._projection
-      }, {
         $sample: {
           size: 1
         }

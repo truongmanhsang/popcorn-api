@@ -164,8 +164,6 @@ export default class MovieController {
    */
   getRandomMovie(req, res, next) {
     return Movie.aggregate([{
-        $project: MovieController._projection
-      }, {
         $sample: {
           size: 1
         }

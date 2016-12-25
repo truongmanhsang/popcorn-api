@@ -170,8 +170,6 @@ export default class ShowController {
    */
   getRandomShow(req, res, next) {
     return Show.aggregate([{
-        $project: ShowController._projections
-      }, {
         $sample: {
           size: 1
         }
