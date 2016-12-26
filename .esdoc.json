@@ -13,18 +13,37 @@
   "coverage": true,
   "includeSource": true,
   "test": {
-    "type": "mocha",
+    "type": "dredd",
     "source": "./test",
-    "includes": [".js$"]
+    "includes": [],
+    "excludes": [".json"]
   },
   "title": "Popcorn API",
+  "plugins": [],
   "manual": {
-    "changelog": ["./CHANGELOG.md"],
-    "example": ["./manual/example.md"],
-    "installation": ["./manual/installation.md"],
+    "globalIndex": false,
+    "asset": "",
+    "index": "./docs/index.html",
     "overview": ["./manual/overview.md"],
+    "design": [],
+    "installation": ["./manual/installation.md"],
+    "usage": ["./manual/usage.md"],
     "tutorial": ["./manual/tutorial.md"],
-    "usage": ["./manual/usage.md"]
+    "configuration": [],
+    "example": ["./manual/example.md"],
+    "advanced": [],
+    "faq": [],
+    "changelog,": ["./CHANGELOG.md"]
   },
-  "lint": true
+  "lint": true,
+  "experimentalProposal": {
+    "classProperties": false,
+    "objectRestSpread": false,
+    "decorators": false,
+    "doExpressions": false,
+    "functionBind": false,
+    "asyncGenerators": false,
+    "exportExtensions": false,
+    "dynamicImport": false
+  }
 }
