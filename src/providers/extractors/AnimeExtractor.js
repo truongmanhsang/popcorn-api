@@ -2,7 +2,7 @@
 import asyncq from 'async-q';
 
 import BaseExtractor from './BaseExtractor';
-import Helper from '../helpers/AnimeHelper';
+import AnimeHelper from '../helpers/AnimeHelper';
 import Util from '../../Util';
 import { maxWebRequest, animeMap } from '../../config/constants';
 
@@ -20,9 +20,9 @@ export default class AnimeExtractor extends BaseExtractor {
 
     /**
      * The helper object for adding anime shows.
-     * @type {Helper}
+     * @type {AnimeHelper}
      */
-    this._helper = new Helper(this.name, debug);
+    this._helper = new AnimeHelper(this.name, debug);
 
     /**
      * The util object with general functions.

@@ -3,7 +3,7 @@ import asyncq from 'async-q';
 import bytes from 'bytes';
 
 import BaseExtractor from './BaseExtractor';
-import Helper from '../helpers/MovieHelper';
+import MovieHelper from '../helpers/MovieHelper';
 import Util from '../../Util';
 import { maxWebRequest, movieMap } from '../../config/constants';
 
@@ -21,9 +21,9 @@ export default class MovieExtractor extends BaseExtractor {
 
     /**
      * The helper object for adding movies.
-     * @type {Helper}
+     * @type {MovieHelper}
      */
-    this._helper = new Helper(this.name);
+    this._helper = new MovieHelper(this.name);
 
     /**
      * The util object with general functions.
