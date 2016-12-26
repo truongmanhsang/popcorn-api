@@ -23,7 +23,7 @@ The following commands are defined by Gulp:
 ```
  $ gulp build                           # Transpile the ES6 source code to ES5.
  $ gulp clean                           # Delete the 'build' directory.
- $ gulp default                         # The default gulp task (same as 'gulp build').
+ $ gulp default         n                # The default gulp task (same as 'gulp build').
  $ gulp watch                           # Watch for any changes in the 'src' directory.
  ```
 
