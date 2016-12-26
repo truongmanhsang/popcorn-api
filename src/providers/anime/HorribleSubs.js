@@ -2,7 +2,7 @@
 import asyncq from 'async-q';
 import HorribleSubsAPI from 'horriblesubs-api';
 
-import Extractor from '../extractors/AnimeExtractor';
+import AnimeExtractor from '../extractors/AnimeExtractor';
 import Util from '../../Util';
 import { maxWebRequest } from '../../config/constants';
 
@@ -30,9 +30,9 @@ export default class HorribleSubs {
 
     /**
      * The extractor object for getting show data on torrents.
-     * @type {Extractor}
+     * @type {AnimeExtractor}
      */
-    this._extractor = new Extractor(this.name, this._horriblesubs, debug);
+    this._extractor = new AnimeExtractor(this.name, this._horriblesubs, debug);
 
     /**
      * The util object with general functions.

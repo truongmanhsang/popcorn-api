@@ -2,7 +2,7 @@
 import asyncq from 'async-q';
 import KatAPI from 'kat-api-pt';
 
-import Extractor from '../extractors/MovieExtractor';
+import MovieExtractor from '../extractors/MovieExtractor';
 import Util from '../../Util';
 
 /** Class for scraping movies from https://kat.cr/. */
@@ -22,9 +22,9 @@ export default class KAT {
 
     /**
      * The extractor object for getting show data on torrents.
-     * @type {Extractor}
+     * @type {MovieExtractor}
      */
-    this._extractor = new Extractor(this.name, new KatAPI({ debug }), debug);
+    this._extractor = new MovieExtractor(this.name, new KatAPI({ debug }), debug);
 
     /**
      * The util object with general functions.

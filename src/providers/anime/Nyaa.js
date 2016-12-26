@@ -2,7 +2,7 @@
 import asyncq from 'async-q';
 import NyaaAPI from 'nyaa-api-pt';
 
-import Extractor from '../extractors/AnimeExtractor';
+import AnimeExtractor from '../extractors/AnimeExtractor';
 import Util from '../../Util';
 
 /** Class for scraping anime shows from https://nyaa.se/. */
@@ -22,9 +22,9 @@ export default class Nyaa {
 
     /**
      * The extractor object for getting anime data on torrents.
-     * @type {Extractor}
+     * @type {AnimeExtractor}
      */
-    this._extractor = new Extractor(this.name, new NyaaAPI({ debug }), debug);
+    this._extractor = new AnimeExtractor(this.name, new NyaaAPI({ debug }), debug);
 
     /**
      * The util object with general functions.

@@ -2,7 +2,7 @@
 import asyncq from 'async-q';
 import ExtraTorrentAPI from 'extratorrent-api';
 
-import Extractor from '../extractors/ShowExtractor';
+import ShowExtractor from '../extractors/ShowExtractor';
 import Util from '../../Util';
 
 /** Class for scraping shows from https://extratorrent.cc/. */
@@ -22,9 +22,9 @@ export default class ExtraTorrent {
 
     /**
      * The extractor object for getting show data on torrents.
-     * @type {Extractor}
+     * @type {ShowExtractor}
      */
-    this._extractor = new Extractor(this.name, new ExtraTorrentAPI({ debug }), debug);
+    this._extractor = new ShowExtractor(this.name, new ExtraTorrentAPI({ debug }), debug);
 
     /**
      * The util object with general functions.

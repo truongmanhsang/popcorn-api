@@ -2,7 +2,7 @@
 import asyncq from 'async-q';
 import ExtraTorrentAPI from 'extratorrent-api';
 
-import Extractor from '../extractors/MovieExtractor';
+import MovieExtractor from '../extractors/MovieExtractor';
 import Util from '../../Util';
 
 /** Class for scraping movies from https://extratorrent.cc/. */
@@ -22,9 +22,9 @@ export default class ExtraTorrent {
 
     /**
      * The extractor object for getting movie data on torrents.
-     * @type {Extractor}
+     * @type {MovieExtractor}
      */
-    this._extractor = new Extractor(this.name, new ExtraTorrentAPI({ debug }), debug);
+    this._extractor = new MovieExtractor(this.name, new ExtraTorrentAPI({ debug }), debug);
 
     /**
      * The util object with general functions.

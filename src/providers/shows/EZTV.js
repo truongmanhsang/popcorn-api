@@ -2,7 +2,7 @@
 import asyncq from 'async-q';
 import EztvAPI from 'eztv-api-pt';
 
-import Extractor from '../extractors/ShowExtractor';
+import ShowExtractor from '../extractors/ShowExtractor';
 import Util from '../../Util';
 import { maxWebRequest } from '../../config/constants';
 
@@ -30,9 +30,9 @@ export default class EZTV {
 
     /**
      * The extractor object for getting show data on torrents.
-     * @type {Extractor}
+     * @type {ShowExtractor}
      */
-    this._extractor = new Extractor(this.name, this._eztv, debug);
+    this._extractor = new ShowExtractor(this.name, this._eztv, debug);
 
     /**
      * The util object with general functions.
