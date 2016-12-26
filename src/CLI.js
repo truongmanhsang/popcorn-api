@@ -363,7 +363,6 @@ export default class CLI {
         }
       });
     }
-
   }
 
   /** Run the CLI program. */
