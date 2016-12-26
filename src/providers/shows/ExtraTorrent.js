@@ -1,9 +1,9 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
-import ExtraTorrentAPI from "extratorrent-api";
+import asyncq from 'async-q';
+import ExtraTorrentAPI from 'extratorrent-api';
 
-import Extractor from "../extractors/ShowExtractor";
-import Util from "../../Util";
+import Extractor from '../extractors/ShowExtractor';
+import Util from '../../Util';
 
 /** Class for scraping shows from https://extratorrent.cc/. */
 export default class ExtraTorrent {
@@ -41,7 +41,7 @@ export default class ExtraTorrent {
   async search(provider) {
     try {
       logger.info(`${this.name}: Starting scraping...`);
-      provider.query.category = "tv";
+      provider.query.category = 'tv';
       provider.query.page = 1;
 
       return await this._extractor.search(provider);

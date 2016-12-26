@@ -1,10 +1,10 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
+import asyncq from 'async-q';
 
-import BaseExtractor from "./BaseExtractor";
-import Helper from "../helpers/AnimeHelper";
-import Util from "../../Util";
-import { maxWebRequest, animeMap } from "../../config/constants";
+import BaseExtractor from './BaseExtractor';
+import Helper from '../helpers/AnimeHelper';
+import Util from '../../Util';
+import { maxWebRequest, animeMap } from '../../config/constants';
 
 /** Class for extracting anime shows from torrents. */
 export default class Extractor extends BaseExtractor {
@@ -56,13 +56,13 @@ export default class Extractor extends BaseExtractor {
    */
   _extractAnime(torrent, regex) {
     let animeTitle = torrent.title.match(regex)[1];
-    if (animeTitle.endsWith(" ")) animeTitle = animeTitle.substring(0, animeTitle.length - 1);
-    animeTitle = animeTitle.replace(/\_/g, " ").replace(/\./g, " ");
-    let slug = animeTitle.replace(/[^a-zA-Z0-9 ]/gi, "").replace(/\s+/g, "-").toLowerCase();
-    if (slug.endsWith("-")) slug = slug.substring(0, slug.length - 1);
+    if (animeTitle.endsWith(' ')) animeTitle = animeTitle.substring(0, animeTitle.length - 1);
+    animeTitle = animeTitle.replace(/\_/g, ' ').replace(/\./g, ' ');
+    let slug = animeTitle.replace(/[^a-zA-Z0-9 ]/gi, '').replace(/\s+/g, '-').toLowerCase();
+    if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
     slug = slug in animeMap ? animeMap[slug] : slug;
 
-    const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : "480p";
+    const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : '480p';
 
     let season = 1;
     let episode;

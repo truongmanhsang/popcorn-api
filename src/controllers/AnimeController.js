@@ -1,6 +1,6 @@
 // Import the neccesary modules.
-import Anime from "../models/Anime";
-import { pageSize } from "../config/constants";
+import Anime from '../models/Anime';
+import { pageSize } from '../config/constants';
 
 /** Class for getting anime data from the MongoDB. */
 export default class AnimeController {
@@ -40,7 +40,7 @@ export default class AnimeController {
       num_seasons: {
         $gt: 0
       },
-      type: "show"
+      type: 'show'
     }).exec().then(count => {
       const pages = Math.ceil(count / pageSize);
       const docs = [];
@@ -68,7 +68,7 @@ export default class AnimeController {
             num_seasons: {
               $gt: 0
             },
-            type: "show"
+            type: 'show'
           }
         }, {
           $project: AnimeController._projection
@@ -84,43 +84,43 @@ export default class AnimeController {
         num_seasons: {
           $gt: 0
         },
-        type: "show"
+        type: 'show'
       };
       const data = req.query;
 
       if (!data.order) data.order = -1;
 
       let sort = {
-        "rating.votes": parseInt(data.order, 10),
-        "rating.percentage": parseInt(data.order, 10),
-        "rating.watching": parseInt(data.order, 10)
+        'rating.votes': parseInt(data.order, 10),
+        'rating.percentage': parseInt(data.order, 10),
+        'rating.watching': parseInt(data.order, 10)
       };
 
       if (data.keywords) {
-        const words = data.keywords.split(" ");
-        let regex = "^";
+        const words = data.keywords.split(' ');
+        let regex = '^';
 
         for (let w in words) {
-          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, "");
+          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, '');
           regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
         }
 
         query.title = {
           $regex: new RegExp(`${regex}.*`),
-          $options: "gi"
+          $options: 'gi'
         };
       }
 
       if (data.sort) {
         if (data.sort.match(/name/i)) sort = {
-          "title": (parseInt(data.order, 10) * -1)
+          'title': (parseInt(data.order, 10) * -1)
         };
         if (data.sort.match(/rating/i)) sort = {
-          "rating.percentage": parseInt(data.order, 10),
-          "rating.votes": parseInt(data.order, 10)
+          'rating.percentage': parseInt(data.order, 10),
+          'rating.votes': parseInt(data.order, 10)
         };
         if (data.sort.match(/year/i)) sort = {
-          "year": parseInt(data.order, 10)
+          'year': parseInt(data.order, 10)
         };
       }
 
@@ -152,7 +152,7 @@ export default class AnimeController {
   getAnime(req, res, next) {
     return Anime.findOne({
         _id: req.params.id,
-        type: "show"
+        type: 'show'
       }, {
         latest_episode: 0
       }).exec()
@@ -170,7 +170,7 @@ export default class AnimeController {
   getRandomAnime(req, res, next) {
     return Anime.aggregate([{
         $match: {
-          type: "show"
+          type: 'show'
         }
       }, {
         $sample: {

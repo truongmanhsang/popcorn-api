@@ -1,17 +1,17 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
+import asyncq from 'async-q';
 
-import EZTV from "./providers/shows/EZTV";
-import HorribleSubs from "./providers/anime/HorribleSubs";
-import extratorrentAnime from "./providers/anime/ExtraTorrent";
-import extratorrentMovie from "./providers/movies/ExtraTorrent";
-import extratorrentShow from "./providers/shows/ExtraTorrent";
-import katAnime from "./providers/anime/KAT";
-import katMovie from "./providers/movies/KAT";
-import katShow from "./providers/shows/KAT";
-import Nyaa from "./providers/anime/Nyaa";
-import YTS from "./providers/movies/YTS";
-import Util from "./Util";
+import EZTV from './providers/shows/EZTV';
+import HorribleSubs from './providers/anime/HorribleSubs';
+import extratorrentAnime from './providers/anime/ExtraTorrent';
+import extratorrentMovie from './providers/movies/ExtraTorrent';
+import extratorrentShow from './providers/shows/ExtraTorrent';
+import katAnime from './providers/anime/KAT';
+import katMovie from './providers/movies/KAT';
+import katShow from './providers/shows/KAT';
+import Nyaa from './providers/anime/Nyaa';
+import YTS from './providers/movies/YTS';
+import Util from './Util';
 import {
   collections,
   extratorrentAnimeProviders,
@@ -21,7 +21,7 @@ import {
   katMovieProviders,
   katShowProviders,
   nyaaAnimeProviders
-} from "./config/constants";
+} from './config/constants';
 
 /** Class for scraping movies and shows. */
 export default class Scraper {
@@ -68,7 +68,7 @@ export default class Scraper {
    */
   async _scrapeEZTVShows() {
     try {
-      const eztv = new EZTV("EZTV", Scraper._debug);
+      const eztv = new EZTV('EZTV', Scraper._debug);
       Scraper._util.setStatus(`Scraping ${eztv.name}`);
       const eztvShows = await eztv.search();
       logger.info(`${eztv.name}: Done.`);
@@ -138,7 +138,7 @@ export default class Scraper {
    */
   async _scrapeYTSMovies() {
     try {
-      const yts = new YTS("YTS");
+      const yts = new YTS('YTS');
       Scraper._util.setStatus(`Scraping ${yts.name}`);
       const ytsMovies = await yts.search();
       logger.info(`${yts.name}: Done.`);
@@ -172,7 +172,7 @@ export default class Scraper {
    */
   async _scrapeHorribleSubsAnime() {
     try {
-      const horribleSubs = new HorribleSubs("HorribleSubs", Scraper._debug);
+      const horribleSubs = new HorribleSubs('HorribleSubs', Scraper._debug);
       Scraper._util.setStatus(`Scraping ${horribleSubs.name}`);
       const horribleSubsAnime = await horribleSubs.search();
       logger.info(`${horribleSubs.name}: Done.`);

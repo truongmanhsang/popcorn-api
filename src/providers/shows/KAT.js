@@ -1,9 +1,9 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
-import KatAPI from "kat-api-pt";
+import asyncq from 'async-q';
+import KatAPI from 'kat-api-pt';
 
-import Extractor from "../extractors/ShowExtractor";
-import Util from "../../Util";
+import Extractor from '../extractors/ShowExtractor';
+import Util from '../../Util';
 
 /** Class for scraping shows from https://kat.cr/. */
 export default class KAT {
@@ -44,8 +44,8 @@ export default class KAT {
       provider.query.page = 1;
       provider.query.verified = 1;
       provider.query.adult_filter = 1;
-      provider.query.category = "tv";
-      provider.query.language = "en";
+      provider.query.category = 'tv';
+      provider.query.language = 'en';
 
       return await this._extractor.search(provider);
     } catch (err) {

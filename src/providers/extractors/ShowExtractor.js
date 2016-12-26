@@ -1,10 +1,10 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
+import asyncq from 'async-q';
 
-import BaseExtractor from "./BaseExtractor";
-import Helper from "../helpers/ShowHelper";
-import Util from "../../Util";
-import { maxWebRequest, showMap } from "../../config/constants";
+import BaseExtractor from './BaseExtractor';
+import Helper from '../helpers/ShowHelper';
+import Util from '../../Util';
+import { maxWebRequest, showMap } from '../../config/constants';
 
 /** Class for extracting TV shows from torrents. */
 export default class Extractor extends BaseExtractor {
@@ -57,10 +57,10 @@ export default class Extractor extends BaseExtractor {
    */
   _extractShow(torrent, regex, dateBased) {
     let showTitle = torrent.title.match(regex)[1];
-    if (showTitle.endsWith(" ")) showTitle = showTitle.substring(0, showTitle.length - 1);
-    showTitle = showTitle.replace(/\./g, " ");
-    let slug = showTitle.replace(/[^a-zA-Z0-9 ]/gi, "").replace(/\s+/g, "-").toLowerCase();
-    if (slug.endsWith("-")) slug = slug.substring(0, slug.length - 1);
+    if (showTitle.endsWith(' ')) showTitle = showTitle.substring(0, showTitle.length - 1);
+    showTitle = showTitle.replace(/\./g, ' ');
+    let slug = showTitle.replace(/[^a-zA-Z0-9 ]/gi, '').replace(/\s+/g, '-').toLowerCase();
+    if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
     slug = slug in showMap ? showMap[slug] : slug;
     let season = torrent.title.match(regex)[2];
     let episode = torrent.title.match(regex)[3];
@@ -68,7 +68,7 @@ export default class Extractor extends BaseExtractor {
       season = parseInt(season, 10);
       episode = parseInt(episode, 10);
     }
-    const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : "480p";
+    const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : '480p';
 
     const episodeTorrent = {
       url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
@@ -90,7 +90,7 @@ export default class Extractor extends BaseExtractor {
 
     if (!show.episodes[season]) show.episodes[season] = {};
     if (!show.episodes[season][episode]) show.episodes[season][episode] = {};
-    if ((!show.episodes[season][episode][quality] || show.showTitle.toLowerCase().indexOf("repack") > -1) || (show.episodes[season][episode][quality] && show.episodes[season][episode][quality].seeds < episodeTorrent.seeds))
+    if ((!show.episodes[season][episode][quality] || show.showTitle.toLowerCase().indexOf('repack') > -1) || (show.episodes[season][episode][quality] && show.episodes[season][episode][quality].seeds < episodeTorrent.seeds))
       show.episodes[season][episode][quality] = episodeTorrent;
 
     return show;
@@ -139,7 +139,7 @@ export default class Extractor extends BaseExtractor {
                 const index = shows.indexOf(matching[0]);
                 if (!matching[0].episodes[season]) matching[0].episodes[season] = {};
                 if (!matching[0].episodes[season][episode]) matching[0].episodes[season][episode] = {};
-                if ((!matching[0].episodes[season][episode][quality] || matching[0].showTitle.toLowerCase().indexOf("repack") > -1) || (matching[0].episodes[season][episode][quality] && matching[0].episodes[season][episode][quality].seeds < show.episodes[season][episode][quality].seeds))
+                if ((!matching[0].episodes[season][episode][quality] || matching[0].showTitle.toLowerCase().indexOf('repack') > -1) || (matching[0].episodes[season][episode][quality] && matching[0].episodes[season][episode][quality].seeds < show.episodes[season][episode][quality].seeds))
                   matching[0].episodes[season][episode][quality] = show.episodes[season][episode][quality];
 
                 shows.splice(index, 1, matching[0]);

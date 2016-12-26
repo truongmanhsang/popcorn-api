@@ -1,5 +1,5 @@
 // Import the neccesary modules.
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 // The movie schema used by mongoose.
 const MovieSchema = new mongoose.Schema({
@@ -41,7 +41,7 @@ const MovieSchema = new mongoose.Schema({
 });
 
 // Create the movie model.
-const Movie = mongoose.model("Movie", MovieSchema);
+const Movie = mongoose.model('Movie', MovieSchema);
 
 /**
  * A model object for movies.

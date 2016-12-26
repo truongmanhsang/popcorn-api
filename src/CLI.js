@@ -1,19 +1,19 @@
 // Import the neccesary modules.
-import bytes from "bytes";
-import parseTorrent from "parse-torrent";
-import path from "path";
-import program from "commander";
-import prompt from "prompt";
-import torrentHealth from "torrent-tracker-health";
+import bytes from 'bytes';
+import parseTorrent from 'parse-torrent';
+import path from 'path';
+import program from 'commander';
+import prompt from 'prompt';
+import torrentHealth from 'torrent-tracker-health';
 
-import Index from "./Index";
-import AnimeHelper from "./providers/helpers/AnimeHelper";
-import MovieHelper from "./providers/helpers/MovieHelper";
-import ShowHelper from "./providers/helpers/ShowHelper";
-import Logger from "./config/Logger";
-import packageJSON from "../package.json";
-import Setup from "./config/Setup";
-import Util from "./Util";
+import Index from './Index';
+import AnimeHelper from './providers/helpers/AnimeHelper';
+import MovieHelper from './providers/helpers/MovieHelper';
+import ShowHelper from './providers/helpers/ShowHelper';
+import Logger from './config/Logger';
+import packageJSON from '../package.json';
+import Setup from './config/Setup';
+import Util from './Util';
 
 /** Class The class for the command line interface. */
 export default class CLI {
@@ -22,7 +22,7 @@ export default class CLI {
    * Create a cli object.
    * @param {String} [providerName=CLI] - The default provider name.
    */
-  constructor(providerName = "CLI") {
+  constructor(providerName = 'CLI') {
     /**
      * The name of the CLI provider.
      * @type {String}
@@ -44,31 +44,31 @@ export default class CLI {
     // Setup the CLI program.
     program
       .version(`${packageJSON.name} v${packageJSON.version}`)
-      .option("-c, --content <type>", "Add content from the MongoDB database (anime | show | movie).", /^(anime)|^(show)|^(movie)/i, false)
-      .option("-r, --run", "Run the API and start the scraping process.")
-      .option("-s, --server", "Run the API without starting the scraping process.")
-      .option("-e, --export <collection>", "Export a collection to a JSON file.", /^(anime)|^(show)|^(movie)/i, false)
-      .option("-i, --import <collection>", "Import a JSON file to the database.");
+      .option('-c, --content <type>', 'Add content from the MongoDB database (anime | show | movie).', /^(anime)|^(show)|^(movie)/i, false)
+      .option('-r, --run', 'Run the API and start the scraping process.')
+      .option('-s, --server', 'Run the API without starting the scraping process.')
+      .option('-e, --export <collection>', 'Export a collection to a JSON file.', /^(anime)|^(show)|^(movie)/i, false)
+      .option('-i, --import <collection>', 'Import a JSON file to the database.');
 
     // Extra output on top of the default help output
-    program.on("--help", () => {
-      console.info("  Examples:");
-      console.info("");
-      console.info("    $ popcorn-api -c <anime|movie|show>");
-      console.info("    $ popcorn-api --content <anime|movie|show>");
-      console.info("");
-      console.info("    $ popcorn-api -r");
-      console.info("    $ popcorn-api --run");
-      console.info("");
-      console.info("    $ popcorn-api -s");
-      console.info("    $ popcorn-api --server");
-      console.info("");
-      console.info("    $ popcorn-api -e <anime|movie|show>");
-      console.info("    $ popcorn-api --export <anime|movie|show>");
-      console.info("");
-      console.info("    $ popcorn-api -i <path-to-json>");
-      console.info("    $ popcorn-api --import <path-to-json>");
-      console.info("");
+    program.on('--help', () => {
+      console.info('  Examples:');
+      console.info('');
+      console.info('    $ popcorn-api -c <anime|movie|show>');
+      console.info('    $ popcorn-api --content <anime|movie|show>');
+      console.info('');
+      console.info('    $ popcorn-api -r');
+      console.info('    $ popcorn-api --run');
+      console.info('');
+      console.info('    $ popcorn-api -s');
+      console.info('    $ popcorn-api --server');
+      console.info('');
+      console.info('    $ popcorn-api -e <anime|movie|show>');
+      console.info('    $ popcorn-api --export <anime|movie|show>');
+      console.info('');
+      console.info('    $ popcorn-api -i <path-to-json>');
+      console.info('    $ popcorn-api --import <path-to-json>');
+      console.info('');
     });
 
     // Parse the command line arguments.
@@ -76,73 +76,73 @@ export default class CLI {
 
     // The imdb property.
     const imdb = {
-      description: "The imdb id of the show/movie to add (tt1234567)",
-      type: "string",
+      description: 'The imdb id of the show/movie to add (tt1234567)',
+      type: 'string',
       pattern: /^(tt\d{7}|)|^(.*)/i,
-      message: "Not a valid imdb id.",
+      message: 'Not a valid imdb id.',
       required: true
     };
 
     // The Hummingbird id property.
     const hummingbirdId = {
-      description: "The Hummingbird id of the anime to add",
-      type: "string",
+      description: 'The Hummingbird id of the anime to add',
+      type: 'string',
       pattern: /^(.*)/i,
-      message: "Not a validHhummingbird id.",
+      message: 'Not a validHhummingbird id.',
       required: true
     };
 
     // The torrent property.
     const torrent = {
-      description: "The link of the torrent to add",
-      type: "string",
-      message: "Not a valid torrent.",
+      description: 'The link of the torrent to add',
+      type: 'string',
+      message: 'Not a valid torrent.',
       required: true
     };
 
     // The language property.
     const language = {
-      description: "The language of the torrent to add (en, fr, jp)",
-      type: "string",
+      description: 'The language of the torrent to add (en, fr, jp)',
+      type: 'string',
       pattern: /^([a-zA-Z]{2})/i,
-      message: "Not a valid language",
+      message: 'Not a valid language',
       required: true
     };
 
     // The quality property.
     const quality = {
-      description: "The quality of the torrent (480p | 720p | 1080p)",
-      type: "string",
+      description: 'The quality of the torrent (480p | 720p | 1080p)',
+      type: 'string',
       pattern: /^(480p|720p|1080p)/i,
-      message: "Not a valid quality.",
+      message: 'Not a valid quality.',
       required: true
     };
 
     // The season property.
     const season = {
-      description: "The season number of the torrent",
-      type: "integer",
+      description: 'The season number of the torrent',
+      type: 'integer',
       pattern: /^(\d+)/i,
-      message: "Not a valid season.",
+      message: 'Not a valid season.',
       required: true
     };
 
     // The episode property.
     const episode = {
-      description: "The episode number of the torrent",
-      type: "integer",
+      description: 'The episode number of the torrent',
+      type: 'integer',
       pattern: /^(\d+)/i,
-      message: "Not a valid episode.",
+      message: 'Not a valid episode.',
       required: true
     };
 
     const confirm = {
-      description: "Do you really want to import a collection, this can override the current data?",
-      type: "string",
+      description: 'Do you really want to import a collection, this can override the current data?',
+      type: 'string',
       pattern: /^(yes|no|y|n)$/i,
-      message: "Type yes/no",
+      message: 'Type yes/no',
       required: true,
-      default: "no"
+      default: 'no'
     };
 
     /**
@@ -151,11 +151,11 @@ export default class CLI {
      */
     this._animeSchema = {
       properties: {
-        "hummingbirdId": hummingbirdId,
-        "season": season,
-        "episode": episode,
-        "torrent": torrent,
-        "quality": quality
+        'hummingbirdId': hummingbirdId,
+        'season': season,
+        'episode': episode,
+        'torrent': torrent,
+        'quality': quality
       }
     };
 
@@ -165,10 +165,10 @@ export default class CLI {
      */
     this._movieSchema = {
       properties: {
-        "imdb": imdb,
-        "language": language,
-        "torrent": torrent,
-        "quality": quality
+        'imdb': imdb,
+        'language': language,
+        'torrent': torrent,
+        'quality': quality
       }
     };
 
@@ -178,11 +178,11 @@ export default class CLI {
      */
     this._showSchema = {
       properties: {
-        "imdb": imdb,
-        "season": season,
-        "episode": episode,
-        "torrent": torrent,
-        "quality": quality
+        'imdb': imdb,
+        'season': season,
+        'episode': episode,
+        'torrent': torrent,
+        'quality': quality
       }
     };
 
@@ -192,7 +192,7 @@ export default class CLI {
      */
     this._importSchema = {
       properties: {
-        "confirm": confirm
+        'confirm': confirm
       }
     };
   }
@@ -338,14 +338,14 @@ export default class CLI {
    */
   _executeImport(importing) {
     let collection = path.basename(importing);
-    const index = collection.lastIndexOf(".");
+    const index = collection.lastIndexOf('.');
     collection = collection.substring(0, index);
     return this._util.importCollection(collection, importing);
   }
 
   /** Confimation to import a collection */
   _importPrompt() {
-    if (process.env.NODE_ENV === "test") {
+    if (process.env.NODE_ENV === 'test') {
       return this._executeImport(program.import)
         .catch(err => console.error(err));
     } else {
@@ -400,7 +400,7 @@ export default class CLI {
     } else if (program.import) {
       this._importPrompt();
     } else {
-      console.error("\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m");
+      console.error('\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m');
       program.help();
     }
   }

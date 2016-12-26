@@ -1,5 +1,5 @@
 // Import the neccesary modules.
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 // The show schema used by mongoose.
 const ShowSchema = new mongoose.Schema({
@@ -45,7 +45,7 @@ const ShowSchema = new mongoose.Schema({
 });
 
 // Create the show model.
-const Show = mongoose.model("Show", ShowSchema);
+const Show = mongoose.model('Show', ShowSchema);
 
 /**
  * A model object for shows.

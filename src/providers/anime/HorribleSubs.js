@@ -1,10 +1,10 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
-import HorribleSubsAPI from "horriblesubs-api";
+import asyncq from 'async-q';
+import HorribleSubsAPI from 'horriblesubs-api';
 
-import Extractor from "../extractors/AnimeExtractor";
-import Util from "../../Util";
-import { maxWebRequest } from "../../config/constants";
+import Extractor from '../extractors/AnimeExtractor';
+import Util from '../../Util';
+import { maxWebRequest } from '../../config/constants';
 
 /** Class for scraping anime from https://horriblesubs.info/. */
 export default class HorribleSubs {

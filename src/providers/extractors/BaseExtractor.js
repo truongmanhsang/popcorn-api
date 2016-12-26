@@ -1,7 +1,7 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
+import asyncq from 'async-q';
 
-import Util from "../../Util";
+import Util from '../../Util';
 
 /** Class for base extracting data from torrents. */
 export default class BaseExtractor {

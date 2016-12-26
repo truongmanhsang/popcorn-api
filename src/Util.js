@@ -1,11 +1,11 @@
 // Import the neccesary modules.
-import childProcess from "child_process";
-import fs from "fs";
-import fse from "fs-extra";
-import path from "path";
+import childProcess from 'child_process';
+import fs from 'fs';
+import fse from 'fs-extra';
+import path from 'path';
 
-import { dbName, statusFile, tempDir, updatedFile } from "./config/constants";
-import { name } from "../package.json";
+import { dbName, statusFile, tempDir, updatedFile } from './config/constants';
+import { name } from '../package.json';
 
 /** Class holding the frequently used functions. */
 export default class Util {
@@ -38,7 +38,7 @@ export default class Util {
         cwd: __dirname
       }, (err, stdout) => {
         if (err) return reject(err);
-        return resolve(stdout.split("\n").join(""));
+        return resolve(stdout.split('\n').join(''));
       });
     });
   }
@@ -52,7 +52,7 @@ export default class Util {
     const jsonFile = path.join(tempDir, `${collection}s.json`);
     logger.info(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
 
-    return this.executeCommand(`mongoexport --db ${dbName} --collection ${collection}s --out "${jsonFile}"`);
+    return this.executeCommand(`mongoexport --db ${dbName} --collection ${collection}s --out '${jsonFile}'`);
   }
 
   /**
@@ -67,7 +67,7 @@ export default class Util {
 
     logger.info(`Importing collection: '${collection}', from: '${jsonFile}'`);
 
-    return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection}s --file "${jsonFile}" --upsert`);
+    return this.executeCommand(`mongoimport --db ${dbName} --collection ${collection}s --file '${jsonFile}' --upsert`);
   }
 
   /**
@@ -126,7 +126,7 @@ export default class Util {
    * Updates the `status.json` file.
    * @param {String} [status=Idle] - The status which will be set to in the `status.json` file.
    */
-  setStatus(status = "Idle") {
+  setStatus(status = 'Idle') {
     fs.writeFile(path.join(tempDir, statusFile), JSON.stringify({
       status
     }), () => {});

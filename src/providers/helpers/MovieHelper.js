@@ -1,9 +1,9 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
+import asyncq from 'async-q';
 
-import Movie from "../../models/Movie";
-import Util from "../../Util";
-import { fanart, omdb, tmdb, trakt } from "../../config/constants";
+import Movie from '../../models/Movie';
+import Util from '../../Util';
+import { fanart, omdb, tmdb, trakt } from '../../config/constants';
 
 /** Class for saving movies. */
 export default class Helper {
@@ -77,8 +77,8 @@ export default class Helper {
 
         if (found.torrents) {
           Object.keys(found.torrents).forEach(language => {
-            movie = this._updateTorrent(movie, found, language, "720p");
-            movie = this._updateTorrent(movie, found, language, "1080p");
+            movie = this._updateTorrent(movie, found, language, '720p');
+            movie = this._updateTorrent(movie, found, language, '1080p');
           });
         }
 
@@ -112,7 +112,7 @@ export default class Helper {
    * @returns {Object} - Object with a banner, fanart and poster images.
    */
   async _getImages(tmdb_id, imdb_id) {
-    const holder = "images/posterholder.png";
+    const holder = 'images/posterholder.png';
     const images = {
       banner: holder,
       fanart: holder,
@@ -122,10 +122,10 @@ export default class Helper {
     try {
       const tmdbData = await tmdb.call(`/movie/${tmdb_id}/images`, {});
 
-      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === "en" || poster.iso_639_1 === null)[0];
+      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null)[0];
       tmdbPoster = tmdb.getImageUrl(tmdbPoster.file_path, 'w500');
 
-      let tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === "en" || backdrop.iso_639_1 === null)[0];
+      let tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null)[0];
       tmdbBackdrop = tmdb.getImageUrl(tmdbBackdrop.file_path, 'w500');
 
       images.banner = tmdbPoster ? tmdbPoster : holder;
@@ -137,7 +137,7 @@ export default class Helper {
       try {
         const omdbImages = await omdb.byID({
           imdb: imdb_id,
-          type: "movie"
+          type: 'movie'
         });
 
         if (images.banner === holder) {
@@ -182,20 +182,20 @@ export default class Helper {
     try {
       const traktMovie = await trakt.movies.summary({
         id: slug,
-        extended: "full"
+        extended: 'full'
       });
       const traktWatchers = await trakt.movies.watching({ id: slug });
 
       let watching = 0;
       if (traktWatchers !== null) watching = traktWatchers.length;
 
-      if (traktMovie && traktMovie.ids["imdb"] && traktMovie.ids["tmdb"]) {
+      if (traktMovie && traktMovie.ids['imdb'] && traktMovie.ids['tmdb']) {
         return {
-          _id: traktMovie.ids["imdb"],
-          imdb_id: traktMovie.ids["imdb"],
+          _id: traktMovie.ids['imdb'],
+          imdb_id: traktMovie.ids['imdb'],
           title: traktMovie.title,
           year: traktMovie.year,
-          slug: traktMovie.ids["slug"],
+          slug: traktMovie.ids['slug'],
           synopsis: traktMovie.overview,
           runtime: traktMovie.runtime,
           rating: {
@@ -207,8 +207,8 @@ export default class Helper {
           },
           country: traktMovie.language,
           last_updated: Number(new Date()),
-          images: await this._getImages(traktMovie.ids["tmdb"], traktMovie.ids["imdb"]),
-          genres: traktMovie.genres !== null ? traktMovie.genres : ["unknown"],
+          images: await this._getImages(traktMovie.ids['tmdb'], traktMovie.ids['imdb']),
+          genres: traktMovie.genres !== null ? traktMovie.genres : ['unknown'],
           released: new Date(traktMovie.released).getTime() / 1000.0,
           trailer: traktMovie.trailer || null,
           certification: traktMovie.certification,

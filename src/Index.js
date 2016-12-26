@@ -1,17 +1,17 @@
 // Import the neccesary modules.
-import cluster from "cluster";
-import domain from "domain";
-import Express from "express";
-import http from "http";
-import os from "os";
-import { CronJob } from "cron";
+import cluster from 'cluster';
+import domain from 'domain';
+import Express from 'express';
+import http from 'http';
+import os from 'os';
+import { CronJob } from 'cron';
 
-import Logger from "./config/Logger";
-import Routes from "./config/Routes";
-import Scraper from "./Scraper";
-import Setup from "./config/Setup";
-import Util from "./Util";
-import { cronTime, master, port, timeZone, workers } from "./config/constants";
+import Logger from './config/Logger';
+import Routes from './config/Routes';
+import Scraper from './Scraper';
+import Setup from './config/Setup';
+import Util from './Util';
+import { cronTime, master, port, timeZone, workers } from './config/constants';
 
 /**
  * Class for starting the API.
@@ -96,7 +96,7 @@ export default class Index {
       for (let i = 0; i < Math.min(os.cpus().length, workers); i++) cluster.fork();
 
       // Check for errors with the workers.
-      cluster.on("exit", worker => {
+      cluster.on('exit', worker => {
         Index._util.onError(`Worker '${worker.process.pid}' died, spinning up another!`);
         cluster.fork();
       });
@@ -106,7 +106,7 @@ export default class Index {
         // WARNING: Domain module is pending deprication: https://nodejs.org/api/domain.html
         const scope = domain.create();
         scope.run(() => {
-          logger.info("API started");
+          logger.info('API started');
           try {
             new CronJob({
               cronTime,
@@ -123,7 +123,7 @@ export default class Index {
             return Index._util.onError(err);
           }
         });
-        scope.on("error", err => Index._util.onError(err));
+        scope.on('error', err => Index._util.onError(err));
       }
     } else {
       Index._server.listen(port);
@@ -135,7 +135,7 @@ export default class Index {
    */
   static closeAPI() {
     Index._server.close(() => {
-      logger.info("Closed out remaining connections.");
+      logger.info('Closed out remaining connections.');
       process.exit();
     });
   }

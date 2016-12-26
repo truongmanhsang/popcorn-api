@@ -1,11 +1,11 @@
 // Import the neccesary modules.
-import bodyParser from "body-parser";
-import compress from "compression";
-import mongoose from "mongoose";
-import responseTime from "response-time";
+import bodyParser from 'body-parser';
+import compress from 'compression';
+import mongoose from 'mongoose';
+import responseTime from 'response-time';
 
-import Logger from "./Logger";
-import { dbHosts, dbName, Promise } from "./constants";
+import Logger from './Logger';
+import { dbHosts, dbName, Promise } from './constants';
 
 /** Class for setting up the API. */
 export default class Setup {
@@ -18,7 +18,7 @@ export default class Setup {
    */
   constructor(app, pretty, verbose) {
     // Used to extract data from query strings.
-    RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
     // Connection and configuration of the MongoDB database.
     Setup.connectMongoDB();
@@ -46,22 +46,22 @@ export default class Setup {
   /** Connection and configuration of the MongoDB database. */
   static connectMongoDB() {
     mongoose.Promise = Promise;
-    mongoose.connect(`mongodb://${dbHosts.join(",")}/${dbName}`, {
+    mongoose.connect(`mongodb://${dbHosts.join(',')}/${dbName}`, {
       db: {
         native_parser: true
       },
       replset: {
-        rs_name: "pt0",
+        rs_name: 'pt0',
         connectWithNoPrimary: true,
-        readPreference: "nearest",
-        strategy: "ping",
+        readPreference: 'nearest',
+        strategy: 'ping',
         socketOptions: {
           keepAlive: 1
         }
       },
       server: {
-        readPreference: "nearest",
-        strategy: "ping",
+        readPreference: 'nearest',
+        strategy: 'ping',
         socketOptions: {
           keepAlive: 1
         }

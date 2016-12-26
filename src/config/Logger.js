@@ -1,12 +1,12 @@
 // Import the neccesary modules.
-import ExpressWinston from "express-winston";
-import fs from "fs";
-import path from "path";
-import sprintf from "sprintf";
-import Winston from "winston";
+import ExpressWinston from 'express-winston';
+import fs from 'fs';
+import path from 'path';
+import sprintf from 'sprintf';
+import Winston from 'winston';
 
-import { tempDir } from "./constants";
-import { name } from "../../package.json";
+import { tempDir } from './constants';
+import { name } from '../../package.json';
 
 /** Class for configuring logging. */
 export default class Logger {
@@ -60,7 +60,7 @@ export default class Logger {
           new Winston.transports.File({
             filename: path.join(tempDir, `${name}.log`),
             json: false,
-            level: "warn",
+            level: 'warn',
             formatter: Logger._fileFormatter,
             maxsize: 5242880,
             handleExceptions: true
@@ -89,7 +89,7 @@ export default class Logger {
    * @returns {Object} - Formatter arguments passed by Winston.
    */
   static _checkEmptyMessage(args) {
-    if (args.message === "" && Object.keys(args.meta).length !== 0)
+    if (args.message === '' && Object.keys(args.meta).length !== 0)
       args.message = JSON.stringify(args.meta);
 
     return args;
@@ -102,16 +102,16 @@ export default class Logger {
    */
   static _getLevelColor(level) {
     switch (level) {
-    case "error":
-      return "\x1b[31m";
-    case "warn":
-      return "\x1b[33m";
-    case "info":
-      return "\x1b[36m";
-    case "debug":
-      return "\x1b[34m";
+    case 'error':
+      return '\x1b[31m';
+    case 'warn':
+      return '\x1b[33m';
+    case 'info':
+      return '\x1b[36m';
+    case 'debug':
+      return '\x1b[34m';
     default:
-      return "\x1b[36m";
+      return '\x1b[36m';
     }
   }
 

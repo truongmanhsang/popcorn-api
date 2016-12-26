@@ -1,5 +1,5 @@
 // Import the neccesary modules.
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 // The anime schema used by mongoose.
 const AnimeSchema = new mongoose.Schema({
@@ -41,7 +41,7 @@ const AnimeSchema = new mongoose.Schema({
 });
 
 // Create the anime model.
-const Anime = mongoose.model("Anime", AnimeSchema);
+const Anime = mongoose.model('Anime', AnimeSchema);
 
 /**
  * A model object for anime shows.

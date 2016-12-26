@@ -1,11 +1,11 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
-import bytes from "bytes";
+import asyncq from 'async-q';
+import bytes from 'bytes';
 
-import BaseExtractor from "./BaseExtractor";
-import Helper from "../helpers/MovieHelper";
-import Util from "../../Util";
-import { maxWebRequest, movieMap } from "../../config/constants";
+import BaseExtractor from './BaseExtractor';
+import Helper from '../helpers/MovieHelper';
+import Util from '../../Util';
+import { maxWebRequest, movieMap } from '../../config/constants';
 
 /** Class for extracting movies from torrents. */
 export default class Extractor extends BaseExtractor {
@@ -55,10 +55,10 @@ export default class Extractor extends BaseExtractor {
    */
   _extractMovie(torrent, language, regex) {
     let movieTitle = torrent.title.match(regex)[1];
-    if (movieTitle.endsWith(" ")) movieTitle = movieTitle.substring(0, movieTitle.length - 1);
-    movieTitle = movieTitle.replace(/\./g, " ");
-    let slug = movieTitle.replace(/[^a-zA-Z0-9 ]/gi, "").replace(/\s+/g, "-").toLowerCase();
-    if (slug.endsWith("-")) slug = slug.substring(0, slug.length - 1);
+    if (movieTitle.endsWith(' ')) movieTitle = movieTitle.substring(0, movieTitle.length - 1);
+    movieTitle = movieTitle.replace(/\./g, ' ');
+    let slug = movieTitle.replace(/[^a-zA-Z0-9 ]/gi, '').replace(/\s+/g, '-').toLowerCase();
+    if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
     slug = slug in movieMap ? movieMap[slug] : slug;
     const year = torrent.title.match(regex)[2];
     const quality = torrent.title.match(regex)[3];
@@ -81,7 +81,7 @@ export default class Extractor extends BaseExtractor {
       url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
       seed: torrent.seeds ? torrent.seeds : 0,
       peer: torrent.peers ? torrent.peers : 0,
-      size: bytes(size.replace(/\s/g, "")),
+      size: bytes(size.replace(/\s/g, '')),
       filesize: size,
       provider: this.name
     };

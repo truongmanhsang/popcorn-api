@@ -1,6 +1,6 @@
 // Import the neccesary modules.
-import Movie from "../models/Movie";
-import { pageSize } from "../config/constants";
+import Movie from '../models/Movie';
+import { pageSize } from '../config/constants';
 
 /** Class for getting movie data from the MongoDB. */
 export default class MovieController {
@@ -74,47 +74,47 @@ export default class MovieController {
       if (!data.order) data.order = -1;
 
       let sort = {
-        "rating.votes": parseInt(data.order, 10),
-        "rating.percentage": parseInt(data.order, 10),
-        "rating.watching": parseInt(data.order, 10)
+        'rating.votes': parseInt(data.order, 10),
+        'rating.percentage': parseInt(data.order, 10),
+        'rating.watching': parseInt(data.order, 10)
       };
 
       if (data.keywords) {
-        const words = data.keywords.split(" ");
-        let regex = "^";
+        const words = data.keywords.split(' ');
+        let regex = '^';
 
         for (let w in words) {
-          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, "");
+          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, '');
           regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
         }
 
         query.title = {
           $regex: new RegExp(`${regex}.*`),
-          $options: "gi"
+          $options: 'gi'
         };
       }
 
       if (data.sort) {
         if (data.sort.match(/last added/i)) sort = {
-          "released": parseInt(data.order, 10)
+          'released': parseInt(data.order, 10)
         };
         if (data.sort.match(/rating/i)) sort = {
-          "rating.percentage": parseInt(data.order, 10),
-          "rating.votes": parseInt(data.order, 10)
+          'rating.percentage': parseInt(data.order, 10),
+          'rating.votes': parseInt(data.order, 10)
         };
         if (data.sort.match(/title/i)) sort = {
-          "title": (parseInt(data.order, 10) * 1)
+          'title': (parseInt(data.order, 10) * 1)
         };
         if (data.sort.match(/trending/i)) sort = {
-          "rating.watching": parseInt(data.order, 10)
+          'rating.watching': parseInt(data.order, 10)
         };
         if (data.sort.match(/year/i)) sort = {
-          "year": parseInt(data.order, 10)
+          'year': parseInt(data.order, 10)
         };
       }
 
       if (data.genre && !data.genre.match(/all/i)) {
-        if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i)) data.genre = "science-fiction";
+        if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i)) data.genre = 'science-fiction';
         query.genres = data.genre.toLowerCase();
       }
 

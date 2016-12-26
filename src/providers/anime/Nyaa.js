@@ -1,9 +1,9 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
-import NyaaAPI from "nyaa-api-pt";
+import asyncq from 'async-q';
+import NyaaAPI from 'nyaa-api-pt';
 
-import Extractor from "../extractors/AnimeExtractor";
-import Util from "../../Util";
+import Extractor from '../extractors/AnimeExtractor';
+import Util from '../../Util';
 
 /** Class for scraping anime shows from https://nyaa.se/. */
 export default class Nyaa {
@@ -41,8 +41,8 @@ export default class Nyaa {
   async search(provider) {
     try {
       logger.info(`${this.name}: Starting scraping...`);
-      provider.query.category = "anime";
-      provider.query.sub_category = "english_translated";
+      provider.query.category = 'anime';
+      provider.query.sub_category = 'english_translated';
       provider.query.offset = 1;
 
       return await this._extractor.search(provider);

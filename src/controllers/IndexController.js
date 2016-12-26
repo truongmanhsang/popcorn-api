@@ -1,22 +1,22 @@
 // Import the neccesary modules.
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
-import Anime from "../models/Anime";
-import Movie from "../models/Movie";
-import Show from "../models/Show";
-import Util from "../Util";
+import Anime from '../models/Anime';
+import Movie from '../models/Movie';
+import Show from '../models/Show';
+import Util from '../Util';
 import {
   server,
   statusFile,
   tempDir,
   updatedFile
-} from "../config/constants";
+} from '../config/constants';
 import {
   name,
   repository,
   version
-} from "../../package.json";
+} from '../../package.json';
 
 /** Class for displaying information about the server the API is running on. */
 export default class IndexController {
@@ -43,7 +43,7 @@ export default class IndexController {
       return res.status(204).sendFile(file, {
         root,
         headers: {
-          "Content-Type": "text/plain; charset=UTF-8"
+          'Content-Type': 'text/plain; charset=UTF-8'
         }
       });
     } else {
@@ -60,14 +60,14 @@ export default class IndexController {
    */
   async getIndex(req, res, next) {
     try {
-      const { updated } = JSON.parse(fs.readFileSync(path.join(tempDir, updatedFile), "utf8"));
-      const { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), "utf8"));
-      const commit = await IndexController._util.executeCommand("git rev-parse --short HEAD");
+      const { updated } = JSON.parse(fs.readFileSync(path.join(tempDir, updatedFile), 'utf8'));
+      const { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), 'utf8'));
+      const commit = await IndexController._util.executeCommand('git rev-parse --short HEAD');
       const totalAnimes = await Anime.count({
         num_seasons: {
           $gt: 0
         },
-        type: "show"
+        type: 'show'
       }).exec();
       const totalMovies = await Movie.count().exec();
       const totalShows = await Show.count({

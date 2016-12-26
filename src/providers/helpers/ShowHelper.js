@@ -1,9 +1,9 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
+import asyncq from 'async-q';
 
-import Show from "../../models/Show";
-import Util from "../../Util";
-import { fanart, trakt, tmdb, tvdb } from "../../config/constants";
+import Show from '../../models/Show';
+import Util from '../../Util';
+import { fanart, trakt, tmdb, tvdb } from '../../config/constants';
 
 /** Class for saving shows. */
 export default class Helper {
@@ -39,7 +39,7 @@ export default class Helper {
       upsert: true
     }).exec();
 
-    const distinct = await Show.distinct("episodes.season", {
+    const distinct = await Show.distinct('episodes.season', {
       _id: saved._id
     }).exec();
     saved.num_seasons = distinct.length;
@@ -75,11 +75,11 @@ export default class Helper {
       }
 
       if (update) {
-        if (quality === "480p") matching.torrents["0"] = found.torrents[quality];
+        if (quality === '480p') matching.torrents['0'] = found.torrents[quality];
         matching.torrents[quality] = found.torrents[quality];
       }
     } else if (found.torrents[quality] && !matching.torrents[quality]) {
-      if (quality === "480p") matching.torrents["0"] = found.torrents[quality];
+      if (quality === '480p') matching.torrents['0'] = found.torrents[quality];
       matching.torrents[quality] = found.torrents[quality];
     }
 
@@ -107,9 +107,9 @@ export default class Helper {
           if (found.episodes[i].first_aired > show.latest_episode) show.latest_episode = found.episodes[i].first_aired;
 
           if (matching.length != 0) {
-            show = this._updateEpisode(matching[0], found.episodes[i], show, "480p");
-            show = this._updateEpisode(matching[0], found.episodes[i], show, "720p");
-            show = this._updateEpisode(matching[0], found.episodes[i], show, "1080p");
+            show = this._updateEpisode(matching[0], found.episodes[i], show, '480p');
+            show = this._updateEpisode(matching[0], found.episodes[i], show, '720p');
+            show = this._updateEpisode(matching[0], found.episodes[i], show, '1080p');
           } else {
             show.episodes.push(found.episodes[i]);
           }
@@ -139,14 +139,14 @@ export default class Helper {
       const season = await trakt.seasons.season({
         id: slug,
         season: seasonNumber,
-        extended: "full"
+        extended: 'full'
       });
 
       for (let episodeData in season) {
         episodeData = season[episodeData];
         if (episodes[seasonNumber] && episodes[seasonNumber][episodeData.number]) {
           const episode = {
-            tvdb_id: episodeData.ids["tvdb"],
+            tvdb_id: episodeData.ids['tvdb'],
             season: episodeData.season,
             episode: episodeData.number,
             title: episodeData.title,
@@ -162,7 +162,7 @@ export default class Helper {
           if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
 
           episode.torrents = episodes[seasonNumber][episodeData.number];
-          episode.torrents[0] = episodes[seasonNumber][episodeData.number]["480p"] ? episodes[seasonNumber][episodeData.number]["480p"] : episodes[seasonNumber][episodeData.number]["720p"];
+          episode.torrents[0] = episodes[seasonNumber][episodeData.number]['480p'] ? episodes[seasonNumber][episodeData.number]['480p'] : episodes[seasonNumber][episodeData.number]['720p'];
           show.episodes.push(episode);
         }
       }
@@ -206,7 +206,7 @@ export default class Helper {
 
                 if (episode.season > 0) {
                   episode.torrents = episodes[seasonNumber][episodeNumber];
-                  episode.torrents[0] = episodes[seasonNumber][episodeNumber]["480p"] ? episodes[seasonNumber][episodeNumber]["480p"] : episodes[seasonNumber][episodeNumber]["720p"];
+                  episode.torrents[0] = episodes[seasonNumber][episodeNumber]['480p'] ? episodes[seasonNumber][episodeNumber]['480p'] : episodes[seasonNumber][episodeNumber]['720p'];
                   show.episodes.push(episode);
                 }
               }
@@ -226,7 +226,7 @@ export default class Helper {
    * @returns {Object} - Object with a banner, fanart and poster images.
    */
   async _getImages(tmdb_id, tvdb_id) {
-    const holder = "images/posterholder.png";
+    const holder = 'images/posterholder.png';
     const images = {
       banner: holder,
       fanart: holder,
@@ -236,10 +236,10 @@ export default class Helper {
     try {
       const tmdbData = await tmdb.call(`/tv/${tmdb_id}/images`, {});
 
-      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === "en" || poster.iso_639_1 === null)[0];
+      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null)[0];
       tmdbPoster = tmdb.getImageUrl(tmdbPoster.file_path, 'w500');
 
-      let tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === "en" || backdrop.iso_639_1 === null)[0];
+      let tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null)[0];
       tmdbBackdrop = tmdb.getImageUrl(tmdbBackdrop.file_path, 'w500');
 
       images.banner = tmdbPoster ? tmdbPoster : holder;
@@ -293,7 +293,7 @@ export default class Helper {
     try {
       const traktShow = await trakt.shows.summary({
         id: slug,
-        extended: "full"
+        extended: 'full'
       });
       const traktWatchers = await trakt.shows.watching({
         id: slug
@@ -302,14 +302,14 @@ export default class Helper {
       let watching = 0;
       if (traktWatchers !== null) watching = traktWatchers.length;
 
-      if (traktShow && traktShow.ids["imdb"] && traktShow.ids["tmdb"] && traktShow.ids["tvdb"]) {
+      if (traktShow && traktShow.ids['imdb'] && traktShow.ids['tmdb'] && traktShow.ids['tvdb']) {
         return {
-          _id: traktShow.ids["imdb"],
-          imdb_id: traktShow.ids["imdb"],
-          tvdb_id: traktShow.ids["tvdb"],
+          _id: traktShow.ids['imdb'],
+          imdb_id: traktShow.ids['imdb'],
+          tvdb_id: traktShow.ids['tvdb'],
           title: traktShow.title,
           year: traktShow.year,
-          slug: traktShow.ids["slug"],
+          slug: traktShow.ids['slug'],
           synopsis: traktShow.overview,
           runtime: traktShow.runtime,
           rating: {
@@ -327,8 +327,8 @@ export default class Helper {
           num_seasons: 0,
           last_updated: Number(new Date()),
           latest_episode: 0,
-          images: await this._getImages(traktShow.ids["tmdb"], traktShow.ids["tvdb"]),
-          genres: traktShow.genres !== null ? traktShow.genres : ["unknown"],
+          images: await this._getImages(traktShow.ids['tmdb'], traktShow.ids['tvdb']),
+          genres: traktShow.genres !== null ? traktShow.genres : ['unknown'],
           episodes: []
         };
       }

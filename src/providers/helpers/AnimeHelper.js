@@ -1,9 +1,9 @@
 // Import the neccesary modules.
-import asyncq from "async-q";
-import HummingbirdAPI from "hummingbird-api";
+import asyncq from 'async-q';
+import HummingbirdAPI from 'hummingbird-api';
 
-import Anime from "../../models/Anime";
-import Util from "../../Util";
+import Anime from '../../models/Anime';
+import Util from '../../Util';
 
 /** class for saving anime shows. */
 export default class Helper {
@@ -47,7 +47,7 @@ export default class Helper {
       upsert: true
     }).exec();
 
-    const distinct = await Anime.distinct("episodes.season", {
+    const distinct = await Anime.distinct('episodes.season', {
       _id: saved._id
     }).exec();
     saved.num_seasons = distinct.length;
@@ -83,11 +83,11 @@ export default class Helper {
       }
 
       if (update) {
-        if (quality === "480p") matching.torrents["0"] = found.torrents[quality];
+        if (quality === '480p') matching.torrents['0'] = found.torrents[quality];
         matching.torrents[quality] = found.torrents[quality];
       }
     } else if (found.torrents[quality] && !matching.torrents[quality]) {
-      if (quality === "480p") matching.torrents["0"] = found.torrents[quality];
+      if (quality === '480p') matching.torrents['0'] = found.torrents[quality];
       matching.torrents[quality] = found.torrents[quality];
     }
 
@@ -112,9 +112,9 @@ export default class Helper {
             .filter(animeEpisode => animeEpisode.episode === found.episodes[i].episode);
 
           if (matching.length != 0) {
-            anime = this._updateEpisode(matching[0], found.episodes[i], anime, "480p");
-            anime = this._updateEpisode(matching[0], found.episodes[i], anime, "720p");
-            anime = this._updateEpisode(matching[0], found.episodes[i], anime, "1080p");
+            anime = this._updateEpisode(matching[0], found.episodes[i], anime, '480p');
+            anime = this._updateEpisode(matching[0], found.episodes[i], anime, '720p');
+            anime = this._updateEpisode(matching[0], found.episodes[i], anime, '1080p');
           } else {
             anime.episodes.push(found.episodes[i]);
           }
@@ -151,8 +151,8 @@ export default class Helper {
         };
 
         episode.torrents = episodes[seasonNumber][episodeNumber];
-        episode.torrents[0] = episodes[seasonNumber][episodeNumber]["480p"]
-          ? episodes[seasonNumber][episodeNumber]["480p"] : episodes[seasonNumber][episodeNumber]["720p"];
+        episode.torrents[0] = episodes[seasonNumber][episodeNumber]['480p']
+          ? episodes[seasonNumber][episodeNumber]['480p'] : episodes[seasonNumber][episodeNumber]['720p'];
         anime.episodes.push(episode);
       });
     } catch (err) {
@@ -166,16 +166,16 @@ export default class Helper {
    * @returns {Anime} - A new anime without the episodes attached.
    */
   async getHummingbirdInfo(slug) {
-    const holder = "images/posterholder.png";
+    const holder = 'images/posterholder.png';
 
     try {
       const hummingbirdAnime = await this._hummingbird.Anime.getAnime(slug);
 
       let type;
       if (hummingbirdAnime.show_type.match(/tv/i)) {
-        type = "show";
+        type = 'show';
       } else {
-        type = "movie";
+        type = 'movie';
       }
 
       const genres = hummingbirdAnime.genres.map(genre => genre.name);
@@ -205,7 +205,7 @@ export default class Helper {
             fanart: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : holder,
             poster: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : holder
           },
-          genres: genres !== null ? genres : ["unknown"],
+          genres: genres !== null ? genres : ['unknown'],
           episodes: []
         };
       }
