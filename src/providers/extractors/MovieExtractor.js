@@ -8,7 +8,7 @@ import Util from '../../Util';
 import { maxWebRequest, movieMap } from '../../config/constants';
 
 /** Class for extracting movies from torrents. */
-export default class Extractor extends BaseExtractor {
+export default class MovieExtractor extends BaseExtractor {
 
   /**
    * Create an extractor object for movie content.

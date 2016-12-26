@@ -7,7 +7,7 @@ import Util from '../../Util';
 import { maxWebRequest, showMap } from '../../config/constants';
 
 /** Class for extracting TV shows from torrents. */
-export default class Extractor extends BaseExtractor {
+export default class ShowExtractor extends BaseExtractor {
 
    /**
     * Create an extratorrent object for show content.

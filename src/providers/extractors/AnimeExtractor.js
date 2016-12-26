@@ -7,7 +7,7 @@ import Util from '../../Util';
 import { maxWebRequest, animeMap } from '../../config/constants';
 
 /** Class for extracting anime shows from torrents. */
-export default class Extractor extends BaseExtractor {
+export default class AnimeExtractor extends BaseExtractor {
 
   /**
    * Create an extractor object for anime content.
