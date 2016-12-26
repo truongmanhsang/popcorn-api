@@ -62,7 +62,7 @@ export default class IndexController {
         num_seasons: {
           $gt: 0
         },
-        type: 'show'
+        type: 'tvshow'
       }).exec();
       const totalMovies = await Movie.count().exec();
       const totalShows = await Show.count({

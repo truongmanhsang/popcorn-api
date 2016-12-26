@@ -167,7 +167,7 @@ export default class AnimeHelper {
 
       let type;
       if (hummingbirdAnime.show_type.match(/tv/i)) {
-        type = 'show';
+        type = 'tvshow';
       } else {
         type = 'movie';
       }

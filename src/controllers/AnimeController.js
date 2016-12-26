@@ -40,7 +40,7 @@ export default class AnimeController {
       num_seasons: {
         $gt: 0
       },
-      type: 'show'
+      type: 'tvshow'
     }).exec().then(count => {
       const pages = Math.ceil(count / pageSize);
       const docs = [];
@@ -68,7 +68,7 @@ export default class AnimeController {
             num_seasons: {
               $gt: 0
             },
-            type: 'show'
+            type: 'tvshow'
           }
         }, {
           $project: AnimeController._projection
@@ -84,7 +84,7 @@ export default class AnimeController {
         num_seasons: {
           $gt: 0
         },
-        type: 'show'
+        type: 'tvshow'
       };
       const data = req.query;
 
@@ -152,7 +152,7 @@ export default class AnimeController {
   getAnime(req, res, next) {
     return Anime.findOne({
         _id: req.params.id,
-        type: 'show'
+        type: 'tvshow'
       }, {
         latest_episode: 0
       }).exec()
@@ -170,7 +170,7 @@ export default class AnimeController {
   getRandomAnime(req, res, next) {
     return Anime.aggregate([{
         $match: {
-          type: 'show'
+          type: 'tvshow'
         }
       }, {
         $sample: {
