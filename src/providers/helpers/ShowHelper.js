@@ -6,7 +6,7 @@ import Util from '../../Util';
 import { fanart, trakt, tmdb, tvdb } from '../../config/constants';
 
 /** Class for saving shows. */
-export default class Helper {
+export default class ShowHelper {
 
   /**
    * Create an helper object for show content.

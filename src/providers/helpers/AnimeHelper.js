@@ -6,7 +6,7 @@ import Anime from '../../models/Anime';
 import Util from '../../Util';
 
 /** class for saving anime shows. */
-export default class Helper {
+export default class AnimeHelper {
 
   /**
    * Create an helper object for anime content.

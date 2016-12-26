@@ -6,7 +6,7 @@ import Util from '../../Util';
 import { fanart, omdb, tmdb, trakt } from '../../config/constants';
 
 /** Class for saving movies. */
-export default class Helper {
+export default class MovieHelper {
 
   /**
    * Create an helper object for movie content.
