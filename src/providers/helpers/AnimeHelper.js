@@ -3,7 +3,7 @@ import asyncq from 'async-q';
 import HummingbirdAPI from 'hummingbird-api';
 
 import Anime from '../../models/Anime';
-import Util from '../../Util';
+import { onError } from '../../utils';
 
 /** class for saving anime shows. */
 export default class AnimeHelper {
@@ -26,12 +26,6 @@ export default class AnimeHelper {
      * @see https://github.com/ChrisAlderson/hummingbird-api
      */
     this._hummingbird = new HummingbirdAPI({ debug });
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -127,7 +121,7 @@ export default class AnimeHelper {
         return await this._updateNumSeasons(newAnime);
       }
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -156,7 +150,7 @@ export default class AnimeHelper {
         anime.episodes.push(episode);
       });
     } catch (err) {
-      return this._util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 
@@ -210,7 +204,7 @@ export default class AnimeHelper {
         };
       }
     } catch (err) {
-      return this._util.onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 
@@ -226,7 +220,7 @@ export default class AnimeHelper {
       await asyncq.each(Object.keys(episodes), seasonNumber => this._addSeason(anime, episodes, seasonNumber, slug));
       return await this._updateEpisodes(anime);
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 

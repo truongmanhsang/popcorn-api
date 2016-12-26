@@ -4,8 +4,8 @@ import req from 'request';
 
 import Movie from '../../models/Movie';
 import Helper from '../helpers/MovieHelper';
-import Util from '../../Util';
 import { maxWebRequest, webRequestTimeout } from '../../config/constants';
+import { onError } from '../../utils';
 
 /** Class for scraping movies from https://yts.ag/. */
 export default class YTS {
@@ -38,12 +38,6 @@ export default class YTS {
      * @type {Helper}
      */
     this._helper = new Helper(this.name);
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -132,7 +126,7 @@ export default class YTS {
   async _getMovies() {
     try {
       const totalPages = await this._getTotalPages(); // Change to 'const' for production.
-      if (!totalPages) return this._util.onError(`${this.name}: totalPages returned; '${totalPages}'`);
+      if (!totalPages) return onError(`${this.name}: totalPages returned; '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
       let movies = [];
       return await asyncq.timesSeries(totalPages, async page => {
@@ -141,11 +135,11 @@ export default class YTS {
           const onePage = await this._getOnePage(page);
           movies = movies.concat(onePage);
         } catch (err) {
-          return this._util.onError(err);
+          return onError(err);
         }
       }).then(() => movies);
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -167,7 +161,7 @@ export default class YTS {
         }
       });
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 

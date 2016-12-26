@@ -2,8 +2,11 @@
 import asyncq from 'async-q';
 
 import Show from '../../models/Show';
-import Util from '../../Util';
 import { fanart, trakt, tmdb, tvdb } from '../../config/constants';
+import {
+  checkImages,
+  onError
+} from '../../utils';
 
 /** Class for saving shows. */
 export default class ShowHelper {
@@ -18,12 +21,6 @@ export default class ShowHelper {
      * @type {String}
      */
     this.name = name;
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -122,7 +119,7 @@ export default class ShowHelper {
         return await this._updateNumSeasons(newShow);
       }
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -167,7 +164,7 @@ export default class ShowHelper {
         }
       }
     } catch (err) {
-      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 
@@ -215,7 +212,7 @@ export default class ShowHelper {
         }
       }
     } catch (err) {
-      return this._util.onError(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`);
+      return onError(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`);
     }
   }
 
@@ -261,7 +258,7 @@ export default class ShowHelper {
           images.poster = tvdbImages.poster ? `http://thetvdb.com/banners/${tvdbImages.poster}` : holder;
         }
 
-        this._util.checkImages(images, holder);
+        checkImages(images, holder);
       } catch (err) {
         try {
           const fanartImages = await fanart.getShowImages(tvdb_id);
@@ -276,7 +273,7 @@ export default class ShowHelper {
             images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
           }
         } catch (err) {
-          this._util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id | tvdb_id}'`);
+          onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id | tvdb_id}'`);
         }
       }
     }
@@ -333,7 +330,7 @@ export default class ShowHelper {
         };
       }
     } catch (err) {
-      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 
@@ -357,7 +354,7 @@ export default class ShowHelper {
 
       return await this._updateEpisodes(show);
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 

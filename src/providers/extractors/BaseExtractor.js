@@ -1,7 +1,7 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
 
-import Util from '../../Util';
+import { onError } from '../../utils';
 
 /** Class for base extracting data from torrents. */
 export default class BaseExtractor {
@@ -23,12 +23,6 @@ export default class BaseExtractor {
      * @type {Object}
      */
     this._contentProvider = contentProvider;
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -49,13 +43,13 @@ export default class BaseExtractor {
           const result = await this._contentProvider.search(provider.query);
           torrents = torrents.concat(result.results);
         } catch (err) {
-          return this._util.onError(err);
+          return onError(err);
         }
       });
       logger.info(`${this.name}: Found ${torrents.length} torrents.`);
       return torrents;
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 

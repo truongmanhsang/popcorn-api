@@ -2,8 +2,11 @@
 import asyncq from 'async-q';
 
 import Movie from '../../models/Movie';
-import Util from '../../Util';
 import { fanart, omdb, tmdb, trakt } from '../../config/constants';
+import {
+  checkImages,
+  onError
+} from '../../utils';
 
 /** Class for saving movies. */
 export default class MovieHelper {
@@ -18,12 +21,6 @@ export default class MovieHelper {
      * @type {String}
      */
     this.name = name;
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -90,7 +87,7 @@ export default class MovieHelper {
         return await new Movie(movie).save();
       }
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -132,7 +129,7 @@ export default class MovieHelper {
       images.fanart = tmdbBackdrop ? tmdbBackdrop : holder;
       images.poster = tmdbPoster ? tmdbPoster : holder;
 
-      this._util.checkImages(images, holder);
+      checkImages(images, holder);
     } catch (err) {
       try {
         const omdbImages = await omdb.byID({
@@ -150,7 +147,7 @@ export default class MovieHelper {
           images.poster = omdbImages.Poster ? omdbImages.Poster : holder;
         }
 
-        this._util.checkImages(images, holder);
+        checkImages(images, holder);
       } catch (err) {
         try {
           const fanartImages = await fanart.getMovieImages(tmdb_id);
@@ -165,7 +162,7 @@ export default class MovieHelper {
             images.poster = fanartImages.movieposter ? fanartImages.movieposter[0].url : holder;
           }
         } catch (err) {
-          this._util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
+          onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
         }
       }
     }
@@ -216,7 +213,7 @@ export default class MovieHelper {
         };
       }
     } catch (err) {
-      return this._util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 

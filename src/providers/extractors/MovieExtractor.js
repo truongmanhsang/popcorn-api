@@ -4,8 +4,8 @@ import bytes from 'bytes';
 
 import BaseExtractor from './BaseExtractor';
 import MovieHelper from '../helpers/MovieHelper';
-import Util from '../../Util';
 import { maxWebRequest, movieMap } from '../../config/constants';
+import { onError } from '../../utils';
 
 /** Class for extracting movies from torrents. */
 export default class MovieExtractor extends BaseExtractor {
@@ -24,12 +24,6 @@ export default class MovieExtractor extends BaseExtractor {
      * @type {MovieHelper}
      */
     this._helper = new MovieHelper(this.name);
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -42,7 +36,7 @@ export default class MovieExtractor extends BaseExtractor {
       const newMovie = await this._helper.getTraktInfo(movie.slugYear);
       if (newMovie && newMovie._id) return await this._helper.addTorrents(newMovie, movie.torrents);
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -145,7 +139,7 @@ export default class MovieExtractor extends BaseExtractor {
       });
       return movies;
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -158,16 +152,16 @@ export default class MovieExtractor extends BaseExtractor {
     try {
       const getTotalPages = await this._contentProvider.search(provider.query);
       const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
-      if (!totalPages) return this._util.onError(`${this.name}: total_pages returned: '${totalPages}'`);
+      if (!totalPages) return onError(`${this.name}: total_pages returned: '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
       logger.info(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);
       const movies = await this._getAllMovies(torrents, provider.query.language);
       return await asyncq.mapLimit(movies, maxWebRequest,
-        movie => this._getMovie(movie).catch(err => this._util.onError(err)));
+        movie => this._getMovie(movie).catch(err => onError(err)));
     } catch (err) {
-      this._util.onError(err);
+      return onError(err);
     }
   }
 

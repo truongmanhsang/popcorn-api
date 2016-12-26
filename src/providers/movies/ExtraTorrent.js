@@ -3,7 +3,7 @@ import asyncq from 'async-q';
 import ExtraTorrentAPI from 'extratorrent-api';
 
 import MovieExtractor from '../extractors/MovieExtractor';
-import Util from '../../Util';
+import { onError } from '../../utils';
 
 /** Class for scraping movies from https://extratorrent.cc/. */
 export default class ExtraTorrent {
@@ -25,12 +25,6 @@ export default class ExtraTorrent {
      * @type {MovieExtractor}
      */
     this._extractor = new MovieExtractor(this.name, new ExtraTorrentAPI({ debug }), debug);
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -47,7 +41,7 @@ export default class ExtraTorrent {
 
       return await this._extractor.search(provider);
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 

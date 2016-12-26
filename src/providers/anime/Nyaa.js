@@ -3,7 +3,7 @@ import asyncq from 'async-q';
 import NyaaAPI from 'nyaa-api-pt';
 
 import AnimeExtractor from '../extractors/AnimeExtractor';
-import Util from '../../Util';
+import { onError } from '../../utils';
 
 /** Class for scraping anime shows from https://nyaa.se/. */
 export default class Nyaa {
@@ -25,12 +25,6 @@ export default class Nyaa {
      * @type {AnimeExtractor}
      */
     this._extractor = new AnimeExtractor(this.name, new NyaaAPI({ debug }), debug);
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -47,7 +41,7 @@ export default class Nyaa {
 
       return await this._extractor.search(provider);
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 

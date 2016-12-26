@@ -10,7 +10,13 @@ import Logger from './config/Logger';
 import Routes from './config/Routes';
 import Scraper from './Scraper';
 import Setup from './config/Setup';
-import Util from './Util';
+import {
+  createTemp,
+  onError,
+  resetLog,
+  setLastUpdated,
+  setStatus
+} from './utils';
 import { cronTime, master, port, timeZone, workers } from './config/constants';
 
 /**
@@ -47,12 +53,6 @@ export default class Index {
     Index._app = new Express();
 
     /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    Index._util = new Util();
-
-    /**
      * The scraper object to scrape for torrents.
      * @type {Scraper}
      */
@@ -87,17 +87,17 @@ export default class Index {
   static _startAPI(start) {
     if (cluster.isMaster) { // Check is the cluster is the master
       // Clear the log files from the temp directory.
-      Index._util.resetLog();
+      resetLog();
 
       // Setup the temporary directory
-      Index._util.createTemp();
+      createTemp();
 
       // Fork workers.
       for (let i = 0; i < Math.min(os.cpus().length, workers); i++) cluster.fork();
 
       // Check for errors with the workers.
       cluster.on('exit', worker => {
-        Index._util.onError(`Worker '${worker.process.pid}' died, spinning up another!`);
+        onError(`Worker '${worker.process.pid}' died, spinning up another!`);
         cluster.fork();
       });
 
@@ -111,19 +111,19 @@ export default class Index {
             new CronJob({
               cronTime,
               timeZone,
-              onComplete: () => Index._util.setStatus(),
+              onComplete: () => setStatus(),
               onTick: () => Index._scraper.scrape(),
               start: true
             });
 
-            Index._util.setLastUpdated(0);
-            Index._util.setStatus();
+            setLastUpdated(0);
+            setStatus();
             if (start) Index._scraper.scrape();
           } catch (err) {
-            return Index._util.onError(err);
+            return onError(err);
           }
         });
-        scope.on('error', err => Index._util.onError(err));
+        scope.on('error', err => onError(err));
       }
     } else {
       Index._server.listen(port);

@@ -3,8 +3,8 @@ import asyncq from 'async-q';
 
 import BaseExtractor from './BaseExtractor';
 import ShowHelper from '../helpers/ShowHelper';
-import Util from '../../Util';
 import { maxWebRequest, showMap } from '../../config/constants';
+import { onError } from '../../utils';
 
 /** Class for extracting TV shows from torrents. */
 export default class ShowExtractor extends BaseExtractor {
@@ -23,12 +23,6 @@ export default class ShowExtractor extends BaseExtractor {
      * @type {ShowHelper}
      */
     this._helper = new ShowHelper(this.name);
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -44,7 +38,7 @@ export default class ShowExtractor extends BaseExtractor {
         return await this._helper.addEpisodes(newShow, show.episodes, show.slug);
       }
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -155,7 +149,7 @@ export default class ShowExtractor extends BaseExtractor {
 
       return shows;
     } catch (err) {
-      this._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -168,7 +162,7 @@ export default class ShowExtractor extends BaseExtractor {
     try {
       const getTotalPages = await this._contentProvider.search(provider.query);
       const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
-      if (!totalPages) return this._util.onError(`${this.name}: total_pages returned; '${totalPages}'`);
+      if (!totalPages) return onError(`${this.name}: total_pages returned; '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
       logger.info(`${this.name}: Total pages ${totalPages}`);
 
@@ -176,7 +170,7 @@ export default class ShowExtractor extends BaseExtractor {
       const shows = await this._getAllShows(torrents);
       return await asyncq.mapLimit(shows, maxWebRequest, show => this.getShow(show));
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 

@@ -3,8 +3,8 @@ import asyncq from 'async-q';
 import EztvAPI from 'eztv-api-pt';
 
 import ShowExtractor from '../extractors/ShowExtractor';
-import Util from '../../Util';
 import { maxWebRequest } from '../../config/constants';
+import { onError } from '../../utils';
 
 /** Class for scraping shows from https://eztv.ag/. */
 export default class EZTV {
@@ -33,12 +33,6 @@ export default class EZTV {
      * @type {ShowExtractor}
      */
     this._extractor = new ShowExtractor(this.name, this._eztv, debug);
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -56,11 +50,11 @@ export default class EZTV {
           show = await this._eztv.getShowData(show);
           return await this._extractor.getShow(show);
         } catch (err) {
-          return this._util.onError(err);
+          return onError(err);
         }
       });
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 

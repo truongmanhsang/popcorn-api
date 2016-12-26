@@ -3,8 +3,8 @@ import asyncq from 'async-q';
 import HorribleSubsAPI from 'horriblesubs-api';
 
 import AnimeExtractor from '../extractors/AnimeExtractor';
-import Util from '../../Util';
 import { maxWebRequest } from '../../config/constants';
+import { onError } from '../../utils';
 
 /** Class for scraping anime from https://horriblesubs.info/. */
 export default class HorribleSubs {
@@ -33,12 +33,6 @@ export default class HorribleSubs {
      * @type {AnimeExtractor}
      */
     this._extractor = new AnimeExtractor(this.name, this._horriblesubs, debug);
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -56,11 +50,11 @@ export default class HorribleSubs {
           anime = await this._horriblesubs.getAnimeData(anime);
           return await this._extractor.getAnime(anime);
         } catch (err) {
-          return this._util.onError(err);
+          return onError(err);
         }
       });
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 

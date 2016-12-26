@@ -2,20 +2,10 @@
 import fs from 'fs';
 import path from 'path';
 
-import Util from '../Util';
 import { tempDir } from '../config/constants';
 
 /** Class for getting anime data from the MongoDB. */
 export default class ExportController {
-
-  /** Create an export controller object. */
-  constructor() {
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
-  }
 
   /**
    * Download the export of a collection.

@@ -11,7 +11,12 @@ import katMovie from './providers/movies/KAT';
 import katShow from './providers/shows/KAT';
 import Nyaa from './providers/anime/Nyaa';
 import YTS from './providers/movies/YTS';
-import Util from './Util';
+import {
+  exportCollection,
+  onError,
+  setLastUpdated,
+  setStatus
+} from './utils';
 import {
   collections,
   extratorrentAnimeProviders,
@@ -32,12 +37,6 @@ export default class Scraper {
    */
   constructor(debug) {
     /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    Scraper._util = new Util();
-
-    /**
      * Debug mode for extra output.
      * @type {Boolean}
      */
@@ -51,13 +50,13 @@ export default class Scraper {
   _scrapeExtraTorrentShows() {
     return asyncq.concatSeries(extratorrentShowProviders, async provider => {
       try {
-        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        setStatus(`Scraping ${provider.name}`);
         const extratorrentProvider = new extratorrentShow(provider.name, Scraper._debug);
         const extratorrentShows = await extratorrentProvider.search(provider);
         logger.info(`${provider.name}: Done.`);
         return extratorrentShows;
       } catch (err) {
-        return Scraper._util.onError(err);
+        return onError(err);
       }
     });
   }
@@ -69,12 +68,12 @@ export default class Scraper {
   async _scrapeEZTVShows() {
     try {
       const eztv = new EZTV('EZTV', Scraper._debug);
-      Scraper._util.setStatus(`Scraping ${eztv.name}`);
+      setStatus(`Scraping ${eztv.name}`);
       const eztvShows = await eztv.search();
       logger.info(`${eztv.name}: Done.`);
       return eztvShows;
     } catch (err) {
-      return Scraper._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -85,13 +84,13 @@ export default class Scraper {
   _scrapeKATShows() {
     return asyncq.concatSeries(katShowProviders, async provider => {
       try {
-        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        setStatus(`Scraping ${provider.name}`);
         const katProvider = new katShow(provider.name, Scraper._debug);
         const katShows = await katProvider.search(provider);
         logger.info(`${provider.name}: Done.`);
         return katShows;
       } catch (err) {
-        return Scraper._util.onError(err);
+        return onError(err);
       }
     });
   }
@@ -103,13 +102,13 @@ export default class Scraper {
   _scrapeExtraTorrentMovies() {
     return asyncq.concatSeries(extratorrentMovieProviders, async provider => {
       try {
-        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        setStatus(`Scraping ${provider.name}`);
         const extratorrentProvider = new extratorrentMovie(provider.name, Scraper._debug);
         const extratorrentMovies = await extratorrentProvider.search(provider);
         logger.info(`${provider.name}: Done.`);
         return extratorrentMovies;
       } catch (err) {
-        return Scraper._util.onError(err);
+        return onError(err);
       }
     });
   }
@@ -121,13 +120,13 @@ export default class Scraper {
   _scrapeKATMovies() {
     return asyncq.concatSeries(katMovieProviders, async provider => {
       try {
-        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        setStatus(`Scraping ${provider.name}`);
         const katProvider = new katMovie(provider.name, Scraper._debug);
         const katShows = await katProvider.search(provider);
         logger.info(`${provider.name}: Done.`);
         return katShows;
       } catch (err) {
-        return Scraper._util.onError(err);
+        return onError(err);
       }
     });
   }
@@ -139,12 +138,12 @@ export default class Scraper {
   async _scrapeYTSMovies() {
     try {
       const yts = new YTS('YTS');
-      Scraper._util.setStatus(`Scraping ${yts.name}`);
+      setStatus(`Scraping ${yts.name}`);
       const ytsMovies = await yts.search();
       logger.info(`${yts.name}: Done.`);
       return ytsMovies;
     } catch (err) {
-      return Scraper._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -155,13 +154,13 @@ export default class Scraper {
   _scrapeExtraTorrentAnime() {
     return asyncq.concatSeries(extratorrentAnimeProviders, async provider => {
       try {
-        Scraper._util.setStatus(`Scraping ${provider.name}`);
+       setStatus(`Scraping ${provider.name}`);
         const extratorrentProvider = new extratorrentAnime(provider.name, Scraper._debug);
         const extratorrentAnimes = await extratorrentProvider.search(provider);
         logger.info(`${provider.name}: Done.`);
         return extratorrentAnimes;
       } catch (err) {
-        return Scraper._util.onError(err);
+        return onError(err);
       }
     });
   }
@@ -173,12 +172,12 @@ export default class Scraper {
   async _scrapeHorribleSubsAnime() {
     try {
       const horribleSubs = new HorribleSubs('HorribleSubs', Scraper._debug);
-      Scraper._util.setStatus(`Scraping ${horribleSubs.name}`);
+      setStatus(`Scraping ${horribleSubs.name}`);
       const horribleSubsAnime = await horribleSubs.search();
       logger.info(`${horribleSubs.name}: Done.`);
       return horribleSubsAnime;
     } catch (err) {
-      return Scraper._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -189,13 +188,13 @@ export default class Scraper {
   async _scrapeKATAnime() {
     return asyncq.concatSeries(katAnimeProviders, async provider => {
       try {
-        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        setStatus(`Scraping ${provider.name}`);
         const katProvider = new katAnime(provider.name, Scraper._debug);
         const katAnimes = await katProvider.search(provider);
         logger.info(`${provider.name}: Done.`);
         return katAnimes;
       } catch (err) {
-        return Scraper._util.onError(err);
+        return onError(err);
       }
     });
   }
@@ -207,20 +206,20 @@ export default class Scraper {
   async _scrapeNyaaAnime() {
     return asyncq.concatSeries(nyaaAnimeProviders, async provider => {
       try {
-        Scraper._util.setStatus(`Scraping ${provider.name}`);
+        setStatus(`Scraping ${provider.name}`);
         const nyaaProvider = new Nyaa(provider.name, Scraper._debug);
         const nyaaAnimes = await nyaaProvider.search(provider);
         logger.info(`${provider.name}: Done.`);
         return nyaaAnimes;
       } catch (err) {
-        return Scraper._util.onError(err);
+        return onError(err);
       }
     });
   }
 
   /** Initiate the scraping. */
   scrape() {
-    Scraper._util.setLastUpdated();
+    setLastUpdated();
 
     asyncq.eachSeries([
       this._scrapeEZTVShows,
@@ -236,9 +235,9 @@ export default class Scraper {
       // this._scrapeKATAnime,
       this._scrapeNyaaAnime
     ], scraper => scraper())
-      .then(() => Scraper._util.setStatus())
-      .then(() => asyncq.eachSeries(collections, collection => Scraper._util.exportCollection(collection)))
-      .catch(err => Scraper._util.onError(`Error while scraping: ${err}`));
+      .then(() => setStatus())
+      .then(() => asyncq.eachSeries(collections, collection => exportCollection(collection)))
+      .catch(err => onError(`Error while scraping: ${err}`));
   }
 
 }

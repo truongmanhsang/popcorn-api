@@ -13,7 +13,10 @@ import ShowHelper from './providers/helpers/ShowHelper';
 import Logger from './config/Logger';
 import packageJSON from '../package.json';
 import Setup from './config/Setup';
-import Util from './Util';
+import {
+  exportCollection,
+  importCollection
+} from './utils';
 
 /** Class The class for the command line interface. */
 export default class CLI {
@@ -34,12 +37,6 @@ export default class CLI {
      * @type {Logger}
      */
     CLI._logger = new Logger();
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-      */
-    this._util = new Util();
 
     // Setup the CLI program.
     program
@@ -340,7 +337,7 @@ export default class CLI {
     let collection = path.basename(importing);
     const index = collection.lastIndexOf('.');
     collection = collection.substring(0, index);
-    return this._util.importCollection(collection, importing);
+    return importCollection(collection, importing);
   }
 
   /** Confimation to import a collection */
@@ -395,7 +392,7 @@ export default class CLI {
         console.error(`\n  \x1b[31mError:\x1b[36m No valid value given for adding content: '${program.content}'\x1b[0m`)
       }
     } else if (program.export) {
-      this._util.exportCollection(program.export);
+      exportCollection(program.export);
     } else if (program.import) {
       this._importPrompt();
     } else {

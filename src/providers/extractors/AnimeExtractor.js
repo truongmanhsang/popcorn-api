@@ -3,8 +3,8 @@ import asyncq from 'async-q';
 
 import BaseExtractor from './BaseExtractor';
 import AnimeHelper from '../helpers/AnimeHelper';
-import Util from '../../Util';
 import { maxWebRequest, animeMap } from '../../config/constants';
+import { onError } from '../../utils';
 
 /** Class for extracting anime shows from torrents. */
 export default class AnimeExtractor extends BaseExtractor {
@@ -23,12 +23,6 @@ export default class AnimeExtractor extends BaseExtractor {
      * @type {AnimeHelper}
      */
     this._helper = new AnimeHelper(this.name, debug);
-
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
   }
 
   /**
@@ -44,7 +38,7 @@ export default class AnimeExtractor extends BaseExtractor {
         return await this._helper.addEpisodes(newAnime, anime.episodes, anime.slug);
       }
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -151,7 +145,7 @@ export default class AnimeExtractor extends BaseExtractor {
       });
       return animes;
     } catch (err) {
-      return this._util.onError(err);
+      return onError(err);
     }
   }
 
@@ -164,7 +158,7 @@ export default class AnimeExtractor extends BaseExtractor {
     try {
       const getTotalPages = await this._contentProvider.search(provider.query);
       const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
-      if (!totalPages) return this._util.onError(`${this.name}: total_pages returned: '${totalPages}'`);
+      if (!totalPages) return onError(`${this.name}: total_pages returned: '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
       logger.info(`${this.name}: Total pages ${totalPages}`);
 
@@ -172,7 +166,7 @@ export default class AnimeExtractor extends BaseExtractor {
       const animes = await this._getAllAnimes(torrents);
       return await asyncq.mapLimit(animes, maxWebRequest, anime => this.getAnime(anime));
     } catch (err) {
-      this._util.onError(err);
+      return onError(err);
     }
   }
 

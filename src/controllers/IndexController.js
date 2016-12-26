@@ -5,7 +5,7 @@ import path from 'path';
 import Anime from '../models/Anime';
 import Movie from '../models/Movie';
 import Show from '../models/Show';
-import Util from '../Util';
+import { executeCommand } from '../utils';
 import {
   server,
   statusFile,
@@ -23,11 +23,6 @@ export default class IndexController {
 
   /** Create an IndexController object. */
   constructor() {
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    IndexController._util = new Util();
   }
 
   /**
@@ -62,7 +57,7 @@ export default class IndexController {
     try {
       const { updated } = JSON.parse(fs.readFileSync(path.join(tempDir, updatedFile), 'utf8'));
       const { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), 'utf8'));
-      const commit = await IndexController._util.executeCommand('git rev-parse --short HEAD');
+      const commit = await executeCommand('git rev-parse --short HEAD');
       const totalAnimes = await Anime.count({
         num_seasons: {
           $gt: 0
