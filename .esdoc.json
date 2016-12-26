@@ -18,9 +18,6 @@
     "includes": [".js$"]
   },
   "title": "Popcorn API",
-  "plugins": [{
-    "name": "esdoc-es7-plugin"
-  }],
   "manual": {
     "changelog": ["./CHANGELOG.md"],
     "example": ["./manual/example.md"],
