@@ -16,15 +16,15 @@ export default class MovieController {
       imdb_id: 1,
       title: 1,
       year: 1,
-      runtime: 1,
-      images: 1,
-      genres: 1,
       synopsis: 1,
+      runtime: 1,
+      released: 1,
       trailer: 1,
       certification: 1,
-      released: 1,
-      rating: 1,
-      torrents: 1
+      torrents: 1,
+      genres: 1,
+      images: 1,
+      rating: 1
     };
   }
 
