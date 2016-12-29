@@ -12,18 +12,15 @@ export default class AnimeController {
      * @type {Object}
      */
     AnimeController._projection = {
-      images: 1,
+      _id: 1,
       mal_id: 1,
-      haru_id: 1,
-      tvdb_id: 1,
-      imdb_id: 1,
-      slug: 1,
       title: 1,
       year: 1,
+      slug: 1,
       type: 1,
-      item_data: 1,
-      rating: 1,
       genres: 1,
+      images: 1,
+      rating: 1,
       num_seasons: 1
     };
   }
