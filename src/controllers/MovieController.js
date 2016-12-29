@@ -142,16 +142,10 @@ export default class MovieController {
    * @returns {Movie} - The details of a single movie.
    */
   getMovie(req, res, next) {
-    return Movie.aggregate([{
-        $match: {
-          _id: req.params.id
-        }
-      }, {
-        $project: MovieController._projection
-      }, {
-        $limit: 1
-      }]).exec()
-      .then(docs => res.json(docs[0]))
+    return Movie.findOne({
+        _id: req.params.id
+      }).exec()
+      .then(docs => res.json(docs))
       .catch(err => next(err));
   }
 
