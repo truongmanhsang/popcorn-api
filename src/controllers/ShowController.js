@@ -17,10 +17,11 @@ export default class ShowController {
       tvdb_id: 1,
       title: 1,
       year: 1,
-      images: 1,
       slug: 1,
-      num_seasons: 1,
-      rating: 1
+      genres: 1,
+      images: 1,
+      rating: 1,
+      num_seasons: 1
     };
   }
 
