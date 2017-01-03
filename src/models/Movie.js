@@ -22,7 +22,6 @@ const MovieSchema = new mongoose.Schema({
     votes: Number
   },
   language: String,
-  last_updated: Number,
   images: {
     banner: String,
     fanart: String,
