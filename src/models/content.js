@@ -2,8 +2,6 @@ import Provider from 'butter-provider';
 
 const typeEnum = Object.keys(Provider.ItemType).map(key => Provider.ItemType[key]);
 
-console.log(typeEnum);
-
 /**
  * Base structure of the database content.
  * @type {Object}
