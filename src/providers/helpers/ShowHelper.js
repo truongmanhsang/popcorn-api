@@ -218,7 +218,7 @@ export default class ShowHelper {
 
   /**
    * Get TV show images.
-   * @param {Integer} tmdb_id - The tmdb id of the how you want the images from.
+   * @param {Integer} tmdb_id - The tmdb id of the show you want the images from.
    * @param {Integer} tvdb_id - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with a banner, fanart and poster images.
    */
