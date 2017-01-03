@@ -1,3 +1,9 @@
+import Provider from 'butter-provider';
+
+const typeEnum = Object.keys(Provider.ItemType).map(key => Provider.ItemType[key]);
+
+console.log(typeEnum);
+
 /**
  * Base structure of the database content.
  * @type {Object}
@@ -26,5 +32,8 @@ export default {
     poster: String
   },
   genres: [String],
-  type: String
+  type: {
+    type: String,
+    enum: typeEnum
+  }
 };
