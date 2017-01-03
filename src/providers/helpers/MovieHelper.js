@@ -1,6 +1,7 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
 
+import Movie from '../../models/Movie';
 import { fanart, omdb, tmdb, trakt } from '../../config/constants';
 import {
   checkImages,
@@ -14,7 +15,7 @@ export default class MovieHelper {
    * Create an helper object for movie content.
    * @param {String} name - The name of the content provider.
    */
-  constructor(name, model) {
+  constructor(name, model = Movie) {
     /**
      * The name of the torrent provider.
      * @type {String}

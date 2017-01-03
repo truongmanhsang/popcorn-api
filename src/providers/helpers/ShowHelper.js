@@ -1,6 +1,7 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
 
+import Show from '../../models/Show';
 import { fanart, trakt, tmdb, tvdb } from '../../config/constants';
 import {
   checkImages,
@@ -14,7 +15,7 @@ export default class ShowHelper {
    * Create an helper object for show content.
    * @param {String} name - The name of the content provider.
    */
-  constructor(name, model) {
+  constructor(name, model = Show) {
     /**
      * The name of the torrent provider.
      * @type {String}
