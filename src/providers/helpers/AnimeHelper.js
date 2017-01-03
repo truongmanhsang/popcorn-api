@@ -121,13 +121,6 @@ export default class AnimeHelper {
     }
   }
 
-  /**
-   * Adds one season to a anime.
-   * @param {Anime} anime - The anime to add the torrents to.
-   * @param {Object} episodes - The episodes containing the torrents.
-   * @param {Integer} seasonNumber - The season number.
-   * @param {String} slug - The slug of the anime.
-   */
    /**
     * Adds one seasonal season to an anime show.
     * @param {Anime} anime - The anime show to add the torrents to.
