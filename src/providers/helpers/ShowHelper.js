@@ -150,9 +150,6 @@ export default class ShowHelper {
             overview: episodeData.overview,
             date_based: false,
             first_aired: new Date(episodeData.first_aired).getTime() / 1000.0,
-            watched: {
-              watched: false
-            },
             torrents: {}
           };
 
@@ -193,9 +190,6 @@ export default class ShowHelper {
                   overview: episodeData.Overview,
                   date_based: true,
                   first_aired: new Date(episodeData.FirstAired).getTime() / 1000.0,
-                  watched: {
-                    watched: false
-                  },
                   torrents: {}
                 };
 

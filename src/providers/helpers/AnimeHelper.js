@@ -148,17 +148,14 @@ export default class AnimeHelper {
          episodeData = season[episodeData];
          if (episodes[seasonNumber] && episodes[seasonNumber][episodeData.number]) {
            const episode = {
-             tvdb_id: episodeData.ids['tvdb'],
-             season: episodeData.season,
-             episode: episodeData.number,
-             title: episodeData.title,
-             overview: episodeData.overview,
-             date_based: false,
-             first_aired: new Date(episodeData.first_aired).getTime() / 1000.0,
-             watched: {
-               watched: false
-             },
-             torrents: {}
+              tvdb_id: episodeData.ids['tvdb'],
+              season: episodeData.season,
+              episode: episodeData.number,
+              title: episodeData.title,
+              overview: episodeData.overview,
+              date_based: false,
+              first_aired: new Date(episodeData.first_aired).getTime() / 1000.0,
+              torrents: {}
            };
 
            if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
