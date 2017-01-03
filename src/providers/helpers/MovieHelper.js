@@ -196,8 +196,6 @@ export default class MovieHelper {
           synopsis: traktMovie.overview,
           runtime: traktMovie.runtime,
           rating: {
-            hated: 100,
-            loved: 100,
             votes: traktMovie.votes,
             watching: watching,
             percentage: Math.round(traktMovie.rating * 10)

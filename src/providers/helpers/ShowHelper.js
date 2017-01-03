@@ -304,8 +304,6 @@ export default class ShowHelper {
           synopsis: traktShow.overview,
           runtime: traktShow.runtime,
           rating: {
-            hated: 100,
-            loved: 100,
             votes: traktShow.votes,
             watching: watching,
             percentage: Math.round(traktShow.rating * 10)

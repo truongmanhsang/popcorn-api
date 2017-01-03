@@ -264,8 +264,6 @@ export default class AnimeHelper {
           synopsis: traktAnime.overview,
           runtime: traktAnime.runtime,
           rating: {
-            hated: 100,
-            loved: 100,
             votes: traktAnime.votes,
             watching: watching,
             percentage: Math.round(traktAnime.rating * 10)
