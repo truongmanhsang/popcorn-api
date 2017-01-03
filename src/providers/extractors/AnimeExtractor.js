@@ -1,8 +1,10 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
 
-import Anime from '../../models/Anime';
+import Anime as ShowAnime from '../../models/Anime';
+import AnimeMovie as AnimeMovie from '../../models/AnimeMovie';
 import BaseExtractor from './BaseExtractor';
+import MovieHelper from '../helpers/MovieHelper';
 import ShowHelper from '../helpers/ShowHelper';
 import { maxWebRequest, animeMap } from '../../config/constants';
 import { onError } from '../../utils';
@@ -20,10 +22,16 @@ export default class AnimeExtractor extends BaseExtractor {
     super(name, contentProvider);
 
     /**
+     * The helper object for adding anime movie.
+     * @type {MovieHelper}
+     */
+    this._movieHhelper = new MovieHelper(this.name, AnimeMovie);
+
+    /**
      * The helper object for adding anime shows.
      * @type {ShowHelper}
      */
-    this._helper = new ShowHelper(this.name, Anime);
+    this._showHelper = new ShowHelper(this.name, Anime);
   }
 
   /**
@@ -33,11 +41,23 @@ export default class AnimeExtractor extends BaseExtractor {
    */
   async getAnime(anime) {
     try {
-      const newAnime = await this._helper.getTraktInfo(anime.slug);
-      if (newAnime && newAnime._id) {
-        delete anime.episodes[0];
-        return await this._helper.addEpisodes(newAnime, anime.episodes, anime.slug);
+      switch(anime.type) {
+        case Provider.ItemType.MOVIE:
+          const newAnime = await this._movieHhelper.getTraktInfo(anime.slugYear);
+          if (newAnime && newAnime._id) return await this._movieHhelper.addTorrents(newAnime, anime.torrents);
+          break;
+        case Provider.ItemType.TVSHOW:
+          const newAnime = await this._showHelper.getTraktInfo(anime.slug);
+          if (newAnime && newAnime._id) {
+            delete anime.episodes[0];
+            return await this._showHelper.addEpisodes(newAnime, anime.episodes, anime.slug);
+          }
+          break;
+        default:
+          break;
       }
+
+
     } catch (err) {
       return onError(err);
     }
@@ -47,9 +67,10 @@ export default class AnimeExtractor extends BaseExtractor {
    * Extract anime information based on a regex.
    * @param {Object} torrent - The torrent to extract the anime information from.
    * @param {Regex} regex - The regex to extract the anime information.
+   * @param {String} type - Determine what kind of content it is.
    * @returns {Object} - Information about a anime from the torrent.
    */
-  _extractAnime(torrent, regex) {
+  _extractAnime(torrent, regex, type) {
     let animeTitle = torrent.title.match(regex)[1];
     if (animeTitle.endsWith(' ')) animeTitle = animeTitle.substring(0, animeTitle.length - 1);
     animeTitle = animeTitle.replace(/\_/g, ' ').replace(/\./g, ' ');
@@ -80,7 +101,8 @@ export default class AnimeExtractor extends BaseExtractor {
       torrentLink: torrent.link,
       season,
       episode,
-      quality
+      quality,
+      type
     };
     anime.episodes = {};
 
@@ -95,15 +117,16 @@ export default class AnimeExtractor extends BaseExtractor {
   /**
    * Get anime info from a given torrent.
    * @param {Object} torrent - A torrent object to extract anime information from.
+   * @param {String} type - Determine what kind of content it is.
    * @returns {Object} - Information about an anime from the torrent.
    */
-  _getAnimeData(torrent) {
+  _getAnimeData(torrent, type) {
     const secondSeason = /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i;
     const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i;
     if (torrent.title.match(secondSeason)) {
-      return this._extractAnime(torrent, secondSeason);
+      return this._extractAnime(torrent, secondSeason, type);
     } else if  (torrent.title.match(oneSeason)) {
-      return this._extractAnime(torrent, oneSeason);
+      return this._extractAnime(torrent, oneSeason, type);
     } else {
       logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
@@ -112,14 +135,15 @@ export default class AnimeExtractor extends BaseExtractor {
   /**
    * Puts all the found animes from the torrents in an array.
    * @param {Array} torrents - A list of torrents to extract anime information.
+   * @param {String} type - Determine what kind of content it is.
    * @returns {Array} - A list of objects with anime information extracted from the torrents.
    */
-  async _getAllAnimes(torrents) {
+  async _getAllAnimes(torrents, type) {
     try {
       const animes = [];
       await asyncq.mapSeries(torrents, torrent => {
         if (torrent) {
-          const anime = this._getAnimeData(torrent);
+          const anime = this._getAnimeData(torrent, type);
           if (anime) {
             if (animes.length != 0) {
               const { animeTitle, slug, season, episode, quality } = anime;
@@ -157,6 +181,8 @@ export default class AnimeExtractor extends BaseExtractor {
    */
   async search(provider) {
     try {
+      provider.query.type = provider.query.type ? provider.query.type : Provider.ItemType.TVSHOW;
+
       const getTotalPages = await this._contentProvider.search(provider.query);
       const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
       if (!totalPages) return onError(`${this.name}: total_pages returned: '${totalPages}'`);
@@ -164,7 +190,7 @@ export default class AnimeExtractor extends BaseExtractor {
       logger.info(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);
-      const animes = await this._getAllAnimes(torrents);
+      const animes = await this._getAllAnimes(torrents, provider.query.type);
       return await asyncq.mapLimit(animes, maxWebRequest, anime => this.getAnime(anime));
     } catch (err) {
       return onError(err);
