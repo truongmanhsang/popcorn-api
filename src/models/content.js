@@ -11,10 +11,10 @@ export default {
     }
   },
   title: String,
-  year: String,
+  year: Number,
   slug: String,
   synopsis: String,
-  runtime: String,
+  runtime: Number,
   rating: {
     percentage: Number,
     watching: Number,
