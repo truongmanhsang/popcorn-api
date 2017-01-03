@@ -1,7 +1,6 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
 
-import Show from '../../models/Show';
 import { fanart, trakt, tmdb, tvdb } from '../../config/constants';
 import {
   checkImages,
@@ -15,12 +14,19 @@ export default class ShowHelper {
    * Create an helper object for show content.
    * @param {String} name - The name of the content provider.
    */
-  constructor(name) {
+  constructor(name, model) {
     /**
      * The name of the torrent provider.
      * @type {String}
      */
     this.name = name;
+
+    /**
+     * The model to create or alter.
+     * @type {Model}
+     * @see http://mongoosejs.com/docs/models.html
+     */
+    this._model = model;
   }
 
   /**
@@ -29,19 +35,19 @@ export default class ShowHelper {
    * @returns {Show} - A newly updated show.
    */
   async _updateNumSeasons(show) {
-    const saved = await Show.findOneAndUpdate({
+    const saved = await this._model.findOneAndUpdate({
       _id: show._id
     }, show, {
       new: true,
       upsert: true
     }).exec();
 
-    const distinct = await Show.distinct('episodes.season', {
+    const distinct = await this._model.distinct('episodes.season', {
       _id: saved._id
     }).exec();
     saved.num_seasons = distinct.length;
 
-    return await Show.findOneAndUpdate({
+    return await this._model.findOneAndUpdate({
       _id: saved._id
     }, saved, {
       new: true,
@@ -91,7 +97,7 @@ export default class ShowHelper {
    */
   async _updateEpisodes(show) {
     try {
-      const found = await Show.findOne({
+      const found = await this._model.findOne({
         _id: show._id
       }).exec();
       if (found) {
@@ -115,7 +121,7 @@ export default class ShowHelper {
         return await this._updateNumSeasons(show);
       } else {
         logger.info(`${this.name}: '${show.title}' is a new show!`);
-        const newShow = await new Show(show).save();
+        const newShow = await new this._model(show).save();
         return await this._updateNumSeasons(newShow);
       }
     } catch (err) {

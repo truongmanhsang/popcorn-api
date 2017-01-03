@@ -1,7 +1,6 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
 
-import Movie from '../../models/Movie';
 import { fanart, omdb, tmdb, trakt } from '../../config/constants';
 import {
   checkImages,
@@ -15,12 +14,19 @@ export default class MovieHelper {
    * Create an helper object for movie content.
    * @param {String} name - The name of the content provider.
    */
-  constructor(name) {
+  constructor(name, model) {
     /**
      * The name of the torrent provider.
      * @type {String}
      */
     this.name = name;
+
+    /**
+     * The model to create or alter.
+     * @type {Model}
+     * @see http://mongoosejs.com/docs/models.html
+     */
+    this._model = model;
   }
 
   /**
@@ -64,7 +70,7 @@ export default class MovieHelper {
    */
   async _updateMovie(movie) {
     try {
-      const found = await Movie.findOne({
+      const found = await this._model.findOne({
         _id: movie._id
       }).exec();
       if (found) {
@@ -77,12 +83,12 @@ export default class MovieHelper {
           });
         }
 
-        return await Movie.findOneAndUpdate({
+        return await this._model.findOneAndUpdate({
           _id: movie._id
         }, movie).exec();
       } else {
         logger.info(`${this.name}: '${movie.title}' is a new movie!`);
-        return await new Movie(movie).save();
+        return await new this._model(movie).save();
       }
     } catch (err) {
       return onError(err);

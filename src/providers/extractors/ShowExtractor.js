@@ -2,6 +2,7 @@
 import asyncq from 'async-q';
 
 import BaseExtractor from './BaseExtractor';
+import Show from '../../models/Show';
 import ShowHelper from '../helpers/ShowHelper';
 import { maxWebRequest, showMap } from '../../config/constants';
 import { onError } from '../../utils';
@@ -22,7 +23,7 @@ export default class ShowExtractor extends BaseExtractor {
      * The helper object for adding shows.
      * @type {ShowHelper}
      */
-    this._helper = new ShowHelper(this.name);
+    this._helper = new ShowHelper(this.name, Show);
   }
 
   /**
