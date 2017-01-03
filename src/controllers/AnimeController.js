@@ -116,6 +116,12 @@ export default class AnimeController {
           'rating.percentage': parseInt(data.order, 10),
           'rating.votes': parseInt(data.order, 10)
         };
+        if (data.sort.match(/trending/i)) sort = {
+          'rating.watching': parseInt(data.order, 10)
+        };
+        if (data.sort.match(/updated/i)) sort = {
+          'latest_episode': parseInt(data.order, 10)
+        };
         if (data.sort.match(/year/i)) sort = {
           'year': parseInt(data.order, 10)
         };
