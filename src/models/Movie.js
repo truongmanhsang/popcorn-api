@@ -21,7 +21,7 @@ const MovieSchema = new mongoose.Schema({
     watching: Number,
     votes: Number
   },
-  country: String,
+  language: String,
   last_updated: Number,
   images: {
     banner: String,
