@@ -1,11 +1,11 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
+import Provider from 'butter-provider';
 
-import AnimeShow from '../../models/AnimeShow';
-import AnimeMovie as AnimeMovie from '../../models/AnimeMovie';
 import BaseExtractor from './BaseExtractor';
 import MovieHelper from '../helpers/MovieHelper';
 import ShowHelper from '../helpers/ShowHelper';
+import { AnimeShow, AnimeMovie } from '../../models/Anime';
 import { maxWebRequest, animeMap } from '../../config/constants';
 import { onError } from '../../utils';
 
@@ -43,11 +43,11 @@ export default class AnimeExtractor extends BaseExtractor {
     try {
       switch(anime.type) {
         case Provider.ItemType.MOVIE:
-          const newAnime = await this._movieHhelper.getTraktInfo(anime.slugYear);
+          let newAnime = await this._movieHhelper.getTraktInfo(anime.slugYear);
           if (newAnime && newAnime._id) return await this._movieHhelper.addTorrents(newAnime, anime.torrents);
           break;
         case Provider.ItemType.TVSHOW:
-          const newAnime = await this._showHelper.getTraktInfo(anime.slug);
+          newAnime = await this._showHelper.getTraktInfo(anime.slug);
           if (newAnime && newAnime._id) {
             delete anime.episodes[0];
             return await this._showHelper.addEpisodes(newAnime, anime.episodes, anime.slug);
