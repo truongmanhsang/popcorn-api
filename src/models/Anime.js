@@ -20,9 +20,7 @@ const AnimeSchema = new mongoose.Schema({
   rating: {
     percentage: Number,
     watching: Number,
-    votes: Number,
-    loved: Number,
-    hated: Number
+    votes: Number
   },
   type: String,
   num_seasons: Number,
