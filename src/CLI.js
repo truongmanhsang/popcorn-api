@@ -4,6 +4,7 @@ import parseTorrent from 'parse-torrent';
 import path from 'path';
 import program from 'commander';
 import prompt from 'prompt';
+import Provider from 'butter-provider';
 import torrentHealth from 'torrent-tracker-health';
 
 import Index from './Index';
