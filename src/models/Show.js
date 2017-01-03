@@ -20,9 +20,7 @@ const ShowSchema = new mongoose.Schema({
   rating: {
     percentage: Number,
     watching: Number,
-    votes: Number,
-    loved: Number,
-    hated: Number
+    votes: Number
   },
   country: String,
   network: String,
