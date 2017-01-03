@@ -1,33 +1,11 @@
 // Import the neccesary modules.
 import mongoose from 'mongoose';
 
+import content from './content';
+
 // The movie schema used by mongoose.
-const MovieSchema = new mongoose.Schema({
-  _id: {
-    type: String,
-    required: true,
-    index: {
-      unique: true
-    }
-  },
-  imdb_id: String,
-  title: String,
-  year: String,
-  slug: String,
-  synopsis: String,
-  runtime: String,
-  rating: {
-    percentage: Number,
-    watching: Number,
-    votes: Number
-  },
+const MovieSchema = new mongoose.Schema(Object.assign(content, {
   language: String,
-  images: {
-    banner: String,
-    fanart: String,
-    poster: String
-  },
-  genres: [String],
   released: Number,
   trailer: {
     type: String,
@@ -35,7 +13,7 @@ const MovieSchema = new mongoose.Schema({
   },
   certification: String,
   torrents: {}
-});
+}));
 
 // Create the movie model.
 const Movie = mongoose.model('Movie', MovieSchema);

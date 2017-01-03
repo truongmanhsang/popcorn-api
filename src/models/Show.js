@@ -1,27 +1,16 @@
 // Import the neccesary modules.
 import mongoose from 'mongoose';
 
-// The show schema used by mongoose.
-const ShowSchema = new mongoose.Schema({
-  _id: {
-    type: String,
-    required: true,
-    index: {
-      unique: true
-    }
-  },
+import content from './content';
+
+/**
+ * The show schema used by mongoose.
+ * @type {Schema}
+ * @see http://mongoosejs.com/docs/guide.html
+ */
+export const ShowSchema = new mongoose.Schema(Object.assign(content, {
   imdb_id: String,
   tvdb_id: String,
-  title: String,
-  year: String,
-  slug: String,
-  synopsis: String,
-  runtime: String,
-  rating: {
-    percentage: Number,
-    watching: Number,
-    votes: Number
-  },
   country: String,
   network: String,
   air_day: String,
@@ -33,14 +22,17 @@ const ShowSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  images: {
-    banner: String,
-    fanart: String,
-    poster: String
-  },
-  genres: [String],
-  episodes: []
-});
+  episodes: [{
+    tvdb_id: Number,
+    season: Number,
+    episode: Number,
+    title: String,
+    overview: String,
+    date_based: Boolean,
+    first_aired: Number,
+    torrents: {}
+  }]
+}));
 
 // Create the show model.
 const Show = mongoose.model('Show', ShowSchema);
