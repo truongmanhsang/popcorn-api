@@ -25,5 +25,6 @@ export default {
     fanart: String,
     poster: String
   },
-  genres: [String]
+  genres: [String],
+  type: String
 };

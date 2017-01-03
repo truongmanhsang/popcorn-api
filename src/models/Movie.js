@@ -1,5 +1,6 @@
 // Import the neccesary modules.
 import mongoose from 'mongoose';
+import Provider from 'butter-provider';
 
 import content from './content';
 
@@ -12,6 +13,10 @@ const MovieSchema = new mongoose.Schema(Object.assign(content, {
     default: null
   },
   certification: String,
+  type: {
+    type: String,
+    default: Provider.ItemType.MOVIE
+  },
   torrents: {}
 }));
 
