@@ -1,28 +1,33 @@
 // Import the neccesary modules.
+import Provider from 'butter-provider';
+
 import { AnimeShow as Anime } from '../models/Anime';
 import { pageSize } from '../config/constants';
 
 /** Class for getting anime data from the MongoDB. */
 export default class AnimeController {
 
-  /** Create an anime controller object. */
-  constructor() {
-    /**
-     * Object used for the projection of anime shows.
-     * @type {Object}
-     */
-    AnimeController._projection = {
-      _id: 1,
-      imdb_id: 1,
-      tvdb_id: 1,
-      title: 1,
-      year: 1,
-      slug: 1,
-      genres: 1,
-      images: 1,
-      rating: 1,
-      num_seasons: 1
-    };
+  /**
+   * Delete properties from an object according to the type.
+   * @param {Object} doc - the anime object with all the properties.
+   * @returns {Object} doc - the anime object without certain properties.
+   */
+  static _deleteAccordingToType(doc) {
+    switch(doc.type) {
+      case Provider.ItemType.MOVIE:
+        delete doc.episodes;
+        delete doc.num_seasons;
+        delete doc.status;
+        break;
+      case Provider.ItemType.TVSHOW:
+        delete doc.trailer;
+        delete doc.torrents;
+        break;
+      default:
+        break;
+    }
+
+    return doc;
   }
 
   /**
@@ -78,14 +83,13 @@ export default class AnimeController {
             }]
           }
         }, {
-          $project: AnimeController._projection
-        }, {
           $sort: {
             title: -1
           }
-        }]).exec()
-        .then(docs => res.json(docs))
-        .catch(err => next(err));
+        }]).exec().then(docs => {
+          const result = docs.map(doc => AnimeController._deleteAccordingToType(doc));
+          return res.json(result);
+        }).catch(err => next(err));
     } else {
       const query = {
         $or: [{
@@ -149,14 +153,13 @@ export default class AnimeController {
         }, {
           $match: query
         }, {
-          $project: AnimeController._projection
-        }, {
           $skip: offset
         }, {
           $limit: pageSize
-        }]).exec()
-        .then(docs => res.json(docs))
-        .catch(err => next(err));
+        }]).exec().then(docs => {
+          const result = docs.map(doc => AnimeController._deleteAccordingToType(doc));
+          return res.json(result);
+        }).catch(err => next(err));
     }
   }
 
@@ -182,7 +185,7 @@ export default class AnimeController {
       }, {
         latest_episode: 0
       }).exec()
-      .then(docs => res.json(docs))
+      .then(docs => res.json(AnimeController._deleteAccordingToType(docs)))
       .catch(err => next(err));
   }
 
@@ -213,7 +216,7 @@ export default class AnimeController {
       }, {
         $limit: 1
       }]).exec()
-      .then(docs => res.json(docs[0]))
+      .then(docs => res.json(AnimeController._deleteAccordingToType(docs[0])))
       .catch(err => next(err));
   }
 
