@@ -1,7 +1,7 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
 
-import Anime as AnimeShow from '../../models/Anime';
+import AnimeShow from '../../models/AnimeShow';
 import AnimeMovie as AnimeMovie from '../../models/AnimeMovie';
 import BaseExtractor from './BaseExtractor';
 import MovieHelper from '../helpers/MovieHelper';
@@ -54,10 +54,9 @@ export default class AnimeExtractor extends BaseExtractor {
           }
           break;
         default:
+          return onEror(`${anime.type} is not supported, '${anime.slug}'`);
           break;
       }
-
-
     } catch (err) {
       return onError(err);
     }

@@ -4,8 +4,12 @@ import Provider from 'butter-provider';
 
 import content from './content';
 
-// The movie schema used by mongoose.
-const MovieSchema = new mongoose.Schema(Object.assign(content, {
+/**
+ * The movie schema used by mongoose.
+ * @type {Schema}
+ * @see http://mongoosejs.com/docs/guide.html
+ */
+export const MovieSchema = new mongoose.Schema(Object.assign(content, {
   language: String,
   released: Number,
   trailer: {
