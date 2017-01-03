@@ -38,7 +38,7 @@ const ShowSchema = new mongoose.Schema({
     fanart: String,
     poster: String
   },
-  genres: [],
+  genres: [String],
   episodes: []
 });
 

@@ -27,7 +27,7 @@ const MovieSchema = new mongoose.Schema({
     fanart: String,
     poster: String
   },
-  genres: [],
+  genres: [String],
   released: Number,
   trailer: {
     type: String,
