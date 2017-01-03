@@ -36,9 +36,9 @@ export default class MovieHelper {
 
     if (found.torrents[language] && movie.torrents[language]) {
       if (found.torrents[language][quality] && movie.torrents[language][quality]) {
-        if (found.torrents[language][quality].seed > movie.torrents[language][quality].seed) {
+        if (found.torrents[language][quality].seeds > movie.torrents[language][quality].seeds) {
           update = true;
-        } else if (movie.torrents[language][quality].seed > found.torrents[language][quality].seed) {
+        } else if (movie.torrents[language][quality].seeds > found.torrents[language][quality].seeds) {
           update = false;
         } else if (found.torrents[language][quality].url === movie.torrents[language][quality].url) {
           update = true;

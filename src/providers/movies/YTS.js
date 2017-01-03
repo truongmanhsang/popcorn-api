@@ -78,8 +78,8 @@ export default class YTS {
           if (torrent.quality !== '3D') {
             torrents['en'][torrent.quality] = {
               url: `magnet:?xt=urn:btih:${torrent.hash}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`,
-              seed: torrent.seeds,
-              peer: torrent.peers,
+              seeds: torrent.seeds,
+              peers: torrent.peers,
               size: torrent.size_bytes,
               filesize: torrent.size,
               provider: 'YTS'

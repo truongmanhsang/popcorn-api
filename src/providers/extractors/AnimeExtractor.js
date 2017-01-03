@@ -85,7 +85,7 @@ export default class AnimeExtractor extends BaseExtractor {
 
     if (!anime.episodes[season]) anime.episodes[season] = {};
     if (!anime.episodes[season][episode]) anime.episodes[season][episode] = {};
-    if (!anime.episodes[season][episode][quality] || (anime.episodes[season][episode][quality] && anime.episodes[season][episode][quality].seed < episodeTorrent.seed))
+    if (!anime.episodes[season][episode][quality] || (anime.episodes[season][episode][quality] && anime.episodes[season][episode][quality].seeds < episodeTorrent.seeds))
       anime.episodes[season][episode][quality] = episodeTorrent;
 
     return anime;
@@ -130,7 +130,7 @@ export default class AnimeExtractor extends BaseExtractor {
                 const index = animes.indexOf(matching[0]);
                 if (!matching[0].episodes[season]) matching[0].episodes[season] = {};
                 if (!matching[0].episodes[season][episode]) matching[0].episodes[season][episode] = {};
-                if (!matching[0].episodes[season][episode][quality] || (matching[0].episodes[season][episode][quality] && matching[0].episodes[season][episode][quality].seed < anime.episodes[season][episode][quality].seed))
+                if (!matching[0].episodes[season][episode][quality] || (matching[0].episodes[season][episode][quality] && matching[0].episodes[season][episode][quality].seeds < anime.episodes[season][episode][quality].seeds))
                   matching[0].episodes[season][episode][quality] = anime.episodes[season][episode][quality];
 
                 animes.splice(index, 1, matching[0]);
