@@ -1,5 +1,5 @@
 // Import the neccesary modules.
-import Anime from '../models/Anime';
+import { AnimeShow as Anime } from '../models/Anime';
 import { pageSize } from '../config/constants';
 
 /** Class for getting anime data from the MongoDB. */
@@ -34,9 +34,15 @@ export default class AnimeController {
    */
   getAnimes(req, res, next) {
     return Anime.count({
-      num_seasons: {
-        $gt: 0
-      }
+      $or: [{
+        num_seasons: {
+          $gt: 0
+        }
+      }, {
+        num_seasons: {
+          $exists: false
+        }
+      }]
     }).exec().then(count => {
       const pages = Math.ceil(count / pageSize);
       const docs = [];
@@ -61,9 +67,15 @@ export default class AnimeController {
     if (req.params.page.match(/all/i)) {
       return Anime.aggregate([{
           $match: {
-            num_seasons: {
-              $gt: 0
-            }
+            $or: [{
+              num_seasons: {
+                $gt: 0
+              }
+            }, {
+              num_seasons: {
+                $exists: false
+              }
+            }]
           }
         }, {
           $project: AnimeController._projection
@@ -76,9 +88,15 @@ export default class AnimeController {
         .catch(err => next(err));
     } else {
       const query = {
-        num_seasons: {
-          $gt: 0
-        }
+        $or: [{
+          num_seasons: {
+            $gt: 0
+          }
+        }, {
+          num_seasons: {
+            $exists: false
+          }
+        }]
       };
       const data = req.query;
 
@@ -152,6 +170,15 @@ export default class AnimeController {
   getAnime(req, res, next) {
     return Anime.findOne({
         _id: req.params.id,
+        $or: [{
+          num_seasons: {
+            $gt: 0
+          }
+        }, {
+          num_seasons: {
+            $exists: false
+          }
+        }]
       }, {
         latest_episode: 0
       }).exec()
@@ -168,6 +195,18 @@ export default class AnimeController {
    */
   getRandomAnime(req, res, next) {
     return Anime.aggregate([{
+        $match: {
+          $or: [{
+            num_seasons: {
+              $gt: 0
+            }
+          }, {
+            num_seasons: {
+              $exists: false
+            }
+          }]
+        }
+      },{
         $sample: {
           size: 1
         }
