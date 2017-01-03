@@ -80,15 +80,6 @@ export default class CLI {
       required: true
     };
 
-    // The Hummingbird id property.
-    const hummingbirdId = {
-      description: 'The Hummingbird id of the anime to add',
-      type: 'string',
-      pattern: /^(.*)/i,
-      message: 'Not a validHhummingbird id.',
-      required: true
-    };
-
     // The torrent property.
     const torrent = {
       description: 'The link of the torrent to add',
@@ -143,20 +134,6 @@ export default class CLI {
     };
 
     /**
-     * The shema used by `prompt` insert an anime show.
-     * @type {Object}
-     */
-    this._animeSchema = {
-      properties: {
-        'hummingbirdId': hummingbirdId,
-        'season': season,
-        'episode': episode,
-        'torrent': torrent,
-        'quality': quality
-      }
-    };
-
-    /**
      * The schema used by `prompt` insert a movie.
      * @type {Object}
      */
@@ -196,18 +173,18 @@ export default class CLI {
 
   /** Adds a show to the database through the CLI. */
   _animePrompt() {
-    prompt.get(this._animeSchema, async(err, result) => {
+    prompt.get(this._showSchema, async(err, result) => {
       if (err) {
         console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
-          const { hummingbirdId, season, episode, quality, torrent } = result;
+          const { imdb, season, episode, quality, torrent } = result;
           const animeHelper = new AnimeHelper(CLI._providerName);
-          const newAnime = await animeHelper.getHummingbirdInfo(hummingbirdId);
+          const newAnime = await animeHelper.getTraktInfo(imdb);
           if (newAnime && newAnime._id) {
             const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
-            await animeHelper.addEpisodes(newAnime, data, hummingbirdId);
+            await animeHelper.addEpisodes(newAnime, data, imdb);
             process.exit(0);
           }
         } catch (err) {

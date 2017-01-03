@@ -32,7 +32,7 @@ export default class AnimeExtractor extends BaseExtractor {
    */
   async getAnime(anime) {
     try {
-      const newAnime = await this._helper.getHummingbirdInfo(anime.slug);
+      const newAnime = await this._helper.getTraktInfo(anime.slug);
       if (newAnime && newAnime._id) {
         delete anime.episodes[0];
         return await this._helper.addEpisodes(newAnime, anime.episodes, anime.slug);
@@ -157,9 +157,9 @@ export default class AnimeExtractor extends BaseExtractor {
   async search(provider) {
     try {
       const getTotalPages = await this._contentProvider.search(provider.query);
-      const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
+      let totalPages = getTotalPages.total_pages; // Change to 'const' for production.
       if (!totalPages) return onError(`${this.name}: total_pages returned: '${totalPages}'`);
-      // totalPages = 3; // For testing purposes only.
+      totalPages = 3; // For testing purposes only.
       logger.info(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);

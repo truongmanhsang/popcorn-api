@@ -1,9 +1,12 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
-import HummingbirdAPI from 'hummingbird-api';
 
 import Anime from '../../models/Anime';
-import { onError } from '../../utils';
+import { fanart, trakt, tmdb, tvdb } from '../../config/constants';
+import {
+  checkImages,
+  onError
+} from '../../utils';
 
 /** class for saving anime shows. */
 export default class AnimeHelper {
@@ -19,13 +22,6 @@ export default class AnimeHelper {
      * @type {String}
      */
     this.name = name;
-
-    /**
-     * A configured HummingBird API.
-     * @type {HummingbirdAPI}
-     * @see https://github.com/ChrisAlderson/hummingbird-api
-     */
-    this._hummingbird = new HummingbirdAPI({ debug });
   }
 
   /**
@@ -132,79 +128,166 @@ export default class AnimeHelper {
    * @param {Integer} seasonNumber - The season number.
    * @param {String} slug - The slug of the anime.
    */
-  async _addSeason(anime, episodes, seasonNumber, slug) {
-    try {
-      await asyncq.each(Object.keys(episodes[seasonNumber]), episodeNumber => {
-        const episode = {
-          title: `Episode ${episodeNumber}`,
-          torrents: {},
-          season: seasonNumber,
-          episode: episodeNumber,
-          overview: `We still don't have single episode overviews for anime… Sorry`,
-          tvdb_id: `${anime._id}-1-${episodeNumber}`
-        };
+   /**
+    * Adds one seasonal season to an anime show.
+    * @param {Anime} anime - The anime show to add the torrents to.
+    * @param {Object} episodes - The episodes containing the torrents.
+    * @param {Integer} seasonNumber - The season number.
+    * @param {String} slug - The slug of the anime show.
+    */
+   async _addSeason(anime, episodes, seasonNumber, slug) {
+     try {
+       seasonNumber = parseInt(seasonNumber);
+       const season = await trakt.seasons.season({
+         id: slug,
+         season: seasonNumber,
+         extended: 'full'
+       });
 
-        episode.torrents = episodes[seasonNumber][episodeNumber];
-        episode.torrents[0] = episodes[seasonNumber][episodeNumber]['480p']
-          ? episodes[seasonNumber][episodeNumber]['480p'] : episodes[seasonNumber][episodeNumber]['720p'];
-        anime.episodes.push(episode);
-      });
+       for (let episodeData in season) {
+         episodeData = season[episodeData];
+         if (episodes[seasonNumber] && episodes[seasonNumber][episodeData.number]) {
+           const episode = {
+             tvdb_id: episodeData.ids['tvdb'],
+             season: episodeData.season,
+             episode: episodeData.number,
+             title: episodeData.title,
+             overview: episodeData.overview,
+             date_based: false,
+             first_aired: new Date(episodeData.first_aired).getTime() / 1000.0,
+             watched: {
+               watched: false
+             },
+             torrents: {}
+           };
+
+           if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
+
+           episode.torrents = episodes[seasonNumber][episodeData.number];
+           episode.torrents[0] = episodes[seasonNumber][episodeData.number]['480p'] ? episodes[seasonNumber][episodeData.number]['480p'] : episodes[seasonNumber][episodeData.number]['720p'];
+           show.episodes.push(episode);
+         }
+       }
+     } catch (err) {
+       return onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+     }
+   }
+
+  /**
+   * Get anime show images.
+   * @param {Integer} tmdb_id - The tmdb id of the anime show you want the images from.
+   * @param {Integer} tvdb_id - The tvdb id of the anime show you want the images from.
+   * @returns {Object} - Object with a banner, fanart and poster images.
+   */
+  async _getImages(tmdb_id, tvdb_id) {
+    const holder = 'images/posterholder.png';
+    const images = {
+      banner: holder,
+      fanart: holder,
+      poster: holder
+    };
+
+    try {
+      const tmdbData = await tmdb.call(`/tv/${tmdb_id}/images`, {});
+
+      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null)[0];
+      tmdbPoster = tmdb.getImageUrl(tmdbPoster.file_path, 'w500');
+
+      let tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null)[0];
+      tmdbBackdrop = tmdb.getImageUrl(tmdbBackdrop.file_path, 'w500');
+
+      images.banner = tmdbPoster ? tmdbPoster : holder;
+      images.fanart = tmdbBackdrop ? tmdbBackdrop : holder;
+      images.poster = tmdbPoster ? tmdbPoster : holder;
+
+      this._checkImages(images, holder);
     } catch (err) {
-      return onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      try {
+        const tvdbImages = await tvdb.getSeriesById(tvdb_id);
+
+        if (images.banner === holder) {
+          images.banner = tvdbImages.banner ? `http://thetvdb.com/banners/${tvdbImages.banner}` : holder;
+        }
+        if (images.fanart === holder) {
+          images.fanart = tvdbImages.fanart ? `http://thetvdb.com/banners/${tvdbImages.fanart}` : holder;
+        }
+        if (images.poster === holder) {
+          images.poster = tvdbImages.poster ? `http://thetvdb.com/banners/${tvdbImages.poster}` : holder;
+        }
+
+        checkImages(images, holder);
+      } catch (err) {
+        try {
+          const fanartImages = await fanart.getShowImages(tvdb_id);
+
+          if (images.banner === holder) {
+            images.banner = fanartImages.tvbanner ? fanartImages.tvbanner[0].url : holder;
+          }
+          if (images.fanart === holder) {
+            images.fanart = fanartImages.showbackground ? fanartImages.showbackground[0].url : fanartImages.clearart ? fanartImages.clearart[0].url : holder;
+          }
+          if (images.poster === holder) {
+            images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
+          }
+        } catch (err) {
+          onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id | tvdb_id}'`);
+        }
+      }
     }
+
+    return images;
   }
 
   /**
-   * Get info from Hummingbird and make a new anime object.
-   * @param {String} slug - The slug to query https://hummingbird.me/.
-   * @returns {Anime} - A new anime without the episodes attached.
+   * Get info from Trakt and make a new anime show object.
+   * @param {String} slug - The slug to query https://trakt.tv/.
+   * @returns {Anime} - A new anime show without the episodes attached.
    */
-  async getHummingbirdInfo(slug) {
-    const holder = 'images/posterholder.png';
-
+  async getTraktInfo(slug) {
     try {
-      const hummingbirdAnime = await this._hummingbird.Anime.getAnime(slug);
+      const traktAnime = await trakt.shows.summary({
+        id: slug,
+        extended: 'full'
+      });
+      const traktWatchers = await trakt.shows.watching({
+        id: slug
+      });
 
-      let type;
-      if (hummingbirdAnime.show_type.match(/tv/i)) {
-        type = 'tvshow';
-      } else {
-        type = 'movie';
-      }
+      let watching = 0;
+      if (traktWatchers !== null) watching = traktWatchers.length;
 
-      const genres = hummingbirdAnime.genres.map(genre => genre.name);
-
-      if (hummingbirdAnime && hummingbirdAnime.id) {
+      if (traktAnime && traktAnime.ids['imdb'] && traktAnime.ids['tmdb'] && traktAnime.ids['tvdb']) {
         return {
-          _id: hummingbirdAnime.id,
-          mal_id: hummingbirdAnime.mal_id,
-          title: hummingbirdAnime.title,
-          year: new Date(hummingbirdAnime.started_airing).getFullYear(),
-          slug: hummingbirdAnime.slug,
-          synopsis: hummingbirdAnime.synopsis,
-          runtime: hummingbirdAnime.episode_length,
-          status: hummingbirdAnime.status,
+          _id: traktAnime.ids['imdb'],
+          imdb_id: traktAnime.ids['imdb'],
+          tvdb_id: traktAnime.ids['tvdb'],
+          title: traktAnime.title,
+          year: traktAnime.year,
+          slug: traktAnime.ids['slug'],
+          synopsis: traktAnime.overview,
+          runtime: traktAnime.runtime,
           rating: {
             hated: 100,
             loved: 100,
-            votes: 0,
-            watching: 0,
-            percentage: (Math.round(hummingbirdAnime.community_rating * 10)) * 2
+            votes: traktAnime.votes,
+            watching: watching,
+            percentage: Math.round(traktAnime.rating * 10)
           },
-          type,
+          country: traktAnime.country,
+          network: traktAnime.network,
+          air_day: traktAnime.airs.day,
+          air_time: traktAnime.airs.time,
+          status: traktAnime.status,
           num_seasons: 0,
           last_updated: Number(new Date()),
-          images: {
-            banner: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : holder,
-            fanart: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : holder,
-            poster: hummingbirdAnime.cover_image !== null ? hummingbirdAnime.cover_image : holder
-          },
-          genres: genres !== null ? genres : ['unknown'],
+          latest_episode: 0,
+          images: await this._getImages(traktAnime.ids['tmdb'], traktAnime.ids['tvdb']),
+          genres: traktAnime.genres !== null ? traktAnime.genres : ['unknown'],
           episodes: []
         };
       }
     } catch (err) {
-      return onError(`Hummingbird: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 
