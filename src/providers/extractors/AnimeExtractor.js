@@ -1,7 +1,7 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
 
-import Anime as ShowAnime from '../../models/Anime';
+import Anime as AnimeShow from '../../models/Anime';
 import AnimeMovie as AnimeMovie from '../../models/AnimeMovie';
 import BaseExtractor from './BaseExtractor';
 import MovieHelper from '../helpers/MovieHelper';
@@ -31,7 +31,7 @@ export default class AnimeExtractor extends BaseExtractor {
      * The helper object for adding anime shows.
      * @type {ShowHelper}
      */
-    this._showHelper = new ShowHelper(this.name, Anime);
+    this._showHelper = new ShowHelper(this.name, AnimeShow);
   }
 
   /**
