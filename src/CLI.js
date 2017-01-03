@@ -7,12 +7,12 @@ import prompt from 'prompt';
 import torrentHealth from 'torrent-tracker-health';
 
 import Index from './Index';
-import AnimeHelper from './providers/helpers/AnimeHelper';
 import MovieHelper from './providers/helpers/MovieHelper';
 import ShowHelper from './providers/helpers/ShowHelper';
 import Logger from './config/Logger';
 import packageJSON from '../package.json';
 import Setup from './config/Setup';
+import { AnimeMovie, AnimeShow } from './models/Anime';
 import {
   exportCollection,
   importCollection
@@ -133,6 +133,29 @@ export default class CLI {
       default: 'no'
     };
 
+    const type = {
+      description: 'The type of anime content you want to add (movie | tvshow)',
+      type: 'string',
+      pattern: /^(movie|tvshow)$/i,
+      message: 'Type movie or tvshow',
+      required: true
+    }
+
+    /**
+     * The schema used by `prompt` insert a show.
+     * @type {Object}
+     */
+    this._showSchema = {
+      properties: {
+        'imdb': imdb,
+        'season': season,
+        'episode': episode,
+        'torrent': torrent,
+        'quality': quality,
+        'type': type
+      }
+    };
+
     /**
      * The schema used by `prompt` insert a movie.
      * @type {Object}
@@ -179,14 +202,28 @@ export default class CLI {
         process.exit(1);
       } else {
         try {
-          const { imdb, season, episode, quality, torrent } = result;
-          const animeHelper = new AnimeHelper(CLI._providerName);
-          const newAnime = await animeHelper.getTraktInfo(imdb);
-          if (newAnime && newAnime._id) {
-            const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
-            await animeHelper.addEpisodes(newAnime, data, imdb);
-            process.exit(0);
+          const { imdb, season, episode, quality, torrent, type } = result;
+
+          switch(type) {
+            case Provider.ItemType.MOVIE:
+              const movieHelper = new MovieHelper(CLI._providerName);
+              const newMovie = await movieHelper.getTraktInfo(imdb);
+              if (newMovie && newMovie._id) {
+                const data = await this._getMovieTorrentDataRemote(torrent, quality);
+                await movieHelper.addTorrents(newMovie, data);
+              }
+              break;
+            case Provider.ItemType.TVSHOW:
+              const showHelper = new ShowHelper(CLI._providerName);
+              const newShow = await showHelper.getTraktInfo(imdb);
+              if (newShow && newShow._id) {
+                const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
+                await showHelper.addEpisodes(newShow, data, imdb);
+              }
+              break;
           }
+
+          process.exit(0);
         } catch (err) {
           console.error(`An error occurred: ${err}`);
           process.exit(1);
@@ -198,11 +235,11 @@ export default class CLI {
   /**
    * Get movie data from a given torrent url.
    * @param {String} torrent - The url of the torrent.
-   * @param {String} language - The language of the torrent.
    * @param {String} quality - The quality of the torrent.
+   * @param {String} language - The language of the torrent.
    * @returns {Promise} - Movie data from the torrent.
    */
-  _getMovieTorrentDataRemote(torrent, language, quality) {
+  _getMovieTorrentDataRemote(torrent, quality, language = 'en') {
     return new Promise((resolve, reject) => {
       parseTorrent.remote(torrent, (err, result) => {
         if (err) return reject(err);
@@ -238,7 +275,7 @@ export default class CLI {
           const movieHelper = new MovieHelper(CLI._providerName);
           const newMovie = await movieHelper.getTraktInfo(imdb);
           if (newMovie && newMovie._id) {
-            const data = await this._getMovieTorrentDataRemote(torrent, language, quality);
+            const data = await this._getMovieTorrentDataRemote(torrent, quality, language);
             await movieHelper.addTorrents(newMovie, data);
             process.exit(0);
           }
