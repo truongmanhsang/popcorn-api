@@ -1,13 +1,17 @@
 // Import the neccesary modules.
 import mongoose from 'mongoose';
 
-import { ShowSchema as AnimeSchema } from './Show';
+import { MovieSchema } from './Movie';
+import { ShowSchema } from './Show';
 
-// Create the anime model.
-const Anime = mongoose.model('Anime', AnimeSchema);
+/**
+ * A model object for anime movies.
+ * @type {AnimeMovie}
+ */
+export const AnimeMovie = mongoose.model('AnimeMovie', MovieSchema, 'animes');
 
 /**
  * A model object for anime shows.
- * @type {Anime}
+ * @type {AnimeShow}
  */
-export default Anime;
+export const AnimeShow = mongoose.model('AnimeShow', ShowSchema, 'animes');
