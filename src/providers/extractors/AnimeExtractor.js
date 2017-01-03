@@ -67,7 +67,7 @@ export default class AnimeExtractor extends BaseExtractor {
    * @param {Object} torrent - The torrent to extract the anime information from.
    * @param {Regex} regex - The regex to extract the anime information.
    * @param {String} type - Determine what kind of content it is.
-   * @returns {Object} - Information about a anime from the torrent.
+   * @returns {Object} - Information about an anime from the torrent.
    */
   _extractAnime(torrent, regex, type) {
     let animeTitle = torrent.title.match(regex)[1];
