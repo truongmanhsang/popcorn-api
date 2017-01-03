@@ -58,9 +58,7 @@ export default class MovieHelper {
   }
 
   /**
-   * @description Update a given movie.
-   * @function Helper#updateMovie
-   * @memberof module:providers/movie/helper
+   * Update a given movie.
    * @param {Movie} movie - The movie to update its torrent.
    * @returns {Movie} - A newly updated movie.
    */
