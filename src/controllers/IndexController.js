@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import Anime from '../models/Anime';
+import { AnimeShow as Anime } from '../models/Anime';
 import Movie from '../models/Movie';
 import Show from '../models/Show';
 import { executeCommand } from '../utils';
@@ -59,10 +59,15 @@ export default class IndexController {
       const { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), 'utf8'));
       const commit = await executeCommand('git rev-parse --short HEAD');
       const totalAnimes = await Anime.count({
-        num_seasons: {
-          $gt: 0
-        },
-        type: 'tvshow'
+        $or: [{
+          num_seasons: {
+            $gt: 0
+          }
+        }, {
+          num_seasons: {
+            $exists: false
+          }
+        }]
       }).exec();
       const totalMovies = await Movie.count().exec();
       const totalShows = await Show.count({
