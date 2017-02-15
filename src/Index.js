@@ -93,7 +93,8 @@ export default class Index {
       createTemp();
 
       // Fork workers.
-      for (let i = 0; i < Math.min(os.cpus().length, workers); i++) cluster.fork(); // eslint-disable-line semi-spacing
+      for (let i = 0; i < Math.min(os.cpus().length, workers); i++) // eslint-disable-line semi-spacing
+        cluster.fork();
 
       // Check for errors with the workers.
       cluster.on('exit', worker => {

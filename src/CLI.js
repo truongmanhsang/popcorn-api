@@ -11,9 +11,8 @@ import torrentHealth from 'torrent-tracker-health';
 import Index from './Index';
 import MovieHelper from './providers/helpers/MovieHelper';
 import ShowHelper from './providers/helpers/ShowHelper';
-import Logger from './config/Logger';
 import packageJSON from '../package.json';
-import Setup from './config/Setup';
+import Setup from './config/setup';
 import { AnimeMovie, AnimeShow } from './models/Anime';
 import {
   exportCollection,
@@ -33,12 +32,6 @@ export default class CLI {
      * @type {String}
      */
     CLI._providerName = providerName;
-
-    /**
-     * The logger object to configure the logging.
-     * @type {Logger}
-     */
-    CLI._logger = new Logger();
 
     // Setup the CLI program.
     program
@@ -413,7 +406,7 @@ export default class CLI {
       });
     } else if (program.content) {
       prompt.start();
-      Setup.connectMongoDB();
+      connectMongoDB();
 
       if (program.content.match(/^(show)/i)) {
         this._showPrompt();

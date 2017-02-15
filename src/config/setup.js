@@ -15,7 +15,7 @@ import {
  * Connection and configuration of the MongoDB database.
  * @returns {void}
  */
-function _connectMongoDB() {
+export function connectMongoDB() {
   mongoose.Promise = Promise;
   mongoose.connect(`mongodb://${dbHosts.join(',')}/${dbName}`, {
     db: {
@@ -52,7 +52,7 @@ export default function doSetup(app, pretty, verbose) {
   RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
   // Connection and configuration of the MongoDB database.
-  _connectMongoDB();
+  connectMongoDB();
 
   // Enable parsing URL encoded bodies.
   app.use(bodyParser.urlencoded({
