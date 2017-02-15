@@ -47,7 +47,7 @@ export default class HorribleSubs {
 
       return await asyncq.mapLimit(animes, maxWebRequest, async anime => {
         try {
-          anime = await this._horriblesubs.getAnimeData(anime);
+          anime = await this._horriblesubs.getAnimeData(anime); // eslint-disable-line no-param-reassign
           return await this._extractor.getAnime(anime);
         } catch (err) {
           return onError(err);

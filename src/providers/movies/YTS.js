@@ -2,7 +2,6 @@
 import asyncq from 'async-q';
 import req from 'request';
 
-import Movie from '../../models/Movie';
 import Helper from '../helpers/MovieHelper';
 import { maxWebRequest, webRequestTimeout } from '../../config/constants';
 import { onError } from '../../utils';
@@ -26,11 +25,11 @@ export default class YTS {
      * @type {Object}
      */
     this._request = req.defaults({
-      'headers': {
+      headers: {
         'Content-Type': 'application/json'
       },
-      'baseUrl': 'https://yts.ag/api/v2/list_movies.json',
-      'timeout': webRequestTimeout * 1000
+      baseUrl: 'https://yts.ag/api/v2/list_movies.json',
+      timeout: webRequestTimeout * 1000
     });
 
     /**
@@ -52,14 +51,13 @@ export default class YTS {
         if (err && retry) {
           return resolve(this._getTotalPages(false));
         } else if (err) {
-          return reject(`YTS: ${err} with link: 'list_movies.json'`);
+          return reject(new Error(`YTS: ${err} with link: 'list_movies.json'`));
         } else if (!body || res.statusCode >= 400) {
-          return reject(`YTS: Could not find data on '${url}'.`);
-        } else {
-          body = JSON.parse(body);
-          const totalPages = Math.ceil(body.data.movie_count / 50);
-          return resolve(totalPages);
+          return reject(new Error(`YTS: Could not find data on '${url}'.`));
         }
+
+        const totalPages = Math.ceil(JSON.parse(body).data.movie_count / 50);
+        return resolve(totalPages);
       });
     });
   }
@@ -108,13 +106,12 @@ export default class YTS {
         if (err && retry) {
           return resolve(this._getOnePage(page, false));
         } else if (err) {
-          return reject(`YTS: ${err} with link: '?limit=50&page=${page + 1}'`);
+          return reject(new Error(`YTS: ${err} with link: '?limit=50&page=${page + 1}'`));
         } else if (!body || res.statusCode >= 400) {
-          return reject(`YTS: Could not find data on '${url}'.`);
-        } else {
-          body = JSON.parse(body);
-          return resolve(this._formatPage(body.data.movies));
+          return reject(new Error(`YTS: Could not find data on '${url}'.`));
         }
+
+        return resolve(this._formatPage(JSON.parse(body).data.movies));
       });
     });
   }
@@ -127,7 +124,6 @@ export default class YTS {
     try {
       const totalPages = await this._getTotalPages(); // Change to 'const' for production.
       if (!totalPages) return onError(`${this.name}: totalPages returned; '${totalPages}'`);
-      // totalPages = 3; // For testing purposes only.
       let movies = [];
       return await asyncq.timesSeries(totalPages, async page => {
         try {

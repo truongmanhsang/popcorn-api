@@ -14,6 +14,7 @@ export default class MovieHelper {
   /**
    * Create an helper object for movie content.
    * @param {String} name - The name of the content provider.
+   * @param {Object} [model=Movie] - The model to help fill.
    */
   constructor(name, model = Movie) {
     /**
@@ -87,10 +88,10 @@ export default class MovieHelper {
         return await this._model.findOneAndUpdate({
           _id: movie._id
         }, movie).exec();
-      } else {
-        logger.info(`${this.name}: '${movie.title}' is a new movie!`);
-        return await new this._model(movie).save();
       }
+
+      logger.info(`${this.name}: '${movie.title}' is a new movie!`);
+      return await new this._model(movie).save();
     } catch (err) {
       return onError(err);
     }
@@ -122,12 +123,14 @@ export default class MovieHelper {
     };
 
     try {
+      let tmdbPoster, tmdbBackdrop;
+
       const tmdbData = await tmdb.call(`/movie/${tmdb_id}/images`, {});
 
-      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null)[0];
+      tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null)[0];
       tmdbPoster = tmdb.getImageUrl(tmdbPoster.file_path, 'w500');
 
-      let tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null)[0];
+      tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null)[0];
       tmdbBackdrop = tmdb.getImageUrl(tmdbBackdrop.file_path, 'w500');
 
       images.banner = tmdbPoster ? tmdbPoster : holder;

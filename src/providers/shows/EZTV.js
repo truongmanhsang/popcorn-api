@@ -47,7 +47,7 @@ export default class EZTV {
 
       return await asyncq.mapLimit(shows, maxWebRequest, async show => {
         try {
-          show = await this._eztv.getShowData(show);
+          show = await this._eztv.getShowData(show); // eslint-disable-line no-param-reassign
           return await this._extractor.getShow(show);
         } catch (err) {
           return onError(err);

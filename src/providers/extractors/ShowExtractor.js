@@ -14,9 +14,8 @@ export default class ShowExtractor extends BaseExtractor {
     * Create an extratorrent object for show content.
     * @param {String} name - The name of the content provider.
     * @param {Object} contentProvider - The content provider to extract content from.
-    * @param {?Boolean} debug - Debug mode for extra output.
     */
-  constructor(name, contentProvider, debug) {
+  constructor(name, contentProvider) {
     super(name, contentProvider);
 
     /**
@@ -51,14 +50,18 @@ export default class ShowExtractor extends BaseExtractor {
    * @returns {Object} - Information about a show from the torrent.
    */
   _extractShow(torrent, regex, dateBased) {
-    let showTitle = torrent.title.match(regex)[1];
+    let showTitle, slug, season, episode;
+
+    showTitle = torrent.title.match(regex)[1];
     if (showTitle.endsWith(' ')) showTitle = showTitle.substring(0, showTitle.length - 1);
     showTitle = showTitle.replace(/\./g, ' ');
-    let slug = showTitle.replace(/[^a-zA-Z0-9 ]/gi, '').replace(/\s+/g, '-').toLowerCase();
+
+    slug = showTitle.replace(/[^a-zA-Z0-9 ]/gi, '').replace(/\s+/g, '-').toLowerCase();
     if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
     slug = slug in showMap ? showMap[slug] : slug;
-    let season = torrent.title.match(regex)[2];
-    let episode = torrent.title.match(regex)[3];
+
+    season = torrent.title.match(regex)[2];
+    episode = torrent.title.match(regex)[3];
     if (!dateBased) {
       season = parseInt(season, 10);
       episode = parseInt(episode, 10);
@@ -106,9 +109,9 @@ export default class ShowExtractor extends BaseExtractor {
       return this._extractShow(torrent, vtv, false);
     } else if (torrent.title.match(dateBased)) {
       return this._extractShow(torrent, dateBased, true);
-    } else {
-      logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
+
+    logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
   }
 
   /**
@@ -124,13 +127,13 @@ export default class ShowExtractor extends BaseExtractor {
         if (torrent) {
           const show = this._getShowData(torrent);
           if (show) {
-            if (shows.length != 0) {
+            if (shows.length !== 0) {
               const { showTitle, slug, season, episode, quality } = show;
               const matching = shows
                 .filter(s => s.showTitle === showTitle)
                 .filter(s => s.slug === slug);
 
-              if (matching.length != 0) {
+              if (matching.length !== 0) {
                 const index = shows.indexOf(matching[0]);
                 if (!matching[0].episodes[season]) matching[0].episodes[season] = {};
                 if (!matching[0].episodes[season][episode]) matching[0].episodes[season][episode] = {};

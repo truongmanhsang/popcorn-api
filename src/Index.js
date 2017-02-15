@@ -6,10 +6,10 @@ import http from 'http';
 import os from 'os';
 import { CronJob } from 'cron';
 
-import Logger from './config/Logger';
-import Routes from './config/Routes';
+import doSetup from './config/setup';
+import setupRoutes from './config/routes';
 import Scraper from './Scraper';
-import Setup from './config/Setup';
+import { createLogger } from './config/logger';
 import {
   createTemp,
   onError,
@@ -17,7 +17,13 @@ import {
   setLastUpdated,
   setStatus
 } from './utils';
-import { cronTime, master, port, timeZone, workers } from './config/constants';
+import {
+  cronTime,
+  master,
+  port,
+  timeZone,
+  workers
+} from './config/constants';
 
 /**
  * Class for starting the API.
@@ -43,38 +49,31 @@ export default class Index {
    * @param {Boolean} [config.start=true] - Start the scraping process.
    * @param {Boolean} [config.pretty=true] - Pretty output with Winston logging.
    * @param {Boolean} [config.verbose=false] - Debug mode for no output.
-   * @param {Boolean} [config.debug=false] - Debug mode for extra output.
    */
-  constructor({ start = true, pretty = true, verbose = false, debug = false } = {}) {
-    /**
-     * The express object.
-     * @type {Express}
-     */
-    Index._app = new Express();
+  constructor({start = true, pretty = true, verbose = false} = {}) { // eslint-disable-line object-curly-spacing
+    // The express object.
+    const _app = new Express();
 
-    /**
-     * The scraper object to scrape for torrents.
-     * @type {Scraper}
-     */
-    Index._scraper = new Scraper(debug);
-
-    /**
-     * The logger object to configure the logging.
-     * @type {Logger}
-     */
-    Index._logger = new Logger(pretty, verbose);
+    // Setup the global logger object.
+    createLogger(pretty, verbose);
 
     // Setup the MongoDB configuration and ExpressJS configuration.
-    new Setup(Index._app, pretty, verbose);
+    doSetup(_app, pretty, verbose);
 
     // Setup the API routes.
-    new Routes(Index._app);
+    setupRoutes(_app);
 
     /**
      * The http server object.
      * @type {Object}
      */
-    Index._server = http.createServer(Index._app);
+    Index._server = http.createServer(_app);
+
+    /**
+     * The scraper object to scrape for torrents.
+     * @type {Scraper}
+     */
+    Index._scraper = new Scraper();
 
     // Start the API.
     Index._startAPI(start);
@@ -83,6 +82,7 @@ export default class Index {
   /**
    * Function to start the API.
    * @param {?Boolean} start - Start the scraping.
+   * @returns {void}
    */
   static _startAPI(start) {
     if (cluster.isMaster) { // Check is the cluster is the master
@@ -93,7 +93,7 @@ export default class Index {
       createTemp();
 
       // Fork workers.
-      for (let i = 0; i < Math.min(os.cpus().length, workers); i++) cluster.fork();
+      for (let i = 0; i < Math.min(os.cpus().length, workers); i++) cluster.fork(); // eslint-disable-line semi-spacing
 
       // Check for errors with the workers.
       cluster.on('exit', worker => {
@@ -132,6 +132,7 @@ export default class Index {
 
   /**
    * Function to stop the API from running.
+   * @returns {void}
    */
   static closeAPI() {
     Index._server.close(() => {

@@ -16,9 +16,8 @@ export default class AnimeExtractor extends BaseExtractor {
    * Create an extractor object for anime content.
    * @param {String} name - The name of the content provider.
    * @param {Object} contentProvider - The content provider to extract content from.
-   * @param {?Boolean} debug - Debug mode for extra output.
    */
-  constructor(name, contentProvider, debug) {
+  constructor(name, contentProvider) {
     super(name, contentProvider);
 
     /**
@@ -41,21 +40,21 @@ export default class AnimeExtractor extends BaseExtractor {
    */
   async getAnime(anime) {
     try {
-      switch(anime.type) {
-        case Provider.ItemType.MOVIE:
-          let newAnime = await this._movieHhelper.getTraktInfo(anime.slugYear);
-          if (newAnime && newAnime._id) return await this._movieHhelper.addTorrents(newAnime, anime.torrents);
-          break;
-        case Provider.ItemType.TVSHOW:
-          newAnime = await this._showHelper.getTraktInfo(anime.slug);
-          if (newAnime && newAnime._id) {
-            delete anime.episodes[0];
-            return await this._showHelper.addEpisodes(newAnime, anime.episodes, anime.slug);
-          }
-          break;
-        default:
-          return onEror(`${anime.type} is not supported, '${anime.slug}'`);
-          break;
+      switch (anime.type) {
+      case Provider.ItemType.MOVIE:
+        let newAnime = await this._movieHhelper.getTraktInfo(anime.slugYear);
+        if (newAnime && newAnime._id) return await this._movieHhelper.addTorrents(newAnime, anime.torrents);
+        break;
+      case Provider.ItemType.TVSHOW:
+        newAnime = await this._showHelper.getTraktInfo(anime.slug);
+        if (newAnime && newAnime._id) {
+          delete anime.episodes[0];
+          return await this._showHelper.addEpisodes(newAnime, anime.episodes, anime.slug);
+        }
+        break;
+      default:
+        return onEror(`${anime.type} is not supported, '${anime.slug}'`);
+        break;
       }
     } catch (err) {
       return onError(err);
@@ -70,17 +69,19 @@ export default class AnimeExtractor extends BaseExtractor {
    * @returns {Object} - Information about an anime from the torrent.
    */
   _extractAnime(torrent, regex, type) {
-    let animeTitle = torrent.title.match(regex)[1];
+    let animeTitile, slug, episode;
+
+    animeTitle = torrent.title.match(regex)[1];
     if (animeTitle.endsWith(' ')) animeTitle = animeTitle.substring(0, animeTitle.length - 1);
-    animeTitle = animeTitle.replace(/\_/g, ' ').replace(/\./g, ' ');
-    let slug = animeTitle.replace(/[^a-zA-Z0-9 ]/gi, '').replace(/\s+/g, '-').toLowerCase();
+    animeTitle = animeTitle.replace(/_/g, ' ').replace(/\./g, ' ');
+
+    slug = animeTitle.replace(/[^a-zA-Z0-9 ]/gi, '').replace(/\s+/g, '-').toLowerCase();
     if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
     slug = slug in animeMap ? animeMap[slug] : slug;
 
     const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : '480p';
 
-    let season = 1;
-    let episode;
+    const season = 1;
     if (torrent.title.match(regex).length >= 4) {
       episode = parseInt(torrent.title.match(regex)[3], 10);
     } else {
@@ -124,11 +125,11 @@ export default class AnimeExtractor extends BaseExtractor {
     const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i;
     if (torrent.title.match(secondSeason)) {
       return this._extractAnime(torrent, secondSeason, type);
-    } else if  (torrent.title.match(oneSeason)) {
+    } else if (torrent.title.match(oneSeason)) {
       return this._extractAnime(torrent, oneSeason, type);
-    } else {
-      logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
+
+    logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
   }
 
   /**
@@ -144,13 +145,13 @@ export default class AnimeExtractor extends BaseExtractor {
         if (torrent) {
           const anime = this._getAnimeData(torrent, type);
           if (anime) {
-            if (animes.length != 0) {
+            if (animes.length !== 0) {
               const { animeTitle, slug, season, episode, quality } = anime;
               const matching = animes
                 .filter(a => a.animeTitle === animeTitle)
                 .filter(a => a.slug === slug);
 
-              if (matching.length != 0) {
+              if (matching.length !== 0) {
                 const index = animes.indexOf(matching[0]);
                 if (!matching[0].episodes[season]) matching[0].episodes[season] = {};
                 if (!matching[0].episodes[season][episode]) matching[0].episodes[season][episode] = {};

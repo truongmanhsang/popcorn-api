@@ -1,4 +1,5 @@
 // Import the neccesary modules.
+/* eslint-disable no-console */
 import bytes from 'bytes';
 import parseTorrent from 'parse-torrent';
 import path from 'path';
@@ -148,12 +149,12 @@ export default class CLI {
      */
     this._showSchema = {
       properties: {
-        'imdb': imdb,
-        'season': season,
-        'episode': episode,
-        'torrent': torrent,
-        'quality': quality,
-        'type': type
+        imdb,
+        season,
+        episode,
+        torrent,
+        quality,
+        type
       }
     };
 
@@ -163,10 +164,10 @@ export default class CLI {
      */
     this._movieSchema = {
       properties: {
-        'imdb': imdb,
-        'language': language,
-        'torrent': torrent,
-        'quality': quality
+        imdb,
+        language,
+        torrent,
+        quality
       }
     };
 
@@ -176,11 +177,11 @@ export default class CLI {
      */
     this._showSchema = {
       properties: {
-        'imdb': imdb,
-        'season': season,
-        'episode': episode,
-        'torrent': torrent,
-        'quality': quality
+        imdb,
+        season,
+        episode,
+        torrent,
+        quality
       }
     };
 
@@ -189,13 +190,14 @@ export default class CLI {
      * @type {Object}
      */
     this._importSchema = {
-      properties: {
-        'confirm': confirm
-      }
+      properties: { confirm }
     };
   }
 
-  /** Adds a show to the database through the CLI. */
+  /**
+   * Adds a show to the database through the CLI.
+   * @returns {void}
+   */
   _animePrompt() {
     prompt.get(this._showSchema, async(err, result) => {
       if (err) {
@@ -205,23 +207,29 @@ export default class CLI {
         try {
           const { imdb, season, episode, quality, torrent, type } = result;
 
-          switch(type) {
-            case Provider.ItemType.MOVIE:
-              const movieHelper = new MovieHelper(CLI._providerName);
-              const newMovie = await movieHelper.getTraktInfo(imdb);
-              if (newMovie && newMovie._id) {
-                const data = await this._getMovieTorrentDataRemote(torrent, quality);
-                await movieHelper.addTorrents(newMovie, data);
-              }
-              break;
-            case Provider.ItemType.TVSHOW:
-              const showHelper = new ShowHelper(CLI._providerName);
-              const newShow = await showHelper.getTraktInfo(imdb);
-              if (newShow && newShow._id) {
-                const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
-                await showHelper.addEpisodes(newShow, data, imdb);
-              }
-              break;
+          switch (type) {
+          case Provider.ItemType.MOVIE: {
+            const movieHelper = new MovieHelper(CLI._providerName, AnimeMovie);
+            const newMovie = await movieHelper.getTraktInfo(imdb);
+            if (newMovie && newMovie._id) {
+              const data = await this._getMovieTorrentDataRemote(torrent, quality);
+              await movieHelper.addTorrents(newMovie, data);
+            }
+            break;
+          }
+          case Provider.ItemType.TVSHOW: {
+            const showHelper = new ShowHelper(CLI._providerName, AnimeShow);
+            const newShow = await showHelper.getTraktInfo(imdb);
+            if (newShow && newShow._id) {
+              const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
+              await showHelper.addEpisodes(newShow, data, imdb);
+            }
+            break;
+          }
+          default:
+            console.error('Wrong type specified');
+            process.exit(1);
+            break;
           }
 
           process.exit(0);
@@ -264,7 +272,10 @@ export default class CLI {
     });
   }
 
-  /** Adds a movie to the database through the CLI. */
+  /**
+   * Adds a movie to the database through the CLI.
+   * @returns {void}
+   */
   _moviePrompt() {
     prompt.get(this._movieSchema, async(err, result) => {
       if (err) {
@@ -319,7 +330,10 @@ export default class CLI {
     });
   }
 
-  /** Adds a show to the database through the CLI. */
+  /**
+   * Adds a show to the database through the CLI.
+   * @returns {void}
+   */
   _showPrompt() {
     prompt.get(this._showSchema, async(err, result) => {
       if (err) {
@@ -355,29 +369,33 @@ export default class CLI {
     return importCollection(collection, importing);
   }
 
-  /** Confimation to import a collection */
+  /**
+   * Confimation to import a collection.
+   * @returns {void}
+   */
   _importPrompt() {
     if (process.env.NODE_ENV === 'test') {
       return this._executeImport(program.import)
         .catch(err => console.error(err));
-    } else {
-      prompt.get(this._importSchema, (err, result) => {
-        if (err) {
-          console.error(`An error occured: ${err}`);
-          process.exit(1);
-        } else {
-          if (result.confirm.match(/^(y|yes)/i)) {
-            return this._executeImport(program.import)
-              .catch(err => console.error(err));
-          } else if (result.confirm.match(/^(n|no)/i)) {
-            process.exit(0);
-          }
-        }
-      });
     }
+
+    prompt.get(this._importSchema, (err, result) => {
+      if (err) {
+        console.error(`An error occured: ${err}`);
+        process.exit(1);
+      } else if (result.confirm.match(/^(y|yes)/i)) {
+        return this._executeImport(program.import)
+          .catch(err => console.error(err));
+      } else if (result.confirm.match(/^(n|no)/i)) {
+        process.exit(0);
+      }
+    });
   }
 
-  /** Run the CLI program. */
+  /**
+   * Run the CLI program.
+   * @returns {void}
+   */
   run() {
     if (program.run) {
       new Index({

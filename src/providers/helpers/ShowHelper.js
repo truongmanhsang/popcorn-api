@@ -14,6 +14,7 @@ export default class ShowHelper {
   /**
    * Create an helper object for show content.
    * @param {String} name - The name of the content provider.
+   * @param {Object} [model=Show] - The model to help fill.
    */
   constructor(name, model = Show) {
     /**
@@ -103,14 +104,14 @@ export default class ShowHelper {
       }).exec();
       if (found) {
         logger.info(`${this.name}: '${found.title}' is an existing show.`);
-        for (let i = 0; i < found.episodes.length; i++) {
-          let matching = show.episodes
+        for (let i = 0; i < found.episodes.length; i++) { // eslint-disable-line semi-spacing
+          const matching = show.episodes
             .filter(showEpisode => showEpisode.season === found.episodes[i].season)
             .filter(showEpisode => showEpisode.episode === found.episodes[i].episode);
 
           if (found.episodes[i].first_aired > show.latest_episode) show.latest_episode = found.episodes[i].first_aired;
 
-          if (matching.length != 0) {
+          if (matching.length !== 0) {
             show = this._updateEpisode(matching[0], found.episodes[i], show, '480p');
             show = this._updateEpisode(matching[0], found.episodes[i], show, '720p');
             show = this._updateEpisode(matching[0], found.episodes[i], show, '1080p');
@@ -120,11 +121,11 @@ export default class ShowHelper {
         }
 
         return await this._updateNumSeasons(show);
-      } else {
-        logger.info(`${this.name}: '${show.title}' is a new show!`);
-        const newShow = await new this._model(show).save();
-        return await this._updateNumSeasons(newShow);
       }
+
+      logger.info(`${this.name}: '${show.title}' is a new show!`);
+      const newShow = await new this._model(show).save();
+      return await this._updateNumSeasons(newShow);
     } catch (err) {
       return onError(err);
     }
@@ -136,10 +137,11 @@ export default class ShowHelper {
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
    * @param {String} slug - The slug of the show.
+   * @returns {void}
    */
   async _addSeasonalSeason(show, episodes, seasonNumber, slug) {
     try {
-      seasonNumber = parseInt(seasonNumber);
+      seasonNumber = parseInt(seasonNumber, 10);
       const season = await trakt.seasons.season({
         id: slug,
         season: seasonNumber,
@@ -147,7 +149,7 @@ export default class ShowHelper {
       });
 
       for (let episodeData in season) {
-        episodeData = season[episodeData];
+        episodeData = season[episodeData]; // eslint-disable-line prefer-destructuring
         if (episodes[seasonNumber] && episodes[seasonNumber][episodeData.number]) {
           const episode = {
             tvdb_id: episodeData.ids['tvdb'],
@@ -178,13 +180,14 @@ export default class ShowHelper {
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
    * @param {String} slug - The slug of the show.
+   * @returns {void}
    */
-  async _addDateBasedSeason(show, episodes, seasonNumber, slug) {
+  async _addDateBasedSeason(show, episodes, seasonNumber) {
     try {
       if (show.tvdb_id) {
         const tvdbShow = await tvdb.getSeriesAllById(show.tvdb_id);
         for (let episodeData in tvdbShow.Episodes) {
-          episodeData = tvdbShow.Episodes[episodeData];
+          episodeData = tvdbShow.Episodes[episodeData]; // eslint-disable-line prefer-destructuring
 
           if (episodes[seasonNumber]) {
             Object.keys(episodes[seasonNumber]).map(episodeNumber => {
@@ -232,12 +235,16 @@ export default class ShowHelper {
     };
 
     try {
+      let tmdbPoster, tmdbBackdrop;
+
       const tmdbData = await tmdb.call(`/tv/${tmdb_id}/images`, {});
 
-      let tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null)[0];
+      tmdbPoster = tmdbData['posters'].filter(poster =>
+        poster.iso_639_1 === 'en' || poster.iso_639_1 === null)[0];
       tmdbPoster = tmdb.getImageUrl(tmdbPoster.file_path, 'w500');
 
-      let tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null)[0];
+      tmdbBackdrop = tmdbData['backdrops'].filter(backdrop =>
+        backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null)[0];
       tmdbBackdrop = tmdb.getImageUrl(tmdbBackdrop.file_path, 'w500');
 
       images.banner = tmdbPoster ? tmdbPoster : holder;
@@ -274,7 +281,7 @@ export default class ShowHelper {
             images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
           }
         } catch (err) {
-          onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id | tvdb_id}'`);
+          onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || tvdb_id}'`);
         }
       }
     }
@@ -342,7 +349,7 @@ export default class ShowHelper {
    */
   async addEpisodes(show, episodes, slug) {
     try {
-      const dateBased = episodes.dateBased;
+      const { dateBased } = episodes;
       delete episodes.dateBased;
 
       if (dateBased) {

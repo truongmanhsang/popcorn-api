@@ -247,7 +247,12 @@ export const extratorrentAnimeProviders = [];
 export const extratorrentMovieProviders = [
   // {name: 'ETRG BRRip', query: {with_words: 'etrg x264 brrip'}},
   // {name: 'ETRG BluRay', query: {with_words: 'etrg x264 bluray'}},
-  {name: 'YIFY', query: {with_words: 'x264 yify brrip'}}
+  {
+    name: 'YIFY',
+    query: {
+      with_words: 'x264 yify brrip'
+    }
+  }
 ];
 
 /**
@@ -256,26 +261,106 @@ export const extratorrentMovieProviders = [
  */
 export const extratorrentShowProviders = [
   // 480p
-  {name: 'ETTV LOL', query: {with_words: 'ettv hdtv x264 lol', without: '720p 1080p'}},
-  {name: 'ETTV KILLERS', query: {with_words: 'ettv hdtv x264 killers', without: '720p 1080p'}},
-  {name: 'ETTV 2HD', query: {with_words: 'ettv hdtv x264 2hd', without: '720p 1080p'}},
-  {name: 'ETTV CROOKS', query: {with_words: 'ettv hdtv x264 crooks', without: '720p 1080p'}},
-  {name: 'ETTV FUM', query: {with_words: 'ettv hdtv x264 fum', without: '720p 1080p'}},
-  {name: 'ETTV BATV', query: {with_words: 'ettv hdtv x264 batv', without: '720p 1080p'}},
-  {name: 'ETTV ASAP', query: {with_words: 'ettv hdtv x264 asap', without: '720p 1080p'}},
-  {name: 'ETTV TLA', query: {with_words: 'ettv hdtv x264 tla', without: '720p 1080p'}},
-  {name: 'ETTV W4F', query: {with_words: 'ettv hdtv x264 w4f', without: '720p 1080p'}},
-  {name: 'ETTV EVOLVE', query: {with_words: 'ettv hdtv x264 EVOLVE', without: '720p 1080p'}},
-  {name: 'ETTV ORGANiC', query: {with_words: 'ettv hdtv x264 organic', without: '720p 1080p'}},
-  {name: 'ETTV BAJSKORV', query: {with_words: 'ettv hdtv x264 bajskorv', without: '720p 1080p'}},
-  {name: 'ETTV RiVER', query: {with_words: 'ettv hdtv x264 river', without: '720p 1080p'}},
+  {
+    name: 'ETTV LOL',
+    query: {
+      with_words: 'ettv hdtv x264 lol',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV KILLERS',
+    query: {
+      with_words: 'ettv hdtv x264 killers',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV 2HD',
+    query: {
+      with_words: 'ettv hdtv x264 2hd',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV CROOKS',
+    query: {
+      with_words: 'ettv hdtv x264 crooks',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV FUM',
+    query: {
+      with_words: 'ettv hdtv x264 fum',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV BATV',
+    query: {
+      with_words: 'ettv hdtv x264 batv',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV ASAP',
+    query: {
+      with_words: 'ettv hdtv x264 asap',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV TLA',
+    query: {
+      with_words: 'ettv hdtv x264 tla',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV W4F',
+    query: {
+      with_words: 'ettv hdtv x264 w4f',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV EVOLVE',
+    query: {
+      with_words: 'ettv hdtv x264 EVOLVE',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV ORGANiC',
+    query: {
+      with_words: 'ettv hdtv x264 organic',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV BAJSKORV',
+    query: {
+      with_words: 'ettv hdtv x264 bajskorv',
+      without: '720p 1080p'
+    }
+  }, {
+    name: 'ETTV RiVER',
+    query: {
+      with_words: 'ettv hdtv x264 river',
+      without: '720p 1080p'
+    }
+  },
 
   // 720p
-  {name: 'ETTV 720p', query: {with_words: 'ettv hdtv x264 720p'}},
-  {name: 'ETHD 720p', query: {with_words: 'ethd hdtv x264 720p'}},
+  {
+    name: 'ETTV 720p',
+    query: {
+      with_words: 'ettv hdtv x264 720p'
+    }
+  }, {
+    name: 'ETHD 720p',
+    query: {
+      with_words: 'ethd hdtv x264 720p'
+    }
+  },
 
   // 1080p
-  {name: '1080p', query: {with_words: 'hdtv x264 1080p'}}
+  {
+    name: '1080p',
+    query: {
+      with_words: 'hdtv x264 1080p'
+    }
+  }
 ];
 
 /**
@@ -300,17 +385,54 @@ export const katAnimeProviders = [];
  */
 export const katMovieProviders = [
   // English providers
-  {name: 'Megaradon', query: {query: 'x264 720p | 1080p', uploader: 'megaradon', language: 'en'}},
-  {name: 'Z0n321', query: {query: 'x264 720p | 1080p', uploader: 'z0n321', language: 'en'}},
+  {
+    name: 'Megaradon',
+    query: {
+      query: 'x264 720p | 1080p',
+      uploader: 'megaradon',
+      language: 'en'
+    }
+  }, {
+    name: 'Z0n321',
+    query: {
+      query: 'x264 720p | 1080p',
+      uploader: 'z0n321',
+      language: 'en'
+    }
+  },
 
   // French providers
-  {name: 'French', query: {query: '720p | 1080p', language: 'fr'}},
+  {
+    name: 'French',
+    query: {
+      query: '720p | 1080p',
+      language: 'fr'
+    }
+  },
   // German providers
-  {name: 'German', query: {query: '720p | 1080p', language: 'de'}},
+  {
+    name: 'German',
+    query: {
+      query: '720p | 1080p',
+      language: 'de'
+    }
+  },
   // Spanish providers
-  {name: 'Spanish', query: {query: '720p | 1080p', language: 'es'}},
+  {
+    name: 'Spanish',
+    query: {
+      query: '720p | 1080p',
+      language: 'es'
+    }
+  },
   // Ductch providers
-  {name: 'Dutch', query: {query: '720p | 1080p', language: 'nl'}}
+  {
+    name: 'Dutch',
+    query: {
+      query: '720p | 1080p',
+      language: 'nl'
+    }
+  }
 ];
 
 /**
@@ -319,19 +441,67 @@ export const katMovieProviders = [
  */
 export const katShowProviders = [
   // 720p and 1080p providers
-  {name: 'Zoner720p', query: {query: 'x264 720p', uploader: 'z0n321'}},
-  {name: 'Zoner1080p', query: {query: 'x264 1080p', uploader: 'z0n321'}},
-  {name: 'Brasse0', query: {query: 'x264', uploader: 'brasse0'}},
-  {name: 'ETHD', query: {query: 'x264', uploader: 'ethd'}},
+  {
+    name: 'Zoner720p',
+    query: {
+      query: 'x264 720p',
+      uploader: 'z0n321'
+    }
+  }, {
+    name: 'Zoner1080p',
+    query: {
+      query: 'x264 1080p',
+      uploader: 'z0n321'
+    }
+  }, {
+    name: 'Brasse0',
+    query: {
+      query: 'x264',
+      uploader: 'brasse0'
+    }
+  }, {
+    name: 'ETHD',
+    query: {
+      query: 'x264',
+      uploader: 'ethd'
+    }
+  },
 
   // Uploader providers
-  {name: 'ETTV', query: {query: 'x264', uploader: 'ettv'}},
-  {name: 'KAT_EZTV', query: {query: 'x264', uploader: 'eztv'}},
-  {name: 'VTV', query: {query: 'x264', uploader: 'vtv'}},
-  {name: 'SRIGGA', query: {query: 'x264', uploader: 'ethd'}},
+  {
+    name: 'ETTV',
+    query: {
+      query: 'x264',
+      uploader: 'ettv'
+    }
+  }, {
+    name: 'KAT_EZTV',
+    query: {
+      query: 'x264',
+      uploader: 'eztv'
+    }
+  }, {
+    name: 'VTV',
+    query: {
+      query: 'x264',
+      uploader: 'vtv'
+    }
+  }, {
+    name: 'SRIGGA',
+    query: {
+      query: 'x264',
+      uploader: 'ethd'
+    }
+  },
 
   // Zoner providers
-  {name: 'ZonerSD', query: {query: 'x264 LOL | FLEET | KILLERS | W4F', uploader: 'z0n321'}}
+  {
+    name: 'ZonerSD',
+    query: {
+      query: 'x264 LOL | FLEET | KILLERS | W4F',
+      uploader: 'z0n321'
+    }
+  }
 ];
 
 /**
@@ -339,9 +509,28 @@ export const katShowProviders = [
  * @type {Array}
  */
 export const nyaaAnimeProviders = [
-  {name: 'Commie', query: {term: 'mkv', user: 76430, filter: 'trusted_only'}},
-  {name: 'FFF', query: {term: 'mkv', user: 73859, filter: 'trusted_only'}},
-  {name: 'gg', query: {term: 'mkv', user: 9001, filter: 'trusted_only'}}
+  {
+    name: 'Commie',
+    query: {
+      term: 'mkv',
+      user: 76430,
+      filter: 'trusted_only'
+    }
+  }, {
+    name: 'FFF',
+    query: {
+      term: 'mkv',
+      user: 73859,
+      filter: 'trusted_only'
+    }
+  }, {
+    name: 'gg',
+    query: {
+      term: 'mkv',
+      user: 9001,
+      filter: 'trusted_only'
+    }
+  }
 ];
 
 /**
@@ -385,7 +574,7 @@ export const port = 5000;
  * The promise object to override the mongoose promise object. Default is `global.Promise`.
  * @type {Promise}
  */
-export const Promise = global.Promise;
+export const { Promise } = global;
 
 /**
  * The name of the server. Default is `serv01`.

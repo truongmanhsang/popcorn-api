@@ -1,5 +1,4 @@
 // Import the neccesary modules.
-import asyncq from 'async-q';
 import KatAPI from 'kat-api-pt';
 
 import ShowExtractor from '../extractors/ShowExtractor';

@@ -2,28 +2,35 @@
 import Show from '../models/Show';
 import { pageSize } from '../config/constants';
 
-/** class for getting show data from the MongoDB. */
+/** Class for getting show data from the MongoDB. */
 export default class ShowController {
 
-  /** Create a show controller object. */
-  constructor() {
-    /**
-     * Object used for the projections of shows.
-     * @type {Object}
-     */
-    ShowController._projections = {
-      _id: 1,
-      imdb_id: 1,
-      tvdb_id: 1,
-      title: 1,
-      year: 1,
-      slug: 1,
-      genres: 1,
-      images: 1,
-      rating: 1,
-      num_seasons: 1
-    };
-  }
+  /**
+   * Object to search for shows.
+   * @type {Object}
+   */
+  static query = {
+    num_seasons: {
+      $gt: 0
+    }
+  };
+
+  /**
+   * Object used for the projections of shows.
+   * @type {Object}
+   */
+  static _projections = {
+    _id: 1,
+    imdb_id: 1,
+    tvdb_id: 1,
+    title: 1,
+    year: 1,
+    slug: 1,
+    genres: 1,
+    images: 1,
+    rating: 1,
+    num_seasons: 1
+  };
 
   /**
    * Get all the pages.
@@ -33,15 +40,11 @@ export default class ShowController {
    * @returns {String[]} - A list of pages which are available.
    */
   getShows(req, res, next) {
-    return Show.count({
-      num_seasons: {
-        $gt: 0
-      }
-    }).exec().then(count => {
+    return Show.count(ShowController.query).exec().then(count => {
       const pages = Math.ceil(count / pageSize);
       const docs = [];
 
-      for (let i = 1; i < pages + 1; i++) docs.push(`shows/${i}`);
+      for (let i = 1; i < pages + 1; i++) docs.push(`shows/${i}`); // eslint-disable-line semi-spacing
 
       return res.json(docs);
     }).catch(err => next(err));
@@ -60,89 +63,81 @@ export default class ShowController {
 
     if (req.params.page.match(/all/i)) {
       return Show.aggregate([{
-          $match: {
-            num_seasons: {
-              $gt: 0
-            }
-          }
-        }, {
-          $project: ShowController._projections
-        }, {
-          $sort: {
-            title: -1
-          }
-        }]).exec()
+        $match: ShowController.query
+      }, {
+        $project: ShowController._projections
+      }, {
+        $sort: {
+          title: -1
+        }
+      }]).exec()
         .then(docs => res.json(docs))
         .catch(err => next(err));
-    } else {
-      const query = {
-        num_seasons: {
-          $gt: 0
-        }
+    }
+
+    const query = Object.assign({}, ShowController.query);
+    const data = req.query;
+
+    if (!data.order) data.order = -1;
+
+    let sort = {
+      'rating.votes': parseInt(data.order, 10),
+      'rating.percentage': parseInt(data.order, 10),
+      'rating.watching': parseInt(data.order, 10)
+    };
+
+    if (data.keywords) {
+      const words = data.keywords.split(' ');
+      let regex = '^';
+
+      for (const w in words) {
+        words[w] = words[w].replace(/[^a-zA-Z0-9]/g, '');
+        regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+      }
+
+      query.title = {
+        $regex: new RegExp(`${regex}.*`),
+        $options: 'gi'
       };
-      const data = req.query;
+    }
 
-      if (!data.order) data.order = -1;
-
-      let sort = {
-        'rating.votes': parseInt(data.order, 10),
+    if (data.sort) {
+      if (data.sort.match(/name/i)) sort = {
+        title: (parseInt(data.order, 10) * -1)
+      };
+      if (data.sort.match(/rating/i)) sort = {
         'rating.percentage': parseInt(data.order, 10),
+        'rating.votes': parseInt(data.order, 10)
+      };
+      if (data.sort.match(/trending/i)) sort = {
         'rating.watching': parseInt(data.order, 10)
       };
-
-      if (data.keywords) {
-        const words = data.keywords.split(' ');
-        let regex = '^';
-
-        for (let w in words) {
-          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, '');
-          regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        }
-
-        query.title = {
-          $regex: new RegExp(`${regex}.*`),
-          $options: 'gi'
-        };
-      }
-
-      if (data.sort) {
-        if (data.sort.match(/name/i)) sort = {
-          'title': (parseInt(data.order, 10) * -1)
-        };
-        if (data.sort.match(/rating/i)) sort = {
-          'rating.percentage': parseInt(data.order, 10),
-          'rating.votes': parseInt(data.order, 10)
-        };
-        if (data.sort.match(/trending/i)) sort = {
-          'rating.watching': parseInt(data.order, 10)
-        };
-        if (data.sort.match(/updated/i)) sort = {
-          'latest_episode': parseInt(data.order, 10)
-        };
-        if (data.sort.match(/year/i)) sort = {
-          'year': parseInt(data.order, 10)
-        };
-      }
-
-      if (data.genre && !data.genre.match(/all/i)) {
-        if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i)) data.genre = 'science-fiction';
-        query.genres = data.genre.toLowerCase();
-      }
-
-      return Show.aggregate([{
-          $sort: sort
-        }, {
-          $match: query
-        }, {
-          $project: ShowController._projections
-        }, {
-          $skip: offset
-        }, {
-          $limit: pageSize
-        }]).exec()
-        .then(docs => res.json(docs))
-        .catch(err => res.jfson(err));
+      if (data.sort.match(/updated/i)) sort = {
+        latest_episode: parseInt(data.order, 10)
+      };
+      if (data.sort.match(/year/i)) sort = {
+        year: parseInt(data.order, 10)
+      };
     }
+
+    if (data.genre && !data.genre.match(/all/i)) {
+      if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i)) data.genre = 'science-fiction';
+      query.genres = data.genre.toLowerCase();
+    }
+
+    return Show.aggregate([{
+      $sort: sort
+    }, {
+      $match: query
+    }, {
+      $project: ShowController._projections
+    }, {
+      $skip: offset
+    }, {
+      $limit: pageSize
+    }]).exec()
+      .then(docs => res.json(docs))
+      .catch(err => res.jfson(err));
   }
 
   /**
@@ -154,10 +149,10 @@ export default class ShowController {
    */
   getShow(req, res, next) {
     return Show.findOne({
-        _id: req.params.id
-      }, {
-        latest_episode: 0
-      }).exec()
+      _id: req.params.id
+    }, {
+      latest_episode: 0
+    }).exec()
       .then(docs => res.json(docs))
       .catch(err => next(err));
   }
@@ -171,12 +166,12 @@ export default class ShowController {
    */
   getRandomShow(req, res, next) {
     return Show.aggregate([{
-        $sample: {
-          size: 1
-        }
-      }, {
-        $limit: 1
-      }]).exec()
+      $sample: {
+        size: 1
+      }
+    }, {
+      $limit: 1
+    }]).exec()
       .then(docs => res.json(docs[0]))
       .catch(err => next(err));
   }

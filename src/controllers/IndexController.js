@@ -1,10 +1,13 @@
 // Import the neccesary modules.
+/* eslint-disable no-bitwise */
 import fs from 'fs';
 import path from 'path';
 
 import { AnimeShow as Anime } from '../models/Anime';
 import Movie from '../models/Movie';
 import Show from '../models/Show';
+import AnimeController from './AnimeController';
+import ShowController from './ShowController';
 import { executeCommand } from '../utils';
 import {
   server,
@@ -20,10 +23,6 @@ import {
 
 /** Class for displaying information about the server the API is running on. */
 export default class IndexController {
-
-  /** Create an IndexController object. */
-  constructor() {
-  }
 
   /**
    * Displays a given file.
@@ -41,9 +40,11 @@ export default class IndexController {
           'Content-Type': 'text/plain; charset=UTF-8'
         }
       });
-    } else {
-      return res.json({error: `Could not find file: '${root}'`});
     }
+
+    return res.json({
+      error: `Could not find file: '${root}'`
+    });
   }
 
   /**
@@ -59,21 +60,11 @@ export default class IndexController {
       const { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), 'utf8'));
       const commit = await executeCommand('git rev-parse --short HEAD');
       const totalAnimes = await Anime.count({
-        $or: [{
-          num_seasons: {
-            $gt: 0
-          }
-        }, {
-          num_seasons: {
-            $exists: false
-          }
-        }]
+        $or: AnimeController.query.$or
       }).exec();
       const totalMovies = await Movie.count().exec();
       const totalShows = await Show.count({
-        num_seasons: {
-          $gt: 0
-        }
+        num_seasons: ShowController.query
       }).exec();
 
       return res.json({

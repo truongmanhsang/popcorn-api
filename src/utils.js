@@ -1,7 +1,6 @@
 // Import the neccesary modules.
 import childProcess from 'child_process';
 import fs from 'fs';
-import fse from 'fs-extra';
 import path from 'path';
 
 import { dbName, statusFile, tempDir, updatedFile } from './config/constants';
@@ -10,6 +9,7 @@ import { name } from '../package.json';
 /**
  * Create an emty file.
  * @param {String} path - The path to the file to create.
+ * @returns {void}
  */
 function createEmptyFile(path) {
   fs.createWriteStream(path).end();
@@ -18,6 +18,7 @@ function createEmptyFile(path) {
 /**
  * Removes all the files in the temporary directory.
  * @param {String} [tmpPath=popcorn-api/tmp] - The path to remove all the files within (Default is set in the `config/constants.js`).
+ * @returns {void}
  */
 function resetTemp(tmpPath = tempDir) {
   const files = fs.readdirSync(tmpPath);
@@ -31,7 +32,10 @@ function resetTemp(tmpPath = tempDir) {
   });
 }
 
-/** Create the temporary directory. */
+/**
+ * Create the temporary directory.
+ * @returns {void}
+ */
 export function createTemp() {
   if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
   if (fs.existsSync(tempDir)) resetTemp();
@@ -75,7 +79,7 @@ export function exportCollection(collection) {
  * @returns {Promise} - The output of the mongoimport command.
  */
 export function importCollection(collection, jsonFile) {
-  if (!path.isAbsolute(jsonFile)) jsonFile = path.join(process.cwd(), jsonFile);
+  if (!path.isAbsolute(jsonFile)) jsonFile = path.join(process.cwd(), jsonFile); // eslint-disable-line no-param-reassign
   if (!fs.existsSync(jsonFile)) throw new Error(`Error: no such file found for '${jsonFile}'`);
 
   logger.info(`Importing collection: '${collection}', from: '${jsonFile}'`);
@@ -93,7 +97,10 @@ export function onError(errorMessage) {
   return new Error(errorMessage);
 }
 
-/** Reset the default log file. */
+/**
+ * Reset the default log file.
+ * @returns {void}
+ */
 export function resetLog() {
   const logFile = path.join(tempDir, `${name}.log`);
   if (fs.existsSync(logFile)) fs.unlinkSync(logFile);
@@ -112,6 +119,7 @@ export function search(key, value) {
 /**
  * Updates the `lastUpdated.json` file.
  * @param {String} [updated=Date.now()] - The epoch time when the API last started scraping.
+ * @returns {void}
  */
 export function setLastUpdated(updated = (Math.floor(new Date().getTime() / 1000))) {
   fs.writeFile(path.join(tempDir, updatedFile), JSON.stringify({
@@ -122,6 +130,7 @@ export function setLastUpdated(updated = (Math.floor(new Date().getTime() / 1000
 /**
  * Updates the `status.json` file.
  * @param {String} [status=Idle] - The status which will be set to in the `status.json` file.
+ * @returns {void}
  */
 export function setStatus(status = 'Idle') {
   fs.writeFile(path.join(tempDir, statusFile), JSON.stringify({
@@ -134,9 +143,10 @@ export function setStatus(status = 'Idle') {
  * @param {Object} images - The images.
  * @param {String} holder - The image holder.
  * @throws {Error} - 'An image could not been found'.
+ * @returns {void}
  */
 export function checkImages(images, holder) {
-  for (let image of images) {
+  for (const image of images) {
     if (image === holder) {
       throw new Error('An image could not been found');
     }

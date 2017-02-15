@@ -7,24 +7,36 @@ import { pageSize } from '../config/constants';
 /** Class for getting anime data from the MongoDB. */
 export default class AnimeController {
 
+  static query = {
+    $or: [{
+      num_seasons: {
+        $gt: 0
+      }
+    }, {
+      num_seasons: {
+        $exists: false
+      }
+    }]
+  };
+
   /**
    * Delete properties from an object according to the type.
    * @param {Object} doc - the anime object with all the properties.
    * @returns {Object} doc - the anime object without certain properties.
    */
   static _deleteAccordingToType(doc) {
-    switch(doc.type) {
-      case Provider.ItemType.MOVIE:
-        delete doc.episodes;
-        delete doc.num_seasons;
-        delete doc.status;
-        break;
-      case Provider.ItemType.TVSHOW:
-        delete doc.trailer;
-        delete doc.torrents;
-        break;
-      default:
-        break;
+    switch (doc.type) {
+    case Provider.ItemType.MOVIE:
+      delete doc.episodes;
+      delete doc.num_seasons;
+      delete doc.status;
+      break;
+    case Provider.ItemType.TVSHOW:
+      delete doc.trailer;
+      delete doc.torrents;
+      break;
+    default:
+      break;
     }
 
     return doc;
@@ -38,21 +50,11 @@ export default class AnimeController {
    * @returns {String[]} - A list of pages which are available.
    */
   getAnimes(req, res, next) {
-    return Anime.count({
-      $or: [{
-        num_seasons: {
-          $gt: 0
-        }
-      }, {
-        num_seasons: {
-          $exists: false
-        }
-      }]
-    }).exec().then(count => {
+    return Anime.count(AnimeController.query).exec().then(count => {
       const pages = Math.ceil(count / pageSize);
       const docs = [];
 
-      for (let i = 1; i < pages + 1; i++) docs.push(`animes/${i}`);
+      for (let i = 1; i < pages + 1; i++) docs.push(`animes/${i}`); // eslint-disable-line semi-spacing
 
       return res.json(docs);
     }).catch(err => next(err));
@@ -71,96 +73,76 @@ export default class AnimeController {
 
     if (req.params.page.match(/all/i)) {
       return Anime.aggregate([{
-          $match: {
-            $or: [{
-              num_seasons: {
-                $gt: 0
-              }
-            }, {
-              num_seasons: {
-                $exists: false
-              }
-            }]
-          }
-        }, {
-          $sort: {
-            title: -1
-          }
-        }]).exec().then(docs => {
-          const result = docs.map(doc => AnimeController._deleteAccordingToType(doc));
-          return res.json(result);
-        }).catch(err => next(err));
-    } else {
-      const query = {
-        $or: [{
-          num_seasons: {
-            $gt: 0
-          }
-        }, {
-          num_seasons: {
-            $exists: false
-          }
-        }]
+        $match: AnimeController.query
+      }, {
+        $sort: {
+          title: -1
+        }
+      }]).exec().then(docs => {
+        const result = docs.map(doc => AnimeController._deleteAccordingToType(doc));
+        return res.json(result);
+      }).catch(err => next(err));
+    }
+
+    const query = Object.assign({}, AnimeController.query);
+    const data = req.query;
+
+    if (!data.order) data.order = -1;
+
+    let sort = {
+      'rating.votes': parseInt(data.order, 10),
+      'rating.percentage': parseInt(data.order, 10),
+      'rating.watching': parseInt(data.order, 10)
+    };
+
+    if (data.keywords) {
+      const words = data.keywords.split(' ');
+      let regex = '^';
+
+      for (const w in words) {
+        words[w] = words[w].replace(/[^a-zA-Z0-9]/g, '');
+        regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+      }
+
+      query.title = {
+        $regex: new RegExp(`${regex}.*`),
+        $options: 'gi'
       };
-      const data = req.query;
+    }
 
-      if (!data.order) data.order = -1;
-
-      let sort = {
-        'rating.votes': parseInt(data.order, 10),
+    if (data.sort) {
+      if (data.sort.match(/name/i)) sort = {
+        title: (parseInt(data.order, 10) * -1)
+      };
+      if (data.sort.match(/rating/i)) sort = {
         'rating.percentage': parseInt(data.order, 10),
+        'rating.votes': parseInt(data.order, 10)
+      };
+      if (data.sort.match(/trending/i)) sort = {
         'rating.watching': parseInt(data.order, 10)
       };
-
-      if (data.keywords) {
-        const words = data.keywords.split(' ');
-        let regex = '^';
-
-        for (let w in words) {
-          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, '');
-          regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        }
-
-        query.title = {
-          $regex: new RegExp(`${regex}.*`),
-          $options: 'gi'
-        };
-      }
-
-      if (data.sort) {
-        if (data.sort.match(/name/i)) sort = {
-          'title': (parseInt(data.order, 10) * -1)
-        };
-        if (data.sort.match(/rating/i)) sort = {
-          'rating.percentage': parseInt(data.order, 10),
-          'rating.votes': parseInt(data.order, 10)
-        };
-        if (data.sort.match(/trending/i)) sort = {
-          'rating.watching': parseInt(data.order, 10)
-        };
-        if (data.sort.match(/updated/i)) sort = {
-          'latest_episode': parseInt(data.order, 10)
-        };
-        if (data.sort.match(/year/i)) sort = {
-          'year': parseInt(data.order, 10)
-        };
-      }
-
-      if (data.genre && !data.genre.match(/all/i)) query.genres = data.genre;
-
-      return Anime.aggregate([{
-          $sort: sort
-        }, {
-          $match: query
-        }, {
-          $skip: offset
-        }, {
-          $limit: pageSize
-        }]).exec().then(docs => {
-          const result = docs.map(doc => AnimeController._deleteAccordingToType(doc));
-          return res.json(result);
-        }).catch(err => next(err));
+      if (data.sort.match(/updated/i)) sort = {
+        latest_episode: parseInt(data.order, 10)
+      };
+      if (data.sort.match(/year/i)) sort = {
+        year: parseInt(data.order, 10)
+      };
     }
+
+    if (data.genre && !data.genre.match(/all/i)) query.genres = data.genre;
+
+    return Anime.aggregate([{
+      $sort: sort
+    }, {
+      $match: query
+    }, {
+      $skip: offset
+    }, {
+      $limit: pageSize
+    }]).exec().then(docs => {
+      const result = docs.map(doc => AnimeController._deleteAccordingToType(doc));
+      return res.json(result);
+    }).catch(err => next(err));
   }
 
   /**
@@ -172,19 +154,11 @@ export default class AnimeController {
    */
   getAnime(req, res, next) {
     return Anime.findOne({
-        _id: req.params.id,
-        $or: [{
-          num_seasons: {
-            $gt: 0
-          }
-        }, {
-          num_seasons: {
-            $exists: false
-          }
-        }]
-      }, {
-        latest_episode: 0
-      }).exec()
+      _id: req.params.id,
+      $or: AnimeController.query.$or
+    }, {
+      latest_episode: 0
+    }).exec()
       .then(docs => res.json(AnimeController._deleteAccordingToType(docs)))
       .catch(err => next(err));
   }
@@ -198,24 +172,14 @@ export default class AnimeController {
    */
   getRandomAnime(req, res, next) {
     return Anime.aggregate([{
-        $match: {
-          $or: [{
-            num_seasons: {
-              $gt: 0
-            }
-          }, {
-            num_seasons: {
-              $exists: false
-            }
-          }]
-        }
-      },{
-        $sample: {
-          size: 1
-        }
-      }, {
-        $limit: 1
-      }]).exec()
+      $match: AnimeController.query
+    }, {
+      $sample: {
+        size: 1
+      }
+    }, {
+      $limit: 1
+    }]).exec()
       .then(docs => res.json(AnimeController._deleteAccordingToType(docs[0])))
       .catch(err => next(err));
   }

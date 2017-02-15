@@ -1,5 +1,4 @@
 // Import the neccesary modules.
-import asyncq from 'async-q';
 import NyaaAPI from 'nyaa-api-pt';
 
 import AnimeExtractor from '../extractors/AnimeExtractor';

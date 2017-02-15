@@ -1,5 +1,4 @@
 // Import the neccesary modules.
-import asyncq from 'async-q';
 import ExtraTorrentAPI from 'extratorrent-api';
 
 import MovieExtractor from '../extractors/MovieExtractor';

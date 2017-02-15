@@ -15,9 +15,8 @@ export default class MovieExtractor extends BaseExtractor {
    * Create an extractor object for movie content.
    * @param {String} name - The name of the content provider.
    * @param {Object} contentProvider - The content provider to extract content from.
-   * @param {?Boolean} debug - Debug mode for extra output.
    */
-  constructor(name, contentProvider, debug) {
+  constructor(name, contentProvider) {
     super(name, contentProvider);
 
     /**
@@ -49,12 +48,16 @@ export default class MovieExtractor extends BaseExtractor {
    * @returns {Object} - Information about a movie from the torrent.
    */
   _extractMovie(torrent, language, regex) {
-    let movieTitle = torrent.title.match(regex)[1];
+    let movieTitle, slug;
+
+    movieTitle = torrent.title.match(regex)[1];
     if (movieTitle.endsWith(' ')) movieTitle = movieTitle.substring(0, movieTitle.length - 1);
     movieTitle = movieTitle.replace(/\./g, ' ');
-    let slug = movieTitle.replace(/[^a-zA-Z0-9 ]/gi, '').replace(/\s+/g, '-').toLowerCase();
+
+    slug = movieTitle.replace(/[^a-zA-Z0-9 ]/gi, '').replace(/\s+/g, '-').toLowerCase();
     if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
     slug = slug in movieMap ? movieMap[slug] : slug;
+
     const year = torrent.title.match(regex)[2];
     const quality = torrent.title.match(regex)[3];
 
@@ -100,9 +103,9 @@ export default class MovieExtractor extends BaseExtractor {
       return this._extractMovie(torrent, language, fourKay);
     } else if (torrent.title.match(withYear)) {
       return this._extractMovie(torrent, language, withYear);
-    } else {
-      logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
+
+    logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
   }
 
   /**
@@ -118,13 +121,13 @@ export default class MovieExtractor extends BaseExtractor {
         if (torrent) {
           const movie = this._getMovieData(torrent, language);
           if (movie) {
-            if (movies.length != 0) {
+            if (movies.length !== 0) {
               const { movieTitle, slug, language, quality } = movie;
               const matching = movies
                 .filter(m => m.movieTitle === movieTitle)
                 .filter(m => m.slug === slug);
 
-              if (matching.length != 0) {
+              if (matching.length !== 0) {
                 const index = movies.indexOf(matching[0]);
                 if (!matching[0].torrents[language][quality]) matching[0].torrents[language][quality] = movie.torrents[language][quality];
 
