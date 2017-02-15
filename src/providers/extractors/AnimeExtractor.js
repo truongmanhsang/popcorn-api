@@ -187,9 +187,8 @@ export default class AnimeExtractor extends BaseExtractor {
       provider.query.type = provider.query.type ? provider.query.type : Provider.ItemType.TVSHOW;
 
       const getTotalPages = await this._contentProvider.search(provider.query);
-      const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
+      const totalPages = getTotalPages.total_pages;
       if (!totalPages) return onError(`${this.name}: total_pages returned: '${totalPages}'`);
-      // totalPages = 3; // For testing purposes only.
       logger.info(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);

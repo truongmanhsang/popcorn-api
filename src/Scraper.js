@@ -1,17 +1,15 @@
-
 // Import the neccesary modules.
 import asyncq from 'async-q';
+import ExtraTorrentAPI from 'extratorrent-api';
+import EztvAPI from 'eztv-api-pt';
+import HorribleSubsAPI from 'horriblesubs-api';
+import KatAPI from 'kat-api-pt';
+import NyaaAPI from 'nyaa-api-pt';
+import YtsAPI from 'yts-api-pt';
 
-import EZTV from './providers/shows/EZTV';
-import HorribleSubs from './providers/anime/HorribleSubs';
-import ExtraTorrentAnime from './providers/anime/ExtraTorrent';
-import ExtraTorrentMovie from './providers/movies/ExtraTorrent';
-import ExtraTorrentShow from './providers/shows/ExtraTorrent';
-import KatAnime from './providers/anime/KAT';
-import KatMovie from './providers/movies/KAT';
-import KatShow from './providers/shows/KAT';
-import Nyaa from './providers/anime/Nyaa';
-import YTS from './providers/movies/YTS';
+import BaseTorrentProvider from './providers/BaseTorrentProvider';
+import TorrentProvider from './providers/TorrentProvider';
+
 import {
   exportCollection,
   onError,
@@ -20,202 +18,78 @@ import {
 } from './utils';
 import {
   collections,
-  extratorrentAnimeProviders,
-  extratorrentMovieProviders,
-  extratorrentShowProviders,
-  katAnimeProviders,
-  katMovieProviders,
-  katShowProviders,
-  nyaaAnimeProviders
+  providerConfigs
 } from './config/constants';
 
 /** Class for scraping movies and shows. */
 export default class Scraper {
 
   /**
-   * Create a scraper object.
-   * @param {?Boolean} debug - Debug mode for extra output.
+   * Start show scraping from torrent providers.
+   * @param {Object} Provider - The torrent provider class.
+   * @param {Object} providerConfig - The configuration for
+   * the torrent provider class.
+   * @param {Object} extractor - The object to extract
+   * content information from torrents.
+   * @returns {Object[]} - A list of all the scraped content.
    */
-  constructor(debug) {
-    /**
-     * Debug mode for extra output.
-     * @type {Boolean}
-     */
-    Scraper._debug = debug;
-  }
-
-  /**
-   * Start show scraping from ExtraTorrent.
-   * @returns {Show[]} A list of all the scraped shows.
-   */
-  _scrapeExtraTorrentShows() {
-    return asyncq.concatSeries(extratorrentShowProviders, async provider => {
-      try {
-        setStatus(`Scraping ${provider.name}`);
-        const extratorrentProvider = new ExtraTorrentShow(provider.name);
-        const extratorrentShows = await extratorrentProvider.search(provider);
-        logger.info(`${provider.name}: Done.`);
-        return extratorrentShows;
-      } catch (err) {
-        return onError(err);
-      }
-    });
-  }
-
-  /**
-   * Start scraping from EZTV.
-   * @returns {Show[]} A list of all the scraped shows.
-   */
-  async _scrapeEZTVShows() {
+  async _scrape(Provider, providerConfig, extractor) {
     try {
-      const eztv = new EZTV('EZTV', Scraper._debug);
-      setStatus(`Scraping ${eztv.name}`);
-      const eztvShows = await eztv.search();
-      logger.info(`${eztv.name}: Done.`);
-      return eztvShows;
+      const { name } = providerConfig;
+      setStatus(`Scraping ${name}`);
+
+      const provider = new Provider(name, extractor);
+      const content = await provider.search(providerConfig);
+
+      logger.info(`${name}: Done.`);
+
+      return content;
     } catch (err) {
       return onError(err);
     }
   }
 
   /**
-   * Start show scraping from KAT.
-   * @returns {Show[]} A list of all the scraped shows.
+   * Get a torrent provider based on the name of the site.
+   * @param {String} site - The name of the torrent site.
+   * @returns {Object} - A torrent provider.
    */
-  _scrapeKATShows() {
-    return asyncq.concatSeries(katShowProviders, async provider => {
-      try {
-        setStatus(`Scraping ${provider.name}`);
-        const katProvider = new KatShow(provider.name, Scraper._debug);
-        const katShows = await katProvider.search(provider);
-        logger.info(`${provider.name}: Done.`);
-        return katShows;
-      } catch (err) {
-        return onError(err);
-      }
-    });
+  _getProvider(site) {
+    if (site === 'eztv' || site === 'horriblesubs')
+      return TorrentProvider;
+
+    return BaseTorrentProvider;
   }
 
   /**
-   * Start movie scraping from ExtraTorrent.
-   * @returns {Movie[]} A list of all the scraped movies.
+   * Get a torrent extractor based on the name of the site.
+   * @param {String} site - The name of the torrent site.
+   * @returns {Object} A torrent extractor.
    */
-  _scrapeExtraTorrentMovies() {
-    return asyncq.concatSeries(extratorrentMovieProviders, async provider => {
-      try {
-        setStatus(`Scraping ${provider.name}`);
-        const extratorrentProvider = new ExtraTorrentMovie(provider.name, Scraper._debug);
-        const extratorrentMovies = await extratorrentProvider.search(provider);
-        logger.info(`${provider.name}: Done.`);
-        return extratorrentMovies;
-      } catch (err) {
-        return onError(err);
-      }
-    });
-  }
-
-  /**
-   * Start movie scraping from KAT.
-   * @returns {Movie[]} A list of all the scraped movies.
-   */
-  _scrapeKATMovies() {
-    return asyncq.concatSeries(katMovieProviders, async provider => {
-      try {
-        setStatus(`Scraping ${provider.name}`);
-        const katProvider = new KatMovie(provider.name, Scraper._debug);
-        const katShows = await katProvider.search(provider);
-        logger.info(`${provider.name}: Done.`);
-        return katShows;
-      } catch (err) {
-        return onError(err);
-      }
-    });
-  }
-
-  /**
-   * Start scraping from YTS.
-   * @returns {Movie[]} A list of all the scraped movies.
-   */
-  async _scrapeYTSMovies() {
-    try {
-      const yts = new YTS('YTS');
-      setStatus(`Scraping ${yts.name}`);
-      const ytsMovies = await yts.search();
-      logger.info(`${yts.name}: Done.`);
-      return ytsMovies;
-    } catch (err) {
-      return onError(err);
+  _getExtractor(site) {
+    switch (site) {
+    case 'eztv': {
+      return new EztvAPI();
     }
-  }
-
-  /**
-   * Start anime scraping from ExtraTorrent.
-   * @returns {Anime[]} A list of all the scraped movies.
-   */
-  _scrapeExtraTorrentAnime() {
-    return asyncq.concatSeries(extratorrentAnimeProviders, async provider => {
-      try {
-        setStatus(`Scraping ${provider.name}`);
-        const extratorrentProvider = new ExtraTorrentAnime(provider.name, Scraper._debug);
-        const extratorrentAnimes = await extratorrentProvider.search(provider);
-        logger.info(`${provider.name}: Done.`);
-        return extratorrentAnimes;
-      } catch (err) {
-        return onError(err);
-      }
-    });
-  }
-
-  /**
-   * Start scraping from HorribleSubs.
-   * @returns {Anime[]} A list of all the scraped anime.
-   */
-  async _scrapeHorribleSubsAnime() {
-    try {
-      const horribleSubs = new HorribleSubs('HorribleSubs', Scraper._debug);
-      setStatus(`Scraping ${horribleSubs.name}`);
-      const horribleSubsAnime = await horribleSubs.search();
-      logger.info(`${horribleSubs.name}: Done.`);
-      return horribleSubsAnime;
-    } catch (err) {
-      return onError(err);
+    case 'extratorrent': {
+      return new ExtraTorrentAPI();
     }
-  }
-
-  /**
-   * Start scraping from KAT.
-   * @returns {Anime[]} A list of all the scraped anime.
-   */
-  _scrapeKATAnime() {
-    return asyncq.concatSeries(katAnimeProviders, async provider => {
-      try {
-        setStatus(`Scraping ${provider.name}`);
-        const katProvider = new KatAnime(provider.name, Scraper._debug);
-        const katAnimes = await katProvider.search(provider);
-        logger.info(`${provider.name}: Done.`);
-        return katAnimes;
-      } catch (err) {
-        return onError(err);
-      }
-    });
-  }
-
-  /**
-   * Start scraping from Nyaa.
-   * @returns {Anime[]} A list of all the scraped anime.
-   */
-  _scrapeNyaaAnime() {
-    return asyncq.concatSeries(nyaaAnimeProviders, async provider => {
-      try {
-        setStatus(`Scraping ${provider.name}`);
-        const nyaaProvider = new Nyaa(provider.name, Scraper._debug);
-        const nyaaAnimes = await nyaaProvider.search(provider);
-        logger.info(`${provider.name}: Done.`);
-        return nyaaAnimes;
-      } catch (err) {
-        return onError(err);
-      }
-    });
+    case 'horriblesubs': {
+      return new HorribleSubsAPI();
+    }
+    case 'kat': {
+      return new KatAPI();
+    }
+    case 'nyaa': {
+      return new NyaaAPI();
+    }
+    case 'yts': {
+      return new YtsAPI();
+    }
+    default: {
+      return new Error(`${site} is not a supported site!`);
+    }
+    }
   }
 
   /**
@@ -225,21 +99,14 @@ export default class Scraper {
   scrape() {
     setLastUpdated();
 
-    asyncq.eachSeries([
-      this._scrapeEZTVShows,
-      this._scrapeExtraTorrentShows,
-      // this._scrapeKATShows,
+    asyncq.eachSeries(providerConfigs, providerConfig => {
+      const { site } = providerConfig;
 
-      this._scrapeExtraTorrentMovies,
-      // this._scrapeKATMovies,
-      this._scrapeYTSMovies,
+      const provider = this._getProvider(site);
+      const extractor = this._getExtractor(site);
 
-      this._scrapeExtraTorrentAnime,
-      this._scrapeHorribleSubsAnime,
-      // this._scrapeKATAnime,
-      this._scrapeNyaaAnime
-    ], scraper => scraper())
-      .then(() => setStatus())
+      return this._scrape(provider, providerConfig, extractor);
+    }).then(() => setStatus())
       .then(() => asyncq.eachSeries(collections, collection => exportCollection(collection)))
       .catch(err => onError(`Error while scraping: ${err}`));
   }

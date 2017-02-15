@@ -17,7 +17,8 @@ function createEmptyFile(path) {
 
 /**
  * Removes all the files in the temporary directory.
- * @param {String} [tmpPath=popcorn-api/tmp] - The path to remove all the files within (Default is set in the `config/constants.js`).
+ * @param {String} [tmpPath=popcorn-api/tmp] - The path to remove all the files
+ * within (Default is set in the `config/constants.js`).
  * @returns {void}
  */
 function resetTemp(tmpPath = tempDir) {
@@ -118,7 +119,8 @@ export function search(key, value) {
 
 /**
  * Updates the `lastUpdated.json` file.
- * @param {String} [updated=Date.now()] - The epoch time when the API last started scraping.
+ * @param {String} [updated=Date.now()] - The epoch time when the API last
+ * started scraping.
  * @returns {void}
  */
 export function setLastUpdated(updated = (Math.floor(new Date().getTime() / 1000))) {
@@ -129,7 +131,8 @@ export function setLastUpdated(updated = (Math.floor(new Date().getTime() / 1000
 
 /**
  * Updates the `status.json` file.
- * @param {String} [status=Idle] - The status which will be set to in the `status.json` file.
+ * @param {String} [status=Idle] - The status which will be set to in the
+ * `status.json` file.
  * @returns {void}
  */
 export function setStatus(status = 'Idle') {

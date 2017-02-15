@@ -155,9 +155,9 @@ export default class MovieExtractor extends BaseExtractor {
   async search(provider) {
     try {
       const getTotalPages = await this._contentProvider.search(provider.query);
-      const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
+      let totalPages = getTotalPages.total_pages ? getTotalPages.total_pages : Math.ceil(getTotalPages.data.movie_count / 50);
+
       if (!totalPages) return onError(`${this.name}: total_pages returned: '${totalPages}'`);
-      // totalPages = 3; // For testing purposes only.
       logger.info(`${this.name}: Total pages ${totalPages}`);
 
       const torrents = await this._getAllTorrents(totalPages, provider);

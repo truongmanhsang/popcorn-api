@@ -6,6 +6,102 @@ import TMDB from 'themoviedbclient';
 import Trakt from 'trakt.tv';
 import TVDB from 'node-tvdb';
 
+const _sites = {
+  extratorrent: 'extratorrent',
+  eztv: 'eztv',
+  horriblesubs: 'horriblesubs',
+  kat: 'kat',
+  nyaa: 'nyaa',
+  yts: 'yts'
+};
+
+/**
+ *
+ * @type {Object}
+ */
+const _page = {
+  page: 1
+};
+
+const _language = {
+  language: 'en'
+};
+
+/**
+ *
+ * @type {Object}
+ */
+const _katVerified = {
+  verified: 1,
+  adult_filter:  1
+};
+
+/**
+ * The default query object for extratorrent shows.
+ * @type {Object}
+ */
+const _defaultExtraTorrentShow = Object.assign(_page, {
+  category: 'tv'
+});
+
+/**
+ *
+ * @type {Object}
+ */
+const _defaultKatShow = Object.assign(_page, _language, _katVerified, {
+  category: 'tv'
+});
+
+/**
+ *
+ * @type {Object}
+ */
+const _defaultExtraTorrentMovie = Object.assign(_page, _language, {
+  category: 'movies'
+});
+
+/**
+ *
+ * @type {Object}
+ */
+const _defaultKatMovie = Object.assign(_page, _language, _katVerified, {
+  category: 'movies'
+});
+
+/**
+ *
+ * @type {Object}
+ */
+const _defaultYTSMovie = Object.assign(_page, {
+  limit: 50
+});
+
+// /**
+//  *
+//  * @type {Object}
+//  */
+// const _defaultExtraTorrentAnime = Object.assign(_page, {
+//   category: 'anime'
+// });
+//
+// /**
+//  *
+//  * @type {Object}
+//  */
+// const _defaultKatAnime = Object.assign(_page, _katVerified, {
+//   category: 'english-translated'
+// });
+
+/**
+ *
+ * @type {Object}
+ */
+const _defaultNyaaAnime = {
+  category: 'anime',
+  sub_category: 'english_translated',
+  offset: 1
+}
+
 /**
  * Map object for correcting anime slugs.
  * @type {Object}
@@ -214,7 +310,11 @@ export const animeMap = {
  * An array of the supported collections for mongodb.
  * @type {Array}
  */
-export const collections = ['anime', 'movie', 'show'];
+export const collections = [
+  'anime',
+  'movie',
+  'show'
+];
 
 /**
  * The cron time for scraping torrents. Default is `0 0 *\/6 * * *`.
@@ -235,135 +335,6 @@ export const dbHosts = ['localhost'];
 export const dbName = 'popcorn';
 
 /**
- * The providers for scraping ExtraTorrent for anime.
- * @type {Array}
- */
-export const extratorrentAnimeProviders = [];
-
-/**
- * The providers for scraping ExtraTorrent for movies.
- * @type {Array}
- */
-export const extratorrentMovieProviders = [
-  // {name: 'ETRG BRRip', query: {with_words: 'etrg x264 brrip'}},
-  // {name: 'ETRG BluRay', query: {with_words: 'etrg x264 bluray'}},
-  {
-    name: 'YIFY',
-    query: {
-      with_words: 'x264 yify brrip'
-    }
-  }
-];
-
-/**
- * The providers for scraping ExtraTorrent for shows.
- * @type {Array}
- */
-export const extratorrentShowProviders = [
-  // 480p
-  {
-    name: 'ETTV LOL',
-    query: {
-      with_words: 'ettv hdtv x264 lol',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV KILLERS',
-    query: {
-      with_words: 'ettv hdtv x264 killers',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV 2HD',
-    query: {
-      with_words: 'ettv hdtv x264 2hd',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV CROOKS',
-    query: {
-      with_words: 'ettv hdtv x264 crooks',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV FUM',
-    query: {
-      with_words: 'ettv hdtv x264 fum',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV BATV',
-    query: {
-      with_words: 'ettv hdtv x264 batv',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV ASAP',
-    query: {
-      with_words: 'ettv hdtv x264 asap',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV TLA',
-    query: {
-      with_words: 'ettv hdtv x264 tla',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV W4F',
-    query: {
-      with_words: 'ettv hdtv x264 w4f',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV EVOLVE',
-    query: {
-      with_words: 'ettv hdtv x264 EVOLVE',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV ORGANiC',
-    query: {
-      with_words: 'ettv hdtv x264 organic',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV BAJSKORV',
-    query: {
-      with_words: 'ettv hdtv x264 bajskorv',
-      without: '720p 1080p'
-    }
-  }, {
-    name: 'ETTV RiVER',
-    query: {
-      with_words: 'ettv hdtv x264 river',
-      without: '720p 1080p'
-    }
-  },
-
-  // 720p
-  {
-    name: 'ETTV 720p',
-    query: {
-      with_words: 'ettv hdtv x264 720p'
-    }
-  }, {
-    name: 'ETHD 720p',
-    query: {
-      with_words: 'ethd hdtv x264 720p'
-    }
-  },
-
-  // 1080p
-  {
-    name: '1080p',
-    query: {
-      with_words: 'hdtv x264 1080p'
-    }
-  }
-];
-
-/**
  * A configured Fanart API.
  * @type {Trakt}
  * @see https://github.com/vankasteelj/trakt.tv
@@ -372,166 +343,6 @@ export const extratorrentShowProviders = [
 export const fanart = new Fanart({
   api_key: 'bd2753f04538b01479e39e695308b921'
 });
-
-/**
- * The providers for scraping KAT for anime.
- * @type {Array}
- */
-export const katAnimeProviders = [];
-
-/**
- * The providers for scraping KAT for movies.
- * @type {Array}
- */
-export const katMovieProviders = [
-  // English providers
-  {
-    name: 'Megaradon',
-    query: {
-      query: 'x264 720p | 1080p',
-      uploader: 'megaradon',
-      language: 'en'
-    }
-  }, {
-    name: 'Z0n321',
-    query: {
-      query: 'x264 720p | 1080p',
-      uploader: 'z0n321',
-      language: 'en'
-    }
-  },
-
-  // French providers
-  {
-    name: 'French',
-    query: {
-      query: '720p | 1080p',
-      language: 'fr'
-    }
-  },
-  // German providers
-  {
-    name: 'German',
-    query: {
-      query: '720p | 1080p',
-      language: 'de'
-    }
-  },
-  // Spanish providers
-  {
-    name: 'Spanish',
-    query: {
-      query: '720p | 1080p',
-      language: 'es'
-    }
-  },
-  // Ductch providers
-  {
-    name: 'Dutch',
-    query: {
-      query: '720p | 1080p',
-      language: 'nl'
-    }
-  }
-];
-
-/**
- * The providers for scraping KAT for shows.
- * @type {Array}
- */
-export const katShowProviders = [
-  // 720p and 1080p providers
-  {
-    name: 'Zoner720p',
-    query: {
-      query: 'x264 720p',
-      uploader: 'z0n321'
-    }
-  }, {
-    name: 'Zoner1080p',
-    query: {
-      query: 'x264 1080p',
-      uploader: 'z0n321'
-    }
-  }, {
-    name: 'Brasse0',
-    query: {
-      query: 'x264',
-      uploader: 'brasse0'
-    }
-  }, {
-    name: 'ETHD',
-    query: {
-      query: 'x264',
-      uploader: 'ethd'
-    }
-  },
-
-  // Uploader providers
-  {
-    name: 'ETTV',
-    query: {
-      query: 'x264',
-      uploader: 'ettv'
-    }
-  }, {
-    name: 'KAT_EZTV',
-    query: {
-      query: 'x264',
-      uploader: 'eztv'
-    }
-  }, {
-    name: 'VTV',
-    query: {
-      query: 'x264',
-      uploader: 'vtv'
-    }
-  }, {
-    name: 'SRIGGA',
-    query: {
-      query: 'x264',
-      uploader: 'ethd'
-    }
-  },
-
-  // Zoner providers
-  {
-    name: 'ZonerSD',
-    query: {
-      query: 'x264 LOL | FLEET | KILLERS | W4F',
-      uploader: 'z0n321'
-    }
-  }
-];
-
-/**
- * The providers for scraping Nyaa for anime.
- * @type {Array}
- */
-export const nyaaAnimeProviders = [
-  {
-    name: 'Commie',
-    query: {
-      term: 'mkv',
-      user: 76430,
-      filter: 'trusted_only'
-    }
-  }, {
-    name: 'FFF',
-    query: {
-      term: 'mkv',
-      user: 73859,
-      filter: 'trusted_only'
-    }
-  }, {
-    name: 'gg',
-    query: {
-      term: 'mkv',
-      user: 9001,
-      filter: 'trusted_only'
-    }
-  }
-];
 
 /**
  * A configured OMDB API.
@@ -575,6 +386,304 @@ export const port = 5000;
  * @type {Promise}
  */
 export const { Promise } = global;
+
+/**
+ * The providers for scraping torrents.
+ * @type {Array}
+ */
+export const providerConfigs = [
+  // EZTV Shows
+  {
+    site: _sites.eztv,
+    name: 'EZTV'
+  },
+  // ExtraTorrent Shows
+  // 480p
+  {
+    site: _sites.extratorrent,
+    name: 'ETTV LOL',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 lol',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV KILLERS',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 killers',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV 2HD',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 2hd',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV CROOKS',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 crooks',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV FUM',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 fum',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV BATV',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 batv',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV ASAP',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 asap',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV TLA',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 tla',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV W4F',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 w4f',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV EVOLVE',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 EVOLVE',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV ORGANiC',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 organic',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV BAJSKORV',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 bajskorv',
+      without: '720p 1080p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETTV RiVER',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 river',
+      without: '720p 1080p'
+    })
+  },
+  // 720p
+  {
+    site: _sites.extratorrent,
+    name: 'ETTV 720p',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ettv hdtv x264 720p'
+    })
+  }, {
+    site: _sites.extratorrent,
+    name: 'ETHD 720p',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'ethd hdtv x264 720p'
+    })
+  },
+  // 1080p
+  {
+    site: _sites.extratorrent,
+    name: '1080p',
+    query: Object.assign(_defaultExtraTorrentShow, {
+      with_words: 'hdtv x264 1080p'
+    })
+  },
+  // KAT Shows
+  // 720p and 1080p providers
+  {
+    site: _sites.kat,
+    name: 'Zoner720p',
+    query: Object.assign(_defaultKatShow, {
+      query: 'x264 720p',
+      uploader: 'z0n321'
+    })
+  }, {
+    site: _sites.kat,
+    name: 'Zoner1080p',
+    query: Object.assign(_defaultKatShow, {
+      query: 'x264 1080p',
+      uploader: 'z0n321'
+    })
+  }, {
+    site: _sites.kat,
+    name: 'Brasse0',
+    query: Object.assign(_defaultKatShow, {
+      query: 'x264',
+      uploader: 'brasse0'
+    })
+  }, {
+    site: _sites.kat,
+    name: 'ETHD',
+    query: Object.assign(_defaultKatShow, {
+      query: 'x264',
+      uploader: 'ethd'
+    })
+  },
+  // Uploader providers
+  {
+    site: _sites.kat,
+    name: 'ETTV',
+    query: Object.assign(_defaultKatShow, {
+      query: 'x264',
+      uploader: 'ettv'
+    })
+  }, {
+    site: _sites.kat,
+    name: 'KAT_EZTV',
+    query: Object.assign(_defaultKatShow, {
+      query: 'x264',
+      uploader: 'eztv'
+    })
+  }, {
+    site: _sites.kat,
+    name: 'VTV',
+    query: Object.assign(_defaultKatShow, {
+      query: 'x264',
+      uploader: 'vtv'
+    })
+  }, {
+    site: _sites.kat,
+    name: 'SRIGGA',
+    query: Object.assign(_defaultKatShow, {
+      query: 'x264',
+      uploader: 'ethd'
+    })
+  },
+  // Zoner providers
+  {
+    site: _sites.kat,
+    name: 'ZonerSD',
+    query: Object.assign(_defaultKatShow, {
+      query: 'x264 LOL | FLEET | KILLERS | W4F',
+      uploader: 'z0n321'
+    })
+  },
+  // ExtraTorrent Movies
+  // {name: 'ETRG BRRip', query: {with_words: 'etrg x264 brrip'}},
+  // {name: 'ETRG BluRay', query: {with_words: 'etrg x264 bluray'}},
+  {
+    site: _sites.extratorrent,
+    name: 'YIFY',
+    query: Object.assign(_defaultExtraTorrentMovie, {
+      with_words: 'x264 yify brrip'
+    })
+  },
+  // KAT Movies
+  // English providers
+  {
+    site: _sites.kat,
+    name: 'Megaradon',
+    query: Object.assign(_defaultKatMovie, {
+      query: 'x264 720p | 1080p',
+      uploader: 'megaradon',
+      language: 'en'
+    })
+  }, {
+    site: _sites.kat,
+    name: 'Z0n321',
+    query: Object.assign(_defaultKatMovie, {
+      query: 'x264 720p | 1080p',
+      uploader: 'z0n321',
+      language: 'en'
+    })
+  },
+  // French providers
+  {
+    site: _sites.kat,
+    name: 'French',
+    query: Object.assign(_defaultKatMovie, {
+      query: '720p | 1080p',
+      language: 'fr'
+    })
+  },
+  // German providers
+  {
+    site: _sites.kat,
+    name: 'German',
+    query: Object.assign(_defaultKatMovie, {
+      query: '720p | 1080p',
+      language: 'de'
+    })
+  },
+  // Spanish providers
+  {
+    site: _sites.kat,
+    name: 'Spanish',
+    query: Object.assign(_defaultKatMovie, {
+      query: '720p | 1080p',
+      language: 'es'
+    })
+  },
+  // Ductch providers
+  {
+    site: _sites.kat,
+    name: 'Dutch',
+    query: Object.assign(_defaultKatMovie, {
+      query: '720p | 1080p',
+      language: 'nl'
+    })
+  },
+  {
+    site: _sites.yts,
+    name: 'YTS',
+    query: _defaultYTSMovie
+  },
+  {
+    site: _sites.horriblesubs,
+    name: 'HorribleSubs'
+  },
+  // Nyaa Anime
+  {
+    site: _sites.nyaa,
+    name: 'Commie',
+    query: Object.assign(_defaultNyaaAnime, {
+      term: 'mkv',
+      user: 76430,
+      filter: 'trusted_only'
+    })
+  }, {
+    site: _sites.nyaa,
+    name: 'FFF',
+    query: Object.assign(_defaultNyaaAnime, {
+      term: 'mkv',
+      user: 73859,
+      filter: 'trusted_only'
+    })
+  }, {
+    site: _sites.nyaa,
+    name: 'gg',
+    query: Object.assign(_defaultNyaaAnime, {
+      term: 'mkv',
+      user: 9001,
+      filter: 'trusted_only'
+    })
+  }
+];
 
 /**
  * The name of the server. Default is `serv01`.
