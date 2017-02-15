@@ -10,9 +10,8 @@ export default class KAT {
   /**
    * Create a kat object for anime content.
    * @param {String} name - The name of the content provider.
-   * @param {?Boolean} debug - Debug mode for extra output.
    */
-  constructor(name, debug) {
+  constructor(name) {
     /**
      * The name of the torrent provider.
      * @type {String}
@@ -23,7 +22,7 @@ export default class KAT {
      * The extractor object for getting anime data on torrents.
      * @type {AnimeExtractor}
      */
-    this._extractor = new AnimeExtractor(this.name, new KatAPI({ debug }), debug);
+    this._extractor = new AnimeExtractor(this.name, new KatAPI());
   }
 
   /**

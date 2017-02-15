@@ -10,8 +10,9 @@ export default class ExtraTorrent {
    /**
     * Create an extratorrent object for anime content.
     * @param {String} name - The name of the content provider.
+    * @param {?Boolean} debug - Debug mode for extra output.
     */
-  constructor(name) {
+  constructor(name, debug) {
     /**
      * The name of the torrent provider.
      * @type {String}
@@ -22,7 +23,7 @@ export default class ExtraTorrent {
      * The extractor object for getting anime data on torrents.
      * @type {AnimeExtractor}
      */
-    this._extractor = new AnimeExtractor(this.name, new ExtraTorrentAPI());
+    // this._extractor = 
   }
 
   /**
@@ -33,9 +34,6 @@ export default class ExtraTorrent {
   async search(provider) {
     try {
       logger.info(`${this.name}: Starting scraping...`);
-      provider.query.category = 'anime';
-      provider.query.page = 1;
-
       return await this._extractor.search(provider);
     } catch (err) {
       return onError(err);

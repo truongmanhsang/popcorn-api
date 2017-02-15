@@ -10,9 +10,8 @@ export default class KAT {
   /**
    * Create a kat object for movie content.
    * @param {String} name - The name of the content provider.
-   * @param {?Boolean} debug - Debug mode for extra output.
    */
-  constructor(name, debug) {
+  constructor(name) {
     /**
      * The name of the torrent provider.
      * @type {String}
@@ -23,8 +22,8 @@ export default class KAT {
      * The extractor object for getting show data on torrents.
      * @type {MovieExtractor}
      */
-    this._extractor = new MovieExtractor(this.name, new KatAPI({ debug }), debug);
-  };
+    this._extractor = new MovieExtractor(this.name, new KatAPI());
+  }
 
   /**
    * Returns a list of all the inserted torrents.

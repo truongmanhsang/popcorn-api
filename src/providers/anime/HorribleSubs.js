@@ -12,9 +12,8 @@ export default class HorribleSubs {
   /**
    * Create an horriblesubs object for anime content.
    * @param {String} name - The name of the content provider.
-   * @param {?Boolean} debug - Debug mode for extra output.
    */
-  constructor(name, debug) {
+  constructor(name) {
     /**
      * The name of the torrent provider.
      * @type {String}
@@ -26,13 +25,13 @@ export default class HorribleSubs {
      * @type {HorribleSubsAPI}
      * @see https://github.com/ChrisAlderson/horriblesubs-api
      */
-    this._horriblesubs = new HorribleSubsAPI({ debug });
+    this._horriblesubs = new HorribleSubsAPI();
 
     /**
      * The extractor object for getting show data on torrents.
      * @type {AnimeExtractor}
      */
-    this._extractor = new AnimeExtractor(this.name, this._horriblesubs, debug);
+    this._extractor = new AnimeExtractor(this.name, this._horriblesubs);
   }
 
   /**

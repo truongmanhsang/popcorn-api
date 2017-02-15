@@ -12,9 +12,8 @@ export default class EZTV {
   /**
    * Create an eztv object for show content.
    * @param {String} name - The name of the torrent provider.
-   * @param {?Boolean} debug - Debug mode for extra output.
    */
-  constructor(name, debug) {
+  constructor(name) {
     /**
      * The name of the torrent provider.
      * @type {String}
@@ -26,13 +25,13 @@ export default class EZTV {
      * @type {EztvAPI}
      * @see https://github.com/ChrisAlderson/eztv-api-pt
      */
-    this._eztv = new EztvAPI({ debug });
+    this._eztv = new EztvAPI();
 
     /**
      * The extractor object for getting show data on torrents.
      * @type {ShowExtractor}
      */
-    this._extractor = new ShowExtractor(this.name, this._eztv, debug);
+    this._extractor = new ShowExtractor(this.name, this._eztv);
   }
 
   /**

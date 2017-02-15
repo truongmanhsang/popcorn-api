@@ -10,9 +10,8 @@ export default class ExtraTorrent {
   /**
    * Create an extratorrent object for movie content.
    * @param {String} name - The name of the content provider.
-   * @param {?Boolean} debug - Debug mode for extra output.
    */
-  constructor(name, debug) {
+  constructor(name) {
     /**
      * The name of the torrent provider.
      * @type {String}
@@ -23,7 +22,7 @@ export default class ExtraTorrent {
      * The extractor object for getting movie data on torrents.
      * @type {MovieExtractor}
      */
-    this._extractor = new MovieExtractor(this.name, new ExtraTorrentAPI({ debug }), debug);
+    this._extractor = new MovieExtractor(this.name, new ExtraTorrentAPI());
   }
 
   /**
