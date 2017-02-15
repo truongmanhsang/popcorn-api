@@ -40,21 +40,24 @@ export default class AnimeExtractor extends BaseExtractor {
    */
   async getAnime(anime) {
     try {
+      let newAnime;
       switch (anime.type) {
-      case Provider.ItemType.MOVIE:
-        let newAnime = await this._movieHhelper.getTraktInfo(anime.slugYear);
+      case Provider.ItemType.MOVIE: {
+        newAnime = await this._movieHhelper.getTraktInfo(anime.slugYear);
         if (newAnime && newAnime._id) return await this._movieHhelper.addTorrents(newAnime, anime.torrents);
         break;
-      case Provider.ItemType.TVSHOW:
+      }
+      case Provider.ItemType.TVSHOW: {
         newAnime = await this._showHelper.getTraktInfo(anime.slug);
         if (newAnime && newAnime._id) {
           delete anime.episodes[0];
           return await this._showHelper.addEpisodes(newAnime, anime.episodes, anime.slug);
         }
         break;
-      default:
-        return onEror(`${anime.type} is not supported, '${anime.slug}'`);
-        break;
+      }
+      default: {
+        return onError(`${anime.type} is not supported, '${anime.slug}'`);
+      }
       }
     } catch (err) {
       return onError(err);
@@ -69,7 +72,7 @@ export default class AnimeExtractor extends BaseExtractor {
    * @returns {Object} - Information about an anime from the torrent.
    */
   _extractAnime(torrent, regex, type) {
-    let animeTitile, slug, episode;
+    let animeTitle, slug, episode;
 
     animeTitle = torrent.title.match(regex)[1];
     if (animeTitle.endsWith(' ')) animeTitle = animeTitle.substring(0, animeTitle.length - 1);
