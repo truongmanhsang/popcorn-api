@@ -70,7 +70,8 @@ export function exportCollection(collection) {
   const jsonFile = path.join(tempDir, `${collection}s.json`);
   logger.info(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
 
-  return executeCommand(`mongoexport --db ${dbName} --collection ${collection}s --out '${jsonFile}'`);
+  const cmd = `mongoexport --db ${dbName} --collection ${collection}s --out '${jsonFile}'`;
+  return executeCommand(cmd);
 }
 
 /**
@@ -80,12 +81,15 @@ export function exportCollection(collection) {
  * @returns {Promise} - The output of the mongoimport command.
  */
 export function importCollection(collection, jsonFile) {
-  if (!path.isAbsolute(jsonFile)) jsonFile = path.join(process.cwd(), jsonFile); // eslint-disable-line no-param-reassign
-  if (!fs.existsSync(jsonFile)) throw new Error(`Error: no such file found for '${jsonFile}'`);
+  if (!path.isAbsolute(jsonFile))
+    jsonFile = path.join(process.cwd(), jsonFile); // eslint-disable-line no-param-reassign
+  if (!fs.existsSync(jsonFile))
+    throw new Error(`Error: no such file found for '${jsonFile}'`);
 
   logger.info(`Importing collection: '${collection}', from: '${jsonFile}'`);
 
-  return executeCommand(`mongoimport --db ${dbName} --collection ${collection}s --file '${jsonFile}' --upsert`);
+  const cmd = `mongoimport --db ${dbName} --collection ${collection}s --file '${jsonFile}' --upsert`;
+  return executeCommand(cmd);
 }
 
 /**
