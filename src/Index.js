@@ -50,7 +50,7 @@ export default class Index {
    * @param {Boolean} [config.pretty=true] - Pretty output with Winston logging.
    * @param {Boolean} [config.verbose=false] - Debug mode for no output.
    */
-  constructor({start = true, pretty = true, verbose = false} = {}) { // eslint-disable-line object-curly-spacing
+  constructor({start = true, pretty = true, verbose = false} = {}) {
     // The express object.
     const _app = new Express();
 

@@ -65,7 +65,6 @@ module.exports = {
     'no-tabs': 'warn',
     'no-trailing-spaces': 'warn',
     'no-whitespace-before-property': 'error',
-    'object-curly-spacing': ['warn', 'always'],
     'one-var': ['warn', {
       var: 'never',
       let: 'always',
