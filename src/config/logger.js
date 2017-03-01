@@ -121,10 +121,12 @@ export function createExpressWinston() {
 }
 
 /**
- * Function to create a global logger object based on the properties of the logger function.
+ * Function to create a global logger object based on the properties of the
+ * logger function.
  * @param {?Boolean} [pretty] - Pretty mode for output with colors.
  * @param {?Boolean} [verbose] - Debug mode for no output.
- * @param {?winston} [winston=_createWinston()] - The Winston object to create a global logger.
+ * @param {?winston} [winston=_createWinston()] - The Winston object to create
+ * a global logger.
  * @returns {void}
  */
 export function createLogger(pretty, verbose, winston = _createWinston()) {
