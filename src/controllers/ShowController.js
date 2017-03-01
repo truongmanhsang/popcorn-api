@@ -121,7 +121,9 @@ export default class ShowController {
     }
 
     if (data.genre && !data.genre.match(/all/i)) {
-      if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i)) data.genre = 'science-fiction';
+      if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i))
+        data.genre = 'science-fiction';
+
       query.genres = data.genre.toLowerCase();
     }
 
