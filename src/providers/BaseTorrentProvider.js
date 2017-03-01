@@ -1,11 +1,11 @@
 // Import the neccesary modules.
 import { onError } from '../utils';
 
-/** Class for scraping anime shows from https://extratorrent.cc/. */
+/** Class for scraping content from various sources. */
 export default class TorrentProvider {
 
    /**
-    * Create an extratorrent object for anime content.
+    * Create a BaseTorrentProvider object.
     * @param {String} name - The name of the content provider.
     * @param {Object} extractor - Object for getting intormation on torrents.
     */
@@ -30,7 +30,6 @@ export default class TorrentProvider {
    */
   async search(provider) {
     try {
-      logger.info(`${this._name}: Starting scraping...`);
       return await this._extractor.search(provider);
     } catch (err) {
       return onError(err);

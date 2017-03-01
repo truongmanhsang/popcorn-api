@@ -21,7 +21,7 @@ export default class ShowHelper {
      * The name of the torrent provider.
      * @type {String}
      */
-    this.name = name;
+    this._name = name;
 
     /**
      * The model to create or alter.
@@ -103,7 +103,7 @@ export default class ShowHelper {
         _id: show._id
       }).exec();
       if (found) {
-        logger.info(`${this.name}: '${found.title}' is an existing show.`);
+        logger.info(`${this._name}: '${found.title}' is an existing show.`);
         for (let i = 0; i < found.episodes.length; i++) { // eslint-disable-line semi-spacing
           const matching = show.episodes
             .filter(showEpisode => showEpisode.season === found.episodes[i].season)
@@ -123,7 +123,7 @@ export default class ShowHelper {
         return await this._updateNumSeasons(show);
       }
 
-      logger.info(`${this.name}: '${show.title}' is a new show!`);
+      logger.info(`${this._name}: '${show.title}' is a new show!`);
       const newShow = await new this._model(show).save();
       return await this._updateNumSeasons(newShow);
     } catch (err) {
@@ -179,7 +179,6 @@ export default class ShowHelper {
    * @param {Show} show - The show to add the torrents to.
    * @param {Object} episodes - The episodes containing the torrents.
    * @param {Integer} seasonNumber - The season number.
-   * @param {String} slug - The slug of the show.
    * @returns {void}
    */
   async _addDateBasedSeason(show, episodes, seasonNumber) {
@@ -296,6 +295,7 @@ export default class ShowHelper {
    */
   async getTraktInfo(slug) {
     try {
+
       const traktShow = await trakt.shows.summary({
         id: slug,
         extended: 'full'

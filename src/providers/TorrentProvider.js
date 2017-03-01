@@ -13,20 +13,9 @@ export default class TorrentProvider extends BaseTorrentProvider {
    * @param {String} name - The name of the torrent provider.
    * @param {Object} extractor - The object to extract content information from
    * torrents.
-   * @param {Object} TorrentAPI -
    */
-  constructor(name, extractor, TorrentAPI) {
+  constructor(name, extractor) {
     super(name, extractor);
-
-    const torrentAPI = new TorrentAPI();
-    torrentAPI.getAll = torrentAPI.getAllShows ? torrentAPI.getAllShows : torrentAPI.getAllAnime;
-    torrentAPI.getData = torrentAPI.getShowData ? torrentAPI.getShowData : torrentAPI.getAnimeData;
-
-    /**
-     *
-     * @type {Object} -
-     */
-    this._torrentAPI = torrentAPI;
   }
 
   /**
@@ -35,13 +24,13 @@ export default class TorrentProvider extends BaseTorrentProvider {
    */
   async search() {
     try {
-      logger.info(`${this.name}: Starting scraping...`);
-      const shows = await this._torrentAPI.getAll();
-      logger.info(`${this.name}: Found ${shows.length} shows.`);
+      logger.info(`${this._name}: Starting scraping...`);
+      const shows = await this._extractor.torrentProvider.getAll();
+      logger.info(`${this._name}: Found ${shows.length} shows.`);
 
       return await asyncq.mapLimit(shows, maxWebRequest, async show => {
-        show = await this._torrentAPI.getData(show);
-        return await this._extractor.getShow(show);
+        show = await this._extractor.torrentProvider.getData(show);
+        return await this._extractor.getContent(show);
       });
     } catch (err) {
       return onError(err);

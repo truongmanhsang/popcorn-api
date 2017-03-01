@@ -4,42 +4,27 @@ import asyncq from 'async-q';
 import BaseExtractor from './BaseExtractor';
 import Show from '../../models/Show';
 import ShowHelper from '../helpers/ShowHelper';
-import { maxWebRequest, showMap } from '../../config/constants';
-import { onError } from '../../utils';
+import { showMap } from '../../config/constants';
 
 /** Class for extracting TV shows from torrents. */
 export default class ShowExtractor extends BaseExtractor {
 
-   /**
-    * Create an extratorrent object for show content.
-    * @param {String} name - The name of the content provider.
-    * @param {Object} contentProvider - The content provider to extract content from.
-    */
-  constructor(name, contentProvider) {
-    super(name, contentProvider);
+  /**
+   * Create an extractor object for movie content.
+   * @param {String} config.name - The name of the content provider.
+   * @param {Object} config.torrentProvider - The content provider to extract
+   * content from.
+   * @param {String} config.type - The content type to extract.
+   * @param {Object} [config.model=Show] - The model for the movie helper.
+   */
+  constructor({name, torrentProvider, type, model = Show} = {}) {
+    super({name, torrentProvider, type});
 
     /**
      * The helper object for adding shows.
      * @type {ShowHelper}
      */
-    this._helper = new ShowHelper(this.name, Show);
-  }
-
-  /**
-   * Get all the shows.
-   * @param {Object} show - The show information.
-   * @returns {Show} - A show.
-   */
-  async getShow(show) {
-    try {
-      const newShow = await this._helper.getTraktInfo(show.slug);
-      if (newShow && newShow._id) {
-        delete show.episodes[0];
-        return await this._helper.addEpisodes(newShow, show.episodes, show.slug);
-      }
-    } catch (err) {
-      return onError(err);
-    }
+    this._helper = new ShowHelper(this._name, model);
   }
 
   /**
@@ -49,16 +34,26 @@ export default class ShowExtractor extends BaseExtractor {
    * @param {Boolean} dateBased - Check for dateBased episodes.
    * @returns {Object} - Information about a show from the torrent.
    */
-  _extractShow(torrent, regex, dateBased) {
+  _extractContent(torrent, regex, dateBased) {
     let showTitle, slug, season, episode;
 
     showTitle = torrent.title.match(regex)[1];
     if (showTitle.endsWith(' ')) showTitle = showTitle.substring(0, showTitle.length - 1);
     showTitle = showTitle.replace(/\./g, ' ');
 
-    slug = showTitle.replace(/[^a-zA-Z0-9 ]/gi, '').replace(/\s+/g, '-').toLowerCase();
+    slug = showTitle.replace(/[^a-zA-Z0-9 ]/gi, '')
+                    .replace(/\s+/g, '-')
+                    .toLowerCase();
     if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
     slug = slug in showMap ? showMap[slug] : slug;
+
+    // TODO: fix this.
+    // const season = 1;
+    // if (torrent.title.match(regex).length >= 4) {
+    //   episode = parseInt(torrent.title.match(regex)[3], 10);
+    // } else {
+    //   episode = parseInt(torrent.title.match(regex)[2], 10);
+    // }
 
     season = torrent.title.match(regex)[2];
     episode = torrent.title.match(regex)[3];
@@ -66,116 +61,108 @@ export default class ShowExtractor extends BaseExtractor {
       season = parseInt(season, 10);
       episode = parseInt(episode, 10);
     }
-    const quality = torrent.title.match(/(\d{3,4})p/) !== null ? torrent.title.match(/(\d{3,4})p/)[0] : '480p';
 
-    const episodeTorrent = {
+    const quality = torrent.title.match(/(\d{3,4})p/) !== null
+                                ? torrent.title.match(/(\d{3,4})p/)[0]
+                                : '480p';
+
+    const torrentObj = {
       url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
       seeds: torrent.seeds ? torrent.seeds : 0,
       peers: torrent.peers ? torrent.peers : 0,
-      provider: this.name
+      provider: this._name
     };
 
     const show = {
       showTitle,
       slug,
-      torrentLink: torrent.link,
       season,
       episode,
       quality,
-      dateBased
+      dateBased,
+      episodes: {}
     };
-    show.episodes = {};
 
+    return this._createEpisode(show, torrentObj, season, episode, quality);
+  }
+
+  /**
+   * Get show info from a given torrent.
+   * @param {Object} torrent - A torrent object to extract show information
+   * from.
+   * @returns {Object} - Information about a show from the torrent.
+   */
+  _getContentData(torrent) {
+    const seasonBased = /(.*).[sS](\d{2})[eE](\d{2})/i;
+    const vtv = /(.*).(\d{1,2})[x](\d{2})/i;
+    const dateBased = /(.*).(\d{4}).(\d{2}.\d{2})/i;
+    const secondSeason = /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i;
+    const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i;
+
+    if (torrent.title.match(seasonBased)) {
+      return this._extractContent(torrent, seasonBased, false);
+    } else if (torrent.title.match(vtv)) {
+      return this._extractContent(torrent, vtv, false);
+    } else if (torrent.title.match(dateBased)) {
+      return this._extractContent(torrent, dateBased, true);
+    } else if (torrent.title.match(secondSeason)) {
+      return this._extractContent(torrent, secondSeason, false);
+    } else if (torrent.title.match(oneSeason)) {
+      return this._extractContent(torrent, oneSeason, false);
+    }
+
+    logger.warn(`${this._name}: Could not find data from torrent: '${torrent.title}'`);
+  }
+
+  /**
+   * Create a new show object with a torrent attached.
+   * @param {Object} show - The show to attach a torrent to.
+   * @param {Object} torrent - The torrent object.
+   * @param {Number} season - The season number for the torrent.
+   * @param {Number} episode - The episode number for the torrent.
+   * @param {quality} quality - The quality of the episode.
+   * @returns {Object} - The show with the newly attached torrent.
+   */
+  _createEpisode(show, torrent, season, episode, quality) {
     if (!show.episodes[season]) show.episodes[season] = {};
     if (!show.episodes[season][episode]) show.episodes[season][episode] = {};
-    if ((!show.episodes[season][episode][quality] || show.showTitle.toLowerCase().indexOf('repack') > -1) || (show.episodes[season][episode][quality] && show.episodes[season][episode][quality].seeds < episodeTorrent.seeds))
-      show.episodes[season][episode][quality] = episodeTorrent;
+
+    const qualityObj = show.episodes[season][episode][quality];
+    if ((!qualityObj || show.showTitle.toLowerCase().indexOf('repack') > -1)
+        || (qualityObj && qualityObj.seeds < torrent.seeds)) {
+      show.episodes[season][episode][quality] = torrent;
+    }
 
     return show;
   }
 
   /**
-   * Get show info from a given torrent.
-   * @param {Object} torrent - A torrent object to extract show information from.
-   * @returns {Object} - Information about a show from the torrent.
-   */
-  _getShowData(torrent) {
-    const seasonBased = /(.*).[sS](\d{2})[eE](\d{2})/i;
-    const vtv = /(.*).(\d{1,2})[x](\d{2})/i;
-    const dateBased = /(.*).(\d{4}).(\d{2}.\d{2})/i;
-    if (torrent.title.match(seasonBased)) {
-      return this._extractShow(torrent, seasonBased, false);
-    } else if (torrent.title.match(vtv)) {
-      return this._extractShow(torrent, vtv, false);
-    } else if (torrent.title.match(dateBased)) {
-      return this._extractShow(torrent, dateBased, true);
-    }
-
-    logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
-  }
-
-  /**
    * Puts all the found shows from the torrents in an array.
    * @param {Array} torrents - A list of torrents to extract show information.
-   * @returns {Array} - A list of objects with show information extracted from the torrents.
+   * @returns {Array} - A list of objects with show information extracted from
+   * the torrents.
    */
-  async _getAllShows(torrents) {
-    try {
-      const shows = [];
+  _getAllContent(torrents) {
+    const shows = [];
 
-      await asyncq.mapSeries(torrents, torrent => {
-        if (torrent) {
-          const show = this._getShowData(torrent);
-          if (show) {
-            if (shows.length !== 0) {
-              const { showTitle, slug, season, episode, quality } = show;
-              const matching = shows
-                .filter(s => s.showTitle === showTitle)
-                .filter(s => s.slug === slug);
+    return asyncq.mapSeries(torrents, torrent => {
+      const show = this._getContentData(torrent);
+      if (!show) return null;
 
-              if (matching.length !== 0) {
-                const index = shows.indexOf(matching[0]);
-                if (!matching[0].episodes[season]) matching[0].episodes[season] = {};
-                if (!matching[0].episodes[season][episode]) matching[0].episodes[season][episode] = {};
-                if ((!matching[0].episodes[season][episode][quality] || matching[0].showTitle.toLowerCase().indexOf('repack') > -1) || (matching[0].episodes[season][episode][quality] && matching[0].episodes[season][episode][quality].seeds < show.episodes[season][episode][quality].seeds))
-                  matching[0].episodes[season][episode][quality] = show.episodes[season][episode][quality];
+      const { showTitle, slug, season, episode, quality } = show;
+      const matching = shows.find(
+        s => s.showTitle === showTitle && s.slug === slug
+      );
 
-                shows.splice(index, 1, matching[0]);
-              } else {
-                shows.push(show);
-              }
-            } else {
-              shows.push(show);
-            }
-          }
-        }
-      });
+      if (!matching) return shows.push(show);
 
-      return shows;
-    } catch (err) {
-      return onError(err);
-    }
-  }
+      const index = shows.indexOf(matching);
 
-  /**
-   * Returns a list of all the inserted torrents.
-   * @param {Object} provider - The provider to query the content provider.
-   * @returns {Show[]} - A list of scraped shows.
-   */
-  async search(provider) {
-    try {
-      const getTotalPages = await this._contentProvider.search(provider.query);
-      const totalPages = getTotalPages.total_pages; // Change to 'const' for production.
-      if (!totalPages) return onError(`${this.name}: total_pages returned; '${totalPages}'`);
-      // totalPages = 3; // For testing purposes only.
-      logger.info(`${this.name}: Total pages ${totalPages}`);
+      const torrentObj = show.episodes[season][episode][quality];
+      const created = this._createEpisode(matching, torrentObj, season, episode, quality);
 
-      const torrents = await this._getAllTorrents(totalPages, provider);
-      const shows = await this._getAllShows(torrents);
-      return await asyncq.mapLimit(shows, maxWebRequest, show => this.getShow(show));
-    } catch (err) {
-      return onError(err);
-    }
+      shows.splice(index, 1, created);
+    }).then(() => shows);
   }
 
 }

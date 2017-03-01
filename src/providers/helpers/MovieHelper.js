@@ -21,7 +21,7 @@ export default class MovieHelper {
      * The name of the torrent provider.
      * @type {String}
      */
-    this.name = name;
+    this._name = name;
 
     /**
      * The model to create or alter.
@@ -76,7 +76,7 @@ export default class MovieHelper {
         _id: movie._id
       }).exec();
       if (found) {
-        logger.info(`${this.name}: '${found.title}' is an existing movie.`);
+        logger.info(`${this._name}: '${found.title}' is an existing movie.`);
 
         if (found.torrents) {
           Object.keys(found.torrents).forEach(language => {
@@ -90,7 +90,7 @@ export default class MovieHelper {
         }, movie).exec();
       }
 
-      logger.info(`${this.name}: '${movie.title}' is a new movie!`);
+      logger.info(`${this._name}: '${movie.title}' is a new movie!`);
       return await new this._model(movie).save();
     } catch (err) {
       return onError(err);
