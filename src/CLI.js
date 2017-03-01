@@ -12,7 +12,7 @@ import Index from './Index';
 import MovieHelper from './providers/helpers/MovieHelper';
 import ShowHelper from './providers/helpers/ShowHelper';
 import packageJSON from '../package.json';
-import Setup from './config/setup';
+import { connectMongoDB } from './config/setup';
 import { AnimeMovie, AnimeShow } from './models/Anime';
 import {
   exportCollection,
