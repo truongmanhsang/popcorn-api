@@ -9,7 +9,7 @@ import content from './content';
  * @type {Schema}
  * @see http://mongoosejs.com/docs/guide.html
  */
-export const MovieSchema = new mongoose.Schema(Object.assign(content, {
+export const MovieSchema = new mongoose.Schema(Object.assign({}, content, {
   language: String,
   released: Number,
   trailer: {
