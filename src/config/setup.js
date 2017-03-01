@@ -7,8 +7,7 @@ import responseTime from 'response-time';
 import { createExpressWinston } from './logger';
 import {
   dbHosts,
-  dbName,
-  Promise
+  dbName
 } from './constants';
 
 /**
@@ -16,7 +15,7 @@ import {
  * @returns {void}
  */
 export function connectMongoDB() {
-  mongoose.Promise = Promise;
+  mongoose.Promise = global.Promise;
   mongoose.connect(`mongodb://${dbHosts.join(',')}/${dbName}`, {
     db: {
       native_parser: true
