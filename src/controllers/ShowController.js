@@ -140,7 +140,7 @@ export default class ShowController {
           $limit: pageSize
         }]).exec()
         .then(docs => res.json(docs))
-        .catch(err => res.jfson(err));
+        .catch(err => res.json(err));
     }
   }
 
