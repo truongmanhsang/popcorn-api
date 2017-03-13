@@ -12,11 +12,13 @@ export default class AnimeController {
      * @type {Object}
      */
     AnimeController._projection = {
+      _id: 1,
       images: 1,
       mal_id: 1,
       haru_id: 1,
       tvdb_id: 1,
       imdb_id: 1,
+      synopsis: 1,
       slug: 1,
       title: 1,
       year: 1,
