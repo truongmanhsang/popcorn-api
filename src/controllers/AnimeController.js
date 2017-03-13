@@ -93,24 +93,14 @@ export default class AnimeController {
       if (!data.order) data.order = -1;
 
       let sort = {
+        "score":{ "$meta": "textScore" },
         "rating.votes": parseInt(data.order, 10),
         "rating.percentage": parseInt(data.order, 10),
         "rating.watching": parseInt(data.order, 10)
       };
 
       if (data.keywords) {
-        const words = data.keywords.split(" ");
-        let regex = "^";
-
-        for (let w in words) {
-          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, "");
-          regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        }
-
-        query.title = {
-          $regex: new RegExp(`${regex}.*`),
-          $options: "gi"
-        };
+        query.$text = { $search : data.keywords }
       }
 
       if (data.sort) {
@@ -129,9 +119,9 @@ export default class AnimeController {
       if (data.genre && !data.genre.match(/all/i)) query.genres = data.genre;
 
       return Anime.aggregate([{
-          $sort: sort
-        }, {
           $match: query
+        }, {
+          $sort: sort
         }, {
           $project: AnimeController._projection
         }, {

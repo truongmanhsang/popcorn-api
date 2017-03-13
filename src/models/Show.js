@@ -5,10 +5,7 @@ import mongoose from "mongoose";
 const ShowSchema = new mongoose.Schema({
   _id: {
     type: String,
-    required: true,
-    index: {
-      unique: true
-    }
+    required: true
   },
   imdb_id: String,
   tvdb_id: String,
@@ -43,6 +40,8 @@ const ShowSchema = new mongoose.Schema({
   genres: [],
   episodes: []
 });
+
+ShowSchema.index({ title: "text", synopsis: "text", _id: 1 });
 
 // Create the show model.
 const Show = mongoose.model("Show", ShowSchema);
