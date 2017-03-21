@@ -95,6 +95,7 @@ module.exports = {
       words: true
     }],
     'spaced-comment': 'warn',
+    'semi': ['warn', 'always'],
     'semi-spacing': ['warn', {
       before: false,
       after: false
