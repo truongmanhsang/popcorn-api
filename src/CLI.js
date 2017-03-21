@@ -5,15 +5,11 @@ import parseTorrent from 'parse-torrent';
 import path from 'path';
 import program from 'commander';
 import prompt from 'prompt';
-import Provider from 'butter-provider';
 import torrentHealth from 'torrent-tracker-health';
 
 import Index from './Index';
-import MovieHelper from './providers/helpers/MovieHelper';
-import ShowHelper from './providers/helpers/ShowHelper';
 import packageJSON from '../package.json';
 import { connectMongoDB } from './config/setup';
-import { AnimeMovie, AnimeShow } from './models/Anime';
 import {
   exportCollection,
   importCollection
@@ -32,6 +28,8 @@ export default class CLI {
      * @type {String}
      */
     CLI._providerName = providerName;
+
+    // this._movieExtractor = new MovieExtractor();
 
     // Setup the CLI program.
     program
@@ -119,6 +117,7 @@ export default class CLI {
       required: true
     };
 
+    // TODO:
     const confirm = {
       description: 'Do you really want to import a collection, this can override the current data?',
       type: 'string',
@@ -126,29 +125,6 @@ export default class CLI {
       message: 'Type yes/no',
       required: true,
       default: 'no'
-    };
-
-    const type = {
-      description: 'The type of anime content you want to add (movie | tvshow)',
-      type: 'string',
-      pattern: /^(movie|tvshow)$/i,
-      message: 'Type movie or tvshow',
-      required: true
-    }
-
-    /**
-     * The schema used by `prompt` insert a show.
-     * @type {Object}
-     */
-    this._showSchema = {
-      properties: {
-        imdb,
-        season,
-        episode,
-        torrent,
-        quality,
-        type
-      }
     };
 
     /**
@@ -192,40 +168,14 @@ export default class CLI {
    * @returns {void}
    */
   _animePrompt() {
-    prompt.get(this._showSchema, async(err, result) => {
+    prompt.get(this._showSchema, (err, result) => {
       if (err) {
         console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
         try {
-          const { imdb, season, episode, quality, torrent, type } = result;
-
-          switch (type) {
-          case Provider.ItemType.MOVIE: {
-            const movieHelper = new MovieHelper(CLI._providerName, AnimeMovie);
-            const newMovie = await movieHelper.getTraktInfo(imdb);
-            if (newMovie && newMovie._id) {
-              const data = await this._getMovieTorrentDataRemote(torrent, quality);
-              await movieHelper.addTorrents(newMovie, data);
-            }
-            break;
-          }
-          case Provider.ItemType.TVSHOW: {
-            const showHelper = new ShowHelper(CLI._providerName, AnimeShow);
-            const newShow = await showHelper.getTraktInfo(imdb);
-            if (newShow && newShow._id) {
-              const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
-              await showHelper.addEpisodes(newShow, data, imdb);
-            }
-            break;
-          }
-          default:
-            console.error('Wrong type specified');
-            process.exit(1);
-            break;
-          }
-
-          process.exit(0);
+          console.log(result);
+          // const { imdb, season, episode, quality, torrent, type } = result;
         } catch (err) {
           console.error(`An error occurred: ${err}`);
           process.exit(1);
@@ -235,32 +185,43 @@ export default class CLI {
   }
 
   /**
+   * Get data from a given torrent url.
+   * @param {String} torrent - The url of the torrent.
+   * @returns {Promise} -
+   */
+  _getTorrentData(torrent) {
+    return new Promise((resolve, reject) => {
+      return parseTorrent.remote(torrent, (err, result) => {
+        if (err) return reject(err);
+        return resolve(result);
+      });
+    });
+  }
+
+  /**
    * Get movie data from a given torrent url.
    * @param {String} torrent - The url of the torrent.
    * @param {String} quality - The quality of the torrent.
-   * @param {String} language - The language of the torrent.
+   * @param {String} lang - The language of the torrent.
    * @returns {Promise} - Movie data from the torrent.
    */
-  _getMovieTorrentDataRemote(torrent, quality, language = 'en') {
-    return new Promise((resolve, reject) => {
-      parseTorrent.remote(torrent, (err, result) => {
-        if (err) return reject(err);
+  _getMovieTorrent(torrent, quality, lang = 'en') {
+    return this._getTorrentData(torrent).then(result => {
+      const magnet = parseTorrent.toMagnetURI(result);
 
-        const magnet = parseTorrent.toMagnetURI(result);
-        torrentHealth(magnet).then(res => {
-          const { seeds, peers } = res;
-          const data = {};
-          if (!data[language]) data[language] = {};
-          if (!data[language][quality]) data[language][quality] = {
-            url: magnet,
-            seeds,
-            peers,
-            size: result.length,
-            filesize: bytes(result.length),
-            provider: CLI._providerName
-          };
-          return resolve(data);
-        }).catch(err => reject(err));
+      return torrentHealth(magnet).then(res => {
+        const { seeds, peers } = res;
+
+        const torrentObj = {
+          url: magnet,
+          seeds,
+          peers,
+          size: result.length,
+          filesize: bytes(result.length),
+          provider: CLI._providerName
+        };
+
+        return this._createTorrent({}, torrentObj, quality, lang);
       });
     });
   }
@@ -270,24 +231,13 @@ export default class CLI {
    * @returns {void}
    */
   _moviePrompt() {
-    prompt.get(this._movieSchema, async(err, result) => {
+    prompt.get(this._movieSchema, (err, result) => {
       if (err) {
         console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
-        try {
-          const { imdb, quality, language, torrent } = result;
-          const movieHelper = new MovieHelper(CLI._providerName);
-          const newMovie = await movieHelper.getTraktInfo(imdb);
-          if (newMovie && newMovie._id) {
-            const data = await this._getMovieTorrentDataRemote(torrent, quality, language);
-            await movieHelper.addTorrents(newMovie, data);
-            process.exit(0);
-          }
-        } catch (err) {
-          console.error(`An error occurred: ${err}`);
-          process.exit(1);
-        }
+        console.log(result);
+        // const { imdb, quality, language, torrent } = result;
       }
     });
   }
@@ -308,16 +258,15 @@ export default class CLI {
         const magnet = parseTorrent.toMagnetURI(result);
         torrentHealth(magnet).then(res => {
           const { seeds, peers } = res;
-          const data = {};
-          if (!data[season]) data[season] = {};
-          if (!data[season][episode]) data[season][episode] = {};
-          if (!data[season][episode][quality]) data[season][episode][quality] = {
+
+          const torrentObj = {
             url: magnet,
             seeds,
             peers,
             provider: CLI._providerName
           };
-          return resolve(data);
+
+          return this._createTorrent({}, torrentObj, season, episode, quality);
         }).catch(err => reject(err));
       });
     });
@@ -328,24 +277,13 @@ export default class CLI {
    * @returns {void}
    */
   _showPrompt() {
-    prompt.get(this._showSchema, async(err, result) => {
+    prompt.get(this._showSchema, (err, result) => {
       if (err) {
         console.error(`An error occurred: ${err}`);
         process.exit(1);
       } else {
-        try {
-          const { imdb, season, episode, quality, torrent } = result;
-          const showHelper = new ShowHelper(CLI._providerName);
-          const newShow = await showHelper.getTraktInfo(imdb);
-          if (newShow && newShow._id) {
-            const data = await this._getShowTorrentDataRemote(torrent, quality, season, episode);
-            await showHelper.addEpisodes(newShow, data, imdb);
-            process.exit(0);
-          }
-        } catch (err) {
-          console.error(`An error occurred: ${err}`);
-          process.exit(1);
-        }
+        console.log(result);
+        // const { imdb, season, episode, quality, torrent } = result;
       }
     });
   }
@@ -415,7 +353,7 @@ export default class CLI {
       } else if (program.content.match(/^(anime)/i)) {
         this._animePrompt();
       } else {
-        console.error(`\n  \x1b[31mError:\x1b[36m No valid value given for adding content: '${program.content}'\x1b[0m`)
+        console.error(`\n  \x1b[31mError:\x1b[36m No valid value given for adding content: '${program.content}'\x1b[0m`);
       }
     } else if (program.export) {
       exportCollection(program.export);
