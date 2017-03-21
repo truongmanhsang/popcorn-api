@@ -31,4 +31,5 @@ before_script:
   - mongo --version
   - npm install -g eslint gulp dredd@stable babel-cli
   - npm run lint
+  - npm run docs
   - gulp build
