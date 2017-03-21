@@ -1,6 +1,8 @@
+// Import the neccesary modules.
 import Provider from 'butter-provider';
 
-const typeEnum = Object.keys(Provider.ItemType).map(key => Provider.ItemType[key]);
+const typeEnum = Object.keys(Provider.ItemType)
+                        .map(key => Provider.ItemType[key]);
 
 /**
  * Base structure of the database content.
