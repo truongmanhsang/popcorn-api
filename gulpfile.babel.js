@@ -4,7 +4,7 @@ import gulp from 'gulp';
 import babel from 'gulp-babel';
 
 /**
- * @description The default build function.
+ * The default build function.
  * @returns {Gulp} - The transpiled source code.
  */
 function build() {
