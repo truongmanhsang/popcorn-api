@@ -3,7 +3,12 @@ import childProcess from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-import { dbName, statusFile, tempDir, updatedFile } from './config/constants';
+import {
+  dbName,
+  statusFile,
+  tempDir,
+  updatedFile
+} from './config/constants';
 import { name } from '../package.json';
 
 /**
@@ -11,7 +16,7 @@ import { name } from '../package.json';
  * @param {String} path - The path to the file to create.
  * @returns {void}
  */
-function createEmptyFile(path) {
+function _createEmptyFile(path) {
   fs.createWriteStream(path).end();
 }
 
@@ -21,12 +26,12 @@ function createEmptyFile(path) {
  * within (Default is set in the `config/constants.js`).
  * @returns {void}
  */
-function resetTemp(tmpPath = tempDir) {
+function _resetTemp(tmpPath = tempDir) {
   const files = fs.readdirSync(tmpPath);
   files.forEach(file => {
     const stats = fs.statSync(path.join(tmpPath, file));
     if (stats.isDirectory()) {
-      resetTemp(file);
+      _resetTemp(file);
     } else if (stats.isFile()) {
       fs.unlinkSync(path.join(tmpPath, file));
     }
@@ -34,15 +39,24 @@ function resetTemp(tmpPath = tempDir) {
 }
 
 /**
+ * Returns the epoch time.
+ * @returns {Number} - Epoch time.
+ */
+function _now() {
+  return Math.floor(new Date().getTime() / 1000);
+}
+
+
+/**
  * Create the temporary directory.
  * @returns {void}
  */
 export function createTemp() {
   if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
-  if (fs.existsSync(tempDir)) resetTemp();
+  if (fs.existsSync(tempDir)) _resetTemp();
 
-  createEmptyFile(path.join(tempDir, statusFile));
-  createEmptyFile(path.join(tempDir, updatedFile));
+  _createEmptyFile(path.join(tempDir, statusFile));
+  _createEmptyFile(path.join(tempDir, updatedFile));
 }
 
 /**
@@ -70,7 +84,7 @@ export function exportCollection(collection) {
   const jsonFile = path.join(tempDir, `${collection}s.json`);
   logger.info(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
 
-  const cmd = `mongoexport --db ${dbName} --collection ${collection}s --out '${jsonFile}'`;
+  const cmd = `mongoexport -d ${dbName} -c ${collection}s -o '${jsonFile}'`;
   return executeCommand(cmd);
 }
 
@@ -88,7 +102,7 @@ export function importCollection(collection, jsonFile) {
 
   logger.info(`Importing collection: '${collection}', from: '${jsonFile}'`);
 
-  const cmd = `mongoimport --db ${dbName} --collection ${collection}s --file '${jsonFile}' --upsert`;
+  const cmd = `mongoimport -d ${dbName} -c ${collection}s --file '${jsonFile}' --upsert`;
   return executeCommand(cmd);
 }
 
@@ -127,7 +141,7 @@ export function search(key, value) {
  * started scraping.
  * @returns {void}
  */
-export function setLastUpdated(updated = (Math.floor(new Date().getTime() / 1000))) {
+export function setLastUpdated(updated = _now()) {
   fs.writeFile(path.join(tempDir, updatedFile), JSON.stringify({
     updated
   }), () => {});
@@ -143,19 +157,4 @@ export function setStatus(status = 'Idle') {
   fs.writeFile(path.join(tempDir, statusFile), JSON.stringify({
     status
   }), () => {});
-}
-
-/**
- * Check that all images are fetched from the provider.
- * @param {Object} images - The images.
- * @param {String} holder - The image holder.
- * @throws {Error} - 'An image could not been found'.
- * @returns {void}
- */
-export function checkImages(images, holder) {
-  for (const image of images) {
-    if (image === holder) {
-      throw new Error('An image could not been found');
-    }
-  }
 }
