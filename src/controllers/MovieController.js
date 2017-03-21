@@ -69,12 +69,12 @@ export default class MovieController {
     const query = {};
     const data = req.query;
 
-    if (!data.order) data.order = -1;
+    data.order = data.order ? parseInt(data.order, 10) : -1;
 
     let sort = {
-      'rating.votes': parseInt(data.order, 10),
-      'rating.percentage': parseInt(data.order, 10),
-      'rating.watching': parseInt(data.order, 10)
+      'rating.votes': data.order,
+      'rating.percentage': data.order,
+      'rating.watching': data.order
     };
 
     if (data.keywords) {
@@ -94,28 +94,30 @@ export default class MovieController {
 
     if (data.sort) {
       if (data.sort.match(/last added/i)) sort = {
-        released: parseInt(data.order, 10)
+        released: data.order
       };
       if (data.sort.match(/rating/i)) sort = {
-        'rating.percentage': parseInt(data.order, 10),
-        'rating.votes': parseInt(data.order, 10)
+        'rating.percentage': data.order,
+        'rating.votes': data.order
       };
       if (data.sort.match(/title/i)) sort = {
-        title: (parseInt(data.order, 10) * 1)
+        title: data.order
       };
       if (data.sort.match(/trending/i)) sort = {
-        'rating.watching': parseInt(data.order, 10)
+        'rating.watching': data.order
       };
       if (data.sort.match(/year/i)) sort = {
-        year: parseInt(data.order, 10)
+        year: data.order
       };
     }
 
     if (data.genre && !data.genre.match(/all/i)) {
-      if (data.genre.match(/science[-\s]fiction/i) || data.genre.match(/sci[-\s]fi/i))
-        data.genre = 'science-fiction';
+      // TODO: bit of a hack, should be handled by the client.
+      let { genre } = data;
+      if (genre.match(/science[-\s]fiction/i) || genre.match(/sci[-\s]fi/i))
+        genre = 'science-fiction';
 
-      query.genres = data.genre.toLowerCase();
+      query.genres = genre.toLowerCase();
     }
 
     return Movie.aggregate([{
