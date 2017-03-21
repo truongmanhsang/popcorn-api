@@ -37,7 +37,7 @@
   },
   "lint": true,
   "experimentalProposal": {
-    "classProperties": false,
+    "classProperties": true,
     "objectRestSpread": false,
     "decorators": false,
     "doExpressions": false,
