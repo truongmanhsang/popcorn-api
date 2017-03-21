@@ -8,7 +8,7 @@ import { CronJob } from 'cron';
 
 import doSetup from './config/setup';
 import setupRoutes from './config/routes';
-import Scraper from './Scraper';
+import executeScraper from './scraper';
 import { createLogger } from './config/logger';
 import {
   createTemp,
@@ -69,12 +69,6 @@ export default class Index {
      */
     Index._server = http.createServer(_app);
 
-    /**
-     * The scraper object to scrape for torrents.
-     * @type {Scraper}
-     */
-    Index._scraper = new Scraper();
-
     // Start the API.
     Index._startAPI(start);
   }
@@ -112,14 +106,14 @@ export default class Index {
             new CronJob({
               cronTime,
               timeZone,
-              onComplete: () => setStatus(),
-              onTick: () => Index._scraper.scrape(),
+              onComplete: setStatus,
+              onTick: executeScraper,
               start: true
             });
 
             setLastUpdated(0);
             setStatus();
-            if (start) Index._scraper.scrape();
+            if (start) executeScraper();
           } catch (err) {
             return onError(err);
           }
