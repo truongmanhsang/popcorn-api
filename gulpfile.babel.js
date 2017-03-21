@@ -5,12 +5,10 @@ import babel from 'gulp-babel';
 
 /**
  * The default build function.
- * @returns {Gulp} - The transpiled source code.
+ * @returns {void}
  */
 function build() {
-  return gulp.src('src/**/*.js')
-              .pipe(babel())
-              .pipe(gulp.dest('build'));
+  gulp.src('src/**/*.js').pipe(babel()).pipe(gulp.dest('build'));
 }
 
 // Delete the `build` directory.
