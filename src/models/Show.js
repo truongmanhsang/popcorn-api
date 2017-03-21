@@ -10,7 +10,6 @@ import content from './content';
  * @see http://mongoosejs.com/docs/guide.html
  */
 export const ShowSchema = new mongoose.Schema(Object.assign({}, content, {
-  imdb_id: String,
   tvdb_id: String,
   country: String,
   network: String,
