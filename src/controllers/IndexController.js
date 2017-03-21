@@ -1,5 +1,4 @@
 // Import the neccesary modules.
-/* eslint-disable no-bitwise */
 import fs from 'fs';
 import path from 'path';
 
@@ -56,8 +55,11 @@ export default class IndexController {
    */
   async getIndex(req, res, next) {
     try {
-      const { updated } = JSON.parse(fs.readFileSync(path.join(tempDir, updatedFile), 'utf8'));
-      const { status } = JSON.parse(fs.readFileSync(path.join(tempDir, statusFile), 'utf8'));
+      const statusPath = path.join(tempDir, statusFile);
+      const updatedPath = path.join(tempDir, updatedFile);
+
+      const { status } = JSON.parse(fs.readFileSync(statusPath, 'utf8'));
+      const { updated } = JSON.parse(fs.readFileSync(updatedPath, 'utf8'));
       const commit = await executeCommand('git rev-parse --short HEAD');
       const totalAnimes = await Anime.count({
         $or: AnimeController.query.$or
@@ -71,11 +73,11 @@ export default class IndexController {
         repo: repository.url,
         server,
         status,
-        totalAnimes,
-        totalMovies,
-        totalShows,
+        totalAnimes: totalAnimes || 0,
+        totalMovies: totalMovies || 0,
+        totalShows: totalShows || 0,
         updated,
-        uptime: process.uptime() | 0,
+        uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
         version,
         commit
       });
