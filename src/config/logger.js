@@ -1,8 +1,8 @@
 // Import the neccesary modules.
-import { logger as Logger } from 'express-winston';
 import path from 'path';
-import sprintf from 'sprintf';
 import Winston from 'winston';
+import { logger as Logger } from 'express-winston';
+import { sprintf } from 'sprintf-js';
 
 import { tempDir } from './constants';
 import { name } from '../../package.json';
