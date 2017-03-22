@@ -4,13 +4,16 @@ import asyncq from 'async-q';
 import BaseHelper from './BaseHelper';
 import FactoryProducer from '../resources/FactoryProducer';
 import Movie from '../../models/Movie';
-import { onError } from '../../utils';
+import Util from '../../Util';
 
-/** Class for saving movies. */
+/**
+ * Class for saving movies.
+ * @extends {BaseHelper}
+ */
 export default class MovieHelper extends BaseHelper {
 
   /**
-   * Create an helper object for movie content.
+   * Create a helper class for movie content.
    * @param {String} name - The name of the content provider.
    * @param {Object} [model=Movie] - The model to help fill.
    */
@@ -18,10 +21,13 @@ export default class MovieHelper extends BaseHelper {
     super(name, model);
 
     const apiFactory = FactoryProducer.getFactory('api');
-    this._fanart = apiFactory.getApi('fanart');
+
+    /**
+     * A configured OMDB API.
+     * @type {Object}
+     * @see https://github.com/ChrisAlderson/omdb-api-pt
+     */
     this._omdb = apiFactory.getApi('omdb');
-    this._tmdb = apiFactory.getApi('tmdb');
-    this._trakt = apiFactory.getApi('trakt');
   }
 
   /**
@@ -87,7 +93,7 @@ export default class MovieHelper extends BaseHelper {
       logger.info(`${this._name}: '${movie.title}' is a new movie!`);
       return await new this._model(movie).save();
     } catch (err) {
-      return onError(err);
+      return Util.onError(err);
     }
   }
 
@@ -104,7 +110,8 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Get movie images.
-   * @param {Integer} tmdb_id - The tmdb id of the movie you want the images from.
+   * @override
+   * @param {Number} tmdb_id - The tmdb id of the movie you want the images from.
    * @param {String} imdb_id - The imdb id of the movie you want the images from.
    * @returns {Object} - Object with a banner, fanart and poster images.
    */
@@ -164,7 +171,7 @@ export default class MovieHelper extends BaseHelper {
             images.poster = fanartImages.movieposter ? fanartImages.movieposter[0].url : holder;
           }
         } catch (err) {
-          onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
+          Util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
         }
       }
     }
@@ -174,6 +181,7 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Get info from Trakt and make a new movie object.
+   * @override
    * @param {String} slug - The slug to query trakt.tv.
    * @returns {Movie} - A new movie.
    */
@@ -213,7 +221,7 @@ export default class MovieHelper extends BaseHelper {
         };
       }
     } catch (err) {
-      return onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return Util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 

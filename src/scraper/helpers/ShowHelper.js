@@ -4,13 +4,16 @@ import asyncq from 'async-q';
 import BaseHelper from './BaseHelper';
 import FactoryProducer from '../resources/FactoryProducer';
 import Show from '../../models/Show';
-import { onError } from '../../utils';
+import Util from '../../Util';
 
-/** Class for saving shows. */
+/**
+ * Class for saving shows.
+ * @extends {BaseHelper}
+ */
 export default class ShowHelper extends BaseHelper {
 
   /**
-   * Create an helper object for show content.
+   * Create a helper class for show content.
    * @param {String} name - The name of the content provider.
    * @param {Object} [model=Show] - The model to help fill.
    */
@@ -18,9 +21,12 @@ export default class ShowHelper extends BaseHelper {
     super(name, model);
 
     const apiFactory = FactoryProducer.getFactory('api');
-    this._fanart = apiFactory.getApi('fanart');
-    this._tmdb = apiFactory.getApi('tmdb');
-    this._trakt = apiFactory.getApi('trakt');
+
+    /**
+     * A configured TVDB API.
+     * @type {TVDB}
+     * @see https://github.com/edwellbrook/node-tvdb
+     */
     this._tvdb = apiFactory.getApi('tvdb');
   }
 
@@ -120,7 +126,7 @@ export default class ShowHelper extends BaseHelper {
       const newShow = await new this._model(show).save();
       return await this._updateNumSeasons(newShow);
     } catch (err) {
-      return onError(err);
+      return Util.onError(err);
     }
   }
 
@@ -128,7 +134,7 @@ export default class ShowHelper extends BaseHelper {
    * Adds one seasonal season to a show.
    * @param {Show} show - The show to add the torrents to.
    * @param {Object} episodes - The episodes containing the torrents.
-   * @param {Integer} seasonNumber - The season number.
+   * @param {Number} seasonNumber - The season number.
    * @param {String} slug - The slug of the show.
    * @returns {void}
    */
@@ -163,7 +169,7 @@ export default class ShowHelper extends BaseHelper {
         }
       }
     } catch (err) {
-      return onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return Util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 
@@ -171,7 +177,7 @@ export default class ShowHelper extends BaseHelper {
    * Adds one datebased season to a show.
    * @param {Show} show - The show to add the torrents to.
    * @param {Object} episodes - The episodes containing the torrents.
-   * @param {Integer} seasonNumber - The season number.
+   * @param {Number} seasonNumber - The season number.
    * @returns {void}
    */
   async _addDateBasedSeason(show, episodes, seasonNumber) {
@@ -208,14 +214,15 @@ export default class ShowHelper extends BaseHelper {
         }
       }
     } catch (err) {
-      return onError(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`);
+      return Util.onError(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`);
     }
   }
 
   /**
    * Get TV show images.
-   * @param {Integer} tmdb_id - The tmdb id of the show you want the images from.
-   * @param {Integer} tvdb_id - The tvdb id of the show you want the images from.
+   * @override
+   * @param {Number} tmdb_id - The tmdb id of the show you want the images from.
+   * @param {Number} tvdb_id - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with a banner, fanart and poster images.
    */
   async _getImages(tmdb_id, tvdb_id) {
@@ -273,7 +280,7 @@ export default class ShowHelper extends BaseHelper {
             images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
           }
         } catch (err) {
-          onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || tvdb_id}'`);
+          Util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || tvdb_id}'`);
         }
       }
     }
@@ -283,6 +290,7 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Get info from Trakt and make a new show object.
+   * @override
    * @param {String} slug - The slug to query https://trakt.tv/.
    * @returns {Show} - A new show without the episodes attached.
    */
@@ -328,7 +336,7 @@ export default class ShowHelper extends BaseHelper {
         };
       }
     } catch (err) {
-      return onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return Util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 
@@ -352,7 +360,7 @@ export default class ShowHelper extends BaseHelper {
 
       return await this._updateEpisodes(show);
     } catch (err) {
-      return onError(err);
+      return Util.onError(err);
     }
   }
 
