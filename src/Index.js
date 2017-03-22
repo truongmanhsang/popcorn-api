@@ -2,28 +2,28 @@
 import cluster from 'cluster';
 import domain from 'domain';
 import Express from 'express';
+import fs from 'fs';
 import http from 'http';
 import os from 'os';
+import path from 'path';
 import { CronJob } from 'cron';
 
-import doSetup from './config/setup';
-import setupRoutes from './config/routes';
-import executeScraper from './scraper';
-import { createLogger } from './config/logger';
-import {
-  createTemp,
-  onError,
-  resetLog,
-  setLastUpdated,
-  setStatus
-} from './utils';
+import Setup from './config/Setup';
+import Routes from './config/Routes';
+import Scraper from './Scraper';
+import Logger from './config/Logger';
+import Util from './Util';
 import {
   cronTime,
   master,
   port,
+  statusFile,
+  tempDir,
   timeZone,
+  updatedFile,
   workers
 } from './config/constants';
+import { name } from '../package.json';
 
 /**
  * Class for starting the API.
@@ -37,14 +37,13 @@ import {
  * const index = new Index({
  *    start: true,
  *    pretty: true,
- *    verbose: false,
- *    debug: false
+ *    verbose: false
  * });
  */
 export default class Index {
 
   /**
-   * Create an index object.
+   * Create an index class.
    * @param {Object} config - Configuration for the API.
    * @param {Boolean} [config.start=true] - Start the scraping process.
    * @param {Boolean} [config.pretty=true] - Pretty output with Winston logging.
@@ -55,13 +54,13 @@ export default class Index {
     const _app = new Express();
 
     // Setup the global logger object.
-    createLogger(pretty, verbose);
+    Logger.getLogger('winston', pretty, verbose);
 
     // Setup the MongoDB configuration and ExpressJS configuration.
-    doSetup(_app, pretty, verbose);
+    new Setup(_app, pretty, verbose);
 
     // Setup the API routes.
-    setupRoutes(_app);
+    new Routes(_app);
 
     /**
      * The http server object.
@@ -74,17 +73,65 @@ export default class Index {
   }
 
   /**
-   * Function to start the API.
-   * @param {?Boolean} start - Start the scraping.
+   * Create an emty file.
+   * @param {String} path - The path to the file to create.
    * @returns {void}
    */
-  static _startAPI(start) {
+  static _createEmptyFile(path) {
+    fs.createWriteStream(path).end();
+  }
+
+  /**
+   * Removes all the files in the temporary directory.
+   * @param {String} [tmpPath=popcorn-api/tmp] - The path to remove all the files
+   * within (Default is set in the `config/constants.js`).
+   * @returns {void}
+   */
+  static _resetTemp(tmpPath = tempDir) {
+    const files = fs.readdirSync(tmpPath);
+    files.forEach(file => {
+      const stats = fs.statSync(path.join(tmpPath, file));
+      if (stats.isDirectory()) {
+        Index._resetTemp(file);
+      } else if (stats.isFile()) {
+        fs.unlinkSync(path.join(tmpPath, file));
+      }
+    });
+  }
+
+  /**
+   * Create the temporary directory.
+   * @returns {void}
+   */
+  static _createTemp() {
+    if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
+    if (fs.existsSync(tempDir)) Index._resetTemp();
+
+    Index._createEmptyFile(path.join(tempDir, statusFile));
+    Index._createEmptyFile(path.join(tempDir, updatedFile));
+  }
+
+  /**
+   * Reset the default log file.
+   * @returns {void}
+   */
+  static _resetLog() {
+    const logFile = path.join(tempDir, `${name}.log`);
+    if (fs.existsSync(logFile)) fs.unlinkSync(logFile);
+  }
+
+  /**
+   * Function to start the API.
+   * @param {Boolean} [start=true] - Start the scraping.
+   * @returns {void}
+   */
+  static _startAPI(start = true) {
     if (cluster.isMaster) { // Check is the cluster is the master
       // Clear the log files from the temp directory.
-      resetLog();
+      Index._resetLog();
 
       // Setup the temporary directory
-      createTemp();
+      Index._createTemp();
 
       // Fork workers.
       for (let i = 0; i < Math.min(os.cpus().length, workers); i++) // eslint-disable-line semi-spacing
@@ -92,7 +139,7 @@ export default class Index {
 
       // Check for errors with the workers.
       cluster.on('exit', worker => {
-        onError(`Worker '${worker.process.pid}' died, spinning up another!`);
+        Util.onError(`Worker '${worker.process.pid}' died, spinning up another!`);
         cluster.fork();
       });
 
@@ -106,19 +153,19 @@ export default class Index {
             new CronJob({
               cronTime,
               timeZone,
-              onComplete: setStatus,
-              onTick: executeScraper,
-              start: true
+              onComplete: Util.setStatus,
+              onTick: () => new Scraper(),
+              start
             });
 
-            setLastUpdated(0);
-            setStatus();
-            if (start) executeScraper();
+            Util.setLastUpdated(0);
+            Util.setStatus();
+            if (start) Index._scraper.scrape();
           } catch (err) {
-            return onError(err);
+            return Util.onError(err);
           }
         });
-        scope.on('error', err => onError(err));
+        scope.on('error', err => Util.onError(err));
       }
     } else {
       Index._server.listen(port);
