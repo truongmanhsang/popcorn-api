@@ -6,7 +6,7 @@ import content from './content';
 
 /**
  * The movie schema used by mongoose.
- * @type {Schema}
+ * @type {Object}
  * @see http://mongoosejs.com/docs/guide.html
  */
 export const MovieSchema = new mongoose.Schema(Object.assign({}, content, {
