@@ -5,16 +5,19 @@ import bytes from 'bytes';
 import BaseProvider from './BaseProvider';
 import { movieMap } from '../configs';
 
-/** Class for scraping content from various sources. */
+/**
+ * Class for scraping movie content from various sources.
+ * @extends {BaseProvider}
+ */
 export default class MovieProvider extends BaseProvider {
 
   /**
-   * Create a MovieProvider object.
+   * Create a MovieProvider class.
    * @param {Object} config - The configuration object for the torrent
    * provider.
    * @param {Object} config.API - The api of the torrent provider.
    * @param {String} config.name - The name of the torrent provider.
-   * @param {Model} config.modelType - The model type for the helper.
+   * @param {String} config.modelType - The model type for the helper.
    * @param {Object} config.query - The query object for the api.
    * @param {String} config.type - The type of content to scrape.
    */
@@ -24,10 +27,11 @@ export default class MovieProvider extends BaseProvider {
 
   /**
    * Extract movie information based on a regex.
+   * @override
    * @param {Object} torrent - The torrent to extract the movie information
    * from.
    * @param {String} [lang=en] - The language of the torrent.
-   * @param {Regex} regex - The regex to extract the movie information.
+   * @param {RegExp} regex - The regex to extract the movie information.
    * @returns {Object} - Information about a movie from the torrent.
    */
   _extractContent(torrent, lang = 'en', regex) {
@@ -73,6 +77,7 @@ export default class MovieProvider extends BaseProvider {
 
   /**
    * Get movie info from a given torrent.
+   * @override
    * @param {Object} torrent - A torrent object to extract movie information
    * from.
    * @param {String} [lang=en] - The language of the torrent.
@@ -96,6 +101,7 @@ export default class MovieProvider extends BaseProvider {
 
   /**
    * Create a new movie object with a torrent attached.
+   * @override
    * @param {Object} movie - The movie to attach a torrent to.
    * @param {Object} torrent - The torrent object.
    * @param {String} quality - The quality of the torrent.
@@ -111,10 +117,12 @@ export default class MovieProvider extends BaseProvider {
 
   /**
    * Puts all the found movies from the torrents in an array.
-   * @param {Array} torrents - A list of torrents to extract movie information.
+   * @override
+   * @param {Array<Object>} torrents - A list of torrents to extract movie
+   * information.
    * @param {String} [lang=en] - The language of the torrent.
-   * @returns {Array} - A list of objects with movie information extracted from
-   * the torrents.
+   * @returns {Array<Object>} - A list of objects with movie information
+   * extracted from the torrents.
    */
   _getAllContent(torrents, lang = 'en') {
     const movies = [];

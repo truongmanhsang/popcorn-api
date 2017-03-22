@@ -4,16 +4,19 @@ import asyncq from 'async-q';
 import BaseProvider from './BaseProvider';
 import { showMap } from '../configs';
 
-/** Class for scraping content from various sources. */
+/**
+ * Class for scraping show content from various sources.
+ * @extends {BaseProvider}
+ */
 export default class ShowProvider extends BaseProvider {
 
   /**
-   * Create a BaseTorrentProvider object.
+   * Create a ShowProvider class.
    * @param {Object} config - The configuration object for the torrent
    * provider.
    * @param {Object} config.API - The api of the torrent provider.
    * @param {String} config.name - The name of the torrent provider.
-   * @param {Model} config.modelType - The model type for the helper.
+   * @param {String} config.modelType - The model type for the helper.
    * @param {Object} config.query - The query object for the api.
    * @param {String} config.type - The type of content to scrape.
    */
@@ -23,8 +26,9 @@ export default class ShowProvider extends BaseProvider {
 
   /**
    * Extract show information based on a regex.
+   * @override
    * @param {Object} torrent - The torrent to extract the show information from.
-   * @param {Regex} regex - The regex to extract the show information.
+   * @param {RegExp} regex - The regex to extract the show information.
    * @param {Boolean} dateBased - Check for dateBased episodes.
    * @returns {Object} - Information about a show from the torrent.
    */
@@ -73,6 +77,7 @@ export default class ShowProvider extends BaseProvider {
 
   /**
    * Get show info from a given torrent.
+   * @override
    * @param {Object} torrent - A torrent object to extract show information
    * from.
    * @returns {Object} - Information about a show from the torrent.
@@ -101,11 +106,12 @@ export default class ShowProvider extends BaseProvider {
 
   /**
    * Create a new show object with a torrent attached.
+   * @override
    * @param {Object} show - The show to attach a torrent to.
    * @param {Object} torrent - The torrent object.
    * @param {Number} season - The season number for the torrent.
    * @param {Number} episode - The episode number for the torrent.
-   * @param {quality} quality - The quality of the episode.
+   * @param {String} quality - The quality of the episode.
    * @returns {Object} - The show with the newly attached torrent.
    */
   _attachTorrent(show, torrent, season, episode, quality) {
@@ -123,9 +129,11 @@ export default class ShowProvider extends BaseProvider {
 
   /**
    * Puts all the found shows from the torrents in an array.
-   * @param {Array} torrents - A list of torrents to extract show information.
-   * @returns {Array} - A list of objects with show information extracted from
-   * the torrents.
+   * @override
+   * @param {Array<Object>} torrents - A list of torrents to extract show
+   * information.
+   * @returns {Array<Object>} - A list of objects with show information
+   * extracted from the torrents.
    */
   _getAllContent(torrents) {
     const shows = [];
