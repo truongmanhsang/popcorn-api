@@ -2,29 +2,89 @@
 import asyncq from 'async-q';
 import { ItemType } from 'butter-provider';
 
+import FactoryProducer from '../resources/FactoryProducer';
 import Provider from './Provider';
 import { maxWebRequest } from '../../config/constants';
-import { onError } from '../../utils';
+import Util from '../../Util';
 
-/** Class for scraping content from various sources. */
+/**
+ * Class for scraping content from various sources.
+ * @implements {Provider}
+ */
 export default class BaseProvider extends Provider {
 
   /**
-   * Create a BaseTorrentProvider object.
+   * The types of models available for the API.
+   * @type {Object}
+   */
+  static ModelTypes = {
+    AnimeMovie: 'animemovie',
+    AnimeShow: 'animeshow',
+    Movie: 'movie',
+    Show: 'show'
+  }
+
+  /**
+   * The types of content available for the API.
+   * @type {Object}
+   */
+  static Types = {
+    Movie: ItemType.MOVIE,
+    Show: ItemType.TVSHOW
+  }
+
+  /**
+   * Create a BaseProvider class.
    * @param {Object} config - The configuration object for the torrent
    * provider.
    * @param {Object} config.API - The api of the torrent provider.
    * @param {String} config.name - The name of the torrent provider.
-   * @param {Model} config.modelType - The model type for the helper.
+   * @param {String} config.modelType - The model type for the helper.
    * @param {Object} config.query - The query object for the api.
    * @param {String} config.type - The type of content to scrape.
    */
   constructor({API, name, modelType, query, type} = {}) {
-    super({API, name, modelType, query, type});
+    super();
+
+    const helperFactory = FactoryProducer.getFactory('helper');
+    const modelFactory = FactoryProducer.getFactory('model');
+
+    const model = modelFactory.getModel(modelType);
+
+    /**
+     * The api of the torrent provider.
+     * @type {Object}
+     */
+    this._api = API;
+
+    /**
+     * The name of the torrent provider.
+     * @type {String}
+     */
+    this._name = name;
+
+    /**
+     * The helper class for adding movies.
+     * @type {BaseHelper}
+     */
+    this._helper = helperFactory.getHelper(this._name, model, type);
+
+    /**
+     * The query object for the api.
+     * @type {Object}
+     */
+    this._query = query;
+
+    /**
+     * The type of content to scrape.
+     * @type {String}
+     */
+    this._type = type;
   }
 
   /**
    * Get all the content.
+   * @override
    * @param {Object} content - The content information.
    * @returns {Object} - A content object.
    */
@@ -46,17 +106,18 @@ export default class BaseProvider extends Provider {
         if (newContent && newContent._id)
           return await this._helper.addEpisodes(newContent, episodes, slug);
       } else {
-        return onError(`'${this._type}' is not a valid value for ItemType!`);
+        return Util.onError(`'${this._type}' is not a valid value for ItemType!`);
       }
     } catch (err) {
-      return onError(err);
+      return Util.onError(err);
     }
   }
 
   /**
    * Get all the torrents of a given torrent provider.
-   * @param {Integer} totalPages - The total pages of the query.
-   * @returns {Array} - A list of all the queried torrents.
+   * @override
+   * @param {Number} totalPages - The total pages of the query.
+   * @returns {Array<Object>} - A list of all the queried torrents.
    */
   _getAllTorrents(totalPages) {
     let torrents = [];
@@ -75,7 +136,8 @@ export default class BaseProvider extends Provider {
 
   /**
    * Returns a list of all the inserted torrents.
-   * @returns {Object[]} - A list of scraped content.
+   * @override
+   * @returns {Array<Object>} - A list of scraped content.
    */
   async search() {
     try {
@@ -91,7 +153,7 @@ export default class BaseProvider extends Provider {
       }
 
       if (!totalPages)
-        return onError(`${this._name}: total_pages returned: '${totalPages}'`);
+        return Util.onError(`${this._name}: totalPages returned: '${totalPages}'`);
 
       logger.info(`${this._name}: Total pages ${totalPages}`);
 
@@ -102,7 +164,7 @@ export default class BaseProvider extends Provider {
         content => this.getContent(content)
       );
     } catch (err) {
-      return onError(err);
+      return Util.onError(err);
     }
   }
 
