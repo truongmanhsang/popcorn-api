@@ -23,7 +23,7 @@
   "manual": {
     "globalIndex": false,
     "asset": "",
-    "index": "./docs/index.html",
+    "index": "./README.md",
     "overview": ["./manual/overview.md"],
     "design": [],
     "installation": ["./manual/installation.md"],
