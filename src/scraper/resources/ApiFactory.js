@@ -1,41 +1,57 @@
 // Import the neccesary modules.
+/** @external {EztvAPI} https://github.com/ChrisAlderson/eztv-api-pt */
 import EztvAPI from 'eztv-api-pt';
+/** @external {Fanart} https://github.com/ChrisAlderson/fanart.tv-api */
 import Fanart from 'fanart.tv-api';
+/** @external {HorribleSubsAPI} https://github.com/ChrisAlderson/horriblesubs-api */
 import HorribleSubsAPI from 'horriblesubs-api';
+/** @external {KatAPI} https://github.com/ChrisAlderson/kat-api-pt */
 import KatAPI from 'kat-api-pt';
+/** @external {NyaaAPI} https://github.com/ChrisAlderson/nyaa-api-pt */
 import NyaaAPI from 'nyaa-api-pt';
+/** @external {OMDB} https://github.com/ChrisAlderson/omdb-api-pt */
 import OMDB from 'omdb-api-pt';
+/** @external {TMDB} https://github.com/sarathkcm/TheMovieDBClient */
 import TMDB from 'themoviedbclient';
+/** @external {Trakt} https://github.com/vankasteelj/trakt.tv */
 import Trakt from 'trakt.tv';
+/** @external {TVDB} https://github.com/edwellbrook/node-tvdb */
 import TVDB from 'node-tvdb';
+/** @external {YtsAPI} https://github.com/ChrisAlderson/yts-api-pt */
 import YtsAPI from 'yts-api-pt';
+/** @external {ExtraTorrentAPI} https://github.com/ChrisAlderson/extratorrent-api */
 import { Website as ExtraTorrentAPI } from 'extratorrent-api';
 
 import AbstractFactory from './AbstractFactory';
 
+/**
+ * Class for getting an external API wrapper.
+ * @implements {AbstractFactory}
+ */
 export default class ApiFactory extends AbstractFactory {
 
+  /** Create an ApiFactory class. */
   constructor() {
     super();
 
     /**
      * A configured ExtraTorrentAPI API.
-     * @type {ExtraTorrentAPI}
+     * @type {Object}
      * @see https://github.com/ChrisAlderson/extratorrent-api
      */
     this._extraTorrentAPI = new ExtraTorrentAPI();
 
     /**
      * A configured EztvAPI API.
-     * @type {EztvAPI}
+     * @type {Object}
      * @see https://github.com/ChrisAlderson/eztv-api-pt
      */
     this._eztvAPI = new EztvAPI();
 
     /**
      * A configured Fanart API.
-     * @type {Trakt}
-     * @see https://github.com/vankasteelj/trakt.tv
+     * @type {Object}
+     * @see https://github.com/ChrisAlderson/fanart.tv-api
      */
     this._fanartAPI = new Fanart({
       api_key: 'bd2753f04538b01479e39e695308b921'
@@ -43,49 +59,49 @@ export default class ApiFactory extends AbstractFactory {
 
     /**
      * A configured HorribleSubsAPI API.
-     * @type {HorribleSubsAPI}
+     * @type {Object}
      * @see https://github.com/ChrisAlderson/horriblesubs-api
      */
     this._horribleSubsAPI = new HorribleSubsAPI();
 
     /**
      * A configured KatAPI API.
-     * @type {KatAPI}
+     * @type {Object}
      * @see https://github.com/ChrisAlderson/kat-api-pt
      */
     this._katAPI = new KatAPI();
 
     /**
      * A configured NyaaAPI API.
-     * @type {NyaaAPI}
+     * @type {Object}
      * @see https://github.com/ChrisAlderson/nyaa-api-pt
      */
     this._nyaaAPI = new NyaaAPI();
 
     /**
      * A configured OMDB API.
-     * @type {OMDB}
-     * @see https://github.com/ChrisAlderson/omdb-api-pt
+     * @type {Object}
+     * @external {OMDB} https://github.com/ChrisAlderson/omdb-api-pt
      */
     this._omdbAPI = new OMDB();
 
     /**
      * A configured TMDB API.
-     * @type {TMDB}
+     * @type {Object}
      * @see https://github.com/sarathkcm/TheMovieDBClient
      */
     this._tmdbAPI = new TMDB('2592f66235042e3e31705e3d56da0a69');
 
     /**
      * A configured TVDB API.
-     * @type {TVDB}
+     * @type {Object}
      * @see https://github.com/edwellbrook/node-tvdb
      */
     this._tvdb = new TVDB('B17D23818D6E884D');
 
     /**
      * A configured Trakt API.
-     * @type {Trakt}
+     * @type {Object}
      * @see https://github.com/vankasteelj/trakt.tv
      */
     this._traktAPI = new Trakt({
@@ -94,7 +110,7 @@ export default class ApiFactory extends AbstractFactory {
 
     /**
      * A configured YtsAPI API.
-     * @type {YtsAPI}
+     * @type {Object}
      * @see https://github.com/ChrisAlderson/yts-api-pt
      */
     this._ytsAPI = new YtsAPI();
@@ -107,8 +123,14 @@ export default class ApiFactory extends AbstractFactory {
     this._ytsAPI.search = this._ytsAPI.getMovies;
   }
 
+  /**
+   * Get an external API wrapper based on the name.
+   * @override
+   * @param {String} api - The name of the external API wrapper.
+   * @returns {Object|undefined} - An external API wrapper.
+   */
   getApi(api) {
-    if (!api) return null;
+    if (!api) return undefined;
 
     const a = api.toUpperCase();
 
@@ -136,7 +158,7 @@ export default class ApiFactory extends AbstractFactory {
     case 'YTS':
       return this._ytsAPI;
     default:
-      return null;
+      return undefined;
     }
   }
 
