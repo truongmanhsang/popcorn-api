@@ -33,19 +33,19 @@ export const master = true;
 
 /**
  * The maximum web requests can take place at the same time. Default is `2`.
- * @type {Integer}
+ * @type {Number}
  */
 export const maxWebRequest = 2;
 
 /**
- * The amount of object show per page. Default is `50`.
- * @type {Integer}
+ * The amount of objects show per page. Default is `50`.
+ * @type {Number}
  */
 export const pageSize = 50;
 
 /**
  * The port on which the API will run on. Default is `5000`.
- * @type {Integer}
+ * @type {Number}
  */
 export const port = 5000;
 
@@ -83,6 +83,6 @@ export const updatedFile = 'lastUpdated.json';
 
 /**
  * The amount of workers on the cluster. Default is `2`.
- * @type {Integer}
+ * @type {Number}
  */
 export const workers = 2;
