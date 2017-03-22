@@ -95,7 +95,7 @@ module.exports = {
       words: true
     }],
     'spaced-comment': 'warn',
-    'semi': ['warn', 'always'],
+    semi: ['warn', 'always'],
     'semi-spacing': ['warn', {
       before: false,
       after: false
@@ -110,8 +110,8 @@ module.exports = {
     'prefer-arrow-callback': 'warn',
     'prefer-const': 'error',
     'prefer-destructuring': ['warn', {
-      "array": false,
-      "object": true
+      'array': false,
+      'object': true
     }],
     'prefer-template': 'warn',
     'template-curly-spacing': 'error'
