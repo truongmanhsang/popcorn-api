@@ -7,7 +7,7 @@ import Movie from '../models/Movie';
 import Show from '../models/Show';
 import AnimeController from './AnimeController';
 import ShowController from './ShowController';
-import { executeCommand } from '../utils';
+import Util from '../Util';
 import {
   server,
   statusFile,
@@ -25,11 +25,11 @@ export default class IndexController {
 
   /**
    * Displays a given file.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {String} root - The path to the file.
    * @param {String} file - The name of the file.
-   * @returns {JSON | File} - A file to display in the browser.
+   * @returns {Object} - A file to display in the browser.
    */
   static _displayFile(req, res, root, file) {
     if (fs.existsSync(path.join(root, file))) {
@@ -48,10 +48,10 @@ export default class IndexController {
 
   /**
    * Get general information about the server.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {JSON} - General information about the server.
+   * @returns {Object|Function} - General information about the server.
    */
   async getIndex(req, res, next) {
     try {
@@ -60,7 +60,7 @@ export default class IndexController {
 
       const { status } = JSON.parse(fs.readFileSync(statusPath, 'utf8'));
       const { updated } = JSON.parse(fs.readFileSync(updatedPath, 'utf8'));
-      const commit = await executeCommand('git rev-parse --short HEAD');
+      const commit = await Util.executeCommand('git rev-parse --short HEAD');
       const totalAnimes = await Anime.count({
         $or: AnimeController.query.$or
       }).exec();
@@ -88,12 +88,12 @@ export default class IndexController {
 
   /**
    * Displays the 'popcorn-api.log' file.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
-   * @returns {File} - The content of the log file.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
+   * @returns {void} - The content of the log file.
    */
   getErrorLog(req, res) {
-    return IndexController._displayFile(req, res, tempDir, `${name}.log`);
+    IndexController._displayFile(req, res, tempDir, `${name}.log`);
   }
 
 }

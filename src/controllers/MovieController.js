@@ -27,10 +27,10 @@ export default class MovieController {
 
   /**
    * Get all the pages.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {String[]} - A list of pages which are available.
+   * @returns {Array<String>} - A list of pages which are available.
    */
   getMovies(req, res, next) {
     return Movie.count().exec().then(count => {
@@ -45,10 +45,10 @@ export default class MovieController {
 
   /**
    * Get one page.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Movie[]} - The contents of one page.
+   * @returns {Array<Movie>} - The contents of one page.
    */
   getPage(req, res, next) {
     const page = req.params.page - 1;
@@ -137,8 +137,8 @@ export default class MovieController {
 
   /**
    * Get info from one movie.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
    * @returns {Movie} - The details of a single movie.
    */
@@ -152,8 +152,8 @@ export default class MovieController {
 
   /**
    * Get a random movie.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
    * @returns {Movie} - A random movie.
    */

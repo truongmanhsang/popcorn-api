@@ -7,6 +7,10 @@ import { pageSize } from '../config/constants';
 /** Class for getting anime data from the MongoDB. */
 export default class AnimeController {
 
+  /**
+   * Object used to query for anime content.
+   * @type {Object}
+   */
   static query = {
     $or: [{
       num_seasons: {
@@ -44,10 +48,10 @@ export default class AnimeController {
 
   /**
    * Get all the pages.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {String[]} - A list of pages which are available.
+   * @returns {Array<String>} - A list of pages which are available.
    */
   getAnimes(req, res, next) {
     return Anime.count(AnimeController.query).exec().then(count => {
@@ -62,10 +66,10 @@ export default class AnimeController {
 
   /**
    * Get one page.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Anime[]} - The contents of one page.
+   * @returns {Array<Anime>} - The contents of one page.
    */
   getPage(req, res, next) {
     const page = req.params.page - 1;
@@ -154,8 +158,8 @@ export default class AnimeController {
 
   /**
    * Get info from one anime.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
    * @returns {Anime} - The details of a single anime.
    */
@@ -172,8 +176,8 @@ export default class AnimeController {
 
   /**
    * Get a random anime.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
    * @returns {Anime} - A random movie.
    */

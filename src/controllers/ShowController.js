@@ -34,10 +34,10 @@ export default class ShowController {
 
   /**
    * Get all the pages.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {String[]} - A list of pages which are available.
+   * @returns {Array<String>} - A list of pages which are available.
    */
   getShows(req, res, next) {
     return Show.count(ShowController.query).exec().then(count => {
@@ -52,10 +52,10 @@ export default class ShowController {
 
   /**
    * Get one page.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
-   * @returns {Show[]} - The contents of one page.
+   * @returns {Array<Show>} - The contents of one page.
    */
   getPage(req, res, next) {
     const page = req.params.page - 1;
@@ -146,8 +146,8 @@ export default class ShowController {
 
   /**
    * Get info from one show.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
    * @returns {Show} - The details of a single show.
    */
@@ -163,8 +163,8 @@ export default class ShowController {
 
   /**
    * Get a random show.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
+   * @param {Object} req - The express request object.
+   * @param {Object} res - The express response object.
    * @param {Function} next - The next function for Express.
    * @returns {Show} - A random show.
    */
