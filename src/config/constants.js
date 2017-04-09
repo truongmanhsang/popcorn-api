@@ -44,13 +44,6 @@ export const port = 5000;
 export const server = 'serv01';
 
 /**
- * The name of the status file holding the `status` value for the index page.
- * Default is `status.json`.
- * @type {String}
- */
-export const statusFile = 'status.json';
-
-/**
  * The path to the temprary directory.. Default is `./tmp`.
  * @type {String}
  */
@@ -61,13 +54,6 @@ export const tempDir = path.join(process.cwd(), 'tmp');
  * @type {String}
  */
 export const timeZone = 'America/Los_Angeles';
-
-/**
- * The name of the updated file holding the `updated` value for the index page.
- * Default is `lastUpdated.json`.
- * @type {String}
- */
-export const updatedFile = 'lastUpdated.json';
 
 /**
  * The amount of workers on the cluster. Default is `2`.

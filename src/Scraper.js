@@ -1,51 +1,87 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
-import fs from 'fs';
-import path from 'path';
 
 import Context from './scraper/Context';
 import providerConfigs from './scraper/configs';
 import Util from './Util';
-import {
-  collections,
-  statusFile,
-  tempDir,
-  updatedFile
-} from './config/constants';
+import { collections } from './config/constants';
 
 /** Class for Initiating the scraping process. */
-export default class Scraper {
+class Scraper {
 
   /**
-   * Returns the epoch time.
-   * @returns {Number} - Epoch time.
+   * The instance used for the singleton pattern.
+   * @type {Scraper}
    */
-  _now() {
-    return Math.floor(new Date().getTime() / 1000);
+  static _instance = undefined;
+
+  /**
+   * The status of the scraper.
+   * @type {String}
+   */
+  static _status = 'Idle';
+
+  /**
+   * The last updated value.
+   * @type {Number}
+   */
+  static _updated = 0;
+
+  /**
+   * Get the Scraper singleton instance.
+   * @returns {Scraper} - The Scraper singleton instance.
+   */
+  static get instance() {
+    return Scraper._instance;
   }
 
   /**
-   * Updates the `lastUpdated.json` file.
-   * @param {String} [updated=Date.now()] - The epoch time when the API last
-   * started scraping.
+   * Set the Scraper singleton class.
+   * @param {Scraper} _instance - The instance to set.
    * @returns {void}
    */
-  setLastUpdated(updated = this._now()) {
-    fs.writeFile(path.join(tempDir, updatedFile), JSON.stringify({
-      updated
-    }), () => {});
+  static set instance(_instance) {
+    Scraper._instance = _instance;
   }
 
   /**
-   * Updates the `status.json` file.
-   * @param {String} [status=Idle] - The status which will be set to in the
-   * `status.json` file.
+   * Return the status of the scraper.
+   * @returns {String} - The status of the scraper.
+   */
+  static get status() {
+    return Scraper._status;
+  }
+
+  /**
+   * Set the status of the scraper.
+   * @param {String} _status - The status to set.
    * @returns {void}
    */
-  setStatus(status = 'Idle') {
-    fs.writeFile(path.join(tempDir, statusFile), JSON.stringify({
-      status
-    }), () => {});
+  static set status(_status) {
+    Scraper._status = _status;
+  }
+
+  /**
+   * Retrun the last updated value of the scraper.
+   * @returns {Number} - The last updated value.
+   */
+  static get updated() {
+    return Scraper._updated;
+  }
+
+  /**
+   * Set the last updated value of the scraper.
+   * @param {Number} _updated - The value to set the last updated value.
+   * @returns {void}
+   */
+  static set updated(_updated) {
+    Scraper._updated = _updated;
+  }
+
+  /** Create a singleton class for Scraper. */
+  constructor() {
+    if (!Scraper.instance) Scraper.instance = this;
+    return Scraper.instance;
   }
 
   /**
@@ -53,16 +89,22 @@ export default class Scraper {
    * @returns {void}
    */
   scrape() {
-    this.setLastUpdated();
+    Scraper.updated = Math.floor(new Date().getTime() / 1000);
 
     const context = new Context();
     asyncq.eachSeries(providerConfigs, async provider => {
       context.provider = provider;
       await context.execute();
-    }).then(() => this.setStatus())
+    }).then(() => Scraper.status = 'Idle')
       .then(() => asyncq.eachSeries(collections,
         collection => Util.exportCollection(collection)))
       .catch(err => logger.error(`Error while scraping: ${err}`));
   }
 
 }
+
+/**
+ * The Scraper singleton object.
+ * @type {Scraper}
+ */
+export default new Scraper();

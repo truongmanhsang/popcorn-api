@@ -15,10 +15,8 @@ import Logger from './config/Logger';
 import {
   cronTime,
   port,
-  statusFile,
   tempDir,
   timeZone,
-  updatedFile,
   workers
 } from './config/constants';
 import { name } from '../package.json';
@@ -49,11 +47,11 @@ export default class Index {
    */
   static _server = http.createServer(Index._app);
 
-  /**
-   * The scraper object.
-   * @type {Scraper}
-   */
-  static _scraper = new Scraper();
+  // /**
+  //  * The scraper object.
+  //  * @type {Scraper}
+  //  */
+  // static _scraper = new Scraper();
 
   /**
    * Create an index class.
@@ -110,9 +108,6 @@ export default class Index {
   static _createTemp() {
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
     if (fs.existsSync(tempDir)) Index._resetTemp();
-
-    Index._createEmptyFile(path.join(tempDir, statusFile));
-    Index._createEmptyFile(path.join(tempDir, updatedFile));
   }
 
   /**
@@ -155,14 +150,14 @@ export default class Index {
           new CronJob({
             cronTime,
             timeZone,
-            onComplete: Index._scraper.setStatus,
-            onTick: () => Index._scraper.scrape,
+            onComplete: () => Scraper.status = 'Idle',
+            onTick: Scraper.scrape,
             start
           });
 
-          Index._scraper.setLastUpdated(0);
-          Index._scraper.setStatus();
-          if (start) Index._scraper.scrape();
+          Scraper.updated = 0;
+          Scraper.status = 'Idle';
+          if (start) Scraper.scrape();
         } catch (err) {
           return logger.error(err);
         }

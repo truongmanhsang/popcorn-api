@@ -7,12 +7,11 @@ import Movie from '../models/Movie';
 import Show from '../models/Show';
 import AnimeController from './AnimeController';
 import ShowController from './ShowController';
+import Scraper from '../Scraper';
 import Util from '../Util';
 import {
   server,
-  statusFile,
-  tempDir,
-  updatedFile
+  tempDir
 } from '../config/constants';
 import {
   name,
@@ -55,11 +54,6 @@ export default class IndexController {
    */
   async getIndex(req, res, next) {
     try {
-      const statusPath = path.join(tempDir, statusFile);
-      const updatedPath = path.join(tempDir, updatedFile);
-
-      const { status } = JSON.parse(fs.readFileSync(statusPath, 'utf8'));
-      const { updated } = JSON.parse(fs.readFileSync(updatedPath, 'utf8'));
       const commit = await Util.executeCommand('git rev-parse --short HEAD');
       const totalAnimes = await Anime.count({
         $or: AnimeController.query.$or
@@ -72,11 +66,11 @@ export default class IndexController {
       return res.json({
         repo: repository.url,
         server,
-        status,
+        status: Scraper.status,
         totalAnimes: totalAnimes || 0,
         totalMovies: totalMovies || 0,
         totalShows: totalShows || 0,
-        updated,
+        updated: Scraper.updated,
         uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
         version,
         commit
