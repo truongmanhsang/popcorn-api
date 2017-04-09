@@ -55,13 +55,9 @@ export default class IndexController {
   async getIndex(req, res, next) {
     try {
       const commit = await Util.executeCommand('git rev-parse --short HEAD');
-      const totalAnimes = await Anime.count({
-        $or: AnimeController.query.$or
-      }).exec();
+      const totalAnimes = await Anime.count(AnimeController.query).exec();
       const totalMovies = await Movie.count().exec();
-      const totalShows = await Show.count({
-        num_seasons: ShowController.query
-      }).exec();
+      const totalShows = await Show.count(ShowController.query).exec();
 
       return res.json({
         repo: repository.url,
