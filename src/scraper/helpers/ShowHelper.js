@@ -217,73 +217,76 @@ export default class ShowHelper extends BaseHelper {
   }
 
   /**
+   * Get TV show images from TMDB.
+   * @param {Number} tmdb - The tmdb id of the show you want the images from.
+   * @returns {Object} - Object with banner, fanart and poster images.
+   */
+  _getTmdbImages(tmdb) {
+    return this._tmdb.tv.images({
+      tv_id: tmdb
+    }).then(images => {
+      const baseUrl = 'http://image.tmdb.org/t/p/w500/';
+
+      const tmdbPoster = images.posters.filter(
+        poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null
+      )[0];
+      const tmdbBackdrop = images.backdrops.filter(
+        backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null
+      )[0];
+
+      return {
+        banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper.holder,
+        fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : BaseHelper.holder,
+        poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper.holder
+      };
+    });
+  }
+
+  /**
+   * Get TV show images from TVDB.
+   * @param {Number} tvdb - The tvdb id of the show you want the images from.
+   * @returns {Object} - Object with banner, fanart and poster images.
+   */
+  _getTvdbImages(tvdb) {
+    return this._tvdb.getSeriesById(tvdb).then(images => {
+      const baseUrl = 'http://thetvdb.com/banners/';
+
+      return {
+        banner: images.banner ? `${baseUrl}${images.banner}` : BaseHelper.holder,
+        fanart: images.fanart ? `${baseUrl}${images.fanart}` : BaseHelper.holder,
+        poster: images.poster ? `${baseUrl}${images.poster}` : BaseHelper.holder
+      };
+    });
+  }
+
+  /**
+   * Get TV show images from Fanart.
+   * @param {Number} tvdb - The tvdb id of the show you want the images from.
+   * @returns {Object} - Object with banner, fanart and poster images.
+   */
+  _getFanartImages(tvdb) {
+    return this._fanart.getShowImages(tvdb).then(images => {
+      return {
+        banner: images.tvbanner ? images.tvbanner[0].url : BaseHelper.holder,
+        fanart: images.showbackground ? images.showbackground[0].url : images.clearart ? images.clearart[0].url : BaseHelper.holder,
+        poster: images.tvposter ? images.tvposter[0].url : BaseHelper.holder
+      };
+    });
+  }
+
+  /**
    * Get TV show images.
    * @override
-   * @param {Number} tmdb_id - The tmdb id of the show you want the images from.
-   * @param {Number} tvdb_id - The tvdb id of the show you want the images from.
-   * @returns {Object} - Object with a banner, fanart and poster images.
+   * @param {Number} tmdb - The tmdb id of the show you want the images from.
+   * @param {Number} tvdb - The tvdb id of the show you want the images from.
+   * @returns {Object} - Object with banner, fanart and poster images.
    */
-  async _getImages(tmdb_id, tvdb_id) {
-    const holder = 'images/posterholder.png';
-    const images = {
-      banner: holder,
-      fanart: holder,
-      poster: holder
-    };
-
-    try {
-      let tmdbPoster, tmdbBackdrop;
-
-      const tmdbData = await this._tmdb.call(`/tv/${tmdb_id}/images`, {});
-
-      tmdbPoster = tmdbData['posters'].filter(poster =>
-        poster.iso_639_1 === 'en' || poster.iso_639_1 === null)[0];
-      tmdbPoster = this._tmdb.getImageUrl(tmdbPoster.file_path, 'w500');
-
-      tmdbBackdrop = tmdbData['backdrops'].filter(backdrop =>
-        backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null)[0];
-      tmdbBackdrop = this._tmdb.getImageUrl(tmdbBackdrop.file_path, 'w500');
-
-      images.banner = tmdbPoster ? tmdbPoster : holder;
-      images.fanart = tmdbBackdrop ? tmdbBackdrop : holder;
-      images.poster = tmdbPoster ? tmdbPoster : holder;
-
-      this._checkImages(images, holder);
-    } catch (err) {
-      try {
-        const tvdbImages = await this._tvdb.getSeriesById(tvdb_id);
-
-        if (images.banner === holder) {
-          images.banner = tvdbImages.banner ? `http://thetvdb.com/banners/${tvdbImages.banner}` : holder;
-        }
-        if (images.fanart === holder) {
-          images.fanart = tvdbImages.fanart ? `http://thetvdb.com/banners/${tvdbImages.fanart}` : holder;
-        }
-        if (images.poster === holder) {
-          images.poster = tvdbImages.poster ? `http://thetvdb.com/banners/${tvdbImages.poster}` : holder;
-        }
-
-        this._checkImages(images, holder);
-      } catch (err) {
-        try {
-          const fanartImages = await this._fanart.getShowImages(tvdb_id);
-
-          if (images.banner === holder) {
-            images.banner = fanartImages.tvbanner ? fanartImages.tvbanner[0].url : holder;
-          }
-          if (images.fanart === holder) {
-            images.fanart = fanartImages.showbackground ? fanartImages.showbackground[0].url : fanartImages.clearart ? fanartImages.clearart[0].url : holder;
-          }
-          if (images.poster === holder) {
-            images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
-          }
-        } catch (err) {
-          logger.error(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || tvdb_id}'`);
-        }
-      }
-    }
-
-    return images;
+  _getImages(tmdb, tvdb) {
+    return Promise.race([
+      this._getTmdbImages(tmdb),
+      this._getTvdbImages(tvdb),
+      this._getFanartImages(tvdb)
+    ]).catch(err => logger.error(`Images: Could not find images on: ${err.path || err} with id: '${tmdb || tvdb}'`));
   }
 
   /**
@@ -306,13 +309,15 @@ export default class ShowHelper extends BaseHelper {
       if (traktWatchers !== null) watching = traktWatchers.length;
 
       if (traktShow && traktShow.ids['imdb'] && traktShow.ids['tmdb'] && traktShow.ids['tvdb']) {
+        const { imdb, slug, tvdb } = traktShow.ids;
+
         return {
-          _id: traktShow.ids['imdb'],
-          imdb_id: traktShow.ids['imdb'],
-          tvdb_id: traktShow.ids['tvdb'],
+          _id: imdb,
+          imdb_id: imdb,
+          tvdb_id: tvdb,
           title: traktShow.title,
           year: traktShow.year,
-          slug: traktShow.ids['slug'],
+          slug: slug,
           synopsis: traktShow.overview,
           runtime: traktShow.runtime,
           rating: {
@@ -328,7 +333,7 @@ export default class ShowHelper extends BaseHelper {
           num_seasons: 0,
           last_updated: Number(new Date()),
           latest_episode: 0,
-          images: await this._getImages(traktShow.ids['tmdb'], traktShow.ids['tvdb']),
+          images: await this._getImages(tvdb, tvdb),
           genres: traktShow.genres !== null ? traktShow.genres : ['unknown'],
           episodes: []
         };
@@ -351,10 +356,16 @@ export default class ShowHelper extends BaseHelper {
       delete episodes.dateBased;
 
       if (dateBased) {
-        await asyncq.each(Object.keys(episodes), seasonNumber => this._addDateBasedSeason(show, episodes, seasonNumber, slug));
-      } else {
-        await asyncq.each(Object.keys(episodes), seasonNumber => this._addSeasonalSeason(show, episodes, seasonNumber, slug));
+        await asyncq.each(
+          Object.keys(episodes),
+          seasonNumber => this._addDateBasedSeason(show, episodes, seasonNumber, slug)
+        );
       }
+
+      await asyncq.each(
+        Object.keys(episodes),
+        seasonNumber => this._addSeasonalSeason(show, episodes, seasonNumber, slug)
+      );
 
       return await this._updateEpisodes(show);
     } catch (err) {

@@ -77,7 +77,7 @@ export default class MovieHelper extends BaseHelper {
         logger.info(`${this._name}: '${found.title}' is an existing movie.`);
 
         if (found.torrents) {
-          Object.keys(found.torrents).forEach(language => {
+          Object.keys(found.torrents).map(language => {
             movie = this._updateTorrent(movie, found, language, '720p');
             movie = this._updateTorrent(movie, found, language, '1080p');
           });
@@ -102,79 +102,84 @@ export default class MovieHelper extends BaseHelper {
    * @returns {Movie} - A movie with torrents attached.
    */
   addTorrents(movie, torrents) {
-    return asyncq.each(Object.keys(torrents), torrent => movie.torrents[torrent] = torrents[torrent])
-      .then(() => this._updateMovie(movie));
+    return asyncq.each(
+      Object.keys(torrents),
+      torrent => movie.torrents[torrent] = torrents[torrent]
+    ).then(() => this._updateMovie(movie));
+  }
+
+  /**
+   * Get movie images from TMDB.
+   * @param {Number} tmdb - The tmdb id of the movie you want the images from.
+   * @returns {Object} - Object with banner, fanart and poster images.
+   */
+  _getTmdbImages(tmdb) {
+    return this._tmdb.movie.images({
+      movie_id: tmdb
+    }).then(images => {
+      const baseUrl = 'http://image.tmdb.org/t/p/w500/';
+
+      const tmdbPoster = images.posters.filter(
+        poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null
+      )[0];
+      const tmdbBackdrop = images.backdrops.filter(
+        backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null
+      )[0];
+
+      return {
+        banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper.holder,
+        fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : BaseHelper.holder,
+        poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper.holder
+      };
+    });
+  }
+
+  /**
+   * Get movie images from OMDB.
+   * @param {String} imdb - The imdb id of the movie you want the images from.
+   * @returns {Object} - Object with banner, fanart and poster images.
+   */
+  _getOmdbImages(imdb) {
+    return this._omdb.byID({
+      imdb,
+      type: 'movie'
+    }).then(images => {
+      return {
+        banner: images.Poster ? images.Poster : BaseHelper.holder,
+        fanart: images.Poster ? images.Poster : BaseHelper.holder,
+        poster: images.Poster ? images.Poster : BaseHelper.holder
+      };
+    });
+  }
+
+  /**
+   * Get movie images from Fanart.
+   * @param {Number} tmdb - The tvdb id of the movie you want the images from.
+   * @returns {Object} - Object with banner, fanart and poster images.
+   */
+  _getFanartImages(tmdb) {
+    return this._fanart.getMovieImages(tmdb).then(images => {
+      return {
+        banner: images.moviebanner ? images.moviebanner[0].url : BaseHelper.holder,
+        fanart: images.moviebackground ? images.moviebackground[0].url : images.hdmovieclearart ? images.hdmovieclearart[0].url : BaseHelper.holder,
+        poster: images.movieposter ? images.movieposter[0].url : BaseHelper.holder
+      };
+    });
   }
 
   /**
    * Get movie images.
    * @override
-   * @param {Number} tmdb_id - The tmdb id of the movie you want the images from.
-   * @param {String} imdb_id - The imdb id of the movie you want the images from.
-   * @returns {Object} - Object with a banner, fanart and poster images.
+   * @param {Number} tmdb - The tmdb id of the movie you want the images from.
+   * @param {String} imdb - The imdb id of the movie you want the images from.
+   * @returns {Object} - Object with banner, fanart and poster images.
    */
-  async _getImages(tmdb_id, imdb_id) {
-    const holder = 'images/posterholder.png';
-    const images = {
-      banner: holder,
-      fanart: holder,
-      poster: holder
-    };
-
-    try {
-      let tmdbPoster, tmdbBackdrop;
-
-      const tmdbData = await this._tmdb.call(`/movie/${tmdb_id}/images`, {});
-
-      tmdbPoster = tmdbData['posters'].filter(poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null)[0];
-      tmdbPoster = this._tmdb.getImageUrl(tmdbPoster.file_path, 'w500');
-
-      tmdbBackdrop = tmdbData['backdrops'].filter(backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null)[0];
-      tmdbBackdrop = this._tmdb.getImageUrl(tmdbBackdrop.file_path, 'w500');
-
-      images.banner = tmdbPoster ? tmdbPoster : holder;
-      images.fanart = tmdbBackdrop ? tmdbBackdrop : holder;
-      images.poster = tmdbPoster ? tmdbPoster : holder;
-
-      this._checkImages(images, holder);
-    } catch (err) {
-      try {
-        const omdbImages = await this._omdb.byID({
-          imdb: imdb_id,
-          type: 'movie'
-        });
-
-        if (images.banner === holder) {
-          images.banner = omdbImages.Poster ? omdbImages.Poster : holder;
-        }
-        if (images.fanart === holder) {
-          images.fanart = omdbImages.Poster ? omdbImages.Poster : holder;
-        }
-        if (images.poster === holder) {
-          images.poster = omdbImages.Poster ? omdbImages.Poster : holder;
-        }
-
-        this._checkImages(images, holder);
-      } catch (err) {
-        try {
-          const fanartImages = await this._fanart.getMovieImages(tmdb_id);
-
-          if (images.banner === holder) {
-            images.banner = fanartImages.moviebanner ? fanartImages.moviebanner[0].url : holder;
-          }
-          if (images.fanart === holder) {
-            images.fanart = fanartImages.moviebackground ? fanartImages.moviebackground[0].url : fanartImages.hdmovieclearart ? fanartImages.hdmovieclearart[0].url : holder;
-          }
-          if (images.poster === holder) {
-            images.poster = fanartImages.movieposter ? fanartImages.movieposter[0].url : holder;
-          }
-        } catch (err) {
-          logger.error(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
-        }
-      }
-    }
-
-    return images;
+  _getImages(tmdb, imdb) {
+    return Promise.race([
+      this._getTmdbImages(imdb),
+      this._getOmdbImages(tmdb),
+      this._getFanartImages(tmdb)
+    ]).catch(err => logger.error(`Images: Could not find images on: ${err.path || err} with id: '${tmdb || imdb}'`));
   }
 
   /**
@@ -195,12 +200,14 @@ export default class MovieHelper extends BaseHelper {
       if (traktWatchers !== null) watching = traktWatchers.length;
 
       if (traktMovie && traktMovie.ids['imdb'] && traktMovie.ids['tmdb']) {
+        const { imdb, slug, tmdb } = traktMovie.ids;
+
         return {
-          _id: traktMovie.ids['imdb'],
-          imdb_id: traktMovie.ids['imdb'],
+          _id: imdb,
+          imdb_id: imdb,
           title: traktMovie.title,
           year: traktMovie.year,
-          slug: traktMovie.ids['slug'],
+          slug: slug,
           synopsis: traktMovie.overview,
           runtime: traktMovie.runtime,
           rating: {
@@ -210,7 +217,7 @@ export default class MovieHelper extends BaseHelper {
           },
           country: traktMovie.language,
           last_updated: Number(new Date()),
-          images: await this._getImages(traktMovie.ids['tmdb'], traktMovie.ids['imdb']),
+          images: await this._getImages(tmdb, imdb),
           genres: traktMovie.genres !== null ? traktMovie.genres : ['unknown'],
           released: new Date(traktMovie.released).getTime() / 1000.0,
           trailer: traktMovie.trailer || null,

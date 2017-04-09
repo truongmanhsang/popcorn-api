@@ -8,6 +8,8 @@ import Helper from './Helper';
  */
 export default class BaseHelper extends Helper {
 
+  static holder = 'images/posterholder.png';
+
   /**
    * Create a base helper class for content.
    * @param {String} name - The name of the content provider.
@@ -61,9 +63,9 @@ export default class BaseHelper extends Helper {
    * @throws {Error} - 'An image could not be found'.
    * @returns {void}
    */
-  _checkImages(images, holder) {
+  _checkImages(images) {
     for (const image of images) {
-      if (image === holder) throw new Error('An image could not be found');
+      if (image === BaseHelper.holder) throw new Error('An image could not be found');
     }
   }
 

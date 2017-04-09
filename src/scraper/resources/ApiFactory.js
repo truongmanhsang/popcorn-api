@@ -11,8 +11,8 @@ import KatAPI from 'kat-api-pt';
 import NyaaAPI from 'nyaa-api-pt';
 /** @external {OMDB} https://github.com/ChrisAlderson/omdb-api-pt */
 import OMDB from 'omdb-api-pt';
-/** @external {TMDB} https://github.com/sarathkcm/TheMovieDBClient */
-import TMDB from 'themoviedbclient';
+/** @external {TMDB} https://github.com/vankasteelj/tmdbapi */
+import TMDB from 'tmdbapi';
 /** @external {Trakt} https://github.com/vankasteelj/trakt.tv */
 import Trakt from 'trakt.tv';
 /** @external {TVDB} https://github.com/edwellbrook/node-tvdb */
@@ -90,14 +90,16 @@ export default class ApiFactory extends AbstractFactory {
      * @type {Object}
      * @see https://github.com/sarathkcm/TheMovieDBClient
      */
-    this._tmdbAPI = new TMDB('2592f66235042e3e31705e3d56da0a69');
+    this._tmdbAPI = new TMDB({
+      apiv3: '2592f66235042e3e31705e3d56da0a69'
+    });
 
     /**
      * A configured TVDB API.
      * @type {Object}
      * @see https://github.com/edwellbrook/node-tvdb
      */
-    this._tvdb = new TVDB('B17D23818D6E884D');
+    this._tvdbAPI = new TVDB('B17D23818D6E884D');
 
     /**
      * A configured Trakt API.
