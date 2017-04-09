@@ -3,7 +3,6 @@ import asyncq from 'async-q';
 
 import BaseHelper from './BaseHelper';
 import FactoryProducer from '../resources/FactoryProducer';
-import Show from '../../models/Show';
 
 /**
  * Class for saving shows.
@@ -14,9 +13,9 @@ export default class ShowHelper extends BaseHelper {
   /**
    * Create a helper class for show content.
    * @param {String} name - The name of the content provider.
-   * @param {Object} [model=Show] - The model to help fill.
+   * @param {Object} model - The model to help fill.
    */
-  constructor(name, model = Show) {
+  constructor(name, model) {
     super(name, model);
 
     const apiFactory = FactoryProducer.getFactory('api');

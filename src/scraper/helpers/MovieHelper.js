@@ -3,7 +3,6 @@ import asyncq from 'async-q';
 
 import BaseHelper from './BaseHelper';
 import FactoryProducer from '../resources/FactoryProducer';
-import Movie from '../../models/Movie';
 
 /**
  * Class for saving movies.
@@ -14,9 +13,9 @@ export default class MovieHelper extends BaseHelper {
   /**
    * Create a helper class for movie content.
    * @param {String} name - The name of the content provider.
-   * @param {Object} [model=Movie] - The model to help fill.
+   * @param {Object} model - The model to help fill.
    */
-  constructor(name, model = Movie) {
+  constructor(name, model) {
     super(name, model);
 
     const apiFactory = FactoryProducer.getFactory('api');
