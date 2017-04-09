@@ -32,12 +32,6 @@ export const dbName = 'popcorn';
 export const master = true;
 
 /**
- * The maximum web requests can take place at the same time. Default is `2`.
- * @type {Number}
- */
-export const maxWebRequest = 2;
-
-/**
  * The amount of objects show per page. Default is `50`.
  * @type {Number}
  */

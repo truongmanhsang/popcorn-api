@@ -4,7 +4,6 @@ import { ItemType } from 'butter-provider';
 
 import FactoryProducer from '../resources/FactoryProducer';
 import Provider from './Provider';
-import { maxWebRequest } from '../../config/constants';
 import Util from '../../Util';
 
 /**
@@ -32,6 +31,12 @@ export default class BaseProvider extends Provider {
     Movie: ItemType.MOVIE,
     Show: ItemType.TVSHOW
   }
+
+  /**
+   * The maximum web requests can take place at the same time. Default is `2`.
+   * @type {Number}
+   */
+  _maxWebRequest = 2;
 
   /**
    * Create a BaseProvider class.
@@ -160,7 +165,7 @@ export default class BaseProvider extends Provider {
       const torrents = await this._getAllTorrents(totalPages);
       const allContent = await this._getAllContent(torrents, this._query.language);
 
-      return await asyncq.mapLimit(allContent, maxWebRequest,
+      return await asyncq.mapLimit(allContent, BaseProvider._maxWebRequest,
         content => this.getContent(content)
       );
     } catch (err) {

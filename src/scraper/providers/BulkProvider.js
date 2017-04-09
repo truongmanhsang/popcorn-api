@@ -2,7 +2,6 @@
 import asyncq from 'async-q';
 
 import BaseProvider from './BaseProvider';
-import { maxWebRequest } from '../../config/constants';
 import Util from '../../Util';
 
 /**
@@ -35,7 +34,7 @@ export default class BulkProvider extends BaseProvider {
       const contents = await this._api.getAll();
       logger.info(`${this._name}: Found ${contents.length} ${this._type}s.`);
 
-      return await asyncq.mapLimit(contents, maxWebRequest, async content => {
+      return await asyncq.mapLimit(contents, BulkProvider._maxWebRequest, async content => {
         content = await this._api.getData(content);
         return await this.getContent(content);
       });
