@@ -4,10 +4,15 @@ import asyncq from 'async-q';
 import Context from './scraper/Context';
 import providerConfigs from './scraper/configs';
 import Util from './Util';
-import { collections } from './config/constants';
 
 /** Class for Initiating the scraping process. */
 class Scraper {
+
+  /**
+   * An array of the supported collections for mongodb.
+   * @type {Array}
+   */
+  _collections = ['anime', 'movie', 'show'];
 
   /**
    * The instance used for the singleton pattern.
@@ -96,8 +101,9 @@ class Scraper {
       context.provider = provider;
       await context.execute();
     }).then(() => Scraper.status = 'Idle')
-      .then(() => asyncq.eachSeries(collections,
-        collection => Util.exportCollection(collection)))
+      .then(() => asyncq.eachSeries(
+        this._collections, collection => Util.exportCollection(collection)
+      ))
       .catch(err => logger.error(`Error while scraping: ${err}`));
   }
 
