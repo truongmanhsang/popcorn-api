@@ -1,14 +1,9 @@
 // Import the neccesary modules.
-import {
-  apiFactory,
-  defaultKatShow
-} from '../common';
+import { defaultKatShow } from '../common';
 import Provider from '../../providers/ShowProvider';
 
-const API = apiFactory.getApi('kat');
-
 const katZoner720p = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Show,
   name: 'Zoner720p',
   type: Provider.Types.Show,
@@ -19,7 +14,7 @@ const katZoner720p = new Provider({
 });
 
 const katZoner1080p = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Show,
   name: 'Zoner1080p',
   type: Provider.Types.Show,
@@ -30,7 +25,7 @@ const katZoner1080p = new Provider({
 });
 
 const katBrasse0 = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Show,
   name: 'Brasse0',
   type: Provider.Types.Show,
@@ -41,7 +36,7 @@ const katBrasse0 = new Provider({
 });
 
 const katETHD = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Show,
   name: 'ETHD',
   type: Provider.Types.Show,
@@ -52,7 +47,7 @@ const katETHD = new Provider({
 });
 
 const katETTV = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV',
   type: Provider.Types.Show,
@@ -63,7 +58,7 @@ const katETTV = new Provider({
 });
 
 const katEZTV = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Show,
   name: 'KAT_EZTV',
   type: Provider.Types.Show,
@@ -74,7 +69,7 @@ const katEZTV = new Provider({
 });
 
 const katVTV = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Show,
   name: 'VTV',
   type: Provider.Types.Show,
@@ -85,7 +80,7 @@ const katVTV = new Provider({
 });
 
 const katSrigga = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Show,
   name: 'SRIGGA',
   type: Provider.Types.Show,
@@ -96,7 +91,7 @@ const katSrigga = new Provider({
 });
 
 const katZonerDS = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Show,
   name: 'ZonerSD',
   type: Provider.Types.Show,

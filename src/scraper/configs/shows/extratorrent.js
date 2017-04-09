@@ -1,14 +1,9 @@
 // Import the neccesary modules.
-import {
-  apiFactory,
-  defaultExtraTorrentShow
-} from '../common';
+import { defaultExtraTorrentShow } from '../common';
 import Provider from '../../providers/ShowProvider';
 
-const API = apiFactory.getApi('extratorrent');
-
 const ettvLOL = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV LOL',
   type: Provider.Types.Show,
@@ -19,7 +14,7 @@ const ettvLOL = new Provider({
 });
 
 const ettvKillers = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV KILLERS',
   type: Provider.Types.Show,
@@ -30,7 +25,7 @@ const ettvKillers = new Provider({
 });
 
 const ettv2HD = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV 2HD',
   type: Provider.Types.Show,
@@ -41,7 +36,7 @@ const ettv2HD = new Provider({
 });
 
 const ettvCrooks = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV CROOKS',
   type: Provider.Types.Show,
@@ -52,7 +47,7 @@ const ettvCrooks = new Provider({
 });
 
 const ettvFUM = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV FUM',
   type: Provider.Types.Show,
@@ -63,7 +58,7 @@ const ettvFUM = new Provider({
 });
 
 const ettvBATV = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV BATV',
   type: Provider.Types.Show,
@@ -74,7 +69,7 @@ const ettvBATV = new Provider({
 });
 
 const ettvASAP = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV ASAP',
   type: Provider.Types.Show,
@@ -85,7 +80,7 @@ const ettvASAP = new Provider({
 });
 
 const ettvTLA = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV TLA',
   type: Provider.Types.Show,
@@ -96,7 +91,7 @@ const ettvTLA = new Provider({
 });
 
 const ettvW4F = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV W4F',
   type: Provider.Types.Show,
@@ -107,7 +102,7 @@ const ettvW4F = new Provider({
 });
 
 const ettvEvolve = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV EVOLVE',
   type: Provider.Types.Show,
@@ -118,7 +113,7 @@ const ettvEvolve = new Provider({
 });
 
 const ettvOrganic = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV ORGANiC',
   type: Provider.Types.Show,
@@ -129,7 +124,7 @@ const ettvOrganic = new Provider({
 });
 
 const ettvBajskorv = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV BAJSKORV',
   type: Provider.Types.Show,
@@ -140,7 +135,7 @@ const ettvBajskorv = new Provider({
 });
 
 const ettvRiver = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV RiVER',
   type: Provider.Types.Show,
@@ -151,7 +146,7 @@ const ettvRiver = new Provider({
 });
 
 const ettv720p = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETTV 720p',
   type: Provider.Types.Show,
@@ -161,7 +156,7 @@ const ettv720p = new Provider({
 });
 
 const ethd720p = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETHD 720p',
   type: Provider.Types.Show,
@@ -171,7 +166,7 @@ const ethd720p = new Provider({
 });
 
 const ettv1080p = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: '1080p',
   type: Provider.Types.Show,

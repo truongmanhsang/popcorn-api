@@ -1,14 +1,9 @@
 // Import the neccesary modules.
-import {
-  apiFactory,
-  defaultNyaaAnime
-} from '../common';
+import { defaultNyaaAnime } from '../common';
 import Provider from '../../providers/ShowProvider';
 
-const API = apiFactory.getApi('nyaa');
-
 const nyaaCommie = new Provider({
-  API,
+  api: 'nyaa',
   modelType: Provider.ModelTypes.AnimeShow,
   name: 'Commie',
   type: Provider.Types.Show,
@@ -20,7 +15,7 @@ const nyaaCommie = new Provider({
 });
 
 const nyaaFFF = new Provider({
-  API,
+  api: 'nyaa',
   modelType: Provider.ModelTypes.AnimeShow,
   name: 'FFF',
   type: Provider.Types.Show,
@@ -32,7 +27,7 @@ const nyaaFFF = new Provider({
 });
 
 const nyaaGG = new Provider({
-  API,
+  api: 'nyaa',
   modelType: Provider.ModelTypes.AnimeShow,
   name: 'gg',
   type: Provider.Types.Show,

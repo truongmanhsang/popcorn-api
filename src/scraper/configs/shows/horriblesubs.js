@@ -1,9 +1,8 @@
 // Import the neccesary modules.
-import { apiFactory } from '../common';
 import Provider from '../../providers/BulkProvider';
 
 const horribleSubs = new Provider({
-  API: apiFactory.getApi('horriblesubs'),
+  api: 'horriblesubs',
   name: 'HorribleSubs',
   modelType: Provider.ModelTypes.AnimeShow,
   type: Provider.Types.Show

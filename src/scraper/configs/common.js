@@ -1,9 +1,3 @@
-// Import the neccesary modules.
-import FactoryProducer from '../resources/FactoryProducer';
-// import BulkProvider from '../providers/BulkProvider';
-// import MovieProvider from '../providers/MovieProvider';
-// import ShowProvider from '../providers/ShowProvider';
-
 /**
  * The default query object for pagination.
  * @type {Object}
@@ -94,9 +88,3 @@ export const defaultNyaaAnime = {
   sub_category: 'english_translated',
   offset: 1
 };
-
-/**
- *
- * @type {Object}
- */
-export const apiFactory = FactoryProducer.getFactory('api');

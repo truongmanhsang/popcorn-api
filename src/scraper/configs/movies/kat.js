@@ -1,14 +1,9 @@
 // Import the neccesary modules.
-import {
-  apiFactory,
-  defaultKatMovie
-} from '../common';
+import { defaultKatMovie } from '../common';
 import Provider from '../../providers/MovieProvider';
 
-const API = apiFactory.getApi('kat');
-
 const katMega = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Movie,
   name: 'Megaradon',
   type: Provider.Types.Movie,
@@ -20,7 +15,7 @@ const katMega = new Provider({
 });
 
 const katZoner = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Movie,
   name: 'Z0n321',
   type: Provider.Types.Movie,
@@ -32,7 +27,7 @@ const katZoner = new Provider({
 });
 
 const katFrench = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Movie,
   name: 'French',
   type: Provider.Types.Movie,
@@ -43,7 +38,7 @@ const katFrench = new Provider({
 });
 
 const katGerman = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Movie,
   name: 'German',
   type: Provider.Types.Movie,
@@ -54,7 +49,7 @@ const katGerman = new Provider({
 });
 
 const katSpanish = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Movie,
   name: 'Spanish',
   type: Provider.Types.Movie,
@@ -65,7 +60,7 @@ const katSpanish = new Provider({
 });
 
 const katDutch = new Provider({
-  API,
+  api: 'kat',
   modelType: Provider.ModelTypes.Movie,
   name: 'Dutch',
   type: Provider.Types.Movie,

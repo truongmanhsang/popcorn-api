@@ -6,8 +6,8 @@ import nyaaConfigs from './nyaa';
 
 export default [].concat(
   eztvConfigs,
-  extraTorrentConfigs,
-  horribleSubsConfigs,
-  katConfigs,
-  nyaaConfigs
+  // extraTorrentConfigs,
+  // horribleSubsConfigs,
+  // katConfigs,
+  // nyaaConfigs
 );

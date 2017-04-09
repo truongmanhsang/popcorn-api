@@ -1,14 +1,9 @@
 // Import the neccesary modules.
-import {
-  apiFactory,
-  defaultExtraTorrentMovie
-} from '../common';
+import { defaultExtraTorrentMovie } from '../common';
 import Provider from '../../providers/MovieProvider';
 
-const API = apiFactory.getApi('extratorrent');
-
 const ertgBrRip = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETRG BRRip',
   type: Provider.Types.Movie,
@@ -18,7 +13,7 @@ const ertgBrRip = new Provider({
 });
 
 const etrgBlueRay = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'ETRG BluRay',
   type: Provider.Types.Movie,
@@ -28,7 +23,7 @@ const etrgBlueRay = new Provider({
 });
 
 const extratorrentYIFY = new Provider({
-  API,
+  api: 'extratorrent',
   modelType: Provider.ModelTypes.Show,
   name: 'YIFY',
   type: Provider.Types.Movie,

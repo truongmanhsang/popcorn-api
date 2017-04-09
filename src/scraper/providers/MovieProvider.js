@@ -12,17 +12,17 @@ import { movieMap } from '../configs';
 export default class MovieProvider extends BaseProvider {
 
   /**
-   * Create a MovieProvider class.
+   * Create a BulkProvider class.
    * @param {Object} config - The configuration object for the torrent
    * provider.
-   * @param {Object} config.API - The api of the torrent provider.
+   * @param {Object} config.api - The name of api for the torrent provider.
    * @param {String} config.name - The name of the torrent provider.
    * @param {String} config.modelType - The model type for the helper.
    * @param {Object} config.query - The query object for the api.
    * @param {String} config.type - The type of content to scrape.
    */
-  constructor({API, name, modelType, query, type} = {}) {
-    super({API, name, modelType, query, type});
+  constructor({api, name, modelType, query, type} = {}) {
+    super({api, name, modelType, query, type});
   }
 
   /**
