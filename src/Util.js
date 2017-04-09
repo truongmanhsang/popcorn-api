@@ -5,9 +5,7 @@ import path from 'path';
 
 import {
   dbName,
-  statusFile,
-  tempDir,
-  updatedFile
+  tempDir
 } from './config/constants';
 
 /** Class with frequently used methods. */
@@ -40,14 +38,6 @@ class Util {
    */
   static set instance(instance) {
     Util._instance = instance;
-  }
-
-  /**
-   * Returns the epoch time.
-   * @returns {Number} - Epoch time.
-   */
-  _now() {
-    return Math.floor(new Date().getTime() / 1000);
   }
 
   /**
@@ -95,30 +85,6 @@ class Util {
 
     const cmd = `mongoimport -d ${dbName} -c ${collection}s --file '${jsonFile}' --upsert`;
     this.executeCommand(cmd);
-  }
-
-  /**
-   * Updates the `lastUpdated.json` file.
-   * @param {String} [updated=Date.now()] - The epoch time when the API last
-   * started scraping.
-   * @returns {void}
-   */
-  setLastUpdated(updated = this._now()) {
-    fs.writeFile(path.join(tempDir, updatedFile), JSON.stringify({
-      updated
-    }), () => {});
-  }
-
-  /**
-   * Updates the `status.json` file.
-   * @param {String} [status=Idle] - The status which will be set to in the
-   * `status.json` file.
-   * @returns {void}
-   */
-  setStatus(status = 'Idle') {
-    fs.writeFile(path.join(tempDir, statusFile), JSON.stringify({
-      status
-    }), () => {});
   }
 
 }

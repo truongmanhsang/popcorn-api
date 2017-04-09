@@ -42,6 +42,21 @@ import { name } from '../package.json';
  */
 export default class Index {
 
+  // The express object.
+  static _app = new Express();
+
+  /**
+   * The http server object.
+   * @type {Object}
+   */
+  static _server = http.createServer(Index._app);
+
+  /**
+   * The scraper object.
+   * @type {Scraper}
+   */
+  static _scraper = new Scraper();
+
   /**
    * Create an index class.
    * @param {Object} config - Configuration for the API.
@@ -50,23 +65,14 @@ export default class Index {
    * @param {Boolean} [config.verbose=false] - Debug mode for no output.
    */
   constructor({start = true, pretty = true, verbose = false} = {}) {
-    // The express object.
-    const _app = new Express();
-
     // Setup the global logger object.
     Logger.getLogger('winston', pretty, verbose);
 
     // Setup the MongoDB configuration and ExpressJS configuration.
-    new Setup(_app, pretty, verbose);
+    new Setup(Index._app, pretty, verbose);
 
     // Setup the API routes.
-    new Routes(_app);
-
-    /**
-     * The http server object.
-     * @type {Object}
-     */
-    Index._server = http.createServer(_app);
+    new Routes(Index._app);
 
     // Start the API.
     Index._startAPI(start);
@@ -153,13 +159,13 @@ export default class Index {
             new CronJob({
               cronTime,
               timeZone,
-              onComplete: Util.setStatus,
-              onTick: () => new Scraper(),
+              onComplete: Index._scraper.setStatus,
+              onTick: () => Index._scraper.scrape,
               start
             });
 
-            Util.setLastUpdated(0);
-            Util.setStatus();
+            Index._scraper.setLastUpdated(0);
+            Index._scraper.setStatus();
             if (start) Index._scraper.scrape();
           } catch (err) {
             return logger.error(err);
