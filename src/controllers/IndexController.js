@@ -5,14 +5,10 @@ import path from 'path';
 import { AnimeShow as Anime } from '../models/Anime';
 import Movie from '../models/Movie';
 import Show from '../models/Show';
-import AnimeController from './AnimeController';
-import ShowController from './ShowController';
+import AnimeController from './contentcontrollers/AnimeController';
+import ShowController from './contentcontrollers/ShowController';
 import Scraper from '../Scraper';
 import Util from '../Util';
-import {
-  server,
-  tempDir
-} from '../config/constants';
 import {
   name,
   repository,
@@ -23,17 +19,22 @@ import {
 export default class IndexController {
 
   /**
+   * The name of the server. Default is `serv01`.
+   * @type {String}
+   */
+  _server = 'serv01';
+
+  /**
    * Displays a given file.
    * @param {Object} req - The express request object.
    * @param {Object} res - The express response object.
-   * @param {String} root - The path to the file.
    * @param {String} file - The name of the file.
    * @returns {Object} - A file to display in the browser.
    */
-  static _displayFile(req, res, root, file) {
-    if (fs.existsSync(path.join(root, file))) {
+  static _displayFile(req, res, file) {
+    if (fs.existsSync(path.join(tempDir, file))) {
       return res.status(204).sendFile(file, {
-        root,
+        root: tempDir,
         headers: {
           'Content-Type': 'text/plain; charset=UTF-8'
         }
@@ -61,7 +62,7 @@ export default class IndexController {
 
       return res.json({
         repo: repository.url,
-        server,
+        server: this._server,
         status: Scraper.status,
         totalAnimes: totalAnimes || 0,
         totalMovies: totalMovies || 0,
@@ -83,7 +84,7 @@ export default class IndexController {
    * @returns {void} - The content of the log file.
    */
   getErrorLog(req, res) {
-    IndexController._displayFile(req, res, tempDir, `${name}.log`);
+    IndexController._displayFile(req, res, `${name}.log`);
   }
 
 }

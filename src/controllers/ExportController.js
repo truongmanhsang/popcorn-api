@@ -2,8 +2,6 @@
 import fs from 'fs';
 import path from 'path';
 
-import { tempDir } from '../config/constants';
-
 /** Class for getting anime data from the MongoDB. */
 export default class ExportController {
 
