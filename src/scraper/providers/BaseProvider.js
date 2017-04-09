@@ -131,8 +131,11 @@ export default class BaseProvider extends Provider {
       if (this._query.offset) this._query.offset = page + 1;
 
       logger.info(`${this._name}: Starting searching ${this._name} on page ${page + 1} out of ${totalPages}`);
-      const result = await this._api.search(this._query);
-      torrents = torrents.concat(result.results);
+      let { results, data } = await this._api.search(this._query);
+      results = results ? results : [];
+      data = data.movies ? data.movies : [];
+
+      torrents = torrents.concat(results, data);
     }).then(() => {
       logger.info(`${this._name}: Found ${torrents.length} torrents.`);
       return torrents;

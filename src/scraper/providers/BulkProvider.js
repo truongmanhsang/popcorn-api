@@ -33,10 +33,11 @@ export default class BulkProvider extends BaseProvider {
       const contents = await this._api.getAll();
       logger.info(`${this._name}: Found ${contents.length} ${this._type}s.`);
 
-      return await asyncq.mapLimit(contents, BulkProvider._maxWebRequest, async content => {
-        content = await this._api.getData(content);
-        return await this.getContent(content);
-      });
+      return await asyncq.mapLimit(contents, BaseProvider._maxWebRequest,
+        async content => {
+          content = await this._api.getData(content);
+          return await this.getContent(content);
+        });
     } catch (err) {
       return logger.error(err);
     }

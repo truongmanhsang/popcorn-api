@@ -273,4 +273,7 @@ export const showMap = {
   'youre-the-worst': 'you-re-the-worst'
 };
 
-export default [].concat(showConfigs, movieConfigs);
+export default [].concat(
+  showConfigs,
+  movieConfigs
+);
