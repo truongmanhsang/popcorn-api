@@ -1,5 +1,5 @@
 // Import the neccesary modules.
-import Provider from './providers/Provider';
+import IProvider from './providers/IProvider';
 
 /** Class for the scraper context. */
 export default class Context {
@@ -8,9 +8,9 @@ export default class Context {
   constructor() {
     /**
      * Set the default provider strategy.
-     * @type {Provider}
+     * @type {IProvider}
      */
-    this._provider = new Provider();
+    this._provider = new IProvider();
   }
 
   /**

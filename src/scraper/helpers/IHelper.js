@@ -2,17 +2,7 @@
  * Interface for saving content.
  * @interface
  */
-export default class Helper {
-
-  /**
-   * Default method to check for images.
-   * @abstract
-   * @throws {Error} - 'Using default method: 'checkImages'.
-   * @returns {void}
-   */
-  _checkImages() {
-    throw new Error('Using default method: \'checkImages\'');
-  }
+export default class IHelper {
 
   /**
    * Default method to get images.

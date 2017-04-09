@@ -3,13 +3,13 @@ import asyncq from 'async-q';
 import { ItemType } from 'butter-provider';
 
 import FactoryProducer from '../resources/FactoryProducer';
-import Provider from './Provider';
+import IProvider from './IProvider';
 
 /**
  * Class for scraping content from various sources.
- * @implements {Provider}
+ * @implements {IProvider}
  */
-export default class BaseProvider extends Provider {
+export default class BaseProvider extends IProvider {
 
   /**
    * The types of models available for the API.

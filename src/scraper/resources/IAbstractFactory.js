@@ -2,7 +2,7 @@
  * Interface for the abstract factory pattern.
  * @interface
  */
-export default class AbstractFactory {
+export default class IAbstractFactory {
 
   /**
    * Default method to get an API.

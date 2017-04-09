@@ -1,14 +1,14 @@
 // Import the neccesary modules.
-import AbstractFactory from './AbstractFactory';
+import IAbstractFactory from './IAbstractFactory';
 import Movie from '../../models/Movie';
 import Show from '../../models/Show';
 import { AnimeMovie, AnimeShow } from '../../models/Anime';
 
 /**
  * Class for getting a model object.
- * @implements {AbstractFactory}
+ * @implements {IAbstractFactory}
  */
-export default class ModelFactory extends AbstractFactory {
+export default class ModelFactory extends IAbstractFactory {
 
   /**
    * Get a model based on the name type of the model.

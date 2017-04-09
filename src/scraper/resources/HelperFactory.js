@@ -1,14 +1,14 @@
 // Import the neccesary modules.
-import AbstractFactory from './AbstractFactory';
+import IAbstractFactory from './IAbstractFactory';
 import MovieHelper from '../helpers/MovieHelper';
 import Provider from '../providers/BaseProvider';
 import ShowHelper from '../helpers/ShowHelper';
 
 /**
  * Class for getting a helper class.
- * @implements {AbstractFactory}
+ * @implements {IAbstractFactory}
  */
-export default class HelperFactory extends AbstractFactory {
+export default class HelperFactory extends IAbstractFactory {
 
   /**
    * Get a helper based on the a type.

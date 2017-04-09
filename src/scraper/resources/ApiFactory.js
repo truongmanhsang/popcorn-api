@@ -22,13 +22,13 @@ import YtsAPI from 'yts-api-pt';
 /** @external {ExtraTorrentAPI} https://github.com/ChrisAlderson/extratorrent-api */
 import { Website as ExtraTorrentAPI } from 'extratorrent-api';
 
-import AbstractFactory from './AbstractFactory';
+import IAbstractFactory from './IAbstractFactory';
 
 /**
  * Class for getting an external API wrapper.
- * @implements {AbstractFactory}
+ * @implements {IAbstractFactory}
  */
-export default class ApiFactory extends AbstractFactory {
+export default class ApiFactory extends IAbstractFactory {
 
   /** Create an ApiFactory class. */
   constructor() {

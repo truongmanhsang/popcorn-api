@@ -1,12 +1,12 @@
 // Import the neccesary modules.
 import FactoryProducer from '../resources/FactoryProducer';
-import Helper from './Helper';
+import IHelper from './IHelper';
 
 /**
  * Class for saving content.
- * @implements {Helper}
+ * @implements {IHelper}
  */
-export default class BaseHelper extends Helper {
+export default class BaseHelper extends IHelper {
 
   static holder = 'images/posterholder.png';
 
@@ -53,20 +53,6 @@ export default class BaseHelper extends Helper {
      * @see https://github.com/vankasteelj/trakt.tv
      */
     this._trakt = apiFactory.getApi('trakt');
-  }
-
-  /**
-   * Check that all images are fetched from the provider.
-   * @override
-   * @param {Object} images - The images.
-   * @param {String} holder - The image holder.
-   * @throws {Error} - 'An image could not be found'.
-   * @returns {void}
-   */
-  _checkImages(images) {
-    for (const image of images) {
-      if (image === BaseHelper.holder) throw new Error('An image could not be found');
-    }
   }
 
 }
