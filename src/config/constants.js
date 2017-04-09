@@ -26,12 +26,6 @@ export const dbHosts = ['localhost'];
 export const dbName = 'popcorn';
 
 /**
- * Check if this instance of the API is the master. Default is `true`.
- * @type {Boolean}
- */
-export const master = true;
-
-/**
  * The amount of objects show per page. Default is `50`.
  * @type {Number}
  */

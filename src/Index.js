@@ -12,10 +12,8 @@ import Setup from './config/Setup';
 import Routes from './config/Routes';
 import Scraper from './Scraper';
 import Logger from './config/Logger';
-import Util from './Util';
 import {
   cronTime,
-  master,
   port,
   statusFile,
   tempDir,
@@ -149,30 +147,27 @@ export default class Index {
         cluster.fork();
       });
 
-      // Start the cronjob.
-      if (master) {
-        // WARNING: Domain module is pending deprication: https://nodejs.org/api/domain.html
-        const scope = domain.create();
-        scope.run(() => {
-          logger.info('API started');
-          try {
-            new CronJob({
-              cronTime,
-              timeZone,
-              onComplete: Index._scraper.setStatus,
-              onTick: () => Index._scraper.scrape,
-              start
-            });
+      // WARNING: Domain module is pending deprication: https://nodejs.org/api/domain.html
+      const scope = domain.create();
+      scope.run(() => {
+        logger.info('API started');
+        try {
+          new CronJob({
+            cronTime,
+            timeZone,
+            onComplete: Index._scraper.setStatus,
+            onTick: () => Index._scraper.scrape,
+            start
+          });
 
-            Index._scraper.setLastUpdated(0);
-            Index._scraper.setStatus();
-            if (start) Index._scraper.scrape();
-          } catch (err) {
-            return logger.error(err);
-          }
-        });
-        scope.on('error', err => logger.error(err));
-      }
+          Index._scraper.setLastUpdated(0);
+          Index._scraper.setStatus();
+          if (start) Index._scraper.scrape();
+        } catch (err) {
+          return logger.error(err);
+        }
+      });
+      scope.on('error', err => logger.error(err));
     } else {
       Index._server.listen(port);
     }
