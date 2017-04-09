@@ -98,16 +98,6 @@ class Util {
   }
 
   /**
-   * Error logger function.
-   * @param {String} errorMessage - The error message you want to display.
-   * @returns {Error} - A new error with the given error message.
-   */
-  onError(errorMessage) {
-    logger.error(errorMessage);
-    return new Error(errorMessage);
-  }
-
-  /**
    * Updates the `lastUpdated.json` file.
    * @param {String} [updated=Date.now()] - The epoch time when the API last
    * started scraping.

@@ -4,7 +4,6 @@ import { ItemType } from 'butter-provider';
 
 import FactoryProducer from '../resources/FactoryProducer';
 import Provider from './Provider';
-import Util from '../../Util';
 
 /**
  * Class for scraping content from various sources.
@@ -111,10 +110,10 @@ export default class BaseProvider extends Provider {
         if (newContent && newContent._id)
           return await this._helper.addEpisodes(newContent, episodes, slug);
       } else {
-        return Util.onError(`'${this._type}' is not a valid value for ItemType!`);
+        return logger.error(`'${this._type}' is not a valid value for ItemType!`);
       }
     } catch (err) {
-      return Util.onError(err);
+      return logger.error(err);
     }
   }
 
@@ -158,7 +157,7 @@ export default class BaseProvider extends Provider {
       }
 
       if (!totalPages)
-        return Util.onError(`${this._name}: totalPages returned: '${totalPages}'`);
+        return logger.error(`${this._name}: totalPages returned: '${totalPages}'`);
 
       logger.info(`${this._name}: Total pages ${totalPages}`);
 
@@ -169,7 +168,7 @@ export default class BaseProvider extends Provider {
         content => this.getContent(content)
       );
     } catch (err) {
-      return Util.onError(err);
+      return logger.error(err);
     }
   }
 

@@ -20,7 +20,7 @@ export default class Scraper {
     }).then(() => Util.setStatus())
       .then(() => asyncq.eachSeries(collections,
         collection => Util.exportCollection(collection)))
-      .catch(err => Util.onError(`Error while scraping: ${err}`));
+      .catch(err => logger.error(`Error while scraping: ${err}`));
   }
 
 }

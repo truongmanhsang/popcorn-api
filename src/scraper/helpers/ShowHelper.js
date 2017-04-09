@@ -4,7 +4,6 @@ import asyncq from 'async-q';
 import BaseHelper from './BaseHelper';
 import FactoryProducer from '../resources/FactoryProducer';
 import Show from '../../models/Show';
-import Util from '../../Util';
 
 /**
  * Class for saving shows.
@@ -126,7 +125,7 @@ export default class ShowHelper extends BaseHelper {
       const newShow = await new this._model(show).save();
       return await this._updateNumSeasons(newShow);
     } catch (err) {
-      return Util.onError(err);
+      return logger.error(err);
     }
   }
 
@@ -169,7 +168,7 @@ export default class ShowHelper extends BaseHelper {
         }
       }
     } catch (err) {
-      return Util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return logger.error(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 
@@ -214,7 +213,7 @@ export default class ShowHelper extends BaseHelper {
         }
       }
     } catch (err) {
-      return Util.onError(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`);
+      return logger.error(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`);
     }
   }
 
@@ -280,7 +279,7 @@ export default class ShowHelper extends BaseHelper {
             images.poster = fanartImages.tvposter ? fanartImages.tvposter[0].url : holder;
           }
         } catch (err) {
-          Util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || tvdb_id}'`);
+          logger.error(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || tvdb_id}'`);
         }
       }
     }
@@ -336,7 +335,7 @@ export default class ShowHelper extends BaseHelper {
         };
       }
     } catch (err) {
-      return Util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return logger.error(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 
@@ -360,7 +359,7 @@ export default class ShowHelper extends BaseHelper {
 
       return await this._updateEpisodes(show);
     } catch (err) {
-      return Util.onError(err);
+      return logger.error(err);
     }
   }
 

@@ -139,7 +139,7 @@ export default class Index {
 
       // Check for errors with the workers.
       cluster.on('exit', worker => {
-        Util.onError(`Worker '${worker.process.pid}' died, spinning up another!`);
+        logger.error(`Worker '${worker.process.pid}' died, spinning up another!`);
         cluster.fork();
       });
 
@@ -162,10 +162,10 @@ export default class Index {
             Util.setStatus();
             if (start) Index._scraper.scrape();
           } catch (err) {
-            return Util.onError(err);
+            return logger.error(err);
           }
         });
-        scope.on('error', err => Util.onError(err));
+        scope.on('error', err => logger.error(err));
       }
     } else {
       Index._server.listen(port);

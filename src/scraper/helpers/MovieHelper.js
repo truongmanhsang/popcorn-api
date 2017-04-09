@@ -4,7 +4,6 @@ import asyncq from 'async-q';
 import BaseHelper from './BaseHelper';
 import FactoryProducer from '../resources/FactoryProducer';
 import Movie from '../../models/Movie';
-import Util from '../../Util';
 
 /**
  * Class for saving movies.
@@ -93,7 +92,7 @@ export default class MovieHelper extends BaseHelper {
       logger.info(`${this._name}: '${movie.title}' is a new movie!`);
       return await new this._model(movie).save();
     } catch (err) {
-      return Util.onError(err);
+      return logger.error(err);
     }
   }
 
@@ -171,7 +170,7 @@ export default class MovieHelper extends BaseHelper {
             images.poster = fanartImages.movieposter ? fanartImages.movieposter[0].url : holder;
           }
         } catch (err) {
-          Util.onError(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
+          logger.error(`Images: Could not find images on: ${err.path || err} with id: '${tmdb_id || imdb_id}'`);
         }
       }
     }
@@ -221,7 +220,7 @@ export default class MovieHelper extends BaseHelper {
         };
       }
     } catch (err) {
-      return Util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return logger.error(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 

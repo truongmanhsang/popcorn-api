@@ -2,7 +2,6 @@
 import asyncq from 'async-q';
 
 import BaseProvider from './BaseProvider';
-import Util from '../../Util';
 
 /**
  * Class for scraping content from EZTV and HorribleSubs.
@@ -39,7 +38,7 @@ export default class BulkProvider extends BaseProvider {
         return await this.getContent(content);
       });
     } catch (err) {
-      return Util.onError(err);
+      return logger.error(err);
     }
   }
 
