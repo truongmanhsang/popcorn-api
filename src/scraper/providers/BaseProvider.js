@@ -35,7 +35,7 @@ export default class BaseProvider extends Provider {
    * The maximum web requests can take place at the same time. Default is `2`.
    * @type {Number}
    */
-  _maxWebRequest = 2;
+  static _maxWebRequest = 2;
 
   /**
    * Create a BulkProvider class.
