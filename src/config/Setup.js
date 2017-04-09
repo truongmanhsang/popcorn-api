@@ -5,10 +5,6 @@ import mongoose from 'mongoose';
 import responseTime from 'response-time';
 
 import Logger from './Logger';
-import {
-  dbHosts,
-  dbName
-} from './constants';
 
 /** Class for setting up ExpressJS and MongoDB */
 export default class Setup {
@@ -21,6 +17,18 @@ export default class Setup {
    * @returns {void}
    */
   constructor(app, pretty, verbose) {
+    /**
+     * The name of the database. Default is `popcorn`.
+     * @type {String}
+     */
+    Setup.dbName = 'popcorn';
+
+    /**
+     * The host of the server of the database. Default is `['localhost']`.
+     * @type {Array}
+     */
+    Setup._dbHosts = ['localhost'];
+
     // Function for escaping strings.
     RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
@@ -55,7 +63,7 @@ export default class Setup {
    */
   static connectMongoDB() {
     mongoose.Promise = global.Promise;
-    mongoose.connect(`mongodb://${dbHosts.join(',')}/${dbName}`, {
+    mongoose.connect(`mongodb://${Setup._dbHosts.join(',')}/${Setup.dbName}`, {
       db: {
         native_parser: true
       },

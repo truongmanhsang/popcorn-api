@@ -3,10 +3,7 @@ import childProcess from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-import {
-  dbName,
-  tempDir
-} from './config/constants';
+import Setup from './config/Setup';
 
 /** Class with frequently used methods. */
 class Util {
@@ -65,7 +62,7 @@ class Util {
     const jsonFile = path.join(tempDir, `${collection}s.json`);
     logger.info(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
 
-    const cmd = `mongoexport -d ${dbName} -c ${collection}s -o '${jsonFile}'`;
+    const cmd = `mongoexport -d ${Setup.dbName} -c ${collection}s -o '${jsonFile}'`;
     this.executeCommand(cmd);
   }
 
@@ -83,7 +80,7 @@ class Util {
 
     logger.info(`Importing collection: '${collection}', from: '${jsonFile}'`);
 
-    const cmd = `mongoimport -d ${dbName} -c ${collection}s --file '${jsonFile}' --upsert`;
+    const cmd = `mongoimport -d ${Setup.dbName} -c ${collection}s --file '${jsonFile}' --upsert`;
     this.executeCommand(cmd);
   }
 

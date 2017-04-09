@@ -12,14 +12,10 @@ import Setup from './config/Setup';
 import Routes from './config/Routes';
 import Scraper from './Scraper';
 import Logger from './config/Logger';
-import {
-  cronTime,
-  port,
-  tempDir,
-  timeZone,
-  workers
-} from './config/constants';
 import { name } from '../package.json';
+
+// The path to the temporary directory. Default is `./tmp`.
+global.tempDir = path.join(process.cwd(), 'tmp');
 
 /**
  * Class for starting the API.
@@ -38,7 +34,34 @@ import { name } from '../package.json';
  */
 export default class Index {
 
-  // The express object.
+  /**
+   * The cron time for scraping torrents. Default is `0 0 *\/6 * * *`.
+   * @type {String}
+   */
+  static _cronTime = '0 0 */6 * * *';
+
+  /**
+   * The port on which the API will run on. Default is `5000`.
+   * @type {Number}
+   */
+  static _port = 5000;
+
+  /**
+   * The timezone the conjob will hold. Default is `America/Los_Angeles`.
+   * @type {String}
+   */
+  static _timeZone = 'America/Los_Angeles';
+
+  /**
+   * The amount of workers on the cluster. Default is `2`.
+   * @type {Number}
+   */
+  static _workers = 2;
+
+  /**
+   * The express object.
+   * @type {Object}
+   */
   static _app = new Express();
 
   /**
@@ -46,12 +69,6 @@ export default class Index {
    * @type {Object}
    */
   static _server = http.createServer(Index._app);
-
-  // /**
-  //  * The scraper object.
-  //  * @type {Scraper}
-  //  */
-  // static _scraper = new Scraper();
 
   /**
    * Create an index class.
@@ -85,8 +102,8 @@ export default class Index {
 
   /**
    * Removes all the files in the temporary directory.
-   * @param {String} [tmpPath=popcorn-api/tmp] - The path to remove all the files
-   * within (Default is set in the `config/constants.js`).
+   * @param {String} [tmpPath=popcorn-api/tmp] - The path to remove all the
+   * files within (Default is set in the `config/constants.js`).
    * @returns {void}
    */
   static _resetTemp(tmpPath = tempDir) {
@@ -133,7 +150,7 @@ export default class Index {
       Index._createTemp();
 
       // Fork workers.
-      for (let i = 0; i < Math.min(os.cpus().length, workers); i++) // eslint-disable-line semi-spacing
+      for (let i = 0; i < Math.min(os.cpus().length, Index._workers); i++) // eslint-disable-line semi-spacing
         cluster.fork();
 
       // Check for errors with the workers.
@@ -148,8 +165,8 @@ export default class Index {
         logger.info('API started');
         try {
           new CronJob({
-            cronTime,
-            timeZone,
+            cronTime: Index._cronTime,
+            timeZone: Index._timeZone,
             onComplete: () => Scraper.status = 'Idle',
             onTick: Scraper.scrape,
             start
@@ -164,7 +181,7 @@ export default class Index {
       });
       scope.on('error', err => logger.error(err));
     } else {
-      Index._server.listen(port);
+      Index._server.listen(Index._port);
     }
   }
 

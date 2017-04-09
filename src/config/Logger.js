@@ -6,7 +6,6 @@ import Winston from 'winston';
 import { logger as ExpressWinston } from 'express-winston';
 import { sprintf } from 'sprintf-js';
 
-import { tempDir } from './constants';
 import { name } from '../../package.json';
 
 /** Class for setting up the logger. */

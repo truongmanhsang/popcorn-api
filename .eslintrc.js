@@ -11,6 +11,7 @@ module.exports = {
   },
   globals: {
     logger: true,
+    tempDir: true
   },
   rules: {
     // Possible Errors
