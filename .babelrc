@@ -4,7 +4,6 @@
   ],
   "plugins": [
     "transform-class-properties",
-    "transform-async-to-generator",
     "transform-strict-mode", [
       "transform-runtime", {
         "polyfill": false,
