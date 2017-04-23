@@ -30,92 +30,92 @@ import IAbstractFactory from './IAbstractFactory';
  */
 export default class ApiFactory extends IAbstractFactory {
 
+  /**
+   * A configured ExtraTorrentAPI API.
+   * @type {Object}
+   * @see https://github.com/ChrisAlderson/extratorrent-api
+   */
+  _extraTorrentAPI = new ExtraTorrentAPI();
+
+  /**
+   * A configured EztvAPI API.
+   * @type {Object}
+   * @see https://github.com/ChrisAlderson/eztv-api-pt
+   */
+  _eztvAPI = new EztvAPI();
+
+  /**
+   * A configured Fanart API.
+   * @type {Object}
+   * @see https://github.com/ChrisAlderson/fanart.tv-api
+   */
+  _fanartAPI = new Fanart({
+    api_key: 'bd2753f04538b01479e39e695308b921'
+  });
+
+  /**
+   * A configured HorribleSubsAPI API.
+   * @type {Object}
+   * @see https://github.com/ChrisAlderson/horriblesubs-api
+   */
+  _horribleSubsAPI = new HorribleSubsAPI();
+
+  /**
+   * A configured KatAPI API.
+   * @type {Object}
+   * @see https://github.com/ChrisAlderson/kat-api-pt
+   */
+  _katAPI = new KatAPI();
+
+  /**
+   * A configured NyaaAPI API.
+   * @type {Object}
+   * @see https://github.com/ChrisAlderson/nyaa-api-pt
+   */
+  _nyaaAPI = new NyaaAPI();
+
+  /**
+   * A configured OMDB API.
+   * @type {Object}
+   * @external {OMDB} https://github.com/ChrisAlderson/omdb-api-pt
+   */
+  _omdbAPI = new OMDB();
+
+  /**
+   * A configured TMDB API.
+   * @type {Object}
+   * @see https://github.com/sarathkcm/TheMovieDBClient
+   */
+  _tmdbAPI = new TMDB({
+    apiv3: '2592f66235042e3e31705e3d56da0a69'
+  });
+
+  /**
+   * A configured TVDB API.
+   * @type {Object}
+   * @see https://github.com/edwellbrook/node-tvdb
+   */
+  _tvdbAPI = new TVDB('B17D23818D6E884D');
+
+  /**
+   * A configured Trakt API.
+   * @type {Object}
+   * @see https://github.com/vankasteelj/trakt.tv
+   */
+  _traktAPI = new Trakt({
+    client_id: '70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907'
+  });
+
+  /**
+   * A configured YtsAPI API.
+   * @type {Object}
+   * @see https://github.com/ChrisAlderson/yts-api-pt
+   */
+  _ytsAPI = new YtsAPI();
+
   /** Create an ApiFactory class. */
   constructor() {
     super();
-
-    /**
-     * A configured ExtraTorrentAPI API.
-     * @type {Object}
-     * @see https://github.com/ChrisAlderson/extratorrent-api
-     */
-    this._extraTorrentAPI = new ExtraTorrentAPI();
-
-    /**
-     * A configured EztvAPI API.
-     * @type {Object}
-     * @see https://github.com/ChrisAlderson/eztv-api-pt
-     */
-    this._eztvAPI = new EztvAPI();
-
-    /**
-     * A configured Fanart API.
-     * @type {Object}
-     * @see https://github.com/ChrisAlderson/fanart.tv-api
-     */
-    this._fanartAPI = new Fanart({
-      api_key: 'bd2753f04538b01479e39e695308b921'
-    });
-
-    /**
-     * A configured HorribleSubsAPI API.
-     * @type {Object}
-     * @see https://github.com/ChrisAlderson/horriblesubs-api
-     */
-    this._horribleSubsAPI = new HorribleSubsAPI();
-
-    /**
-     * A configured KatAPI API.
-     * @type {Object}
-     * @see https://github.com/ChrisAlderson/kat-api-pt
-     */
-    this._katAPI = new KatAPI();
-
-    /**
-     * A configured NyaaAPI API.
-     * @type {Object}
-     * @see https://github.com/ChrisAlderson/nyaa-api-pt
-     */
-    this._nyaaAPI = new NyaaAPI();
-
-    /**
-     * A configured OMDB API.
-     * @type {Object}
-     * @external {OMDB} https://github.com/ChrisAlderson/omdb-api-pt
-     */
-    this._omdbAPI = new OMDB();
-
-    /**
-     * A configured TMDB API.
-     * @type {Object}
-     * @see https://github.com/sarathkcm/TheMovieDBClient
-     */
-    this._tmdbAPI = new TMDB({
-      apiv3: '2592f66235042e3e31705e3d56da0a69'
-    });
-
-    /**
-     * A configured TVDB API.
-     * @type {Object}
-     * @see https://github.com/edwellbrook/node-tvdb
-     */
-    this._tvdbAPI = new TVDB('B17D23818D6E884D');
-
-    /**
-     * A configured Trakt API.
-     * @type {Object}
-     * @see https://github.com/vankasteelj/trakt.tv
-     */
-    this._traktAPI = new Trakt({
-      client_id: '70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907'
-    });
-
-    /**
-     * A configured YtsAPI API.
-     * @type {Object}
-     * @see https://github.com/ChrisAlderson/yts-api-pt
-     */
-    this._ytsAPI = new YtsAPI();
 
     // TODO: fix this hack.
     this._eztvAPI.getAll = this._eztvAPI.getAllShows;
