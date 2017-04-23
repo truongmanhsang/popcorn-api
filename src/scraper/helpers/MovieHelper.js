@@ -2,7 +2,6 @@
 import asyncq from 'async-q';
 
 import BaseHelper from './BaseHelper';
-import FactoryProducer from '../resources/FactoryProducer';
 
 /**
  * Class for saving movies.
@@ -11,21 +10,19 @@ import FactoryProducer from '../resources/FactoryProducer';
 export default class MovieHelper extends BaseHelper {
 
   /**
+   * A configured OMDB API.
+   * @type {Object}
+   * @see https://github.com/ChrisAlderson/omdb-api-pt
+   */
+  _omdb = this._apiFactory.getApi('omdb');
+
+  /**
    * Create a helper class for movie content.
    * @param {String} name - The name of the content provider.
    * @param {Object} model - The model to help fill.
    */
   constructor(name, model) {
     super(name, model);
-
-    const apiFactory = FactoryProducer.getFactory('api');
-
-    /**
-     * A configured OMDB API.
-     * @type {Object}
-     * @see https://github.com/ChrisAlderson/omdb-api-pt
-     */
-    this._omdb = apiFactory.getApi('omdb');
   }
 
   /**
@@ -37,28 +34,30 @@ export default class MovieHelper extends BaseHelper {
    * @return {Movie} - A movie with merged torrents.
    */
   _updateTorrent(movie, found, language, quality) {
-    let update = false;
+    let update = false,
+      movieTorrent = movie.torrents[language];
 
-    if (found.torrents[language] && movie.torrents[language]) {
-      if (found.torrents[language][quality] && movie.torrents[language][quality]) {
-        if (found.torrents[language][quality].seeds > movie.torrents[language][quality].seeds) {
+    const foundTorrent = found.torrents[language];
+
+    if (foundTorrent && movieTorrent) {
+      const foundQuality = foundTorrent[quality];
+      const movieQuality = movieTorrent[quality];
+
+      if (foundQuality && movieQuality) {
+        if (foundQuality.seeds > movieQuality.seeds
+            || foundQuality.url === movieQuality.url)
           update = true;
-        } else if (movie.torrents[language][quality].seeds > found.torrents[language][quality].seeds) {
-          update = false;
-        } else if (found.torrents[language][quality].url === movie.torrents[language][quality].url) {
-          update = true;
-        }
-      } else if (found.torrents[language][quality] && !movie.torrents[language][quality]) {
+      } else if (foundQuality && !movieQuality) {
         update = true;
       }
-    } else if (found.torrents[language] && !movie.torrents[language]) {
-      if (found.torrents[language][quality]) {
-        movie.torrents[language] = {};
+    } else if (foundTorrent && !movieTorrent) {
+      if (foundTorrent[quality]) {
+        movieTorrent = {};
         update = true;
       }
     }
 
-    if (update) movie.torrents[language][quality] = found.torrents[language][quality];
+    if (update) movieTorrent[quality] = foundTorrent[quality];
     return movie;
   }
 
@@ -91,7 +90,7 @@ export default class MovieHelper extends BaseHelper {
       logger.info(`${this._name}: '${movie.title}' is a new movie!`);
       return await new this._model(movie).save();
     } catch (err) {
-      return logger.error(err);
+      logger.error(err);
     }
   }
 
@@ -160,9 +159,17 @@ export default class MovieHelper extends BaseHelper {
   _getFanartImages(tmdb) {
     return this._fanart.getMovieImages(tmdb).then(images => {
       return {
-        banner: images.moviebanner ? images.moviebanner[0].url : BaseHelper.holder,
-        fanart: images.moviebackground ? images.moviebackground[0].url : images.hdmovieclearart ? images.hdmovieclearart[0].url : BaseHelper.holder,
-        poster: images.movieposter ? images.movieposter[0].url : BaseHelper.holder
+        banner: images.moviebanner
+                          ? images.moviebanner[0].url
+                          : BaseHelper.holder,
+        fanart: images.moviebackground
+                          ? images.moviebackground[0].url
+                          : images.hdmovieclearart
+                          ? images.hdmovieclearart[0].url
+                          : BaseHelper.holder,
+        poster: images.movieposter
+                          ? images.movieposter[0].url
+                          : BaseHelper.holder
       };
     });
   }
@@ -179,7 +186,9 @@ export default class MovieHelper extends BaseHelper {
       this._getTmdbImages(imdb),
       this._getOmdbImages(tmdb),
       this._getFanartImages(tmdb)
-    ]).catch(err => logger.error(`Images: Could not find images on: ${err.path || err} with id: '${tmdb || imdb}'`));
+    ]).catch(err =>
+      logger.error(`Images: Could not find images on: ${err.path || err} with id: '${tmdb || imdb}'`)
+    );
   }
 
   /**
@@ -196,10 +205,7 @@ export default class MovieHelper extends BaseHelper {
       });
       const traktWatchers = await this._trakt.movies.watching({ id: slug });
 
-      let watching = 0;
-      if (traktWatchers !== null) watching = traktWatchers.length;
-
-      if (traktMovie && traktMovie.ids['imdb'] && traktMovie.ids['tmdb']) {
+      if (traktMovie && traktMovie.ids.imdb && traktMovie.ids.tmdb) {
         const { imdb, slug, tmdb } = traktMovie.ids;
 
         return {
@@ -212,7 +218,7 @@ export default class MovieHelper extends BaseHelper {
           runtime: traktMovie.runtime,
           rating: {
             votes: traktMovie.votes,
-            watching: watching,
+            watching: traktWatchers ? traktWatchers.length : 0,
             percentage: Math.round(traktMovie.rating * 10)
           },
           country: traktMovie.language,
@@ -226,7 +232,7 @@ export default class MovieHelper extends BaseHelper {
         };
       }
     } catch (err) {
-      return logger.error(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      logger.error(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   }
 
