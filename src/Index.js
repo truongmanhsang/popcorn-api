@@ -29,63 +29,63 @@ global.tempDir = path.join(process.cwd(), 'tmp');
  * const index = new Index({
  *    start: true,
  *    pretty: true,
- *    verbose: false
+ *    quiet: false
  * });
  */
 export default class Index {
 
   /**
+   * The express object.
+   * @type {Object}
+   */
+  static _App = new Express();
+
+  /**
    * The cron time for scraping torrents. Default is `0 0 *\/6 * * *`.
    * @type {String}
    */
-  static _cronTime = '0 0 */6 * * *';
+  static _CronTime = '0 0 */6 * * *';
 
   /**
    * The port on which the API will run on. Default is `5000`.
    * @type {Number}
    */
-  static _port = 5000;
-
-  /**
-   * The timezone the conjob will hold. Default is `America/Los_Angeles`.
-   * @type {String}
-   */
-  static _timeZone = 'America/Los_Angeles';
-
-  /**
-   * The amount of workers on the cluster. Default is `2`.
-   * @type {Number}
-   */
-  static _workers = 2;
-
-  /**
-   * The express object.
-   * @type {Object}
-   */
-  static _app = new Express();
+  static _Port = 5000;
 
   /**
    * The http server object.
    * @type {Object}
    */
-  static _server = http.createServer(Index._app);
+  static _Server = http.createServer(Index._App);
+
+  /**
+   * The timezone the conjob will hold. Default is `America/Los_Angeles`.
+   * @type {String}
+   */
+  static _TimeZone = 'America/Los_Angeles';
+
+  /**
+   * The amount of workers on the cluster. Default is `2`.
+   * @type {Number}
+   */
+  static _Workers = 2;
 
   /**
    * Create an index class.
    * @param {Object} config - Configuration for the API.
    * @param {Boolean} [config.start=true] - Start the scraping process.
    * @param {Boolean} [config.pretty=true] - Pretty output with Winston logging.
-   * @param {Boolean} [config.verbose=false] - Debug mode for no output.
+   * @param {Boolean} [config.quiet=false] - Debug mode for no output.
    */
-  constructor({start = true, pretty = true, verbose = false} = {}) {
+  constructor({start = true, pretty = true, quiet = false} = {}) {
     // Setup the global logger object.
-    Logger.getLogger('winston', pretty, verbose);
+    Logger.getLogger('winston', pretty, quiet);
 
     // Setup the MongoDB configuration and ExpressJS configuration.
-    new Setup(Index._app, pretty, verbose);
+    new Setup(Index._App, pretty, quiet);
 
     // Setup the API routes.
-    new Routes(Index._app);
+    new Routes(Index._App);
 
     // Start the API.
     Index._startAPI(start);
@@ -150,7 +150,7 @@ export default class Index {
       Index._createTemp();
 
       // Fork workers.
-      for (let i = 0; i < Math.min(os.cpus().length, Index._workers); i++) // eslint-disable-line semi-spacing
+      for (let i = 0; i < Math.min(os.cpus().length, Index._Workers); i++) // eslint-disable-line semi-spacing
         cluster.fork();
 
       // Check for errors with the workers.
@@ -165,23 +165,23 @@ export default class Index {
         logger.info('API started');
         try {
           new CronJob({
-            cronTime: Index._cronTime,
-            timeZone: Index._timeZone,
-            onComplete: () => Scraper.status = 'Idle',
+            cronTime: Index._CronTime,
+            timeZone: Index._TimeZone,
+            onComplete: () => Scraper.Status = 'Idle',
             onTick: Scraper.scrape,
             start
           });
 
-          Scraper.updated = 0;
-          Scraper.status = 'Idle';
+          Scraper.Updated = 0;
+          Scraper.Status = 'Idle';
           if (start) Scraper.scrape();
         } catch (err) {
-          return logger.error(err);
+          logger.error(err);
         }
       });
       scope.on('error', err => logger.error(err));
     } else {
-      Index._server.listen(Index._port);
+      Index._Server.listen(Index._Port);
     }
   }
 
@@ -190,7 +190,7 @@ export default class Index {
    * @returns {void}
    */
   static closeAPI() {
-    Index._server.close(() => {
+    Index._Server.close(() => {
       logger.info('Closed out remaining connections.');
       process.exit();
     });

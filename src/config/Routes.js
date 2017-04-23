@@ -65,5 +65,4 @@ export default class Routes {
     app.get('/exports/:collection', this._exportController.getExport);
   }
 
-
 }

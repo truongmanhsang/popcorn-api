@@ -12,29 +12,29 @@ class Util {
    * The instance used for the singleton pattern.
    * @type {Util}
    */
-  static _instance = undefined;
+  static _Instance = undefined;
 
   /** Create a singleton class for Util. */
   constructor() {
-    if (!Util.instance) Util.instance = this;
-    return Util.instance;
+    if (!Util.Instance) Util.Instance = this;
+    return Util.Instance;
   }
 
   /**
    * Get the Util singleton instance.
    * @returns {Util} - The Util singleton instance.
    */
-  static get instance() {
-    return Util._instance;
+  static get Instance() {
+    return Util._Instance;
   }
 
   /**
    * Set the Util singleton class.
-   * @param {Util} instance - The instance to set.
+   * @param {Util} _Instance - The instance to set.
    * @returns {void}
    */
-  static set instance(instance) {
-    Util._instance = instance;
+  static set Instance(_Instance) {
+    Util._Instance = _Instance;
   }
 
   /**
@@ -62,14 +62,14 @@ class Util {
     const jsonFile = path.join(tempDir, `${collection}s.json`);
     logger.info(`Exporting collection: '${collection}s', to: '${jsonFile}'`);
 
-    const cmd = `mongoexport -d ${Setup.dbName} -c ${collection}s -o '${jsonFile}'`;
-    this.executeCommand(cmd);
+    const cmd = `mongoexport -d ${Setup.DbName} -c ${collection}s -o "${jsonFile}"`;
+    this.executeCommand(cmd).catch(err => logger.error(err));
   }
 
   /**
    * Import a json file to a collection.
    * @param {String} collection - The collection to import.
-   * @param {String} jsonFile - The json file to import..
+   * @param {String} jsonFile - The JSON file to import.
    * @returns {void}
    */
   importCollection(collection, jsonFile) {
@@ -80,8 +80,8 @@ class Util {
 
     logger.info(`Importing collection: '${collection}', from: '${jsonFile}'`);
 
-    const cmd = `mongoimport -d ${Setup.dbName} -c ${collection}s --file '${jsonFile}' --upsert`;
-    this.executeCommand(cmd);
+    const cmd = `mongoimport -d ${Setup.DbName} -c ${collection}s --file "${jsonFile}" --upsert`;
+    this.executeCommand(cmd).catch(err => logger.error(err));
   }
 
 }
