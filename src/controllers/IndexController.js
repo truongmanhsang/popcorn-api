@@ -22,7 +22,7 @@ export default class IndexController {
    * The name of the server. Default is `serv01`.
    * @type {String}
    */
-  _server = 'serv01';
+  static _Server = 'serv01';
 
   /**
    * Displays a given file.
@@ -56,18 +56,18 @@ export default class IndexController {
   async getIndex(req, res, next) {
     try {
       const commit = await Util.executeCommand('git rev-parse --short HEAD');
-      const totalAnimes = await Anime.count(AnimeController.query).exec();
+      const totalAnimes = await Anime.count(AnimeController.Query).exec();
       const totalMovies = await Movie.count().exec();
-      const totalShows = await Show.count(ShowController.query).exec();
+      const totalShows = await Show.count(ShowController.Query).exec();
 
       return res.json({
         repo: repository.url,
-        server: this._server,
-        status: Scraper.status,
+        server: IndexController._Server,
+        status: Scraper.Status,
         totalAnimes: totalAnimes || 0,
         totalMovies: totalMovies || 0,
         totalShows: totalShows || 0,
-        updated: Scraper.updated,
+        updated: Scraper.Updated,
         uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
         version,
         commit
