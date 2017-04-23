@@ -4,14 +4,11 @@ import IProvider from './providers/IProvider';
 /** Class for the scraper context. */
 export default class Context {
 
-  /** Create a new Context class. */
-  constructor() {
-    /**
-     * Set the default provider strategy.
-     * @type {IProvider}
-     */
-    this._provider = new IProvider();
-  }
+  /**
+   * Set the default provider strategy.
+   * @type {IProvider}
+   */
+  _provider = new IProvider();
 
   /**
    * Execute the current provider strategy.
