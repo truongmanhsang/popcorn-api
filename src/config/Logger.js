@@ -15,7 +15,7 @@ export default class Logger {
    * The log levels Winston will be using.
    * @type {Object}
    */
-  static _levels = {
+  static _Levels = {
     error: 0,
     warn: 1,
     info: 2,
@@ -93,7 +93,7 @@ export default class Logger {
       transports: [
         new Winston.transports.Console({
           name,
-          levels: Logger._levels,
+          levels: Logger._Levels,
           formatter: Logger._consoleFormatter,
           handleExceptions: true,
           prettyPrint: true
@@ -126,21 +126,21 @@ export default class Logger {
    * Function to create a global logger object based on the properties of the
    * logger function.
    * @param {Boolean} [pretty] - Pretty mode for output with colors.
-   * @param {Boolean} [verbose] - Debug mode for no output.
+   * @param {Boolean} [quiet] - No output.
    * @returns {void}
    */
-  static _createLogger(pretty, verbose) {
+  static _createLogger(pretty, quiet) {
     if (!global.logger) global.logger = {};
     const winston = Logger._createWinston();
 
-    Object.keys(Logger._levels).map(level => {
+    Object.keys(Logger._Levels).map(level => {
       if (pretty) {
         global.logger[level] = msg => {
-          if (!verbose) winston[level](msg);
+          if (!quiet) winston[level](msg);
         };
       } else {
         global.logger[level] = msg => {
-          if (!verbose) console[level](msg); // eslint-disable-line no-console
+          if (!quiet) console[level](msg); // eslint-disable-line no-console
         };
       }
     });
@@ -150,10 +150,10 @@ export default class Logger {
    * Get a logger object based on the choice.
    * @param {String} choice - The choice for the logger object.
    * @param {Boolean} pretty - Pretty output with Winston logging.
-   * @param {Boolean} verbose - Debug mode for no output.
+   * @param {Boolean} quiet - No output.
    * @returns {Object|undefined} - The logger object.
    */
-  static getLogger(choice, pretty, verbose) {
+  static getLogger(choice, pretty, quiet) {
     if (!choice) return undefined;
 
     const c = choice.toUpperCase();
@@ -162,7 +162,7 @@ export default class Logger {
     case 'EXPRESS':
       return Logger._createExpressWinston();
     case 'WINSTON':
-      return Logger._createLogger(pretty, verbose);
+      return Logger._createLogger(pretty, quiet);
     default:
       return undefined;
     }
