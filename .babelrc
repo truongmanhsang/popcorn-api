@@ -3,6 +3,8 @@
     "es2015"
   ],
   "plugins": [
+    "dynamic-import-node",
+    "syntax-dynamic-import",
     "transform-class-properties",
     "transform-strict-mode", [
       "transform-runtime", {
