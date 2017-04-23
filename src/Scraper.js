@@ -2,7 +2,7 @@
 import asyncq from 'async-q';
 
 import Context from './scraper/Context';
-import providerConfigs from './scraper/configs';
+import ProviderConfig from './models/ProviderConfig';
 import Util from './Util';
 
 /** Class for Initiating the scraping process. */
@@ -18,75 +18,75 @@ class Scraper {
    * The instance used for the singleton pattern.
    * @type {Scraper}
    */
-  static _instance = undefined;
+  static _Instance = undefined;
 
   /**
    * The status of the scraper.
    * @type {String}
    */
-  static _status = 'Idle';
+  static _Status = 'Idle';
 
   /**
    * The last updated value.
    * @type {Number}
    */
-  static _updated = 0;
+  static _Updated = 0;
 
   /**
    * Get the Scraper singleton instance.
    * @returns {Scraper} - The Scraper singleton instance.
    */
-  static get instance() {
-    return Scraper._instance;
+  static get Instance() {
+    return Scraper._Instance;
   }
 
   /**
    * Set the Scraper singleton class.
-   * @param {Scraper} _instance - The instance to set.
+   * @param {Scraper} _Instance - The instance to set.
    * @returns {void}
    */
-  static set instance(_instance) {
-    Scraper._instance = _instance;
+  static set Instance(_Instance) {
+    Scraper._Instance = _Instance;
   }
 
   /**
    * Return the status of the scraper.
    * @returns {String} - The status of the scraper.
    */
-  static get status() {
-    return Scraper._status;
+  static get Status() {
+    return Scraper._Status;
   }
 
   /**
    * Set the status of the scraper.
-   * @param {String} _status - The status to set.
+   * @param {String} _Status - The status to set.
    * @returns {void}
    */
-  static set status(_status) {
-    Scraper._status = _status;
+  static set Status(_Status) {
+    Scraper._Status = _Status;
   }
 
   /**
    * Retrun the last updated value of the scraper.
    * @returns {Number} - The last updated value.
    */
-  static get updated() {
-    return Scraper._updated;
+  static get Updated() {
+    return Scraper._Updated;
   }
 
   /**
    * Set the last updated value of the scraper.
-   * @param {Number} _updated - The value to set the last updated value.
+   * @param {Number} _Updated - The value to set the last updated value.
    * @returns {void}
    */
-  static set updated(_updated) {
-    Scraper._updated = _updated;
+  static set Updated(_Updated) {
+    Scraper._Updated = _Updated;
   }
 
   /** Create a singleton class for Scraper. */
   constructor() {
-    if (!Scraper.instance) Scraper.instance = this;
-    return Scraper.instance;
+    if (!Scraper.Instance) Scraper.Instance = this;
+    return Scraper.Instance;
   }
 
   /**
@@ -94,13 +94,20 @@ class Scraper {
    * @returns {void}
    */
   scrape() {
-    Scraper.updated = Math.floor(new Date().getTime() / 1000);
+    Scraper.Updated = Math.floor(new Date().getTime() / 1000);
 
     const context = new Context();
-    asyncq.eachSeries(providerConfigs, async provider => {
-      context.provider = provider;
-      await context.execute();
-    }).then(() => Scraper.status = 'Idle')
+
+    return ProviderConfig.find().exec().then(pConfigs => {
+      return asyncq.eachSeries(pConfigs, async pConfig => {
+        // TODO: import(``).default does not work.
+        let Provider = await import(`./scraper/providers/${pConfig.class}`);
+        Provider = Provider.default;
+
+        context.provider = new Provider(pConfig);
+        return await context.execute();
+      });
+    }).then(() => Scraper.Status = 'Idle')
       .then(() => asyncq.eachSeries(
         this._collections, collection => Util.exportCollection(collection)
       ))
