@@ -3,12 +3,43 @@ import FactoryProducer from '../resources/FactoryProducer';
 import IHelper from './IHelper';
 
 /**
- * Class for saving content.
+ * Base class for saving content.
  * @implements {IHelper}
  */
 export default class BaseHelper extends IHelper {
 
-  static holder = 'images/posterholder.png';
+  /**
+   * The default image link.
+   * @type {String}
+   */
+  static Holder = 'images/posterholder.png';
+
+  /**
+   * The API factory.
+   * @type {Object}
+   */
+  _apiFactory = FactoryProducer.getFactory('api');
+
+  /**
+   * A configured Fanart API.
+   * @type {Object}
+   * @see https://github.com/vankasteelj/trakt.tv
+   */
+  _fanart = this._apiFactory.getApi('fanart');
+
+  /**
+   * A configured TMDB API.
+   * @type {Object}
+   * @see https://github.com/sarathkcm/TheMovieDBClient
+   */
+  _tmdb = this._apiFactory.getApi('tmdb');
+
+  /**
+   * A configured Trakt API.
+   * @type {Object}
+   * @see https://github.com/vankasteelj/trakt.tv
+   */
+  _trakt = this._apiFactory.getApi('trakt');
 
   /**
    * Create a base helper class for content.
@@ -17,8 +48,6 @@ export default class BaseHelper extends IHelper {
    */
   constructor(name, model) {
     super();
-
-    const apiFactory = FactoryProducer.getFactory('api');
 
     /**
      * The name of the torrent provider.
@@ -32,27 +61,6 @@ export default class BaseHelper extends IHelper {
      * @see http://mongoosejs.com/docs/models.html
      */
     this._model = model;
-
-    /**
-     * A configured Fanart API.
-     * @type {Object}
-     * @see https://github.com/vankasteelj/trakt.tv
-     */
-    this._fanart = apiFactory.getApi('fanart');
-
-    /**
-     * A configured TMDB API.
-     * @type {Object}
-     * @see https://github.com/sarathkcm/TheMovieDBClient
-     */
-    this._tmdb = apiFactory.getApi('tmdb');
-
-    /**
-     * A configured Trakt API.
-     * @type {Object}
-     * @see https://github.com/vankasteelj/trakt.tv
-     */
-    this._trakt = apiFactory.getApi('trakt');
   }
 
 }
