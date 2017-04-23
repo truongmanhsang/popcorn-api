@@ -10,25 +10,25 @@ import Logger from './Logger';
 export default class Setup {
 
   /**
+   * The name of the database. Default is `popcorn`.
+   * @type {String}
+   */
+  static DbName = 'popcorn';
+
+  /**
+   * The host of the server of the database. Default is `['localhost']`.
+   * @type {Array}
+   */
+  static _DbHosts = ['localhost'];
+
+  /**
    * Setup the Express service.
    * @param {Object} app - The ExpresssJS instance.
    * @param {Boolean} [pretty] - Pretty output with Winston logging.
-   * @param {Boolean} [verbose] - Debug mode for no output.
+   * @param {Boolean} [quiet] - No output.
    * @returns {void}
    */
-  constructor(app, pretty, verbose) {
-    /**
-     * The name of the database. Default is `popcorn`.
-     * @type {String}
-     */
-    Setup.dbName = 'popcorn';
-
-    /**
-     * The host of the server of the database. Default is `['localhost']`.
-     * @type {Array}
-     */
-    Setup._dbHosts = ['localhost'];
-
+  constructor(app, pretty, quiet) {
     // Function for escaping strings.
     RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
@@ -54,7 +54,8 @@ export default class Setup {
     app.use(responseTime());
 
     // Enable HTTP request logging.
-    if (pretty && !verbose) app.use(Logger.getLogger('express'));
+    if (pretty && !quiet)
+      app.use(Logger.getLogger('express'));
   }
 
   /**
@@ -63,7 +64,7 @@ export default class Setup {
    */
   static connectMongoDB() {
     mongoose.Promise = global.Promise;
-    mongoose.connect(`mongodb://${Setup._dbHosts.join(',')}/${Setup.dbName}`, {
+    mongoose.connect(`mongodb://${Setup._DbHosts.join(',')}/${Setup.DbName}`, {
       db: {
         native_parser: true
       },
