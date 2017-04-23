@@ -10,7 +10,7 @@ import MovieProvider from './MovieProvider';
 export default class YTSProvider extends MovieProvider {
 
   /**
-   * Create a BulkProvider class.
+   * Create a YTSProvider class.
    * @param {Object} config - The configuration object for the torrent
    * provider.
    * @param {Object} config.api - The name of api for the torrent provider.
@@ -42,14 +42,14 @@ export default class YTSProvider extends MovieProvider {
     };
 
     torrent.torrents.map(t => {
-      const { quality } = t;
+      const { hash, peers, quality, seeds, size, size_bytes } = t;
 
       const torrentObj = {
-        url: `magnet:?xt=urn:btih:${t.hash}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`,
-        seeds: t.seeds ? t.seeds : 0,
-        peers: t.peers ? t.peers : 0,
-        size: t.size_bytes,
-        filesize: t.size,
+        url: `magnet:?xt=urn:btih:${hash}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`,
+        seeds: seeds ? seeds : 0,
+        peers: peers ? peers : 0,
+        size: size_bytes,
+        filesize: size,
         provider: this._name
       };
 

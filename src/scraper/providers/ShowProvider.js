@@ -2,7 +2,14 @@
 import asyncq from 'async-q';
 
 import BaseProvider from './BaseProvider';
-import { showMap } from '../configs';
+
+const defaultRegexps = [
+  /(.*).[sS](\d{2})[eE](\d{2})/i,
+  /(.*).(\d{1,2})[x](\d{2})/i,
+  /(.*).(\d{4}).(\d{2}.\d{2})/i,
+  /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i,
+  /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i
+];
 
 /**
  * Class for scraping show content from various sources.
@@ -11,17 +18,19 @@ import { showMap } from '../configs';
 export default class ShowProvider extends BaseProvider {
 
   /**
-   * Create a BulkProvider class.
+   * Create a ShowProvider class.
    * @param {Object} config - The configuration object for the torrent
    * provider.
    * @param {Object} config.api - The name of api for the torrent provider.
    * @param {String} config.name - The name of the torrent provider.
    * @param {String} config.modelType - The model type for the helper.
    * @param {Object} config.query - The query object for the api.
+   * @param {Array<RegExp>} config.regexps - The regexps used to extract
+   information about movies.
    * @param {String} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, type} = {}) {
-    super({api, name, modelType, query, type});
+  constructor({api, name, modelType, query, regexps = defaultRegexps, type} = {}) {
+    super({api, name, modelType, query, regexps, type});
   }
 
   /**
@@ -32,7 +41,7 @@ export default class ShowProvider extends BaseProvider {
    * @param {Boolean} dateBased - Check for dateBased episodes.
    * @returns {Object} - Information about a show from the torrent.
    */
-  _extractContent(torrent, regex, dateBased) {
+  _extractContent(torrent, regex, dateBased = false) {
     let episode, season, slug;
 
     const { title } = torrent;
@@ -42,7 +51,7 @@ export default class ShowProvider extends BaseProvider {
     slug = showTitle.replace(/[^a-zA-Z0-9\- ]/gi, '')
                     .replace(/\s+/g, '-')
                     .toLowerCase();
-    slug = slug in showMap ? showMap[slug] : slug;
+    slug = slug in BaseProvider.ShowMap ? BaseProvider.ShowMap[slug] : slug;
 
     season = 1;
     season = dateBased ? parseInt(match[2], 10) : match[2];
@@ -73,35 +82,6 @@ export default class ShowProvider extends BaseProvider {
     };
 
     return this._attachTorrent(show, torrentObj, season, episode, quality);
-  }
-
-  /**
-   * Get show info from a given torrent.
-   * @override
-   * @param {Object} torrent - A torrent object to extract show information
-   * from.
-   * @returns {Object} - Information about a show from the torrent.
-   */
-  _getContentData(torrent) {
-    const seasonBased = /(.*).[sS](\d{2})[eE](\d{2})/i;
-    const vtv = /(.*).(\d{1,2})[x](\d{2})/i;
-    const dateBased = /(.*).(\d{4}).(\d{2}.\d{2})/i;
-    const secondSeason = /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i;
-    const oneSeason = /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i;
-
-    if (torrent.title.match(seasonBased)) {
-      return this._extractContent(torrent, seasonBased, false);
-    } else if (torrent.title.match(vtv)) {
-      return this._extractContent(torrent, vtv, false);
-    } else if (torrent.title.match(dateBased)) {
-      return this._extractContent(torrent, dateBased, true);
-    } else if (torrent.title.match(secondSeason)) {
-      return this._extractContent(torrent, secondSeason, false);
-    } else if (torrent.title.match(oneSeason)) {
-      return this._extractContent(torrent, oneSeason, false);
-    }
-
-    logger.warn(`${this._name}: Could not find data from torrent: '${torrent.title}'`);
   }
 
   /**

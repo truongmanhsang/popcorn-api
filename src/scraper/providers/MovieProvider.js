@@ -3,7 +3,12 @@ import asyncq from 'async-q';
 import bytes from 'bytes';
 
 import BaseProvider from './BaseProvider';
-import { movieMap } from '../configs';
+
+const defaultRegexps = [
+  /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/i,
+  /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/i,
+  /(.*).(\d{4})\D+(\d{3,4}p)/i
+];
 
 /**
  * Class for scraping movie content from various sources.
@@ -12,17 +17,19 @@ import { movieMap } from '../configs';
 export default class MovieProvider extends BaseProvider {
 
   /**
-   * Create a BulkProvider class.
+   * Create a MovieProvider class.
    * @param {Object} config - The configuration object for the torrent
    * provider.
    * @param {Object} config.api - The name of api for the torrent provider.
    * @param {String} config.name - The name of the torrent provider.
    * @param {String} config.modelType - The model type for the helper.
    * @param {Object} config.query - The query object for the api.
+   * @param {Array<RegExp>} config.regexps - The regexps used to extract
+   information about movies.
    * @param {String} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, type} = {}) {
-    super({api, name, modelType, query, type});
+  constructor({api, name, modelType, query, regexps = defaultRegexps, type} = {}) {
+    super({api, name, modelType, query, regexps, type});
   }
 
   /**
@@ -30,14 +37,16 @@ export default class MovieProvider extends BaseProvider {
    * @override
    * @param {Object} torrent - The torrent to extract the movie information
    * from.
-   * @param {String} [lang=en] - The language of the torrent.
    * @param {RegExp} regex - The regex to extract the movie information.
+   * @param {String} [lang=en] - The language of the torrent.
    * @returns {Object} - Information about a movie from the torrent.
    */
-  _extractContent(torrent, lang = 'en', regex) {
+  _extractContent(torrent, regex, lang = 'en') {
     let movieTitle, slug;
 
-    movieTitle = torrent.title.match(regex)[1];
+    const { title, size, seeds, peers, magnet, torrent_link, fileSize } = torrent;
+
+    movieTitle = title.match(regex)[1];
     if (movieTitle.endsWith(' '))
       movieTitle = movieTitle.substring(0, movieTitle.length - 1);
     movieTitle = movieTitle.replace(/\./g, ' ');
@@ -46,19 +55,17 @@ export default class MovieProvider extends BaseProvider {
                       .replace(/\s+/g, '-')
                       .toLowerCase();
     if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
-    slug = slug in movieMap ? movieMap[slug] : slug;
+    slug = slug in BaseProvider.MovieMap ? BaseProvider.MovieMap[slug] : slug;
 
-    const year = torrent.title.match(regex)[2];
-    const quality = torrent.title.match(regex)[3];
-
-    const size = torrent.size ? torrent.size : torrent.fileSize;
+    const year = title.match(regex)[2];
+    const quality = title.match(regex)[3];
 
     const torrentObj = {
-      url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
-      seeds: torrent.seeds ? torrent.seeds : 0,
-      peers: torrent.peers ? torrent.peers : 0,
+      url: magnet ? magnet : torrent_link,
+      seeds: seeds ? seeds : 0,
+      peers: peers ? peers : 0,
       size: bytes(size.replace(/\s/g, '')),
-      filesize: size,
+      filesize: size ? size : fileSize,
       provider: this._name
     };
 
@@ -73,30 +80,6 @@ export default class MovieProvider extends BaseProvider {
     };
 
     return this._attachTorrent(movie, torrentObj, quality, lang);
-  }
-
-  /**
-   * Get movie info from a given torrent.
-   * @override
-   * @param {Object} torrent - A torrent object to extract movie information
-   * from.
-   * @param {String} [lang=en] - The language of the torrent.
-   * @returns {Object} - Information about a movie from the torrent.
-   */
-  _getContentData(torrent, lang = 'en') {
-    const threeDimensions = /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/i;
-    const fourKay = /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/i;
-    const withYear = /(.*).(\d{4})\D+(\d{3,4}p)/i;
-
-    if (torrent.title.match(threeDimensions)) {
-      return this._extractContent(torrent, lang, threeDimensions);
-    } else if (torrent.title.match(fourKay)) {
-      return this._extractContent(torrent, lang, fourKay);
-    } else if (torrent.title.match(withYear)) {
-      return this._extractContent(torrent, lang, withYear);
-    }
-
-    logger.warn(`${this._name}: Could not find data from torrent: '${torrent.title}'`);
   }
 
   /**
