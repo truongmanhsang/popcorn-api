@@ -1,7 +1,11 @@
 // Import the neccesary modules.
 import Provider from 'butter-provider';
 
-const typeEnum = Object.keys(Provider.ItemType)
+/**
+ * Enum for the 'type' attribute.
+ * @type {Array<String>}
+ */
+const _typeEnum = Object.keys(Provider.ItemType)
                         .map(key => Provider.ItemType[key]);
 
 /**
@@ -34,6 +38,6 @@ export default {
   genres: [String],
   type: {
     type: String,
-    enum: typeEnum
+    enum: _typeEnum
   }
 };
