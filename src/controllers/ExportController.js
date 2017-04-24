@@ -2,13 +2,13 @@
 import fs from 'fs';
 import path from 'path';
 
-/** Class for getting anime data from the MongoDB. */
+/** Class for downloading export collections. */
 export default class ExportController {
 
   /**
    * Download the export of a collection.
-   * @param {Object} req - The express request object.
-   * @param {Object} res - The express response object.
+   * @param {Object} req - The ExpressJS request object.
+   * @param {Object} res - The ExpressJS response object.
    * @returns {void} - The download request of an export of a collection.
    */
   getExport(req, res) {

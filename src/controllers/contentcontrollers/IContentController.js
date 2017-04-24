@@ -5,7 +5,7 @@
 export default class IContentController {
 
   /**
-   * Default method to get contents.
+   * Default method to get content pages.
    * @abstract
    * @throws {Error} - 'Using default method: 'getContents'.
    * @returns {void}

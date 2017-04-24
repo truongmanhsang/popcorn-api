@@ -8,7 +8,7 @@ import IContentController from './IContentController';
 export default class BaseContentController extends IContentController {
 
   /**
-   * Object used to query for anime content.
+   * Object used to query for content.
    * @type {Object}
    */
   static Query = {
@@ -44,9 +44,9 @@ export default class BaseContentController extends IContentController {
   }
 
   /**
-   * Get all the pages.
-   * @param {Object} req - The express request object.
-   * @param {Object} res - The express response object.
+   * Get all the available pages.
+   * @param {Object} req - The ExpressJS request object.
+   * @param {Object} res - The ExpressJS response object.
    * @returns {Array<String>} - A list of pages which are available.
    */
   getContents(req, res) {
@@ -54,7 +54,7 @@ export default class BaseContentController extends IContentController {
       const pages = Math.ceil(count / this._pageSize);
       const docs = [];
 
-      for (let i = 1; i < pages + 1; i++) // eslint-disable-line semi-spacing
+      for (let i = 1;i < pages + 1;i++)
         docs.push(`${this._model.collection.name}/${i}`);
 
       return res.json(docs);
@@ -62,10 +62,10 @@ export default class BaseContentController extends IContentController {
   }
 
   /**
-   * Get one page.
-   * @param {Object} req - The express request object.
-   * @param {Object} res - The express response object.
-   * @returns {Array<Object>} - The contents of one page.
+   * Get content from one page.
+   * @param {Object} req - The ExpressJS request object.
+   * @param {Object} res - The ExpressJS response object.
+   * @returns {Array<Object>} - The content of one page.
    */
   getPage(req, res) {
     if (req.params.page.match(/all/i)) {
@@ -85,8 +85,8 @@ export default class BaseContentController extends IContentController {
     const page = !isNaN(req.params.page) ? req.params.page - 1 : 0;
     const offset = page * this._pageSize;
     const query = Object.assign({}, BaseContentController.Query);
-    const { keywords, sort } = req.query;
     const order = req.query.order ? parseInt(req.query.order, 10) : -1;
+    const { keywords, sort } = req.query;
 
     let { genre } = req.query,
       $sort = {
@@ -96,7 +96,7 @@ export default class BaseContentController extends IContentController {
       };
 
     if (genre && !genre.match(/all/i)) {
-      // TODO: bit of a hack, should be handled by the client.
+      // XXX: Bit of a hack, should be handled by the client.
       if (genre.match(/science[-\s]fiction/i) || genre.match(/sci[-\s]fi/i))
         genre = 'science-fiction';
 
@@ -154,10 +154,10 @@ export default class BaseContentController extends IContentController {
   }
 
   /**
-   * Get info from one show.
-   * @param {Object} req - The express request object.
-   * @param {Object} res - The express response object.
-   * @returns {Object} - The details of a single show.
+   * Get info from one item.
+   * @param {Object} req - The ExpressJS request object.
+   * @param {Object} res - The ExpressJS response object.
+   * @returns {Object} - The details of a single item.
    */
   getContent(req, res) {
     return this._model.findOne({
@@ -170,10 +170,10 @@ export default class BaseContentController extends IContentController {
   }
 
   /**
-   * Get a random movie.
-   * @param {Object} req - The express request object.
-   * @param {Object} res - The express response object.
-   * @returns {Object} - A random movie.
+   * Get a random item.
+   * @param {Object} req - The ExpressJS request object.
+   * @param {Object} res - The ExpressJS response object.
+   * @returns {Object} - A random item.
    */
   getRandomContent(req, res) {
     return this._model.aggregate([{

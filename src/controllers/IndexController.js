@@ -27,8 +27,8 @@ export default class IndexController {
 
   /**
    * Get general information about the server.
-   * @param {Object} req - The express request object.
-   * @param {Object} res - The express response object.
+   * @param {Object} req - The ExpressJS request object.
+   * @param {Object} res - The ExpressJS response object.
    * @returns {Object|Function} - General information about the server.
    */
   async getIndex(req, res) {
@@ -46,7 +46,7 @@ export default class IndexController {
         totalMovies: totalMovies || 0,
         totalShows: totalShows || 0,
         updated: Scraper.Updated,
-        uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
+        uptime: process.uptime(),
         version,
         commit
       });
@@ -57,8 +57,8 @@ export default class IndexController {
 
   /**
    * Displays the 'popcorn-api.log' file.
-   * @param {Object} req - The express request object.
-   * @param {Object} res - The express response object.
+   * @param {Object} req - The ExpressJS request object.
+   * @param {Object} res - The ExpressJS response object.
    * @returns {void} - The content of the log file.
    */
   getErrorLog(req, res) {
