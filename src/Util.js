@@ -21,7 +21,7 @@ class Util {
   }
 
   /**
-   * Get the Util singleton instance.
+   * Return the Util singleton instance.
    * @returns {Util} - The Util singleton instance.
    */
   static get Instance() {
@@ -30,11 +30,11 @@ class Util {
 
   /**
    * Set the Util singleton class.
-   * @param {Util} _Instance - The instance to set.
+   * @param {Util} Instance - The instance to set.
    * @returns {void}
    */
-  static set Instance(_Instance) {
-    Util._Instance = _Instance;
+  static set Instance(Instance) {
+    Util._Instance = Instance;
   }
 
   /**
@@ -67,20 +67,22 @@ class Util {
   }
 
   /**
-   * Import a json file to a collection.
+   * Import a JSON file to a collection.
    * @param {String} collection - The collection to import.
    * @param {String} jsonFile - The JSON file to import.
    * @returns {void}
    */
   importCollection(collection, jsonFile) {
-    if (!path.isAbsolute(jsonFile))
-      jsonFile = path.join(process.cwd(), jsonFile); // eslint-disable-line no-param-reassign
+    const file = path.isAbsolute(jsonFile)
+                        ? jsonFile
+                        : path.join(process.cwd(), jsonFile);
+
     if (!fs.existsSync(jsonFile))
-      throw new Error(`Error: no such file found for '${jsonFile}'`);
+      throw new Error(`Error: no such file found for '${file}'`);
 
-    logger.info(`Importing collection: '${collection}', from: '${jsonFile}'`);
+    logger.info(`Importing collection: '${collection}', from: '${file}'`);
 
-    const cmd = `mongoimport -d ${Setup.DbName} -c ${collection}s --file "${jsonFile}" --upsert`;
+    const cmd = `mongoimport -d ${Setup.DbName} -c ${collection}s --file "${file}" --upsert`;
     this.executeCommand(cmd).catch(err => logger.error(err));
   }
 
