@@ -23,7 +23,7 @@ export default class IndexController {
    * The name of the server. Default is `serv01`.
    * @type {String}
    */
-  static _Server = 'serv01';
+  _server = 'serv01';
 
   /**
    * Get general information about the server.
@@ -40,7 +40,7 @@ export default class IndexController {
 
       return res.json({
         repo: repository.url,
-        server: IndexController._Server,
+        server: this._server,
         status: Scraper.Status,
         totalAnimes: totalAnimes || 0,
         totalMovies: totalMovies || 0,
