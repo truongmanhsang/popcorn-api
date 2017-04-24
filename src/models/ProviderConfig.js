@@ -49,7 +49,7 @@ _ProviderConfigSchema.pre('save', function(next) {
 });
 
 // Create the providerConfig model.
-const ProviderConfig = mongoose.model('Provider', _ProviderConfigSchema);
+const ProviderConfig = mongoose.model('ProviderConfig', _ProviderConfigSchema);
 
 /**
  * A model object for providers.
