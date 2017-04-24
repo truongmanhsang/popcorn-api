@@ -25,28 +25,6 @@ export default class IndexController {
   static _Server = 'serv01';
 
   /**
-   * Displays a given file.
-   * @param {Object} req - The express request object.
-   * @param {Object} res - The express response object.
-   * @param {String} file - The name of the file.
-   * @returns {Object} - A file to display in the browser.
-   */
-  static _displayFile(req, res, file) {
-    if (fs.existsSync(path.join(tempDir, file))) {
-      return res.status(204).sendFile(file, {
-        root: tempDir,
-        headers: {
-          'Content-Type': 'text/plain; charset=UTF-8'
-        }
-      });
-    }
-
-    return res.json({
-      error: `Could not find file: '${root}'`
-    });
-  }
-
-  /**
    * Get general information about the server.
    * @param {Object} req - The express request object.
    * @param {Object} res - The express response object.
@@ -84,7 +62,21 @@ export default class IndexController {
    * @returns {void} - The content of the log file.
    */
   getErrorLog(req, res) {
-    IndexController._displayFile(req, res, `${name}.log`);
+    const file = `${name}.log`;
+    const filePath = path.join(tempDir, file);
+
+    if (fs.existsSync(filePath)) {
+      return res.sendFile(file, {
+        root: tempDir,
+        headers: {
+          'Content-Type': 'text/plain; charset=UTF-8'
+        }
+      });
+    }
+
+    return res.json({
+      error: `Could not find file: '${filePath}'`
+    });
   }
 
 }
