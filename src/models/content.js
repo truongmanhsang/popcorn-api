@@ -1,12 +1,5 @@
 // Import the neccesary modules.
-import Provider from 'butter-provider';
-
-/**
- * Enum for the 'type' attribute.
- * @type {Array<String>}
- */
-const _typeEnum = Object.keys(Provider.ItemType)
-                        .map(key => Provider.ItemType[key]);
+import { ItemType } from 'butter-provider';
 
 /**
  * Base structure of the database content.
@@ -38,6 +31,7 @@ export default {
   genres: [String],
   type: {
     type: String,
-    enum: _typeEnum
+    enum: Object.keys(ItemType)
+                .map(key => ItemType[key])
   }
 };
