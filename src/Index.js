@@ -8,10 +8,10 @@ import os from 'os';
 import path from 'path';
 import { CronJob } from 'cron';
 
-import Setup from './config/Setup';
+import Logger from './config/Logger';
 import Routes from './config/Routes';
 import Scraper from './Scraper';
-import Logger from './config/Logger';
+import Setup from './config/Setup';
 import { name } from '../package.json';
 
 // The path to the temporary directory. Default is `./tmp`.
@@ -75,14 +75,14 @@ export default class Index {
    * @param {Object} config - Configuration for the API.
    * @param {Boolean} [config.start=true] - Start the scraping process.
    * @param {Boolean} [config.pretty=true] - Pretty output with Winston logging.
-   * @param {Boolean} [config.quiet=false] - Debug mode for no output.
+   * @param {Boolean} [config.quiet=false] - No output.
    */
   constructor({start = true, pretty = true, quiet = false} = {}) {
     // Setup the global logger object.
     Logger.getLogger('winston', pretty, quiet);
 
     // Setup the MongoDB configuration and ExpressJS configuration.
-    new Setup(Index._App, pretty, quiet);
+    new Setup(Index._App, pretty);
 
     // Setup the API routes.
     new Routes(Index._App);
@@ -92,7 +92,7 @@ export default class Index {
   }
 
   /**
-   * Create an emty file.
+   * Create an empty file.
    * @param {String} path - The path to the file to create.
    * @returns {void}
    */
@@ -103,7 +103,7 @@ export default class Index {
   /**
    * Removes all the files in the temporary directory.
    * @param {String} [tmpPath=popcorn-api/tmp] - The path to remove all the
-   * files within (Default is set in the `config/constants.js`).
+   * files within.
    * @returns {void}
    */
   static _resetTemp(tmpPath = tempDir) {
@@ -137,7 +137,7 @@ export default class Index {
   }
 
   /**
-   * Function to start the API.
+   * Method to start the API.
    * @param {Boolean} [start=true] - Start the scraping.
    * @returns {void}
    */
@@ -150,7 +150,7 @@ export default class Index {
       Index._createTemp();
 
       // Fork workers.
-      for (let i = 0; i < Math.min(os.cpus().length, Index._Workers); i++) // eslint-disable-line semi-spacing
+      for (let i = 0;i < Math.min(os.cpus().length, Index._Workers);i++)
         cluster.fork();
 
       // Check for errors with the workers.
@@ -159,7 +159,7 @@ export default class Index {
         cluster.fork();
       });
 
-      // WARNING: Domain module is pending deprication: https://nodejs.org/api/domain.html
+      // XXX: Domain module is pending deprication: https://nodejs.org/api/domain.html
       const scope = domain.create();
       scope.run(() => {
         logger.info('API started');
@@ -186,7 +186,7 @@ export default class Index {
   }
 
   /**
-   * Function to stop the API from running.
+   * Method to stop the API from running.
    * @returns {void}
    */
   static closeAPI() {
