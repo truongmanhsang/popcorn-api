@@ -117,7 +117,7 @@ export default class ApiFactory extends IAbstractFactory {
   constructor() {
     super();
 
-    // TODO: fix this hack.
+    // XXX: Fix this hack.
     this._eztvAPI.getAll = this._eztvAPI.getAllShows;
     this._eztvAPI.getData = this._eztvAPI.getShowData;
     this._horribleSubsAPI.getAll = this._horribleSubsAPI.getAllAnime;
