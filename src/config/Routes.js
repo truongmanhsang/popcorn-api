@@ -44,25 +44,25 @@ export default class Routes {
    * @returns {void}
    */
   constructor(app) {
-    app.get('/status', this._indexController.getIndex);
-    app.get('/logs/error', this._indexController.getErrorLog);
+    app.get('/status', (req, res) => this._indexController.getIndex(req, res));
+    app.get('/logs/error', (req, res) => this._indexController.getErrorLog(req, res));
 
-    app.get('/animes', this._animeController.getContents);
-    app.get('/animes/:page', this._animeController.getPage);
-    app.get('/anime/:id', this._animeController.getContent);
-    app.get('/random/anime', this._animeController.getRandomContent);
+    app.get('/animes', (req, res) => this._animeController.getContents(req, res));
+    app.get('/animes/:page', (req, res) => this._animeController.getPage(req, res));
+    app.get('/anime/:id', (req, res) => this._animeController.getContent(req, res));
+    app.get('/random/anime', (req, res) => this._animeController.getRandomContent(req, res));
 
-    app.get('/movies', this._movieController.getContents);
-    app.get('/movies/:page', this._movieController.getPage);
-    app.get('/movie/:id', this._movieController.getContent);
-    app.get('/random/movie', this._movieController.getRandomContent);
+    app.get('/movies', (req, res) => this._movieController.getContents(req, res));
+    app.get('/movies/:page', (req, res) => this._movieController.getPage(req, res));
+    app.get('/movie/:id', (req, res) => this._movieController.getContent(req, res));
+    app.get('/random/movie', (req, res) => this._movieController.getRandomContent(req, res));
 
-    app.get('/shows', this._showController.getContents);
-    app.get('/shows/:page', this._showController.getPage);
-    app.get('/show/:id', this._showController.getContent);
-    app.get('/random/show', this._showController.getRandomContent);
+    app.get('/shows', (req, res) => this._showController.getContents(req, res));
+    app.get('/shows/:page', (req, res) => this._showController.getPage(req, res));
+    app.get('/show/:id', (req, res) => this._showController.getContent(req, res));
+    app.get('/random/show', (req, res) => this._showController.getRandomContent(req, res));
 
-    app.get('/exports/:collection', this._exportController.getExport);
+    app.get('/exports/:collection', (req, res) => this._exportController.getExport(req, res));
   }
 
 }
