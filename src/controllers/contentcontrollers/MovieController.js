@@ -9,7 +9,7 @@ export default class MovieController extends BaseContentController {
    * Object used for the projection of movies.
    * @type {Object}
    */
-  static _projection = {
+  _projection = {
     _id: 1,
     imdb_id: 1,
     title: 1,
@@ -22,7 +22,8 @@ export default class MovieController extends BaseContentController {
     torrents: 1,
     genres: 1,
     images: 1,
-    rating: 1
+    rating: 1,
+    type: 1
   };
 
   /**

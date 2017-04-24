@@ -6,19 +6,27 @@ import BaseContentController from './BaseContentController';
 export default class AnimeController extends BaseContentController {
 
   /**
-   * Object used to query for anime content.
+   * Object used for the projections of anime.
    * @type {Object}
    */
-  static query = {
-    $or: [{
-      num_seasons: {
-        $gt: 0
-      }
-    }, {
-      num_seasons: {
-        $exists: false
-      }
-    }]
+  _projection = {
+    _id: 1,
+    imdb_id: 1,
+    tvdb_id: 1,
+    title: 1,
+    year: 1,
+    slug: 1,
+    genres: 1,
+    images: 1,
+    rating: 1,
+    type: 1,
+    num_seasons: 1,
+    synopsis: 1,
+    runtime: 1,
+    released: 1,
+    trailer: 1,
+    certification: 1,
+    torrents: 1
   };
 
   /**

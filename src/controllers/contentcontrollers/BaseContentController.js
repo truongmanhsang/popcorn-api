@@ -8,6 +8,22 @@ import IContentController from './IContentController';
 export default class BaseContentController extends IContentController {
 
   /**
+   * Object used to query for anime content.
+   * @type {Object}
+   */
+  static Query = {
+    $or: [{
+      num_seasons: {
+        $gt: 0
+      }
+    }, {
+      torrents: {
+        $exists: true
+      }
+    }]
+  };
+
+  /**
    * The amount of objects show per page. Default is `50`.
    * @type {Number}
    */
@@ -31,11 +47,10 @@ export default class BaseContentController extends IContentController {
    * Get all the pages.
    * @param {Object} req - The express request object.
    * @param {Object} res - The express response object.
-   * @param {Function} next - The next function for Express.
    * @returns {Array<String>} - A list of pages which are available.
    */
-  getContents(req, res, next) {
-    return this._model.count(BaseContentController.query).exec().then(count => {
+  getContents(req, res) {
+    return this._model.count(BaseContentController.Query).exec().then(count => {
       const pages = Math.ceil(count / this._pageSize);
       const docs = [];
 
@@ -43,47 +58,53 @@ export default class BaseContentController extends IContentController {
         docs.push(`${this._model.collection.name}/${i}`);
 
       return res.json(docs);
-    }).catch(err => next(err));
+    }).catch(err => res.json(err));
   }
 
   /**
    * Get one page.
    * @param {Object} req - The express request object.
    * @param {Object} res - The express response object.
-   * @param {Function} next - The next function for Express.
-   * @returns {Array<Show>} - The contents of one page.
+   * @returns {Array<Object>} - The contents of one page.
    */
-  getPage(req, res, next) {
-    const page = req.params.page - 1;
-    const offset = page * this._pageSize;
-
+  getPage(req, res) {
     if (req.params.page.match(/all/i)) {
       return this._model.aggregate([{
-        $match: BaseContentController.query
+        $match: BaseContentController.Query
       }, {
-        $project: BaseContentController._projections
+        $project: this._projection
       }, {
         $sort: {
           title: -1
         }
       }]).exec()
         .then(docs => res.json(docs))
-        .catch(err => next(err));
+        .catch(err => res.json(err));
     }
 
-    const query = Object.assign({}, BaseContentController.query);
-    const data = req.query;
+    const page = !isNaN(req.params.page) ? req.params.page - 1 : 0;
+    const offset = page * this._pageSize;
+    const query = Object.assign({}, BaseContentController.Query);
+    const { keywords, sort } = req.query;
+    const order = req.query.order ? parseInt(req.query.order, 10) : -1;
 
-    data.order = data.order ? parseInt(data.order, 10) : -1;
+    let { genre } = req.query,
+      $sort = {
+        'rating.votes': order,
+        'rating.percentage': order,
+        'rating.watching': order
+      };
 
-    let sort = {
-      'rating.votes': data.order,
-      'rating.percentage': data.order,
-      'rating.watching': data.order
-    };
+    if (genre && !genre.match(/all/i)) {
+      // TODO: bit of a hack, should be handled by the client.
+      if (genre.match(/science[-\s]fiction/i) || genre.match(/sci[-\s]fi/i))
+        genre = 'science-fiction';
 
-    if (data.keywords) {
-      const words = data.keywords.split(' ');
+      query.genres = genre.toLowerCase();
+    }
+
+    if (keywords) {
+      const words = keywords.split(' ');
       let regex = '^';
 
       for (const w in words) {
@@ -97,76 +118,66 @@ export default class BaseContentController extends IContentController {
       };
     }
 
-    if (data.sort) {
-      if (data.sort.match(/name/i)) sort = {
-        title: data.order
+    if (sort) {
+      if (sort.match(/name/i)) $sort = {
+        title: order
       };
-      if (data.sort.match(/rating/i)) sort = {
-        'rating.percentage': data.order,
-        'rating.votes': data.order
+      if (sort.match(/rating/i)) $sort = {
+        'rating.percentage': order,
+        'rating.votes': order
       };
-      if (data.sort.match(/trending/i)) sort = {
-        'rating.watching': data.order
+      if (sort.match(/trending/i)) $sort = {
+        'rating.watching': order
       };
-      if (data.sort.match(/updated/i)) sort = {
-        latest_episode: data.order
+      if (sort.match(/released/i)) $sort = {
+        latest_episode: order,
+        released: order
       };
-      if (data.sort.match(/year/i)) sort = {
-        year: data.order
+      if (sort.match(/year/i)) $sort = {
+        year: order
       };
-    }
-
-    if (data.genre && !data.genre.match(/all/i)) {
-      // TODO: bit of a hack, should be handled by the client.
-      let { genre } = data;
-      if (genre.match(/science[-\s]fiction/i) || genre.match(/sci[-\s]fi/i))
-        genre = 'science-fiction';
-
-      query.genres = genre.toLowerCase();
     }
 
     return this._model.aggregate([{
-      $sort: sort
+      $sort
     }, {
       $match: query
     }, {
-      $project: BaseContentController._projections
+      $project: this._projection
     }, {
       $skip: offset
     }, {
       $limit: this._pageSize
     }]).exec()
       .then(docs => res.json(docs))
-      .catch(err => res.jfson(err));
+      .catch(err => res.json(err));
   }
 
   /**
    * Get info from one show.
    * @param {Object} req - The express request object.
    * @param {Object} res - The express response object.
-   * @param {Function} next - The next function for Express.
-   * @returns {Show} - The details of a single show.
+   * @returns {Object} - The details of a single show.
    */
-  getContent(req, res, next) {
+  getContent(req, res) {
     return this._model.findOne({
       _id: req.params.id
     }, {
       latest_episode: 0
     }).exec()
       .then(docs => res.json(docs))
-      .catch(err => next(err));
+      .catch(err => res.json(err));
   }
 
   /**
    * Get a random movie.
    * @param {Object} req - The express request object.
    * @param {Object} res - The express response object.
-   * @param {Function} next - The next function for Express.
-   * @returns {Movie} - A random movie.
+   * @returns {Object} - A random movie.
    */
-  getRandomContent(req, res, next) {
+  getRandomContent(req, res) {
     return this._model.aggregate([{
-      $match: BaseContentController.query
+      $match: BaseContentController.Query
     }, {
       $sample: {
         size: 1
@@ -175,7 +186,7 @@ export default class BaseContentController extends IContentController {
       $limit: 1
     }]).exec()
       .then(docs => res.json(docs[0]))
-      .catch(err => next(err));
+      .catch(err => res.json(err));
   }
 
 }

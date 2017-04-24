@@ -6,20 +6,10 @@ import Show from '../../models/Show';
 export default class ShowController extends BaseContentController {
 
   /**
-   * Object to search for shows.
-   * @type {Object}
-   */
-  static query = {
-    num_seasons: {
-      $gt: 0
-    }
-  };
-
-  /**
    * Object used for the projections of shows.
    * @type {Object}
    */
-  static _projection = {
+  _projection = {
     _id: 1,
     imdb_id: 1,
     tvdb_id: 1,
@@ -29,7 +19,8 @@ export default class ShowController extends BaseContentController {
     genres: 1,
     images: 1,
     rating: 1,
-    num_seasons: 1
+    num_seasons: 1,
+    type: 1
   };
 
   /**
