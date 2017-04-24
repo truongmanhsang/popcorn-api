@@ -29,7 +29,7 @@ export default class BulkProvider extends BaseProvider {
    */
   async search() {
     try {
-      logger.info(`${this._name}: Starting scraping...`);
+      logger.info(`${this._name}: Started scraping...`);
       const contents = await this._api.getAll();
       logger.info(`${this._name}: Found ${contents.length} ${this._type}s.`);
 

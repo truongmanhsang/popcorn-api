@@ -53,7 +53,7 @@ export default class YTSProvider extends MovieProvider {
         provider: this._name
       };
 
-      return this._attachTorrent(movie, torrentObj, quality, lang);
+      return this._attachTorrent(...[movie, torrentObj, quality, lang]);
     });
 
     return movie;
@@ -105,8 +105,8 @@ export default class YTSProvider extends MovieProvider {
 
       const index = movies.indexOf(matching);
 
-      const torrentObj = movie.torrents[language][quality];
-      const created = this._attachTorrent(matching, torrentObj, quality, language);
+      const args = [matching, movie.torrents[language][quality], quality, language];
+      const created = this._attachTorrent(...args);
 
       movies.splice(index, 1, created);
     }).then(() => movies);

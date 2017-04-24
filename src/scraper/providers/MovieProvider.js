@@ -3,6 +3,7 @@ import asyncq from 'async-q';
 import bytes from 'bytes';
 
 import BaseProvider from './BaseProvider';
+import moviemap from './maps/moviemap.json';
 
 const defaultRegexps = [
   /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/i,
@@ -55,7 +56,7 @@ export default class MovieProvider extends BaseProvider {
                       .replace(/\s+/g, '-')
                       .toLowerCase();
     if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
-    slug = slug in BaseProvider.MovieMap ? BaseProvider.MovieMap[slug] : slug;
+    slug = slug in moviemap ? moviemap[slug] : slug;
 
     const year = title.match(regex)[2];
     const quality = title.match(regex)[3];
@@ -79,7 +80,7 @@ export default class MovieProvider extends BaseProvider {
       torrents: {}
     };
 
-    return this._attachTorrent(movie, torrentObj, quality, lang);
+    return this._attachTorrent(...[movie, torrentObj, quality, lang]);
   }
 
   /**
@@ -127,7 +128,8 @@ export default class MovieProvider extends BaseProvider {
       const index = movies.indexOf(matching);
 
       const torrentObj = movie.torrents[language][quality];
-      const created = this._attachTorrent(matching, torrentObj, quality, language);
+      const args = [matching, torrentObj, quality, language];
+      const created = this._attachTorrent(...args);
 
       movies.splice(index, 1, created);
     }).then(() => movies);

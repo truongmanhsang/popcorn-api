@@ -2,6 +2,7 @@
 import asyncq from 'async-q';
 
 import BaseProvider from './BaseProvider';
+import showmap from './maps/showmap.json';
 
 const defaultRegexps = [
   /(.*).[sS](\d{2})[eE](\d{2})/i,
@@ -51,7 +52,7 @@ export default class ShowProvider extends BaseProvider {
     slug = showTitle.replace(/[^a-zA-Z0-9\- ]/gi, '')
                     .replace(/\s+/g, '-')
                     .toLowerCase();
-    slug = slug in BaseProvider.ShowMap ? BaseProvider.ShowMap[slug] : slug;
+    slug = slug in showmap ? showmap[slug] : slug;
 
     season = 1;
     season = dateBased ? parseInt(match[2], 10) : match[2];
@@ -81,7 +82,7 @@ export default class ShowProvider extends BaseProvider {
       type: this._type
     };
 
-    return this._attachTorrent(show, torrentObj, season, episode, quality);
+    return this._attachTorrent(...[show, torrentObj, season, episode, quality]);
   }
 
   /**
@@ -136,7 +137,8 @@ export default class ShowProvider extends BaseProvider {
       const index = shows.indexOf(matching);
 
       const torrentObj = show.episodes[season][episode][quality];
-      const created = this._attachTorrent(matching, torrentObj, season, episode, quality);
+      const args = [matching, torrentObj, season, episode, quality];
+      const created = this._attachTorrent(...args);
 
       shows.splice(index, 1, created);
     }).then(() => shows);
