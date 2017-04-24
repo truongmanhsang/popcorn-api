@@ -1,30 +1,18 @@
+// Import the neccesary modules.
 import hooks from 'hooks';
 
 import Util from '../src/Util';
-import Anime from '../src/models/Anime';
-import Movie from '../src/models/Movie';
-import Show from '../src/models/Show';
-
-import animeData from './anime.json';
-import movieData from './movie.json';
-import showData from './show.json';
 
 hooks.beforeAll((transaction, done) => {
-  const util = new Util();
+  const animemovie = Util.importCollection('anime', './test/movie.json');
+  const animeshow = Util.importCollection('anime', './test/show.json');
+  const movie = Util.importCollection('movie', './test/movie.json');
+  const show = Util.importCollection('show', './test/show.json');
 
-  const anime = util.executeCommand('NODE_ENV=test ../build/popcorn-api.js -i ../test/anime.json');
-  const movie = util.executeCommand('NODE_ENV=test ../build/popcorn-api.js -i ../test/movie.json');
-  const show = util.executeCommand('NODE_ENV=test ../build/popcorn-api.js -i ../test/show.json');
-
-  Promise.all([anime, movie, show])
-    .then(res => done())
-    .catch(err => done(err));
+  Promise.all([animemovie, animeshow, movie, show])
+    .then(done).catch(done);
 });
 
-hooks.before('Logs > Error Logs > Get Error Logs', transaction => {
-  transaction.skip = true;
-});
+hooks.before('Logs > Error Logs > Get Error Logs', t => t.skip = true);
 
-hooks.before('Export > Export > Export Collection', transaction => {
-  transaction.skip = true;
-});
+hooks.before('Export > Export > Export Collection', t => t.skip = true);
