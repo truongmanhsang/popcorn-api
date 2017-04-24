@@ -55,7 +55,7 @@ export default class Logger {
   }
 
   /**
-   * Formatter function which formats the output to the console.
+   * Formatter method which formats the output to the console.
    * @param {Object} args - Arguments passed by Winston.
    * @returns {String} - The formatted message.
    */
@@ -69,7 +69,7 @@ export default class Logger {
   }
 
   /**
-   * Formatter function which formate the output to the log file.
+   * Formatter method which formats the output to the log file.
    * @param {Object} args - Arguments passed by Winston.
    * @returns {String} - The formatted message.
    */
@@ -123,26 +123,21 @@ export default class Logger {
   }
 
   /**
-   * Function to create a global logger object based on the properties of the
-   * logger function.
+   * Method to create a global logger object based on the properties of the
+   * Logger class.
    * @param {Boolean} [pretty] - Pretty mode for output with colors.
    * @param {Boolean} [quiet] - No output.
    * @returns {void}
    */
   static _createLogger(pretty, quiet) {
     if (!global.logger) global.logger = {};
-    const winston = Logger._createWinston();
+    if (quiet) return;
 
     Object.keys(Logger._Levels).map(level => {
-      if (pretty) {
-        global.logger[level] = msg => {
-          if (!quiet) winston[level](msg);
-        };
-      } else {
-        global.logger[level] = msg => {
-          if (!quiet) console[level](msg); // eslint-disable-line no-console
-        };
-      }
+      const winston = Logger._createWinston();
+      global.logger[level] = pretty
+                ? msg => winston[level](msg)
+                : msg => console[level](msg); // eslint-disable-line no-console
     });
   }
 
