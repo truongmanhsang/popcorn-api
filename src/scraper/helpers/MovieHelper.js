@@ -210,7 +210,6 @@ export default class MovieHelper extends BaseHelper {
 
         return {
           _id: imdb,
-          imdb_id: imdb,
           title: traktMovie.title,
           year: traktMovie.year,
           slug: slug,
@@ -221,12 +220,11 @@ export default class MovieHelper extends BaseHelper {
             watching: traktWatchers ? traktWatchers.length : 0,
             percentage: Math.round(traktMovie.rating * 10)
           },
-          country: traktMovie.language,
-          last_updated: Number(new Date()),
           images: await this._getImages(tmdb, imdb),
           genres: traktMovie.genres !== null ? traktMovie.genres : ['unknown'],
+          language: traktMovie.language,
           released: new Date(traktMovie.released).getTime() / 1000.0,
-          trailer: traktMovie.trailer || null,
+          trailer: traktMovie.trailer,
           certification: traktMovie.certification,
           torrents: {}
         };

@@ -334,8 +334,6 @@ export default class ShowHelper extends BaseHelper {
 
         return {
           _id: imdb,
-          imdb_id: imdb,
-          tvdb_id: tvdb,
           title: traktShow.title,
           year: traktShow.year,
           slug: slug,
@@ -346,6 +344,9 @@ export default class ShowHelper extends BaseHelper {
             watching: traktWatchers ? traktWatchers.length : 0,
             percentage: Math.round(traktShow.rating * 10)
           },
+          images: await this._getImages(tvdb, tvdb),
+          genres: traktShow.genres !== null ? traktShow.genres : ['unknown'],
+          tvdb_id: tvdb,
           country: traktShow.country,
           network: traktShow.network,
           air_day: traktShow.airs.day,
@@ -354,8 +355,6 @@ export default class ShowHelper extends BaseHelper {
           num_seasons: 0,
           last_updated: Number(new Date()),
           latest_episode: 0,
-          images: await this._getImages(tvdb, tvdb),
-          genres: traktShow.genres !== null ? traktShow.genres : ['unknown'],
           episodes: []
         };
       }
