@@ -6,6 +6,7 @@ import { AnimeShow as Anime } from '../models/Anime';
 import Movie from '../models/Movie';
 import Show from '../models/Show';
 import AnimeController from './contentcontrollers/AnimeController';
+import MovieController from './contentcontrollers/MovieController';
 import ShowController from './contentcontrollers/ShowController';
 import Scraper from '../Scraper';
 import Util from '../Util';
@@ -28,14 +29,13 @@ export default class IndexController {
    * Get general information about the server.
    * @param {Object} req - The express request object.
    * @param {Object} res - The express response object.
-   * @param {Function} next - The next function for Express.
    * @returns {Object|Function} - General information about the server.
    */
-  async getIndex(req, res, next) {
+  async getIndex(req, res) {
     try {
       const commit = await Util.executeCommand('git rev-parse --short HEAD');
       const totalAnimes = await Anime.count(AnimeController.Query).exec();
-      const totalMovies = await Movie.count().exec();
+      const totalMovies = await Movie.count(MovieController.Query).exec();
       const totalShows = await Show.count(ShowController.Query).exec();
 
       return res.json({
@@ -51,7 +51,7 @@ export default class IndexController {
         commit
       });
     } catch (err) {
-      return next(err);
+      return res.json(err);
     }
   }
 
