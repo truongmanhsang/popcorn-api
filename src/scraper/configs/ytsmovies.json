@@ -1,0 +1,11 @@
+[{
+  "api": "yts",
+  "name": "YTS",
+  "modelType": "movie",
+  "type": "movie",
+  "class": "YTSProvider",
+  "query": {
+    "page": 1,
+    "limit": 50
+  }
+}]

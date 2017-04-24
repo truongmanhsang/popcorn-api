@@ -1,0 +1,37 @@
+[{
+  "api": "extratorrent",
+  "modelType": "movie",
+  "name": "ETRG BRRip",
+  "type": "movie",
+  "class": "MovieProvider",
+  "query": {
+    "page": 1,
+    "language": "en",
+    "category": "movies",
+    "with_words": "etrg x264 brrip"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "movie",
+  "name": "ETRG BluRay",
+  "type": "movie",
+  "class": "MovieProvider",
+  "query": {
+    "page": 1,
+    "language": "en",
+    "category": "movies",
+    "with_words": "etrg x264 bluray"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "movie",
+  "name": "YIFY",
+  "type": "movie",
+  "class": "MovieProvider",
+  "query": {
+    "page": 1,
+    "language": "en",
+    "category": "movies",
+    "with_words": "x264 yify brrip"
+  }
+}]

@@ -1,0 +1,43 @@
+[{
+  "api": "nyaa",
+  "modelType": "animeshow",
+  "name": "Commie",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "category": "anime",
+    "sub_category": "english_translated",
+    "offset": 1,
+    "term": "mkv",
+    "user": 76430,
+    "fiter": "trusted_only"
+  }
+}, {
+  "api": "nyaa",
+  "modelType": "animeshow",
+  "name": "FFF",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "category": "anime",
+    "sub_category": "english_translated",
+    "offset": 1,
+    "term": "mkv",
+    "user": 73859,
+    "filter": "trusted_only"
+  }
+}, {
+  "api": "nyaa",
+  "modelType": "animeshow",
+  "name": "gg",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "category": "anime",
+    "sub_category": "english_translated",
+    "offset": 1,
+    "term": "mkv",
+    "user": 9001,
+    "filter": "trusted_only"
+  }
+}]

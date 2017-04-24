@@ -1,0 +1,7 @@
+[{
+  "api": "eztv",
+  "name": "EZTV",
+  "modelType": "show",
+  "type": "tvshow",
+  "class": "BulkProvider"
+}]

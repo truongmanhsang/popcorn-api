@@ -1,0 +1,190 @@
+[{
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV LOL",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 lol",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV KILLERS",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 killers",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV 2HD",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 2hd",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV CROOKS",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 crooks",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV FUM",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 fum",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV BATV",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 batv",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV ASAP",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 asap",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV TLA",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 tla",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV W4F",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 w4f",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV EVOLVE",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 EVOLVE",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV ORGANiC",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 organic",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV BAJSKORV",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 bajskorv",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV RiVER",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 river",
+    "without": "720p 1080p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETTV 720p",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ettv hdtv x264 720p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "ETHD 720p",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "ethd hdtv x264 720p"
+  }
+}, {
+  "api": "extratorrent",
+  "modelType": "show",
+  "name": "1080p",
+  "type": "tvshow",
+  "class": "ShowProvider",
+  "query": {
+    "page": 1,
+    "category": "tv",
+    "with_words": "hdtv x264 1080p"
+  }
+}]
