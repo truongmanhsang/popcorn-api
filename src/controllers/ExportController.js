@@ -13,24 +13,24 @@ export default class ExportController {
    */
   getExport(req, res) {
     const { collection } = req.params;
-    let err;
 
-    if (collection.match(/(anime)$|(movie)$|(show)$/i)) {
-      const jsonFile = path.join(tempDir, `${collection}s.json`);
-      if (!fs.existsSync(jsonFile)) {
-        err = {
-          error: `Error: no such file found for '${jsonFile}'`
-        };
-        return res.status(500).json(err);
-      }
+    if (collection.match(/(anime|movie|show)s?/i)) {
+      let jsonFile = path.join(tempDir, `${collection}.json`);
+      if (fs.existsSync(jsonFile))
+        return res.download(jsonFile);
 
-      return res.status(201).download(jsonFile);
+      jsonFile = path.join(tempDir, `${collection}s.json`);
+      if (fs.existsSync(jsonFile))
+        return res.download(jsonFile);
+
+      return res.status(500).json({
+        error: `Error: no such file found for '${jsonFile}'`
+      });
     }
 
-    err = {
+    res.status(500).json({
       error: `Error: '${collection}' is not a valid collection to export.`
-    };
-    res.status(500).json(err);
+    });
   }
 
 }
