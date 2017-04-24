@@ -32,8 +32,14 @@ class Scraper {
    */
   static _Updated = 0;
 
+  /** Create a singleton class for Scraper. */
+  constructor() {
+    if (!Scraper.Instance) Scraper.Instance = this;
+    return Scraper.Instance;
+  }
+
   /**
-   * Get the Scraper singleton instance.
+   * Return the Scraper singleton instance.
    * @returns {Scraper} - The Scraper singleton instance.
    */
   static get Instance() {
@@ -42,11 +48,11 @@ class Scraper {
 
   /**
    * Set the Scraper singleton class.
-   * @param {Scraper} _Instance - The instance to set.
+   * @param {Scraper} Instance - The instance to set.
    * @returns {void}
    */
-  static set Instance(_Instance) {
-    Scraper._Instance = _Instance;
+  static set Instance(Instance) {
+    Scraper._Instance = Instance;
   }
 
   /**
@@ -59,15 +65,15 @@ class Scraper {
 
   /**
    * Set the status of the scraper.
-   * @param {String} _Status - The status to set.
+   * @param {String} Status - The status to set.
    * @returns {void}
    */
-  static set Status(_Status) {
-    Scraper._Status = _Status;
+  static set Status(Status) {
+    Scraper._Status = Status;
   }
 
   /**
-   * Retrun the last updated value of the scraper.
+   * Return the last updated value of the scraper.
    * @returns {Number} - The last updated value.
    */
   static get Updated() {
@@ -76,17 +82,11 @@ class Scraper {
 
   /**
    * Set the last updated value of the scraper.
-   * @param {Number} _Updated - The value to set the last updated value.
+   * @param {Number} Updated - The value to set the last updated value.
    * @returns {void}
    */
-  static set Updated(_Updated) {
-    Scraper._Updated = _Updated;
-  }
-
-  /** Create a singleton class for Scraper. */
-  constructor() {
-    if (!Scraper.Instance) Scraper.Instance = this;
-    return Scraper.Instance;
+  static set Updated(Updated) {
+    Scraper._Updated = Updated;
   }
 
   /**
@@ -98,9 +98,15 @@ class Scraper {
 
     const context = new Context();
 
-    return ProviderConfig.find().exec().then(pConfigs => {
+    /**
+     * NOTE: `.sort({ $natural: <order> })` sorts the provider configs based on
+     * the order of insertion.
+     */
+    return ProviderConfig.find().sort({
+      $natural: -1
+    }).exec().then(pConfigs => {
       return asyncq.eachSeries(pConfigs, async pConfig => {
-        // TODO: import(``).default does not work.
+        // XXX: import(``).default does not work.
         let Provider = await import(`./scraper/providers/${pConfig.class}`);
         Provider = Provider.default;
 
