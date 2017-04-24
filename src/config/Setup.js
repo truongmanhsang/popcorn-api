@@ -22,13 +22,12 @@ export default class Setup {
   static _DbHosts = ['localhost'];
 
   /**
-   * Setup the Express service.
+   * Setup the ExpressJS service.
    * @param {Object} app - The ExpresssJS instance.
    * @param {Boolean} [pretty] - Pretty output with Winston logging.
-   * @param {Boolean} [quiet] - No output.
    * @returns {void}
    */
-  constructor(app, pretty, quiet) {
+  constructor(app, pretty) {
     // Function for escaping strings.
     RegExp.escape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
@@ -54,8 +53,7 @@ export default class Setup {
     app.use(responseTime());
 
     // Enable HTTP request logging.
-    if (pretty && !quiet)
-      app.use(Logger.getLogger('express'));
+    if (pretty) app.use(Logger.getLogger('express'));
   }
 
   /**
