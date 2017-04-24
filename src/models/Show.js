@@ -1,6 +1,6 @@
 // Import the neccesary modules.
 import mongoose from 'mongoose';
-import Provider from 'butter-provider';
+import { ItemType } from 'butter-provider';
 
 import content from './content';
 
@@ -24,7 +24,7 @@ export const ShowSchema = new mongoose.Schema(Object.assign({}, content, {
   },
   type: {
     type: String,
-    default: Provider.ItemType.TVSHOW
+    default: ItemType.TVSHOW
   },
   episodes: [{
     tvdb_id: Number,
