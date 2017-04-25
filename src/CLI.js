@@ -170,7 +170,7 @@ export default class CLI {
               'Add content to the MongoDB database (anime|show|movie).',
               /^(anime|movie|show)$/i, false)
       // .option('--providers', '') // TODO: Allow admin to add new provider configs via CLI
-      // .option('-s, --start', '') // TODO: Option to start or not start the scraping process.
+      .option('-s, --start', 'Start the scraping process')
       .option('--export <collection>',
               'Export a collection to a JSON file.',
               /^(anime|movie|show)$/i, false)
@@ -199,22 +199,26 @@ export default class CLI {
    * @returns {undefined}
    */
   _modus(m) {
+    const start = program.start ? program.start : false;
+
     switch (m) {
     case 'pretty':
-      new Index();
+      new Index({ start });
       break;
     case 'quiet':
       new Index({
-        quiet: true
+        quiet: true,
+        start
       });
       break;
     case 'ugly':
       new Index({
-        pretty: false
+        pretty: false,
+        start
       });
       break;
     default:
-      new Index();
+      new Index({ start });
     }
   }
 
