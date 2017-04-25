@@ -5,11 +5,13 @@ import bytes from 'bytes';
 import BaseProvider from './BaseProvider';
 import moviemap from './maps/moviemap.json';
 
-const defaultRegexps = [
-  /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/i,
-  /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/i,
-  /(.*).(\d{4})\D+(\d{3,4}p)/i
-];
+const defaultRegexps = [{
+  regex: /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/i
+}, {
+  regex: /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/i
+}, {
+  regex: /(.*).(\d{4})\D+(\d{3,4}p)/i
+}];
 
 /**
  * Class for scraping movie content from various sources.
@@ -38,18 +40,19 @@ export default class MovieProvider extends BaseProvider {
    * @override
    * @param {!Object} torrent - The torrent to extract the movie information
    * from.
-   * @param {!RegExp} regex - The regex to extract the movie information.
+   * @param {!RegExp} r - The regex to extract the movie information.
    * @param {!String} [lang=en] - The language of the torrent.
+   *
    * @returns {Object} - Information about a movie from the torrent.
    */
-  _extractContent(torrent, regex, lang = 'en') {
+  _extractContent(torrent, r, lang = 'en') {
     let movieTitle, slug;
 
     const {
       title, size, seeds, peers, magnet, torrent_link, fileSize
     } = torrent;
 
-    movieTitle = title.match(regex)[1];
+    movieTitle = title.match(r.regex)[1];
     if (movieTitle.endsWith(' '))
       movieTitle = movieTitle.substring(0, movieTitle.length - 1);
     movieTitle = movieTitle.replace(/\./g, ' ');
@@ -60,8 +63,8 @@ export default class MovieProvider extends BaseProvider {
     if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
     slug = slug in moviemap ? moviemap[slug] : slug;
 
-    const year = title.match(regex)[2];
-    const quality = title.match(regex)[3];
+    const year = title.match(r.regex)[2];
+    const quality = title.match(r.regex)[3];
 
     const torrentObj = {
       url: magnet ? magnet : torrent_link,
@@ -79,6 +82,7 @@ export default class MovieProvider extends BaseProvider {
       year,
       quality,
       language: lang,
+      type: this._type,
       torrents: {}
     };
 
@@ -123,9 +127,9 @@ export default class MovieProvider extends BaseProvider {
       const { movieTitle, slug, language, quality } = movie;
 
       const matching = movies.find(
-        s => s.movieTitle.toLowerCase() === movieTitle.toLowerCase()
-              && s.slug.toLowerCase() === slug.toLowerCase()
-              && s.type.toLowerCase() === this._type.toLowerCase()
+        m => m.movieTitle.toLowerCase() === movieTitle.toLowerCase()
+              && m.slug.toLowerCase() === slug.toLowerCase()
+              && m.type.toLowerCase() === this._type.toLowerCase()
       );
       if (!matching) return movies.push(movie);
 

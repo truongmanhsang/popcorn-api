@@ -138,17 +138,14 @@ export default class BaseProvider extends IProvider {
    * torrent.
    */
   _getContentData(torrent, lang = 'en') {
-    // FIXME: Fix datebased tv shows.
     const regex = this._regexps.find(
-      regex => regex.test(torrent.title) ? regex : null
+      r => r.regex.test(torrent.title) ? r : null
     );
 
     if (regex)
       return this._extractContent(torrent, regex, lang);
 
-    logger.warn(
-      `${this._name}: Could not find data from torrent: '${torrent.title}'`
-    );
+    logger.warn(`${this._name}: Could not find data from torrent: '${torrent.title}'`);
   }
 
   /**

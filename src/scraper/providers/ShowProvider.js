@@ -4,13 +4,22 @@ import asyncq from 'async-q';
 import BaseProvider from './BaseProvider';
 import showmap from './maps/showmap.json';
 
-const defaultRegexps = [
-  /(.*).[sS](\d{2})[eE](\d{2})/i,
-  /(.*).(\d{1,2})[x](\d{2})/i,
-  /(.*).(\d{4}).(\d{2}.\d{2})/i,
-  /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i,
-  /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i
-];
+const defaultRegexps = [{
+  regex: /(.*).[sS](\d{2})[eE](\d{2})/i,
+  dateBased: false
+}, {
+  regex: /(.*).(\d{1,2})[x](\d{2})/i,
+  dateBased: false
+}, {
+  regex: /(.*).(\d{4}).(\d{2}.\d{2})/i,
+  dateBased: true
+}, {
+  regex: /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i,
+  dateBased: false
+}, {
+  regex: /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i,
+  dateBased: false
+}];
 
 /**
  * Class for scraping show content from various sources.
@@ -39,15 +48,14 @@ export default class ShowProvider extends BaseProvider {
    * @override
    * @param {!Object} torrent - The torrent to extract the show information
    * from.
-   * @param {!RegExp} regex - The regex to extract the show information.
-   * @param {?Boolean} [dateBased=false] - Check for dateBased episodes.
+   * @param {!RegExp} r - The regex to extract the show information.
    * @returns {Object} - Information about a show from the torrent.
    */
-  _extractContent(torrent, regex, dateBased = false) {
+  _extractContent(torrent, r) {
     let episode, season, slug;
 
     const { title } = torrent;
-    const match = title.match(regex);
+    const match = title.match(r.regex);
 
     const showTitle = match[1].replace(/\./g, ' ');
     slug = showTitle.replace(/[^a-zA-Z0-9\- ]/gi, '')
@@ -56,12 +64,12 @@ export default class ShowProvider extends BaseProvider {
     slug = slug in showmap ? showmap[slug] : slug;
 
     season = 1;
-    season = dateBased ? parseInt(match[2], 10) : match[2];
+    season = r.dateBased ? parseInt(match[2], 10) : match[2];
 
     episode = match.length >= 4
                         ? parseInt(match[3], 10)
                         : parseInt(match[2], 10);
-    episode = dateBased ? parseInt(match[3], 10) : match[3];
+    episode = r.dateBased ? parseInt(match[3], 10) : match[3];
 
     const quality = title.match(/(\d{3,4})p/) !== null
                               ? title.match(/(\d{3,4})p/)[0]
@@ -80,7 +88,7 @@ export default class ShowProvider extends BaseProvider {
       season,
       episode,
       quality,
-      dateBased,
+      dateBased: r.dateBased,
       episodes: {},
       type: this._type
     };
