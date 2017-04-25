@@ -8,8 +8,9 @@ export default class FactoryProducer {
 
   /**
    * Get a factory class based on the name.
-   * @param {String} choice - The name of the factory class.
-   * @returns {Object|undefined} - A factory class.
+   * @param {!String} choice - The name of the factory class.
+   * @returns {ApiFactory|HelperFactory|ModelFactory|undefined} - A factory
+   * class.
    */
   static getFactory(choice) {
     if (!choice) return undefined;

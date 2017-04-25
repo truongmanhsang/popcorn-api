@@ -1,25 +1,58 @@
 // Import the neccesary modules.
-/** @external {EztvAPI} https://github.com/ChrisAlderson/eztv-api-pt */
+/**
+ * An EZTV API wrapper to get data from eztv.ag.
+ * @external {EztvAPI} https://github.com/ChrisAlderson/eztv-api-pt
+ */
 import EztvAPI from 'eztv-api-pt';
-/** @external {Fanart} https://github.com/ChrisAlderson/fanart.tv-api */
+/**
+ * A Fanart.tv API wrapper for NodeJS.
+ * @external {Fanart} https://github.com/ChrisAlderson/fanart.tv-api
+ */
 import Fanart from 'fanart.tv-api';
-/** @external {HorribleSubsAPI} https://github.com/ChrisAlderson/horriblesubs-api */
+/**
+ * A HorribleSubs API wrapper to get data from horriblesubs.info
+ * @external {HorribleSubsAPI} https://github.com/ChrisAlderson/horriblesubs-api
+ */
 import HorribleSubsAPI from 'horriblesubs-api';
-/** @external {KatAPI} https://github.com/ChrisAlderson/kat-api-pt */
+/**
+ * A KickassTorrents API wrapper for NodeJs.
+ * @external {KatAPI} https://github.com/ChrisAlderson/kat-api-pt
+ */
 import KatAPI from 'kat-api-pt';
-/** @external {NyaaAPI} https://github.com/ChrisAlderson/nyaa-api-pt */
+/**
+ * A nyaa.se API wrapper for NodeJS.
+ * @external {NyaaAPI} https://github.com/ChrisAlderson/nyaa-api-pt
+ */
 import NyaaAPI from 'nyaa-api-pt';
-/** @external {OMDB} https://github.com/ChrisAlderson/omdb-api-pt */
+/**
+ * An OMDB API wrapper for NodeJS.
+ * @external {OMDB} https://github.com/ChrisAlderson/omdb-api-pt
+ */
 import OMDB from 'omdb-api-pt';
-/** @external {TMDB} https://github.com/vankasteelj/tmdbapi */
+/**
+ * TheMovieDB API wrapper, written in node.js
+ * @external {TMDB} https://github.com/vankasteelj/tmdbapi
+ */
 import TMDB from 'tmdbapi';
-/** @external {Trakt} https://github.com/vankasteelj/trakt.tv */
+/**
+ * A Trakt.tv API wrapper for Node.js
+ * @external {Trakt} https://github.com/vankasteelj/trakt.tv
+ */
 import Trakt from 'trakt.tv';
-/** @external {TVDB} https://github.com/edwellbrook/node-tvdb */
+/**
+ * Node.js library for accessing TheTVDB API
+ * @external {TVDB} https://github.com/edwellbrook/node-tvdb
+ */
 import TVDB from 'node-tvdb';
-/** @external {YtsAPI} https://github.com/ChrisAlderson/yts-api-pt */
+/**
+ * A NodeJS wrapper for yts.ag
+ * @external {YtsAPI} https://github.com/ChrisAlderson/yts-api-pt
+ */
 import YtsAPI from 'yts-api-pt';
-/** @external {ExtraTorrentAPI} https://github.com/ChrisAlderson/extratorrent-api */
+/**
+ * An ExtraTorrent wrapper for NodeJS.
+ * @external {ExtraTorrentAPI} https://github.com/ChrisAlderson/extratorrent-api
+ */
 import { Website as ExtraTorrentAPI } from 'extratorrent-api';
 
 import IAbstractFactory from './IAbstractFactory';
@@ -32,21 +65,21 @@ export default class ApiFactory extends IAbstractFactory {
 
   /**
    * A configured ExtraTorrentAPI API.
-   * @type {Object}
+   * @type {ExtraTorrentAPI}
    * @see https://github.com/ChrisAlderson/extratorrent-api
    */
   _extraTorrentAPI = new ExtraTorrentAPI();
 
   /**
    * A configured EztvAPI API.
-   * @type {Object}
+   * @type {EztvAPI}
    * @see https://github.com/ChrisAlderson/eztv-api-pt
    */
   _eztvAPI = new EztvAPI();
 
   /**
    * A configured Fanart API.
-   * @type {Object}
+   * @type {Fanart}
    * @see https://github.com/ChrisAlderson/fanart.tv-api
    */
   _fanartAPI = new Fanart({
@@ -55,51 +88,44 @@ export default class ApiFactory extends IAbstractFactory {
 
   /**
    * A configured HorribleSubsAPI API.
-   * @type {Object}
+   * @type {HorribleSubsAPI}
    * @see https://github.com/ChrisAlderson/horriblesubs-api
    */
   _horribleSubsAPI = new HorribleSubsAPI();
 
   /**
    * A configured KatAPI API.
-   * @type {Object}
+   * @type {KatAPI}
    * @see https://github.com/ChrisAlderson/kat-api-pt
    */
   _katAPI = new KatAPI();
 
   /**
    * A configured NyaaAPI API.
-   * @type {Object}
+   * @type {NyaaAPI}
    * @see https://github.com/ChrisAlderson/nyaa-api-pt
    */
   _nyaaAPI = new NyaaAPI();
 
   /**
    * A configured OMDB API.
-   * @type {Object}
-   * @external {OMDB} https://github.com/ChrisAlderson/omdb-api-pt
+   * @type {OMDB}
+   * @see https://github.com/ChrisAlderson/omdb-api-pt
    */
   _omdbAPI = new OMDB();
 
   /**
    * A configured TMDB API.
-   * @type {Object}
-   * @see https://github.com/sarathkcm/TheMovieDBClient
+   * @type {TMDB}
+   * @see https://github.com/vankasteelj/tmdbapi
    */
   _tmdbAPI = new TMDB({
     apiv3: '2592f66235042e3e31705e3d56da0a69'
   });
 
   /**
-   * A configured TVDB API.
-   * @type {Object}
-   * @see https://github.com/edwellbrook/node-tvdb
-   */
-  _tvdbAPI = new TVDB('B17D23818D6E884D');
-
-  /**
    * A configured Trakt API.
-   * @type {Object}
+   * @type {Trakt}
    * @see https://github.com/vankasteelj/trakt.tv
    */
   _traktAPI = new Trakt({
@@ -107,8 +133,15 @@ export default class ApiFactory extends IAbstractFactory {
   });
 
   /**
+   * A configured TVDB API.
+   * @type {TVDB}
+   * @see https://github.com/edwellbrook/node-tvdb
+   */
+  _tvdbAPI = new TVDB('B17D23818D6E884D');
+
+  /**
    * A configured YtsAPI API.
-   * @type {Object}
+   * @type {YtsAPI}
    * @see https://github.com/ChrisAlderson/yts-api-pt
    */
   _ytsAPI = new YtsAPI();
@@ -128,8 +161,8 @@ export default class ApiFactory extends IAbstractFactory {
   /**
    * Get an external API wrapper based on the name.
    * @override
-   * @param {String} api - The name of the external API wrapper.
-   * @returns {Object|undefined} - An external API wrapper.
+   * @param {!String} api - The name of the external API wrapper.
+   * @returns {ExtraTorrentAPI|EztvAPI|Fanart|HorribleSubsAPI|KatAPI|NyaaAPI|OMDB|TMDB|Trakt|TVDB|YtsAPI|undefined} - An external API wrapper.
    */
   getApi(api) {
     if (!api) return undefined;

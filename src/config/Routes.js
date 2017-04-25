@@ -40,8 +40,7 @@ export default class Routes {
 
   /**
    * Setup ExpressJS routing.
-   * @param {Object} app - The ExpresssJS application.
-   * @returns {void}
+   * @param {!Express} app - The ExpresssJS application.
    */
   constructor(app) {
     app.get('/status', (req, res) => this._indexController.getIndex(req, res));

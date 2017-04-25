@@ -18,8 +18,8 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Create a helper class for show content.
-   * @param {String} name - The name of the content provider.
-   * @param {Object} model - The model to help fill.
+   * @param {!String} name - The name of the content provider.
+   * @param {!AnimeShow|Show} model - The model to help fill.
    */
   constructor(name, model) {
     super(name, model);
@@ -27,8 +27,8 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Update the number of seasons of a given show.
-   * @param {Show} show - The show to update the number of seasons.
-   * @returns {Show} - A newly updated show.
+   * @param {!AnimeShow|Show} show - The show to update the number of seasons.
+   * @returns {AnimeShow|Show} - A newly updated show.
    */
   async _updateNumSeasons(show) {
     const saved = await this._model.findOneAndUpdate({
@@ -53,10 +53,10 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Update the torrents for an existing show.
-   * @param {Object} matching - The matching episode of new the show.
-   * @param {Object} found - The matching episode existing show.
-   * @param {Show} show - The show to merge the episodes to.
-   * @param {String} quality - The quality of the torrent.
+   * @param {!Object} matching - The matching episode of new the show.
+   * @param {!Object} found - The matching episode existing show.
+   * @param {!AnimeShow|Show} show - The show to merge the episodes to.
+   * @param {!String} quality - The quality of the torrent.
    * @returns {Show} - A show with merged torrents.
    */
   _updateEpisode(matching, found, show, quality) {
@@ -87,8 +87,8 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Update a given show with it's associated episodes.
-   * @param {Show} show - The show to update its episodes.
-   * @returns {Show} - A newly updated show.
+   * @param {!AnimeShow|Show} show - The show to update its episodes.
+   * @returns {AnimeShow|Show} - A newly updated show.
    */
   async _updateEpisodes(show) {
     try {
@@ -126,11 +126,11 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Adds one seasonal season to a show.
-   * @param {Show} show - The show to add the torrents to.
-   * @param {Object} episodes - The episodes containing the torrents.
-   * @param {Number} season - The season number.
-   * @param {String} slug - The slug of the show.
-   * @returns {void}
+   * @param {!AnimeShow|Show} show - The show to add the torrents to.
+   * @param {!Object} episodes - The episodes containing the torrents.
+   * @param {!Number} season - The season number.
+   * @param {!String} slug - The slug of the show.
+   * @returns {undefined}
    */
   _addSeasonalSeason(show, episodes, season, slug) {
     return this._trakt.seasons.season({
@@ -168,10 +168,10 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Adds one datebased season to a show.
-   * @param {Show} show - The show to add the torrents to.
-   * @param {Object} episodes - The episodes containing the torrents.
-   * @param {Number} season - The season number.
-   * @returns {void}
+   * @param {!AnimeShow|Show} show - The show to add the torrents to.
+   * @param {!Object} episodes - The episodes containing the torrents.
+   * @param {!Number} season - The season number.
+   * @returns {undefined}
    */
   _addDateBasedSeason(show, episodes, season) {
     if (!show.tvdb_id) return;
@@ -215,9 +215,9 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Adds episodes to a show.
-   * @param {Show} show - The show to add the torrents to.
-   * @param {Object} episodes - The episodes containing the torrents.
-   * @param {String} slug - The slug of the show.
+   * @param {!AnimeShow|Show} show - The show to add the torrents to.
+   * @param {!Object} episodes - The episodes containing the torrents.
+   * @param {!String} slug - The slug of the show.
    * @returns {Show} - A show with updated torrents.
    */
   addEpisodes(show, episodes, slug) {
@@ -235,7 +235,7 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Get TV show images from TMDB.
-   * @param {Number} tmdb - The tmdb id of the show you want the images from.
+   * @param {!Number} tmdb - The tmdb id of the show you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getTmdbImages(tmdb) {
@@ -261,7 +261,7 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Get TV show images from TVDB.
-   * @param {Number} tvdb - The tvdb id of the show you want the images from.
+   * @param {!Number} tvdb - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getTvdbImages(tvdb) {
@@ -278,7 +278,7 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Get TV show images from Fanart.
-   * @param {Number} tvdb - The tvdb id of the show you want the images from.
+   * @param {!Number} tvdb - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getFanartImages(tvdb) {
@@ -298,8 +298,8 @@ export default class ShowHelper extends BaseHelper {
   /**
    * Get TV show images.
    * @override
-   * @param {Number} tmdb - The tmdb id of the show you want the images from.
-   * @param {Number} tvdb - The tvdb id of the show you want the images from.
+   * @param {!Number} tmdb - The tmdb id of the show you want the images from.
+   * @param {!Number} tvdb - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getImages(tmdb, tvdb) {
@@ -315,7 +315,7 @@ export default class ShowHelper extends BaseHelper {
   /**
    * Get info from Trakt and make a new show object.
    * @override
-   * @param {String} slug - The slug to query https://trakt.tv/.
+   * @param {!String} slug - The slug to query https://trakt.tv/.
    * @returns {Show} - A new show without the episodes attached.
    */
   async getTraktInfo(slug) {

@@ -1,8 +1,17 @@
 // Import the neccesary modules.
 import path from 'path';
-/** @external {Winston} https://github.com/winstonjs/winston */
-import Winston from 'winston';
-/** @external {ExpressWinston} https://bithavoc.io/express-winston/ */
+/**
+ * a multi-transport async logging library for node.js
+ * @external {Winston} https://github.com/winstonjs/winston
+ */
+import {
+  Logger as Winston,
+  transports
+} from 'winston';
+/**
+ * express.js middleware for winstonjs
+ * @external {ExpressWinston} https://github.com/bithavoc/express-winston
+ */
 import { logger as ExpressWinston } from 'express-winston';
 import { sprintf } from 'sprintf-js';
 
@@ -24,7 +33,7 @@ export default class Logger {
 
   /**
    * Check if the message is empty and replace it with the meta.
-   * @param {Object} args - Arguments passed by Winston.
+   * @param {!Object} args - Arguments passed by Winston.
    * @returns {Object} - Formatter arguments passed by Winston.
    */
   static _checkEmptyMessage(args) {
@@ -36,7 +45,7 @@ export default class Logger {
 
   /**
    * Get the color of the output based on the log level.
-   * @param {String} level - The log level.
+   * @param {!String} level - The log level.
    * @returns {String} - A color based on the log level.
    */
   static _getLevelColor(level) {
@@ -56,7 +65,7 @@ export default class Logger {
 
   /**
    * Formatter method which formats the output to the console.
-   * @param {Object} args - Arguments passed by Winston.
+   * @param {!Object} args - Arguments passed by Winston.
    * @returns {String} - The formatted message.
    */
   static _consoleFormatter(args) {
@@ -70,7 +79,7 @@ export default class Logger {
 
   /**
    * Formatter method which formats the output to the log file.
-   * @param {Object} args - Arguments passed by Winston.
+   * @param {!Object} args - Arguments passed by Winston.
    * @returns {String} - The formatted message.
    */
   static _fileFormatter(args) {
@@ -86,19 +95,19 @@ export default class Logger {
 
   /**
    * Create a Winston instance.
-   * @returns {Object} - A configured Winston object.
+   * @returns {Winston} - A configured Winston object.
    */
   static _createWinston() {
-    return new Winston.Logger({
+    return new Winston({
       transports: [
-        new Winston.transports.Console({
+        new transports.Console({
           name,
           levels: Logger._Levels,
           formatter: Logger._consoleFormatter,
           handleExceptions: true,
           prettyPrint: true
         }),
-        new Winston.transports.File({
+        new transports.File({
           filename: path.join(tempDir, `${name}.log`),
           json: false,
           level: 'warn',
@@ -113,7 +122,7 @@ export default class Logger {
 
   /**
    * Create an Express Winston instance.
-   * @returns {Object} - A configured Express Winston object.
+   * @returns {ExpressWinston} - A configured Express Winston object.
    */
   static _createExpressWinston() {
     return new ExpressWinston({
@@ -125,9 +134,9 @@ export default class Logger {
   /**
    * Method to create a global logger object based on the properties of the
    * Logger class.
-   * @param {Boolean} [pretty] - Pretty mode for output with colors.
-   * @param {Boolean} [quiet] - No output.
-   * @returns {void}
+   * @param {?Boolean} [pretty] - Pretty mode for output with colors.
+   * @param {?Boolean} [quiet] - No output.
+   * @returns {undefined}
    */
   static _createLogger(pretty, quiet) {
     if (!global.logger) global.logger = {};
@@ -143,10 +152,10 @@ export default class Logger {
 
   /**
    * Get a logger object based on the choice.
-   * @param {String} choice - The choice for the logger object.
-   * @param {Boolean} pretty - Pretty output with Winston logging.
-   * @param {Boolean} quiet - No output.
-   * @returns {Object|undefined} - The logger object.
+   * @param {!String} choice - The choice for the logger object.
+   * @param {?Boolean} pretty - Pretty output with Winston logging.
+   * @param {?Boolean} quiet - No output.
+   * @returns {ExpressWinston|undefined} - The logger object.
    */
   static getLogger(choice, pretty, quiet) {
     if (!choice) return undefined;

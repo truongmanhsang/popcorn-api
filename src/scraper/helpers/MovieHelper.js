@@ -11,15 +11,15 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * A configured OMDB API.
-   * @type {Object}
+   * @type {OMDB}
    * @see https://github.com/ChrisAlderson/omdb-api-pt
    */
   _omdb = this._apiFactory.getApi('omdb');
 
   /**
    * Create a helper class for movie content.
-   * @param {String} name - The name of the content provider.
-   * @param {Object} model - The model to help fill.
+   * @param {!String} name - The name of the content provider.
+   * @param {!AnimeMovie|Movie} model - The model to help fill.
    */
   constructor(name, model) {
     super(name, model);
@@ -27,11 +27,11 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Update the torrents for an existing movie.
-   * @param {Movie} movie - The new movie.
-   * @param {Movie} found - The existing movie.
-   * @param {String} language - The language of the torrent.
-   * @param {String} quality - The quality of the torrent.
-   * @return {Movie} - A movie with merged torrents.
+   * @param {!AnimeMovie|Movie} movie - The new movie.
+   * @param {!AnimeMovie|Movie} found - The existing movie.
+   * @param {!String} language - The language of the torrent.
+   * @param {!String} quality - The quality of the torrent.
+   * @returns {AnimeMovie|Movie} - A movie with merged torrents.
    */
   _updateTorrent(movie, found, language, quality) {
     let update = false,
@@ -63,8 +63,8 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Update a given movie.
-   * @param {Movie} movie - The movie to update its torrent.
-   * @returns {Movie} - A newly updated movie.
+   * @param {!AnimeMovie|Movie} movie - The movie to update its torrent.
+   * @returns {AnimeMovie|Movie} - A newly updated movie.
    */
   async _updateMovie(movie) {
     try {
@@ -96,9 +96,9 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Adds torrents to a movie.
-   * @param {Movie} movie - The movie to add the torrents to.
-   * @param {Object} torrents - The torrents to add to the movie.
-   * @returns {Movie} - A movie with torrents attached.
+   * @param {!AnimeMovie|Movie} movie - The movie to add the torrents to.
+   * @param {!Object} torrents - The torrents to add to the movie.
+   * @returns {AnimeMovie|Movie} - A movie with torrents attached.
    */
   addTorrents(movie, torrents) {
     return asyncq.each(
@@ -109,7 +109,7 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Get movie images from TMDB.
-   * @param {Number} tmdb - The tmdb id of the movie you want the images from.
+   * @param {!Number} tmdb - The tmdb id of the movie you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getTmdbImages(tmdb) {
@@ -135,7 +135,7 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Get movie images from OMDB.
-   * @param {String} imdb - The imdb id of the movie you want the images from.
+   * @param {!String} imdb - The imdb id of the movie you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getOmdbImages(imdb) {
@@ -153,7 +153,7 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Get movie images from Fanart.
-   * @param {Number} tmdb - The tvdb id of the movie you want the images from.
+   * @param {!Number} tmdb - The tvdb id of the movie you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getFanartImages(tmdb) {
@@ -177,8 +177,8 @@ export default class MovieHelper extends BaseHelper {
   /**
    * Get movie images.
    * @override
-   * @param {Number} tmdb - The tmdb id of the movie you want the images from.
-   * @param {String} imdb - The imdb id of the movie you want the images from.
+   * @param {!Number} tmdb - The tmdb id of the movie you want the images from.
+   * @param {!String} imdb - The imdb id of the movie you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getImages(tmdb, imdb) {
@@ -194,8 +194,8 @@ export default class MovieHelper extends BaseHelper {
   /**
    * Get info from Trakt and make a new movie object.
    * @override
-   * @param {String} slug - The slug to query trakt.tv.
-   * @returns {Movie} - A new movie.
+   * @param {!String} slug - The slug to query trakt.tv.
+   * @returns {AnimeMovie|Movie} - A new movie.
    */
   async getTraktInfo(slug) {
     try {

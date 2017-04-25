@@ -6,7 +6,7 @@ import BaseContentController from './BaseContentController';
 export default class AnimeController extends BaseContentController {
 
   /**
-   * Object used for the projections of anime.
+   * Object used for the projection of anime.
    * @type {Object}
    */
   _projection = {
@@ -31,7 +31,8 @@ export default class AnimeController extends BaseContentController {
 
   /**
    * Create a new anime controller.
-   * @param {Object} [model=Anime] - The model for the anime controller.
+   * @param {!AnimeMovie|AnimeShow} [model=Anime] - The model for the anime
+   * controller.
    */
   constructor(model = Anime) {
     super(model);

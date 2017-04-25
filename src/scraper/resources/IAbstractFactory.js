@@ -7,8 +7,8 @@ export default class IAbstractFactory {
   /**
    * Default method to get an API.
    * @abstract
-   * @throws {Error} - 'Using default method: 'getApi'.
-   * @returns {void}
+   * @throws {Error} - Using default method: 'getApi'.
+   * @returns {undefined}
    */
   getApi() {
     throw new Error('Using default method: \'getApi\'');
@@ -17,8 +17,8 @@ export default class IAbstractFactory {
   /**
    * Default method to get a helper.
    * @abstract
-   * @throws {Error} - 'Using default method: 'getHelper'.
-   * @returns {void}
+   * @throws {Error} - Using default method: 'getHelper'.
+   * @returns {undefined}
    */
   getHelper() {
     throw new Error('Using default method: \'getHelper\'');
@@ -27,8 +27,8 @@ export default class IAbstractFactory {
   /**
    * Default method to get a model.
    * @abstract
-   * @throws {Error} - 'Using default method: 'getModel'.
-   * @returns {void}
+   * @throws {Error} - Using default method: 'getModel'.
+   * @returns {undefined}
    */
   getModel() {
     throw new Error('Using default method: \'getModel\'');

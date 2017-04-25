@@ -1,12 +1,16 @@
 // Import the neccesary modules.
 import cluster from 'cluster';
 import domain from 'domain';
+/**
+ * Fast, unopinionated, minimalist web framework for node.
+ * @external {Express} https://github.com/expressjs/express
+ */
 import Express from 'express';
 import fs from 'fs';
 import http from 'http';
 import os from 'os';
 import path from 'path';
-import { CronJob } from 'cron';
+import { CronJob } from 'cron'; // EXTERNAL
 
 import Logger from './config/Logger';
 import Routes from './config/Routes';
@@ -36,7 +40,7 @@ export default class Index {
 
   /**
    * The express object.
-   * @type {Object}
+   * @type {Express}
    */
   static _App = new Express();
 
@@ -54,7 +58,8 @@ export default class Index {
 
   /**
    * The http server object.
-   * @type {Object}
+   * @type {http.Server}
+   * @see https://nodejs.org/api/http.html#http_http_createserver_requestlistener
    */
   static _Server = http.createServer(Index._App);
 
@@ -73,9 +78,10 @@ export default class Index {
   /**
    * Create an index class.
    * @param {Object} config - Configuration for the API.
-   * @param {Boolean} [config.start=true] - Start the scraping process.
-   * @param {Boolean} [config.pretty=true] - Pretty output with Winston logging.
-   * @param {Boolean} [config.quiet=false] - No output.
+   * @param {!Boolean} [config.start=true] - Start the scraping process.
+   * @param {?Boolean} [config.pretty=true] - Pretty output with Winston
+   * logging.
+   * @param {?Boolean} [config.quiet=false] - No output.
    */
   constructor({start = true, pretty = true, quiet = false} = {}) {
     // Setup the global logger object.
@@ -93,8 +99,8 @@ export default class Index {
 
   /**
    * Create an empty file.
-   * @param {String} path - The path to the file to create.
-   * @returns {void}
+   * @param {!String} path - The path to the file to create.
+   * @returns {undefined}
    */
   static _createEmptyFile(path) {
     fs.createWriteStream(path).end();
@@ -102,9 +108,9 @@ export default class Index {
 
   /**
    * Removes all the files in the temporary directory.
-   * @param {String} [tmpPath=popcorn-api/tmp] - The path to remove all the
+   * @param {!String} [tmpPath='popcorn-api/tmp'] - The path to remove all the
    * files within.
-   * @returns {void}
+   * @returns {undefined}
    */
   static _resetTemp(tmpPath = tempDir) {
     const files = fs.readdirSync(tmpPath);
@@ -120,7 +126,7 @@ export default class Index {
 
   /**
    * Create the temporary directory.
-   * @returns {void}
+   * @returns {undefined}
    */
   static _createTemp() {
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
@@ -129,7 +135,7 @@ export default class Index {
 
   /**
    * Reset the default log file.
-   * @returns {void}
+   * @returns {undefined}
    */
   static _resetLog() {
     const logFile = path.join(tempDir, `${name}.log`);
@@ -138,8 +144,8 @@ export default class Index {
 
   /**
    * Method to start the API.
-   * @param {Boolean} [start=true] - Start the scraping.
-   * @returns {void}
+   * @param {!Boolean} [start=true] - Start the scraping.
+   * @returns {undefined}
    */
   static _startAPI(start = true) {
     if (cluster.isMaster) { // Check is the cluster is the master
@@ -187,7 +193,7 @@ export default class Index {
 
   /**
    * Method to stop the API from running.
-   * @returns {void}
+   * @returns {undefined}
    */
   static closeAPI() {
     Index._Server.close(() => {

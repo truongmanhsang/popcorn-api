@@ -12,7 +12,7 @@ export default class Context {
 
   /**
    * Execute the current provider strategy.
-   * @returns {void}
+   * @returns {undefined}
    */
   execute() {
     return this._provider.search();
@@ -20,8 +20,8 @@ export default class Context {
 
   /**
    * Set the current provider.
-   * @param {Provider} provider - The provider to set.
-   * @returns {void}
+   * @param {!IProvider} provider - The provider to set.
+   * @returns {undefined}
    */
   set provider(provider) {
     this._provider = provider;

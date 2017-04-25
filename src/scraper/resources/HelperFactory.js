@@ -11,15 +11,16 @@ import ShowHelper from '../helpers/ShowHelper';
 export default class HelperFactory extends IAbstractFactory {
 
   /**
-   * Get a helper based on the a type.
+   * Get a helper based on the content type.
    * @override
-   * @param {String} name - The name for the helper.
-   * @param {Object} model - The model object for the helper.
-   * @param {String} type - The type of helper to get.
-   * @returns {BaseHelper|undefined} - A helper class.
+   * @param {!String} name - The name for the helper.
+   * @param {!AnimeMovie|AnimeShow|Movie|Show} model - The model object for
+   * the helper.
+   * @param {!String} type - The type of helper to get.
+   * @returns {MovieHelper|ShowHelper|undefined} - A helper class.
    */
   getHelper(name, model, type) {
-    if (!type) return undefined;
+    if (!type || !model || !type) return undefined;
 
     switch (type) {
     case Provider.Types.Movie:

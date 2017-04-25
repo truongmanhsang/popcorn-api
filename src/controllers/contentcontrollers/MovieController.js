@@ -28,7 +28,7 @@ export default class MovieController extends BaseContentController {
 
   /**
    * Create a new movie controller.
-   * @param {Object} [model=Movie] - The model for the movie controller.
+   * @param {!Movie} [model=Movie] - The model for the movie controller.
    */
   constructor(model = Movie) {
     super(model);

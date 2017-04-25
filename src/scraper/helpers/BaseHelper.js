@@ -16,35 +16,35 @@ export default class BaseHelper extends IHelper {
 
   /**
    * The API factory.
-   * @type {Object}
+   * @type {ApiFactory}
    */
   _apiFactory = FactoryProducer.getFactory('api');
 
   /**
    * A configured Fanart API.
-   * @type {Object}
+   * @type {Fanart}
    * @see https://github.com/vankasteelj/trakt.tv
    */
   _fanart = this._apiFactory.getApi('fanart');
 
   /**
    * A configured TMDB API.
-   * @type {Object}
+   * @type {TMDB}
    * @see https://github.com/sarathkcm/TheMovieDBClient
    */
   _tmdb = this._apiFactory.getApi('tmdb');
 
   /**
    * A configured Trakt API.
-   * @type {Object}
+   * @type {Trakt}
    * @see https://github.com/vankasteelj/trakt.tv
    */
   _trakt = this._apiFactory.getApi('trakt');
 
   /**
    * Create a base helper class for content.
-   * @param {String} name - The name of the content provider.
-   * @param {Object} model - The model to help fill.
+   * @param {!String} name - The name of the content provider.
+   * @param {!AnimeMovie|AnimeShow|Movie|Show} model - The model to help fill.
    */
   constructor(name, model) {
     super();
@@ -57,7 +57,7 @@ export default class BaseHelper extends IHelper {
 
     /**
      * The model to create or alter.
-     * @type {Object}
+     * @type {AnimeMovie|AnimeShow|Movie|Show}
      * @see http://mongoosejs.com/docs/models.html
      */
     this._model = model;

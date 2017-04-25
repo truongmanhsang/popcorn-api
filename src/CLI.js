@@ -163,11 +163,17 @@ export default class CLI {
     // Setup the CLI program.
     program
       .version(`${name} v${version}`)
-      .option('-m, --modus <type>', 'Run the API in a particular mode.', /^(pretty|quiet|ugly)$/i)
-      .option('--content <type>', 'Add content to the MongoDB database (anime|show|movie).', /^(anime|movie|show)$/i, false)
+      .option('-m, --modus <type>',
+              'Run the API in a particular mode.',
+              /^(pretty|quiet|ugly)$/i)
+      .option('--content <type>',
+              'Add content to the MongoDB database (anime|show|movie).',
+              /^(anime|movie|show)$/i, false)
       // .option('--providers', '') // TODO: Allow admin to add new provider configs via CLI
       // .option('-s, --start', '') // TODO: Option to start or not start the scraping process.
-      .option('--export <collection>', 'Export a collection to a JSON file.', /^(anime|movie|show)$/i, false)
+      .option('--export <collection>',
+              'Export a collection to a JSON file.',
+              /^(anime|movie|show)$/i, false)
       .option('--import <collection>', 'Import a JSON file to the database.');
 
     // Extra output on top of the default help output
@@ -177,6 +183,8 @@ export default class CLI {
       logger.info('    $ popcorn-api --modus <pretty|quiet|ugly>\n');
       logger.info('    $ popcorn-api --content <anime|movie|show>\n');
       logger.info('    $ popcorn-api --providers\n');
+      logger.info('    $ popcorn-api -s');
+      logger.info('    $ popcorn-api --start\n');
       logger.info('    $ popcorn-api --export <anime|movie|show>\n');
       logger.info('    $ popcorn-api --import <path-to-json>\n');
     });
@@ -187,8 +195,8 @@ export default class CLI {
 
   /**
    * Handle the --modus CLI option.
-   * @param {String} m - The modus to run the API in.
-   * @returns {void}
+   * @param {!String} m - The modus to run the API in.
+   * @returns {undefined}
    */
   _modus(m) {
     switch (m) {
@@ -212,8 +220,8 @@ export default class CLI {
 
   /**
    * Handle the --content CLI option.
-   * @param {String} c - The content type to add to the database.
-   * @returns {void}
+   * @param {!String} c - The content type to add to the database.
+   * @returns {undefined}
    */
   _content(c) {
     switch (c) {
@@ -237,7 +245,7 @@ export default class CLI {
 
   /**
    * Handle the --providers CLI option.
-   * @returns {void}
+   * @returns {undefined}
    */
   _providers() {
     throw new Error('This method needs to be implemented!');
@@ -245,7 +253,7 @@ export default class CLI {
 
   /**
    * Handle the --export CLI option.
-   * @param {String} e - The collection to export.
+   * @param {!String} e - The collection to export.
    * @returns {Promise} - The promise to export a collection.
    */
   _export(e) {
@@ -254,7 +262,7 @@ export default class CLI {
 
   /**
    * Handle the --import CLI option.
-   * @param {String} i - The collection to import.
+   * @param {!String} i - The collection to import.
    * @returns {Promise} - The promise to import a collection.
    */
   _import(i) {
@@ -281,7 +289,7 @@ export default class CLI {
 
   /**
    * Run the CLI program.
-   * @returns {void}
+   * @returns {undefined}
    */
   run() {
     if (program.modus) {

@@ -39,17 +39,17 @@ export default class BaseProvider extends IProvider {
 
   /**
    * Create a BaseProvider class.
-   * @param {Object} config - The configuration object for the torrent
+   * @param {!Object} config - The configuration object for the torrent
    * provider.
-   * @param {Object} config.api - The name of api for the torrent provider.
-   * @param {String} config.name - The name of the torrent provider.
-   * @param {String} config.modelType - The model type for the helper.
-   * @param {Object} config.query - The query object for the api.
-   * @param {Array<RegExp>} config.regexps - The regexps used to extract
-   * information about movies.
-   * @param {String} config.type - The type of content to scrape.
+   * @param {!Object} config.api - The name of api for the torrent provider.
+   * @param {!String} config.name - The name of the torrent provider.
+   * @param {!String} config.modelType - The model type for the helper.
+   * @param {!Object} config.query - The query object for the api.
+   * @param {?Array<RegExp>} [config.regexps] - The regular expressions used
+   * to extract information about movies.
+   * @param {!String} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, regexps, type} = {}) {
+  constructor({api, name, modelType, query, regexps, type}) {
     super();
 
     const apiFactory = FactoryProducer.getFactory('api');
@@ -96,10 +96,12 @@ export default class BaseProvider extends IProvider {
   }
 
   /**
-   * Get all the content.
+   * Gets information about content from Trakt.tv and inserts the content into
+   * the MongoDB database.
    * @override
-   * @param {Object} content - The content information.
-   * @returns {Object} - A content object.
+   * @param {!Object} content - The content information.
+   * @throws {Error} - 'CONTENT_TYPE' is not a valid value for Types!
+   * @returns {Promise<Object, undefined>} - A content object.
    */
   async getContent(content) {
     try {
@@ -127,12 +129,13 @@ export default class BaseProvider extends IProvider {
   }
 
   /**
-   * Get movie info from a given torrent.
+   * Get content info from a given torrent.
    * @override
-   * @param {Object} torrent - A torrent object to extract movie information
+   * @param {!Object} torrent - A torrent object to extract content information
    * from.
-   * @param {String} [lang=en] - The language of the torrent.
-   * @returns {Object} - Information about a movie from the torrent.
+   * @param {!String} [lang=en] - The language of the torrent.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
   _getContentData(torrent, lang = 'en') {
     // FIXME: Fix datebased tv shows.
@@ -151,8 +154,9 @@ export default class BaseProvider extends IProvider {
   /**
    * Get all the torrents of a given torrent provider.
    * @override
-   * @param {Number} totalPages - The total pages of the query.
-   * @returns {Array<Object>} - A list of all the queried torrents.
+   * @param {!Number} totalPages - The total pages of the query.
+   * @returns {Promise<Array<Object>, undefined>} - A list of all the queried
+   * torrents.
    */
   _getAllTorrents(totalPages) {
     let torrents = [];
@@ -174,7 +178,7 @@ export default class BaseProvider extends IProvider {
   /**
    * Returns a list of all the inserted torrents.
    * @override
-   * @returns {Array<Object>} - A list of scraped content.
+   * @returns {Promise<Array<Object>, undefined>} - A list of scraped content.
    */
   async search() {
     try {

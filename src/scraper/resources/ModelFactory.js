@@ -13,8 +13,8 @@ export default class ModelFactory extends IAbstractFactory {
   /**
    * Get a model based on the name type of the model.
    * @override
-   * @param {String} modelType - The name type of the model you want to get.
-   * @returns {Object|undefined} - A model object.
+   * @param {!String} modelType - The name type of the model you want to get.
+   * @returns {AnimeMovie|AnimeShow|Movie|Show|undefined} - A model object.
    */
   getModel(modelType) {
     if (!modelType) return undefined;

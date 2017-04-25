@@ -17,15 +17,15 @@ export default class Setup {
 
   /**
    * The host of the server of the database. Default is `['localhost']`.
-   * @type {Array}
+   * @type {Array<String>}
    */
   static _DbHosts = ['localhost'];
 
   /**
    * Setup the ExpressJS service.
-   * @param {Object} app - The ExpresssJS instance.
-   * @param {Boolean} [pretty] - Pretty output with Winston logging.
-   * @returns {void}
+   * @param {!Express} app - The ExpresssJS instance.
+   * @param {?Boolean} [pretty] - Pretty output with Winston logging.
+   * @returns {undefined}
    */
   constructor(app, pretty) {
     // Function for escaping strings.
@@ -58,7 +58,7 @@ export default class Setup {
 
   /**
    * Connection and configuration of the MongoDB database.
-   * @returns {void}
+   * @returns {undefined}
    */
   static connectMongoDB() {
     mongoose.Promise = global.Promise;

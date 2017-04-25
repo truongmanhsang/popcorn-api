@@ -31,7 +31,8 @@ export default class BaseContentController extends IContentController {
 
   /**
    * Create a new content controller.
-   * @param {Object} model - The model for the content controller.
+   * @param {!AnimeMovie|AnimeShow|Movie|Show} model - The model for the
+   * content controller.
    */
   constructor(model) {
     super();
@@ -45,9 +46,10 @@ export default class BaseContentController extends IContentController {
 
   /**
    * Get all the available pages.
-   * @param {Object} req - The ExpressJS request object.
-   * @param {Object} res - The ExpressJS response object.
-   * @returns {Array<String>} - A list of pages which are available.
+   * @param {!Object} req - The ExpressJS request object.
+   * @param {!Object} res - The ExpressJS response object.
+   * @returns {Promise<Array<String>, Object>} - A list of pages which are
+   * available.
    */
   getContents(req, res) {
     return this._model.count(BaseContentController.Query).exec().then(count => {
@@ -63,9 +65,10 @@ export default class BaseContentController extends IContentController {
 
   /**
    * Get content from one page.
-   * @param {Object} req - The ExpressJS request object.
-   * @param {Object} res - The ExpressJS response object.
-   * @returns {Array<Object>} - The content of one page.
+   * @param {!Object} req - The ExpressJS request object.
+   * @param {!Object} res - The ExpressJS response object.
+   * @returns {Promise<Array<AnimeMovie|AnimeShow|Movie|Show>, Object>} - The
+   * content of one page.
    */
   getPage(req, res) {
     if (req.params.page.match(/all/i)) {
@@ -155,9 +158,10 @@ export default class BaseContentController extends IContentController {
 
   /**
    * Get info from one item.
-   * @param {Object} req - The ExpressJS request object.
-   * @param {Object} res - The ExpressJS response object.
-   * @returns {Object} - The details of a single item.
+   * @param {!Object} req - The ExpressJS request object.
+   * @param {!Object} res - The ExpressJS response object.
+   * @returns {Promise<AnimeMovie|AnimeShow|Movie|Show, Object>} - The details
+   * of a single item.
    */
   getContent(req, res) {
     return this._model.findOne({
@@ -171,9 +175,10 @@ export default class BaseContentController extends IContentController {
 
   /**
    * Get a random item.
-   * @param {Object} req - The ExpressJS request object.
-   * @param {Object} res - The ExpressJS response object.
-   * @returns {Object} - A random item.
+   * @param {!Object} req - The ExpressJS request object.
+   * @param {!Object} res - The ExpressJS response object.
+   * @returns {Promise<AnimeMovie|AnimeShow|Movie|Show, Object>} - A random
+   * item.
    */
   getRandomContent(req, res) {
     return this._model.aggregate([{

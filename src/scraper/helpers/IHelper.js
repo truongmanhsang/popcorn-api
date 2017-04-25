@@ -7,8 +7,8 @@ export default class IHelper {
   /**
    * Default method to get images.
    * @abstract
-   * @throws {Error} - 'Using default method: 'getImages'.
-   * @returns {void}
+   * @throws {Error} - Using default method: 'getImages'.
+   * @returns {undefined}
    */
   _getImages() {
     throw new Error('Using default method: \'getImages\'');
@@ -17,8 +17,8 @@ export default class IHelper {
   /**
    * Default method to get images.
    * @abstract
-   * @throws {Error} - 'Using default method: 'getTraktInfo'.
-   * @returns {void}
+   * @throws {Error} - Using default method: 'getTraktInfo'.
+   * @returns {undefined}
    */
   getTraktInfo() {
     throw new Error('Using default method: \'getTraktInfo\'');

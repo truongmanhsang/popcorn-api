@@ -6,7 +6,7 @@ import Show from '../../models/Show';
 export default class ShowController extends BaseContentController {
 
   /**
-   * Object used for the projections of shows.
+   * Object used for the projection of shows.
    * @type {Object}
    */
   _projection = {
@@ -25,7 +25,7 @@ export default class ShowController extends BaseContentController {
 
   /**
    * Create a new show controller.
-   * @param {Object} [model=Show] - The model for the show controller.
+   * @param {!Show} [model=Show] - The model for the show controller.
    */
   constructor(model = Show) {
     super(model);

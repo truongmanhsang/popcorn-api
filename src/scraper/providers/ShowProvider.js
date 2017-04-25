@@ -20,26 +20,27 @@ export default class ShowProvider extends BaseProvider {
 
   /**
    * Create a ShowProvider class.
-   * @param {Object} config - The configuration object for the torrent
+   * @param {!Object} config - The configuration object for the torrent
    * provider.
-   * @param {Object} config.api - The name of api for the torrent provider.
-   * @param {String} config.name - The name of the torrent provider.
-   * @param {String} config.modelType - The model type for the helper.
-   * @param {Object} config.query - The query object for the api.
-   * @param {Array<RegExp>} config.regexps - The regexps used to extract
-   information about movies.
-   * @param {String} config.type - The type of content to scrape.
+   * @param {!Object} config.api - The name of api for the torrent provider.
+   * @param {!String} config.name - The name of the torrent provider.
+   * @param {!String} config.modelType - The model type for the helper.
+   * @param {!Object} config.query - The query object for the api.
+   * @param {?Array<RegExp>} [config.regexps=defaultRegexps] - The regular
+   * expressions used to extract information about movies.
+   * @param {!String} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, regexps = defaultRegexps, type} = {}) {
+  constructor({api, name, modelType, query, regexps = defaultRegexps, type}) {
     super({api, name, modelType, query, regexps, type});
   }
 
   /**
    * Extract show information based on a regex.
    * @override
-   * @param {Object} torrent - The torrent to extract the show information from.
-   * @param {RegExp} regex - The regex to extract the show information.
-   * @param {Boolean} dateBased - Check for dateBased episodes.
+   * @param {!Object} torrent - The torrent to extract the show information
+   * from.
+   * @param {!RegExp} regex - The regex to extract the show information.
+   * @param {?Boolean} [dateBased=false] - Check for dateBased episodes.
    * @returns {Object} - Information about a show from the torrent.
    */
   _extractContent(torrent, regex, dateBased = false) {
@@ -57,7 +58,9 @@ export default class ShowProvider extends BaseProvider {
     season = 1;
     season = dateBased ? parseInt(match[2], 10) : match[2];
 
-    episode = match.length >= 4 ? parseInt(match[3], 10) : parseInt(match[2], 10);
+    episode = match.length >= 4
+                        ? parseInt(match[3], 10)
+                        : parseInt(match[2], 10);
     episode = dateBased ? parseInt(match[3], 10) : match[3];
 
     const quality = title.match(/(\d{3,4})p/) !== null
@@ -82,20 +85,20 @@ export default class ShowProvider extends BaseProvider {
       type: this._type
     };
 
-    return this._attachTorrent(...[show, torrentObj, season, episode, quality]);
+    return this.attachTorrent(...[show, torrentObj, season, episode, quality]);
   }
 
   /**
    * Create a new show object with a torrent attached.
    * @override
-   * @param {Object} show - The show to attach a torrent to.
-   * @param {Object} torrent - The torrent object.
-   * @param {Number} season - The season number for the torrent.
-   * @param {Number} episode - The episode number for the torrent.
-   * @param {String} quality - The quality of the episode.
+   * @param {!Object} show - The show to attach a torrent to.
+   * @param {!Object} torrent - The torrent object.
+   * @param {!Number} season - The season number for the torrent.
+   * @param {!Number} episode - The episode number for the torrent.
+   * @param {!String} quality - The quality of the episode.
    * @returns {Object} - The show with the newly attached torrent.
    */
-  _attachTorrent(show, torrent, season, episode, quality) {
+  attachTorrent(show, torrent, season, episode, quality) {
     if (!show.episodes[season]) show.episodes[season] = {};
     if (!show.episodes[season][episode]) show.episodes[season][episode] = {};
 
@@ -111,10 +114,10 @@ export default class ShowProvider extends BaseProvider {
   /**
    * Puts all the found shows from the torrents in an array.
    * @override
-   * @param {Array<Object>} torrents - A list of torrents to extract show
+   * @param {!Array<Object>} torrents - A list of torrents to extract show
    * information.
-   * @returns {Array<Object>} - A list of objects with show information
-   * extracted from the torrents.
+   * @returns {Promise<Array<Object>, undefined>} - A list of objects with show
+   * information extracted from the torrents.
    */
   _getAllContent(torrents) {
     const shows = [];
@@ -138,7 +141,7 @@ export default class ShowProvider extends BaseProvider {
 
       const torrentObj = show.episodes[season][episode][quality];
       const args = [matching, torrentObj, season, episode, quality];
-      const created = this._attachTorrent(...args);
+      const created = this.attachTorrent(...args);
 
       shows.splice(index, 1, created);
     }).then(() => shows);

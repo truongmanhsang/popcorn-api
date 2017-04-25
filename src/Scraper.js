@@ -48,8 +48,8 @@ class Scraper {
 
   /**
    * Set the Scraper singleton class.
-   * @param {Scraper} Instance - The instance to set.
-   * @returns {void}
+   * @param {!Scraper} Instance - The instance to set.
+   * @returns {undefined}
    */
   static set Instance(Instance) {
     Scraper._Instance = Instance;
@@ -65,8 +65,8 @@ class Scraper {
 
   /**
    * Set the status of the scraper.
-   * @param {String} Status - The status to set.
-   * @returns {void}
+   * @param {!String} Status - The status to set.
+   * @returns {undefined}
    */
   static set Status(Status) {
     Scraper._Status = Status;
@@ -82,8 +82,8 @@ class Scraper {
 
   /**
    * Set the last updated value of the scraper.
-   * @param {Number} Updated - The value to set the last updated value.
-   * @returns {void}
+   * @param {!Number} Updated - The value to set the last updated value.
+   * @returns {undefined}
    */
   static set Updated(Updated) {
     Scraper._Updated = Updated;
@@ -91,7 +91,7 @@ class Scraper {
 
   /**
    * Initiate the scraping.
-   * @returns {void}
+   * @returns {undefined}
    */
   scrape() {
     Scraper.Updated = Math.floor(new Date().getTime() / 1000);
@@ -102,7 +102,7 @@ class Scraper {
      * NOTE: `.sort({ $natural: <order> })` sorts the provider configs based on
      * the order of insertion.
      */
-    return ProviderConfig.find().sort({
+    ProviderConfig.find().sort({
       $natural: -1
     }).exec().then(pConfigs => {
       return asyncq.eachSeries(pConfigs, async pConfig => {
@@ -125,5 +125,6 @@ class Scraper {
 /**
  * The Scraper singleton object.
  * @type {Scraper}
+ * @ignore
  */
 export default new Scraper();

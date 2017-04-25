@@ -19,33 +19,35 @@ export default class MovieProvider extends BaseProvider {
 
   /**
    * Create a MovieProvider class.
-   * @param {Object} config - The configuration object for the torrent
+   * @param {!Object} config - The configuration object for the torrent
    * provider.
-   * @param {Object} config.api - The name of api for the torrent provider.
-   * @param {String} config.name - The name of the torrent provider.
-   * @param {String} config.modelType - The model type for the helper.
-   * @param {Object} config.query - The query object for the api.
-   * @param {Array<RegExp>} config.regexps - The regexps used to extract
-   information about movies.
-   * @param {String} config.type - The type of content to scrape.
+   * @param {!Object} config.api - The name of api for the torrent provider.
+   * @param {!String} config.name - The name of the torrent provider.
+   * @param {!String} config.modelType - The model type for the helper.
+   * @param {!Object} config.query - The query object for the api.
+   * @param {?Array<RegExp>} [config.regexps=defaultRegexps] - The regular
+   * expressions used to extract information about movies.
+   * @param {!String} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, regexps = defaultRegexps, type} = {}) {
+  constructor({api, name, modelType, query, regexps = defaultRegexps, type}) {
     super({api, name, modelType, query, regexps, type});
   }
 
   /**
    * Extract movie information based on a regex.
    * @override
-   * @param {Object} torrent - The torrent to extract the movie information
+   * @param {!Object} torrent - The torrent to extract the movie information
    * from.
-   * @param {RegExp} regex - The regex to extract the movie information.
-   * @param {String} [lang=en] - The language of the torrent.
+   * @param {!RegExp} regex - The regex to extract the movie information.
+   * @param {!String} [lang=en] - The language of the torrent.
    * @returns {Object} - Information about a movie from the torrent.
    */
   _extractContent(torrent, regex, lang = 'en') {
     let movieTitle, slug;
 
-    const { title, size, seeds, peers, magnet, torrent_link, fileSize } = torrent;
+    const {
+      title, size, seeds, peers, magnet, torrent_link, fileSize
+    } = torrent;
 
     movieTitle = title.match(regex)[1];
     if (movieTitle.endsWith(' '))
@@ -80,19 +82,19 @@ export default class MovieProvider extends BaseProvider {
       torrents: {}
     };
 
-    return this._attachTorrent(...[movie, torrentObj, quality, lang]);
+    return this.attachTorrent(...[movie, torrentObj, quality, lang]);
   }
 
   /**
    * Create a new movie object with a torrent attached.
    * @override
-   * @param {Object} movie - The movie to attach a torrent to.
-   * @param {Object} torrent - The torrent object.
-   * @param {String} quality - The quality of the torrent.
-   * @param {String} [lang=en] - The language of the torrent
+   * @param {!Object} movie - The movie to attach a torrent to.
+   * @param {!Object} torrent - The torrent object.
+   * @param {!String} quality - The quality of the torrent.
+   * @param {!String} [lang=en] - The language of the torrent
    * @returns {Object} - The movie with the newly attached torrent.
    */
-  _attachTorrent(movie, torrent, quality, lang = 'en') {
+  attachTorrent(movie, torrent, quality, lang = 'en') {
     if (!movie.torrents[lang]) movie.torrents[lang] = {};
     if (!movie.torrents[lang][quality]) movie.torrents[lang][quality] = torrent;
 
@@ -102,11 +104,11 @@ export default class MovieProvider extends BaseProvider {
   /**
    * Puts all the found movies from the torrents in an array.
    * @override
-   * @param {Array<Object>} torrents - A list of torrents to extract movie
+   * @param {!Array<Object>} torrents - A list of torrents to extract movie
    * information.
-   * @param {String} [lang=en] - The language of the torrent.
-   * @returns {Array<Object>} - A list of objects with movie information
-   * extracted from the torrents.
+   * @param {!String} [lang=en] - The language of the torrent.
+   * @returns {Promise<Array<Object>, undefined>} - A list of objects with
+   * movie information extracted from the torrents.
    */
   _getAllContent(torrents, lang = 'en') {
     const movies = [];
@@ -121,7 +123,9 @@ export default class MovieProvider extends BaseProvider {
       const { movieTitle, slug, language, quality } = movie;
 
       const matching = movies.find(
-        m => m.movieTitle === movieTitle && m.slug === slug
+        s => s.movieTitle.toLowerCase() === movieTitle.toLowerCase()
+              && s.slug.toLowerCase() === slug.toLowerCase()
+              && s.type.toLowerCase() === this._type.toLowerCase()
       );
       if (!matching) return movies.push(movie);
 
@@ -129,7 +133,7 @@ export default class MovieProvider extends BaseProvider {
 
       const torrentObj = movie.torrents[language][quality];
       const args = [matching, torrentObj, quality, language];
-      const created = this._attachTorrent(...args);
+      const created = this.attachTorrent(...args);
 
       movies.splice(index, 1, created);
     }).then(() => movies);

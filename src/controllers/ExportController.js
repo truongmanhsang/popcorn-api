@@ -7,9 +7,9 @@ export default class ExportController {
 
   /**
    * Download the export of a collection.
-   * @param {Object} req - The ExpressJS request object.
-   * @param {Object} res - The ExpressJS response object.
-   * @returns {void} - The download request of an export of a collection.
+   * @param {!Object} req - The ExpressJS request object.
+   * @param {!Object} res - The ExpressJS response object.
+   * @returns {undefined} - The download request of an export of a collection.
    */
   getExport(req, res) {
     const { collection } = req.params;
