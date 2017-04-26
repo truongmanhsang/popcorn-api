@@ -27,8 +27,8 @@
     "response-time": "^2.3.2",
     "sprintf-js": "^1.0.3",
     "tmdbapi": "^1.0.2",
-    "torrent-tracker-health": "^1.0.0",
     "trakt.tv": "^5.0.1",
+    "webtorrent-health": "^1.1.1",
     "winston": "^2.3.1",
     "yts-api-pt": "^1.0.0"
   },

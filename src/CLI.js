@@ -1,13 +1,17 @@
 // Import the neccesary modules.
+import bytes from 'bytes';
 import fs from 'fs';
+import parseTorrent from 'parse-torrent';
 import path from 'path';
 import program from 'commander';
 import prompt from 'prompt';
+import webtorrentHealth from 'webtorrent-health';
 
 import Index from './Index';
 import Logger from './config/Logger';
-// import MovieProvider from './scraper/providers/MovieProvider';
-// import ShowProvider from './scraper/providers/ShowProvider';
+import MovieProvider from './scraper/providers/MovieProvider';
+import Setup from './config/Setup';
+import ShowProvider from './scraper/providers/ShowProvider';
 import Util from './Util';
 import {
   name,
@@ -21,7 +25,7 @@ export default class CLI {
    * The name of the CLI provider.
    * @type {String}
    */
-  static _ProviderName = 'CLI';
+  static _Name = 'CLI';
 
   /**
    * The imdb property.
@@ -95,6 +99,18 @@ export default class CLI {
   };
 
   /**
+   * The dateBased property.
+   * @type {Object}
+   */
+  _dateBased = {
+    description: 'If the show is date based (true | false)',
+    type: 'boolean',
+    pattern: /^(true|false)i/,
+    message: 'Not a valid value for date based.',
+    required: true
+  };
+
+  /**
    * The confirm property.
    * @type {Object}
    */
@@ -129,6 +145,7 @@ export default class CLI {
       imdb: this._imdb,
       season: this._season,
       episode: this._episode,
+      dateBased: this._dateBased,
       torrent: this._torrent,
       quality: this._quality
     }
@@ -223,26 +240,156 @@ export default class CLI {
   }
 
   /**
+   * Return a torrent object for a movie.
+   * @param {String} magnet - The magnet url to bind.
+   * @param {Object} health - The health object for seeders and peers.
+   * @param {Object} remote - The remote data object from 'parseTorrent'.
+   * @returns {Object} - A torrent object for a movie.
+   */
+  _movieTorrent(magnet, health, remote) {
+    return {
+      url: magnet,
+      seeds: health.seeds,
+      peers: health.peers,
+      size: remote.length,
+      filesize: bytes(remote.length),
+      provider: CLI._Name
+    };
+  }
+
+  /**
+   * Return a torrent object for a show.
+   * @param {String} magnet - The magnet url to bind.
+   * @param {Object} health - The health object for seeders and peers.
+   * @returns {Object} - A torrent object for a show.
+   */
+  _tvshowTorrent(magnet, health) {
+    return {
+      url: magnet,
+      seeds: health.seeds,
+      peers: health.peers,
+      provider: CLI._Name
+    };
+  }
+
+  /**
+   * Get a torrent object based on the type.
+   * @param {String} link - The link to bind to the torrent object.
+   * @param {String} type - The type of torrent object (movie|show).
+   * @returns {Object} - A torrent object for a movie or show.
+   */
+  _getTorrent(link, type) {
+    return new Promise((resolve, reject) => {
+      return parseTorrent.remote(link, (err, remote) => {
+        if (err) return reject(err);
+
+        const magnet = parseTorrent.toMagnetURI(remote);
+        return webtorrentHealth(magnet).then(health => resolve(
+          this[`_${type}Torrent`](magnet, health, remote)
+        ));
+      });
+    });
+  }
+
+  /**
+   * Handle the --content CLI option to insert a movie torrent.
+   * @param {String} t - The content type to add to the database.
+   * @returns {void}
+   */
+  _moviePrompt(t) {
+    prompt.get(this._movieSchema, async(err, res) => {
+      try {
+        if (err) throw err;
+
+        const { imdb, quality, language, torrent } = res;
+        const movie = {
+          slug: imdb,
+          slugYear: imdb,
+          quality,
+          language,
+          type: t,
+          torrents: {}
+        };
+        const type = MovieProvider.Types.Movie;
+        const movieProvider = new MovieProvider({
+          name: CLI._Name,
+          modelType: t,
+          type
+        });
+
+        const torrentObj = await this._getTorrent(torrent, type);
+        const args = [movie, torrentObj, quality, language];
+        movieProvider.attachTorrent(...args);
+
+        await movieProvider.getContent(movie);
+        return process.exit(0);
+      } catch (err) {
+        logger.error(`An error occurred: '${err}'`);
+        process.exit(1);
+      }
+    });
+  }
+
+  /**
+   * Handle the --content CLI option to insert a movie torrent.
+   * @param {String} t - The content type to add to the database.
+   * @returns {void}
+   */
+  _showPrompt(t) {
+    prompt.get(this._showSchema, async(err, res) => {
+      try {
+        if (err) throw err;
+
+        const { imdb, season, episode, quality, dateBased, torrent } = res;
+        const show = {
+          slug: imdb,
+          season,
+          episode,
+          quality,
+          dateBased,
+          type: t,
+          episodes: {}
+        };
+        const type = MovieProvider.Types.Show;
+        const showProvider = new ShowProvider({
+          name: CLI._Name,
+          modelType: t,
+          type
+        });
+
+        const torrentObj = await this._getTorrent(torrent, type);
+        const args = [show, torrentObj, season, episode, quality];
+        showProvider.attachTorrent(...args);
+
+        await showProvider.getContent(show);
+        return process.exit(0);
+      } catch (err) {
+        logger.error(err);
+        logger.error(`An error occurred: '${err}'`);
+        process.exit(1);
+      }
+    });
+  }
+
+  /**
    * Handle the --content CLI option.
-   * @param {!String} c - The content type to add to the database.
+   * @param {!String} t - The content type to add to the database.
    * @returns {undefined}
    */
-  _content(c) {
-    switch (c) {
+  _content(t) {
+    Setup.connectMongoDB();
+
+    switch (t) {
     case 'animemovie':
-      // TODO: Create method to insert animemovie data.
-      break;
+      return this._moviePrompt(t);
     case 'animeshow':
-      // TODO: Create method to insert animeshow data.
-      break;
+      return this._showPrompt(t);
     case 'movie':
-      // TODO: Create method to insert movie data.
-      break;
+      return this._moviePrompt(t);
     case 'show':
-      // TODO: Create method to insert show data.
-      break;
+      return this._showPrompt(t);
     default:
-      logger.error(`'${c}' is not a valid option for content!`);
+      logger.error(`'${t}' is not a valid option for content!`);
       return process.exit(1);
     }
   }
