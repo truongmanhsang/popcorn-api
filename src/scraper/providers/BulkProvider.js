@@ -16,11 +16,10 @@ export default class BulkProvider extends BaseProvider {
    * @param {!Object} config.api - The name of api for the torrent provider.
    * @param {!String} config.name - The name of the torrent provider.
    * @param {!String} config.modelType - The model type for the helper.
-   * @param {!Object} config.query - The query object for the api.
    * @param {!String} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, type}) {
-    super({api, name, modelType, query, type});
+  constructor({api, name, modelType, type}) {
+    super({api, name, modelType, type});
   }
 
   /**
