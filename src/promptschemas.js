@@ -46,6 +46,19 @@ const _language = {
 };
 
 /**
+ * The schema used by `prompt` insert a movie.
+ * @type {Object}
+ */
+export const movieSchema = {
+  properties: {
+    imdb: _imdb,
+    torrent: _torrent,
+    quality: _quality,
+    language: _language
+  }
+};
+
+/**
  * The season property.
  * @type {Object}
  */
@@ -69,6 +82,7 @@ const _episode = {
   required: true
 };
 
+
 /**
  * The dateBased property.
  * @type {Object}
@@ -79,6 +93,21 @@ const _dateBased = {
   pattern: /^(true|false)i/,
   message: 'Not a valid value for date based.',
   required: true
+};
+
+/**
+ * The schema used by `prompt` insert a show.
+ * @type {Object}
+ */
+export const showSchema = {
+  properties: {
+    imdb: _imdb,
+    torrent: _torrent,
+    quality: _quality,
+    season: _season,
+    episode: _episode,
+    dateBased: _dateBased
+  }
 };
 
 /**
@@ -95,39 +124,92 @@ const _confirm = {
 };
 
 /**
- * The schema used by `prompt` insert a movie.
- * @type {Object}
- */
-export const movieSchema = {
-  properties: {
-    imdb: _imdb,
-    language: _language,
-    torrent: _torrent,
-    quality: _quality
-  }
-};
-
-/**
- * The schema used by `prompt` insert a show.
- * @type {Object}
- */
-export const showSchema = {
-  properties: {
-    imdb: _imdb,
-    season: _season,
-    episode: _episode,
-    dateBased: _dateBased,
-    torrent: _torrent,
-    quality: _quality
-  }
-};
-
-/**
  * The schema used by `prompt` to confirm an import.
  * @type {Object}
  */
 export const importSchema = {
   properties: {
     confirm: _confirm
+  }
+};
+
+/**
+ * The api property.
+ * @type {Object}
+ */
+const _api = {
+  description: 'The name of the external API used to scrape (extratorrent | eztv | horriblesubs | kat | nyaa | yts)',
+  type: 'string',
+  pattern: /^(extratorrent|eztv|horriblesubs|kat|nyaa|yts)$/i,
+  message: 'The api must be either extratorrent, eztv,horriblesubs, kat, nyaa or yts',
+  required: true
+};
+
+/**
+ * The modelType property.
+ * @type {Object}
+ */
+const _modelType = {
+  description: 'The name of the model to use (animemovie | animeshow | movie | show)',
+  type: 'string',
+  pattern: /^(animemovie|animeshow|movie|show)$/i,
+  message: 'modelType must be either animemovie, animeshow, movie or show',
+  required: true
+};
+
+/**
+ * The name property.
+ * @type {Object}
+ */
+const _name = {
+  description: 'The name of the provider configuration (can be anything)',
+  type: 'string',
+  required: true
+};
+
+/**
+ * The type property.
+ * @type {Object}
+ */
+const _type = {
+  description: 'The type of content to scrape (movie | tvshow)',
+  type: 'string',
+  pattern: /^(movie|tvshow)$/i,
+  message: 'type must be either movie or tvshow.',
+  required: true
+};
+
+/**
+ * The class property.
+ * @type {Object}
+ */
+const _class = {
+  description: 'The name of the class which will be imported before scraping',
+  type: 'string',
+  required: true
+};
+
+/**
+ * The query property.
+ * @type {Object}
+ */
+const _query = {
+  description: 'The query used by the api, should be JSON',
+  type: 'string',
+  minItems: 0
+};
+
+/**
+ * The schema used by `prompt` to insert a provider configuration.
+ * @type {Object}
+ */
+export const providerSchema = {
+  properties: {
+    api: _api,
+    modelType: _modelType,
+    name: _name,
+    type: _type,
+    class: _class,
+    query: _query
   }
 };

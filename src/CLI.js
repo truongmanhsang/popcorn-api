@@ -10,6 +10,7 @@ import webtorrentHealth from 'webtorrent-health';
 import Index from './Index';
 import Logger from './config/Logger';
 import MovieProvider from './scraper/providers/MovieProvider';
+import ProviderConfig from './models/ProviderConfig';
 import Setup from './config/Setup';
 import ShowProvider from './scraper/providers/ShowProvider';
 import Util from './Util';
@@ -20,7 +21,8 @@ import {
 import {
   confirmSchema,
   movieSchema,
-  showSchema
+  showSchema,
+  providerSchema
 } from './promptschemas.js';
 
 /** Class The class for the command line interface. */
@@ -46,8 +48,8 @@ export default class CLI {
               /^(pretty|quiet|ugly)$/i)
       .option('--content <type>',
               'Add content to the MongoDB database (anime|show|movie).',
-              /^(anime|movie|show)$/i, false)
-      // .option('--providers', '') // TODO: Allow admin to add new provider configs via CLI
+              /^(animemovie|animeshow|movie|show)$/i, false)
+      .option('--provider', 'Add provider configurations')
       .option('-s, --start', 'Start the scraping process')
       .option('--export <collection>',
               'Export a collection to a JSON file.',
@@ -60,7 +62,7 @@ export default class CLI {
       logger.info('    $ popcorn-api -m <pretty|quiet|ugly>');
       logger.info('    $ popcorn-api --modus <pretty|quiet|ugly>\n');
       logger.info('    $ popcorn-api --content <anime|movie|show>\n');
-      logger.info('    $ popcorn-api --providers\n');
+      logger.info('    $ popcorn-api --provider\n');
       logger.info('    $ popcorn-api -s');
       logger.info('    $ popcorn-api --start\n');
       logger.info('    $ popcorn-api --export <anime|movie|show>\n');
@@ -256,11 +258,29 @@ export default class CLI {
   }
 
   /**
-   * Handle the --providers CLI option.
+   * Handle the --provider CLI option.
    * @returns {undefined}
    */
-  _providers() {
-    throw new Error('This method needs to be implemented!');
+  _provider() {
+    prompt.get(providerSchema, (err, res) => {
+      if (err) {
+        logger.error(err);
+        process.exit(1);
+      }
+
+      Setup.connectMongoDB();
+
+      res.query = JSON.parse(res.query);
+      const providerConfig = new ProviderConfig(res);
+
+      return providerConfig.save().then(res => {
+        logger.info(`Saved provider configuration '${res.name}'`);
+        return process.exit(0);
+      }).catch(err => {
+        logger.error(`An error occurred: '${err}'`);
+        process.exit(0);
+      });
+    });
   }
 
   /**
@@ -308,8 +328,8 @@ export default class CLI {
       return this._modus(program.modus);
     } else if (program.content) {
       return this._content(program.content);
-    } else if (program.providers) {
-      return this._providers(program.providers);
+    } else if (program.provider) {
+      return this._provider(program.provider);
     } else if (program.export) {
       return this._export(program.export);
     } else if (program.import) {
