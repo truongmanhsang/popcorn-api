@@ -221,10 +221,11 @@ export default class ShowHelper extends BaseHelper {
    * @returns {Show} - A show with updated torrents.
    */
   addEpisodes(show, episodes, slug) {
-    const { dateBased } = episodes;
+    let { dateBased } = episodes;
     delete episodes.dateBased;
+    dateBased = dateBased ? dateBased : show.dateBased;
 
-    asyncq.each(Object.keys(episodes), season => {
+    return asyncq.each(Object.keys(episodes), season => {
       if (dateBased)
         return this._addDateBasedSeason(show, episodes, season, slug);
 
