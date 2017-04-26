@@ -17,6 +17,11 @@ import {
   name,
   version
 } from '../package.json';
+import {
+  confirmSchema,
+  movieSchema,
+  showSchema
+} from './promptschemas.js';
 
 /** Class The class for the command line interface. */
 export default class CLI {
@@ -26,150 +31,6 @@ export default class CLI {
    * @type {String}
    */
   static _Name = 'CLI';
-
-  /**
-   * The imdb property.
-   * @type {Object}
-   */
-  _imdb = {
-    description: 'The imdb id of the show/movie to add (tt1234567)',
-    type: 'string',
-    pattern: /^(tt\d{7}|)|^(.*)/i,
-    message: 'Not a valid imdb id.',
-    required: true
-  };
-
-  /**
-   * The torrent property.
-   * @type {Object}
-   */
-  _torrent = {
-    description: 'The link to the torrent to add',
-    type: 'string',
-    message: 'Not a valid torrent.',
-    required: true
-  };
-
-  /**
-   * The quality property.
-   * @type {Object}
-   */
-  _quality = {
-    description: 'The quality of the torrent (480p | 720p | 1080p)',
-    type: 'string',
-    pattern: /^(480p|720p|1080p)/i,
-    message: 'Not a valid quality.',
-    required: true
-  };
-
-  /**
-   * The language property.
-   * @type {Object}
-   */
-  _language = {
-    description: 'The language of the torrent to add (en, fr, jp)',
-    type: 'string',
-    pattern: /^([a-zA-Z]{2})/i,
-    message: 'Not a valid language',
-    required: true
-  };
-
-  /**
-   * The season property.
-   * @type {Object}
-   */
-  _season = {
-    description: 'The season number of the torrent',
-    type: 'integer',
-    pattern: /^(\d+)/i,
-    message: 'Not a valid season.',
-    required: true
-  };
-
-  /**
-   * The episode property.
-   * @type {Object}
-   */
-  _episode = {
-    description: 'The episode number of the torrent',
-    type: 'integer',
-    pattern: /^(\d+)/i,
-    message: 'Not a valid episode.',
-    required: true
-  };
-
-  /**
-   * The dateBased property.
-   * @type {Object}
-   */
-  _dateBased = {
-    description: 'If the show is date based (true | false)',
-    type: 'boolean',
-    pattern: /^(true|false)i/,
-    message: 'Not a valid value for date based.',
-    required: true
-  };
-
-  /**
-   * The confirm property.
-   * @type {Object}
-   */
-  _confirm = {
-    description: 'Do you really want to import a collection? This can override the current data!',
-    type: 'string',
-    pattern: /^(yes|no|y|n)$/i,
-    message: 'Type yes/no',
-    required: true,
-    default: 'no'
-  };
-
-  /**
-   * The schema used by `prompt` insert a movie.
-   * @type {Object}
-   */
-  _movieSchema = {
-    properties: {
-      imdb: this._imdb,
-      language: this._language,
-      torrent: this._torrent,
-      quality: this._quality
-    }
-  };
-
-  /**
-   * The schema used by `prompt` insert a show.
-   * @type {Object}
-   */
-  _showSchema = {
-    properties: {
-      imdb: this._imdb,
-      season: this._season,
-      episode: this._episode,
-      dateBased: this._dateBased,
-      torrent: this._torrent,
-      quality: this._quality
-    }
-  };
-
-  /**
-   * The schema used by `prompt` to confirm an import.
-   * @type {Object}
-   */
-  _importSchema = {
-    properties: {
-      confirm: this._confirm
-    }
-  };
-
-  /**
-   * The schema used by `prompt` to confirm an import.
-   * @type {Object}
-   */
-  _importSchema = {
-    properties: {
-      confirm: this._confirm
-    }
-  };
 
   /** Create a cli object. */
   constructor() {
@@ -297,7 +158,7 @@ export default class CLI {
    * @returns {void}
    */
   _moviePrompt(t) {
-    prompt.get(this._movieSchema, async(err, res) => {
+    prompt.get(movieSchema, async(err, res) => {
       try {
         if (err) throw err;
 
@@ -336,7 +197,7 @@ export default class CLI {
    * @returns {void}
    */
   _showPrompt(t) {
-    prompt.get(this._showSchema, async(err, res) => {
+    prompt.get(showSchema, async(err, res) => {
       try {
         if (err) throw err;
 
@@ -425,7 +286,7 @@ export default class CLI {
     if (process.env.NODE_ENV === 'test')
       return Util.importCollection(path.basename(i, '.json'), i);
 
-    prompt.get(this._confirmSchema, (err, res) => {
+    prompt.get(confirmSchema, (err, res) => {
       if (err) {
         logger.error(`An error occured: ${err}`);
         return process.exit(1);
