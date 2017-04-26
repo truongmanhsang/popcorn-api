@@ -270,6 +270,11 @@ export default class CLI {
 
       Setup.connectMongoDB();
 
+      /**
+       * XXX: BS query should be a schemaless object. Only way to do this for
+       * now is to have the user insert a JSON string and parse it to an
+       * object. Of course this not userfriendly.
+       */
       res.query = JSON.parse(res.query);
       const providerConfig = new ProviderConfig(res);
 
