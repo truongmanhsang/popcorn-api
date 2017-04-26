@@ -47,7 +47,7 @@ export default class IndexController {
         totalMovies: totalMovies || 0,
         totalShows: totalShows || 0,
         updated: Scraper.Updated,
-        uptime: process.uptime(),
+        uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
         version,
         commit
       });
