@@ -21,8 +21,8 @@ import {
 import {
   confirmSchema,
   movieSchema,
-  showSchema,
-  providerSchema
+  providerSchema,
+  showSchema
 } from './promptschemas.js';
 
 /** Class The class for the command line interface. */
@@ -289,7 +289,7 @@ export default class CLI {
    * @returns {Promise} - The promise to export a collection.
    */
   _export(e) {
-    return Util.exportCollection(e);
+    return Util.Instance.exportCollection(e);
   }
 
   /**
@@ -304,7 +304,7 @@ export default class CLI {
     }
 
     if (process.env.NODE_ENV === 'test')
-      return Util.importCollection(path.basename(i, '.json'), i);
+      return Util.Instance.importCollection(path.basename(i, '.json'), i);
 
     prompt.get(confirmSchema, (err, res) => {
       if (err) {
@@ -313,7 +313,7 @@ export default class CLI {
       }
 
       if (res.confirm.test(/^(y|yes)/i))
-        return Util.importCollection(path.basename(i, '.json'), i);
+        return Util.Instance.importCollection(path.basename(i, '.json'), i);
 
       return process.exit(0);
     });

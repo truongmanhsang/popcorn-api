@@ -35,7 +35,7 @@ class Scraper {
   /** Create a singleton class for Scraper. */
   constructor() {
     if (!Scraper.Instance) Scraper.Instance = this;
-    return Scraper.Instance;
+    return Scraper;
   }
 
   /**
@@ -115,7 +115,8 @@ class Scraper {
       });
     }).then(() => Scraper.Status = 'Idle')
       .then(() => asyncq.eachSeries(
-        this._collections, collection => Util.exportCollection(collection)
+        this._collections,
+        collection => Util.Instance.exportCollection(collection)
       ))
       .catch(err => logger.error(`Error while scraping: ${err}`));
   }

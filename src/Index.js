@@ -174,13 +174,13 @@ export default class Index {
             cronTime: Index._CronTime,
             timeZone: Index._TimeZone,
             onComplete: () => Scraper.Status = 'Idle',
-            onTick: Scraper.scrape,
+            onTick: Scraper.Instance.scrape,
             start
           });
 
           Scraper.Updated = 0;
           Scraper.Status = 'Idle';
-          if (start) Scraper.scrape();
+          if (start) Scraper.Instance.scrape();
         } catch (err) {
           logger.error(err);
         }

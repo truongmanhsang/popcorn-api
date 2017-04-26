@@ -17,7 +17,7 @@ class Util {
   /** Create a singleton class for Util. */
   constructor() {
     if (!Util.Instance) Util.Instance = this;
-    return Util.Instance;
+    return Util;
   }
 
   /**
@@ -94,4 +94,4 @@ class Util {
  * @type {Util}
  * @ignore
  */
-export default new Util();
+export default Util;
