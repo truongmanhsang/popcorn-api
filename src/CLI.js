@@ -166,11 +166,7 @@ export default class CLI {
 
         const { imdb, quality, language, torrent } = res;
         const movie = {
-          slug: imdb,
           slugYear: imdb,
-          quality,
-          language,
-          type: t,
           torrents: {}
         };
         const type = MovieProvider.Types.Movie;
@@ -206,11 +202,7 @@ export default class CLI {
         const { imdb, season, episode, quality, dateBased, torrent } = res;
         const show = {
           slug: imdb,
-          season,
-          episode,
-          quality,
           dateBased,
-          type: t,
           episodes: {}
         };
         const type = MovieProvider.Types.Show;
