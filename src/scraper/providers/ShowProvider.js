@@ -31,10 +31,10 @@ export default class ShowProvider extends BaseProvider {
    * Create a ShowProvider class.
    * @param {!Object} config - The configuration object for the torrent
    * provider.
-   * @param {!Object} config.api - The name of api for the torrent provider.
+   * @param {?Object} config.api - The name of api for the torrent provider.
    * @param {!String} config.name - The name of the torrent provider.
    * @param {!String} config.modelType - The model type for the helper.
-   * @param {!Object} config.query - The query object for the api.
+   * @param {?Object} config.query - The query object for the api.
    * @param {?Array<RegExp>} [config.regexps=defaultRegexps] - The regular
    * expressions used to extract information about movies.
    * @param {!String} config.type - The type of content to scrape.
