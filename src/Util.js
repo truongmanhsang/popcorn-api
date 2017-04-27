@@ -94,4 +94,4 @@ class Util {
  * @type {Util}
  * @ignore
  */
-export default Util;
+export default new Util();

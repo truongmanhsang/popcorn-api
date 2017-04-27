@@ -104,9 +104,9 @@ export default class CLI {
 
   /**
    * Return a torrent object for a movie.
-   * @param {String} magnet - The magnet url to bind.
-   * @param {Object} health - The health object for seeders and peers.
-   * @param {Object} remote - The remote data object from 'parseTorrent'.
+   * @param {!String} magnet - The magnet url to bind.
+   * @param {!Object} health - The health object for seeders and peers.
+   * @param {!Object} remote - The remote data object from 'parseTorrent'.
    * @returns {Object} - A torrent object for a movie.
    */
   _movieTorrent(magnet, health, remote) {
@@ -122,8 +122,8 @@ export default class CLI {
 
   /**
    * Return a torrent object for a show.
-   * @param {String} magnet - The magnet url to bind.
-   * @param {Object} health - The health object for seeders and peers.
+   * @param {!String} magnet - The magnet url to bind.
+   * @param {!Object} health - The health object for seeders and peers.
    * @returns {Object} - A torrent object for a show.
    */
   _tvshowTorrent(magnet, health) {
@@ -137,9 +137,10 @@ export default class CLI {
 
   /**
    * Get a torrent object based on the type.
-   * @param {String} link - The link to bind to the torrent object.
-   * @param {String} type - The type of torrent object (movie|show).
-   * @returns {Object} - A torrent object for a movie or show.
+   * @param {!String} link - The link to bind to the torrent object.
+   * @param {!String} type - The type of torrent object (movie|show).
+   * @returns {Promise<Object, undefined>} - A torrent object for a movie or
+   * show.
    */
   _getTorrent(link, type) {
     return new Promise((resolve, reject) => {
@@ -156,8 +157,8 @@ export default class CLI {
 
   /**
    * Handle the --content CLI option to insert a movie torrent.
-   * @param {String} t - The content type to add to the database.
-   * @returns {void}
+   * @param {!String} t - The content type to add to the database.
+   * @returns {undefined}
    */
   _moviePrompt(t) {
     prompt.get(movieSchema, async(err, res) => {
@@ -181,7 +182,7 @@ export default class CLI {
         movieProvider.attachTorrent(...args);
 
         await movieProvider.getContent(movie);
-        return process.exit(0);
+        process.exit(0);
       } catch (err) {
         logger.error(`An error occurred: '${err}'`);
         process.exit(1);
@@ -191,8 +192,8 @@ export default class CLI {
 
   /**
    * Handle the --content CLI option to insert a movie torrent.
-   * @param {String} t - The content type to add to the database.
-   * @returns {void}
+   * @param {!String} t - The content type to add to the database.
+   * @returns {undefined}
    */
   _showPrompt(t) {
     prompt.get(showSchema, async(err, res) => {
@@ -217,7 +218,7 @@ export default class CLI {
         showProvider.attachTorrent(...args);
 
         await showProvider.getContent(show);
-        return process.exit(0);
+        process.exit(0);
       } catch (err) {
         logger.error(err);
         logger.error(`An error occurred: '${err}'`);
@@ -236,16 +237,20 @@ export default class CLI {
 
     switch (t) {
     case 'animemovie':
-      return this._moviePrompt(t);
+      this._moviePrompt(t);
+      break;
     case 'animeshow':
-      return this._showPrompt(t);
+      this._showPrompt(t);
+      break;
     case 'movie':
-      return this._moviePrompt(t);
+      this._moviePrompt(t);
+      break;
     case 'show':
-      return this._showPrompt(t);
+      this._showPrompt(t);
+      break;
     default:
       logger.error(`'${t}' is not a valid option for content!`);
-      return process.exit(1);
+      process.exit(1);
     }
   }
 
@@ -272,7 +277,7 @@ export default class CLI {
 
       return providerConfig.save().then(res => {
         logger.info(`Saved provider configuration '${res.name}'`);
-        return process.exit(0);
+        process.exit(0);
       }).catch(err => {
         logger.error(`An error occurred: '${err}'`);
         process.exit(0);
@@ -283,7 +288,7 @@ export default class CLI {
   /**
    * Handle the --export CLI option.
    * @param {!String} e - The collection to export.
-   * @returns {Promise} - The promise to export a collection.
+   * @returns {Promise<String, String>} - The promise to export a collection.
    */
   _export(e) {
     return Util.Instance.exportCollection(e);
@@ -292,12 +297,13 @@ export default class CLI {
   /**
    * Handle the --import CLI option.
    * @param {!String} i - The collection to import.
-   * @returns {Promise} - The promise to import a collection.
+   * @returns {Promise<String, String>|undefined} - The promise to import a
+   * collection.
    */
   _import(i) {
     if (!fs.existsSync(i)) {
       logger.error(`File '${i}' does not exists!`);
-      return process.exit(1);
+      process.exit(1);
     }
 
     if (process.env.NODE_ENV === 'test')
@@ -306,13 +312,13 @@ export default class CLI {
     prompt.get(confirmSchema, (err, res) => {
       if (err) {
         logger.error(`An error occured: ${err}`);
-        return process.exit(1);
+        process.exit(1);
       }
 
       if (res.confirm.test(/^(y|yes)/i))
         return Util.Instance.importCollection(path.basename(i, '.json'), i);
 
-      return process.exit(0);
+      process.exit(0);
     });
   }
 
