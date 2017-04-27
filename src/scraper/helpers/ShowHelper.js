@@ -242,21 +242,23 @@ export default class ShowHelper extends BaseHelper {
   _getTmdbImages(tmdb) {
     return this._tmdb.tv.images({
       tv_id: tmdb
-    }).then(images => {
-      const baseUrl = 'http://image.tmdb.org/t/p/w500/';
+    }).then(i => {
+      const baseUrl = 'http://image.tmdb.org/t/p/w500';
 
-      const tmdbPoster = images.posters.filter(
+      const tmdbPoster = i.posters.filter(
         poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null
-      )[0];
-      const tmdbBackdrop = images.backdrops.filter(
+      )[0].file_path;
+      const tmdbBackdrop = i.backdrops.filter(
         backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null
-      )[0];
+      )[0].file_path;
 
-      return {
-        banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper.Holder,
-        fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : BaseHelper.Holder,
-        poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper.Holder
+      const images = {
+        banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper._Holder,
+        fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : BaseHelper._Holder,
+        poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper._Holder
       };
+
+      return this._checkImages(images);
     });
   }
 
@@ -266,14 +268,16 @@ export default class ShowHelper extends BaseHelper {
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getTvdbImages(tvdb) {
-    return this._tvdb.getSeriesById(tvdb).then(images => {
+    return this._tvdb.getSeriesById(tvdb).then(i => {
       const baseUrl = 'http://thetvdb.com/banners/';
 
-      return {
-        banner: images.banner ? `${baseUrl}${images.banner}` : BaseHelper.Holder,
-        fanart: images.fanart ? `${baseUrl}${images.fanart}` : BaseHelper.Holder,
-        poster: images.poster ? `${baseUrl}${images.poster}` : BaseHelper.Holder
+      const images = {
+        banner: i.banner ? `${baseUrl}${i.banner}` : BaseHelper._Holder,
+        fanart: i.fanart ? `${baseUrl}${i.fanart}` : BaseHelper._Holder,
+        poster: i.poster ? `${baseUrl}${i.poster}` : BaseHelper._Holder
       };
+
+      return this._checkImages(images);
     });
   }
 
@@ -283,16 +287,18 @@ export default class ShowHelper extends BaseHelper {
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getFanartImages(tvdb) {
-    return this._fanart.getShowImages(tvdb).then(images => {
-      return {
-        banner: images.tvbanner ? images.tvbanner[0].url : BaseHelper.Holder,
-        fanart: images.showbackground
-                        ? images.showbackground[0].url
-                        : images.clearart
-                        ? images.clearart[0].url
-                        : BaseHelper.Holder,
-        poster: images.tvposter ? images.tvposter[0].url : BaseHelper.Holder
+    return this._fanart.getShowImages(tvdb).then(i => {
+      const images = {
+        banner: i.tvbanner ? i.tvbanner[0].url : BaseHelper._Holder,
+        fanart: i.showbackground
+                        ? i.showbackground[0].url
+                        : i.clearart
+                        ? i.clearart[0].url
+                        : BaseHelper._Holder,
+        poster: i.tvposter ? i.tvposter[0].url : BaseHelper._Holder
       };
+
+      return this._checkImages(images);
     });
   }
 
@@ -304,13 +310,10 @@ export default class ShowHelper extends BaseHelper {
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getImages(tmdb, tvdb) {
-    return Promise.race([
-      this._getTmdbImages(tmdb),
-      this._getTvdbImages(tvdb),
-      this._getFanartImages(tvdb)
-    ]).catch(err =>
-      logger.error(`Images: Could not find images on: ${err.path || err} with id: '${tmdb || tvdb}'`)
-    );
+    return this._getTmdbImages(tmdb)
+      .catch(() => this._getTvdbImages(tvdb))
+      .catch(() => this._getFanartImages(tmdb))
+      .catch(() => this._defaultImages);
   }
 
   /**

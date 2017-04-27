@@ -115,21 +115,23 @@ export default class MovieHelper extends BaseHelper {
   _getTmdbImages(tmdb) {
     return this._tmdb.movie.images({
       movie_id: tmdb
-    }).then(images => {
-      const baseUrl = 'http://image.tmdb.org/t/p/w500/';
+    }).then(i => {
+      const baseUrl = 'http://image.tmdb.org/t/p/w500';
 
-      const tmdbPoster = images.posters.filter(
+      const tmdbPoster = i.posters.filter(
         poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null
-      )[0];
-      const tmdbBackdrop = images.backdrops.filter(
+      )[0].file_path;
+      const tmdbBackdrop = i.backdrops.filter(
         backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null
-      )[0];
+      )[0].file_path;
 
-      return {
-        banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper.holder,
-        fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : BaseHelper.holder,
-        poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper.holder
+      const images = {
+        banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper._Holder,
+        fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : BaseHelper._Holder,
+        poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper._Holder
       };
+
+      return this._checkImages(images);
     });
   }
 
@@ -142,12 +144,14 @@ export default class MovieHelper extends BaseHelper {
     return this._omdb.byID({
       imdb,
       type: 'movie'
-    }).then(images => {
-      return {
-        banner: images.Poster ? images.Poster : BaseHelper.holder,
-        fanart: images.Poster ? images.Poster : BaseHelper.holder,
-        poster: images.Poster ? images.Poster : BaseHelper.holder
+    }).then(i => {
+      const images = {
+        banner: i.Poster ? i.Poster : BaseHelper._Holder,
+        fanart: i.Poster ? i.Poster : BaseHelper._Holder,
+        poster: i.Poster ? i.Poster : BaseHelper._Holder
       };
+
+      return this._checkImages(images);
     });
   }
 
@@ -157,20 +161,18 @@ export default class MovieHelper extends BaseHelper {
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getFanartImages(tmdb) {
-    return this._fanart.getMovieImages(tmdb).then(images => {
-      return {
-        banner: images.moviebanner
-                          ? images.moviebanner[0].url
-                          : BaseHelper.holder,
-        fanart: images.moviebackground
-                          ? images.moviebackground[0].url
-                          : images.hdmovieclearart
-                          ? images.hdmovieclearart[0].url
-                          : BaseHelper.holder,
-        poster: images.movieposter
-                          ? images.movieposter[0].url
-                          : BaseHelper.holder
+    return this._fanart.getMovieImages(tmdb).then(i => {
+      const images = {
+        banner: i.moviebanner ? i.moviebanner[0].url : BaseHelper._Holder,
+        fanart: i.moviebackground
+                          ? i.moviebackground[0].url
+                          : i.hdmovieclearart
+                          ? i.hdmovieclearart[0].url
+                          : BaseHelper._Holder,
+        poster: i.movieposter ? i.movieposter[0].url : BaseHelper._Holder
       };
+
+      return this._checkImages(images);
     });
   }
 
@@ -182,13 +184,10 @@ export default class MovieHelper extends BaseHelper {
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getImages(tmdb, imdb) {
-    return Promise.race([
-      this._getTmdbImages(imdb),
-      this._getOmdbImages(tmdb),
-      this._getFanartImages(tmdb)
-    ]).catch(err =>
-      logger.error(`Images: Could not find images on: ${err.path || err} with id: '${tmdb || imdb}'`)
-    );
+    return this._getTmdbImages(imdb)
+      .catch(() => this._getOmdbImages(tmdb))
+      .catch(() => this._getFanartImages(tmdb))
+      .catch(() => this._defaultImages);
   }
 
   /**

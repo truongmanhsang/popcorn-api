@@ -12,7 +12,18 @@ export default class BaseHelper extends IHelper {
    * The default image link.
    * @type {String}
    */
-  static Holder = 'images/posterholder.png';
+  static _Holder = 'images/posterholder.png';
+
+  /**
+   * The default image object.
+   * @type {Object}
+   */
+  _defaultImages = {
+    banner: BaseHelper._Holder,
+    fanart: BaseHelper._Holder,
+    poster: BaseHelper._Holder,
+    provider: 'default'
+  };
 
   /**
    * The API factory.
@@ -61,6 +72,23 @@ export default class BaseHelper extends IHelper {
      * @see http://mongoosejs.com/docs/models.html
      */
     this._model = model;
+  }
+
+  /**
+   * Method to check the given images against the default ones.
+   * @override
+   * @param {Object} images - The images to check.
+   * @throws {Error} - test
+   * @returns {Object|undefined} - Throws an error if the given images are the
+   * same, otherwise it will return the given images.
+   */
+  _checkImages(images) {
+    for (const i in images) {
+      if (images[i] === BaseHelper._Holder)
+        throw new Error('An image could not been found!');
+    }
+
+    return images;
   }
 
 }
