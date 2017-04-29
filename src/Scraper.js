@@ -1,99 +1,87 @@
 // Import the neccesary modules.
 import asyncq from 'async-q';
+import fs from 'fs';
+import path from 'path';
 
 import Context from './scraper/Context';
 import ProviderConfig from './models/ProviderConfig';
 import Util from './Util';
 
+// The path to the temporary directory.
+global.tempDir = path.join(process.cwd(), 'tmp');
+
 /** Class for Initiating the scraping process. */
-class Scraper {
+export default class Scraper {
 
   /**
    * An array of the supported collections for mongodb.
    * @type {Array}
    */
-  _collections = ['anime', 'movie', 'show'];
+  static _Collections = ['anime', 'movie', 'show'];
 
   /**
-   * The instance used for the singleton pattern.
-   * @type {Scraper}
-   */
-  static _Instance = undefined;
-
-  /**
-   * The status of the scraper.
+   * The name of the status file.
    * @type {String}
    */
-  static _Status = 'Idle';
+  static StatusPath = path.join(tempDir, 'status.json');
 
   /**
-   * The last updated value.
-   * @type {Number}
+   * The name of the updated file.
+   * @type {String}
    */
-  static _Updated = 0;
-
-  /** Create a singleton class for Scraper. */
-  constructor() {
-    if (!Scraper.Instance) Scraper.Instance = this;
-    return Scraper;
-  }
+  static UpdatedPath = path.join(tempDir, 'updated.json');
 
   /**
-   * Return the Scraper singleton instance.
-   * @returns {Scraper} - The Scraper singleton instance.
-   */
-  static get Instance() {
-    return Scraper._Instance;
-  }
-
-  /**
-   * Set the Scraper singleton class.
-   * @param {!Scraper} Instance - The instance to set.
-   * @returns {undefined}
-   */
-  static set Instance(Instance) {
-    Scraper._Instance = Instance;
-  }
-
-  /**
-   * Return the status of the scraper.
-   * @returns {String} - The status of the scraper.
+   * Get the status object.
+   * @returns {String} - The status of the scraping process.
    */
   static get Status() {
-    return Scraper._Status;
+    return new Promise((resolve, reject) => {
+      return fs.readFile(Scraper.StatusPath, 'utf8', (err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      });
+    });
   }
 
   /**
-   * Set the status of the scraper.
-   * @param {!String} Status - The status to set.
+   * Updates the `status.json` file.
+   * @param {!String} status - The status which will be set to in the
+   * `status.json` file.
    * @returns {undefined}
    */
-  static set Status(Status) {
-    Scraper._Status = Status;
+  static set Status(status) {
+    fs.writeFile(Scraper.StatusPath, status, 'utf8', () => {});
   }
 
   /**
-   * Return the last updated value of the scraper.
-   * @returns {Number} - The last updated value.
+   * Get the updated object.
+   * @returns {String} - The status of the scraping process.
    */
   static get Updated() {
-    return Scraper._Updated;
+    return new Promise((resolve, reject) => {
+      return fs.readFile(Scraper.UpdatedPath, 'utf8', (err, res) => {
+        if (err) return reject(err);
+        return resolve(Number(res));
+      });
+    });
   }
 
   /**
-   * Set the last updated value of the scraper.
-   * @param {!Number} Updated - The value to set the last updated value.
+   * Updates the `lastUpdated.json` file.
+   * @param {!Number} updated - The epoch time when the API last
+   * started scraping.
    * @returns {undefined}
    */
-  static set Updated(Updated) {
-    Scraper._Updated = Updated;
+  static set Updated(updated) {
+    fs.writeFile(Scraper.UpdatedPath, updated, 'utf8', () => {});
   }
 
   /**
    * Initiate the scraping.
    * @returns {undefined}
    */
-  scrape() {
+  static scrape() {
     Scraper.Updated = Math.floor(new Date().getTime() / 1000);
 
     const context = new Context();
@@ -110,22 +98,17 @@ class Scraper {
         let Provider = await import(`./scraper/providers/${pConfig.class}`);
         Provider = Provider.default;
 
-        context.provider = new Provider(pConfig);
+        const provider = new Provider(pConfig);
+        context.provider = provider;
+        Scraper.Status = provider.name;
         return await context.execute();
       });
     }).then(() => Scraper.Status = 'Idle')
       .then(() => asyncq.eachSeries(
-        this._collections,
+        Scraper._Collections,
         collection => Util.Instance.exportCollection(collection)
       ))
       .catch(err => logger.error(`Error while scraping: ${err}`));
   }
 
 }
-
-/**
- * The Scraper singleton object.
- * @type {Scraper}
- * @ignore
- */
-export default new Scraper();

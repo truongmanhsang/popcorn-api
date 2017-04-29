@@ -96,6 +96,14 @@ export default class BaseProvider extends IProvider {
   }
 
   /**
+   * Get the name of the provider
+   * @returns {String} - The name of the provider.
+   */
+  get name() {
+    return this._name;
+  }
+
+  /**
    * Gets information about content from Trakt.tv and inserts the content into
    * the MongoDB database.
    * @override

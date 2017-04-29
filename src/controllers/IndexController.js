@@ -2,14 +2,14 @@
 import fs from 'fs';
 import path from 'path';
 
-import { AnimeShow as Anime } from '../models/Anime';
-import Movie from '../models/Movie';
-import Show from '../models/Show';
 import AnimeController from './contentcontrollers/AnimeController';
+import Movie from '../models/Movie';
 import MovieController from './contentcontrollers/MovieController';
-import ShowController from './contentcontrollers/ShowController';
 import Scraper from '../Scraper';
+import Show from '../models/Show';
+import ShowController from './contentcontrollers/ShowController';
 import Util from '../Util';
+import { AnimeShow as Anime } from '../models/Anime';
 import {
   name,
   repository,
@@ -42,11 +42,11 @@ export default class IndexController {
       return res.json({
         repo: repository.url,
         server: this._server,
-        status: Scraper.Status,
+        status: await Scraper.Status,
         totalAnimes: totalAnimes || 0,
         totalMovies: totalMovies || 0,
         totalShows: totalShows || 0,
-        updated: Scraper.Updated,
+        updated: await Scraper.Updated,
         uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
         version,
         commit

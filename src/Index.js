@@ -10,16 +10,13 @@ import fs from 'fs';
 import http from 'http';
 import os from 'os';
 import path from 'path';
-import { CronJob } from 'cron'; // EXTERNAL
+import { CronJob } from 'cron';
 
 import Logger from './config/Logger';
 import Routes from './config/Routes';
 import Scraper from './Scraper';
 import Setup from './config/Setup';
 import { name } from '../package.json';
-
-// The path to the temporary directory. Default is `./tmp`.
-global.tempDir = path.join(process.cwd(), 'tmp');
 
 /**
  * Class for starting the API.
@@ -108,18 +105,16 @@ export default class Index {
 
   /**
    * Removes all the files in the temporary directory.
-   * @param {!String} [tmpPath='popcorn-api/tmp'] - The path to remove all the
-   * files within.
    * @returns {undefined}
    */
-  static _resetTemp(tmpPath = tempDir) {
-    const files = fs.readdirSync(tmpPath);
+  static _resetTemp() {
+    const files = fs.readdirSync(tempDir);
     files.forEach(file => {
-      const stats = fs.statSync(path.join(tmpPath, file));
+      const stats = fs.statSync(path.join(tempDir, file));
       if (stats.isDirectory()) {
         Index._resetTemp(file);
       } else if (stats.isFile()) {
-        fs.unlinkSync(path.join(tmpPath, file));
+        fs.unlinkSync(path.join(tempDir, file));
       }
     });
   }
@@ -131,6 +126,9 @@ export default class Index {
   static _createTemp() {
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
     if (fs.existsSync(tempDir)) Index._resetTemp();
+
+    Index._createEmptyFile(Scraper.StatusPath);
+    Index._createEmptyFile(Scraper.UpdatedPath);
   }
 
   /**
@@ -149,11 +147,11 @@ export default class Index {
    */
   static _startAPI(start = true) {
     if (cluster.isMaster) { // Check is the cluster is the master
-      // Clear the log files from the temp directory.
-      Index._resetLog();
-
       // Setup the temporary directory
       Index._createTemp();
+
+      // Clear the log files from the temp directory.
+      Index._resetLog();
 
       // Fork workers.
       for (let i = 0;i < Math.min(os.cpus().length, Index._Workers);i++)
@@ -174,13 +172,13 @@ export default class Index {
             cronTime: Index._CronTime,
             timeZone: Index._TimeZone,
             onComplete: () => Scraper.Status = 'Idle',
-            onTick: Scraper.Instance.scrape,
+            onTick: Scraper.scrape,
             start
           });
 
           Scraper.Updated = 0;
           Scraper.Status = 'Idle';
-          if (start) Scraper.Instance.scrape();
+          if (start) Scraper.scrape();
         } catch (err) {
           logger.error(err);
         }
