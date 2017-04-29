@@ -1,6 +1,4 @@
 // Import the neccesary modules.
-import asyncq from 'async-q';
-
 import MovieProvider from './MovieProvider';
 
 /**
@@ -35,7 +33,7 @@ export default class YTSProvider extends MovieProvider {
     const movie = {
       movieTitle: torrent.title,
       slug: torrent.imdb_code,
-      slugYear: torrent.slug,
+      slugYear: torrent.imdb_code,
       year: torrent.year,
       language: lang,
       torrents: {}
@@ -75,42 +73,6 @@ export default class YTSProvider extends MovieProvider {
     }
 
     logger.warn(`${this._name}: Could not find data from torrent: '${torrent.title}'`);
-  }
-
-  /**
-   * Puts all the found movies from the torrents in an array.
-   * @override
-   * @param {!Array<Object>} torrents - A list of torrents to extract movie
-   * information.
-   * @param {!String} [lang=en] - The language of the torrent.
-   * @returns {Promise<Array<Object>, undefined>} - A list of objects with
-   * movie information extracted from the torrents.
-   */
-  _getAllContent(torrents, lang = 'en') {
-    const movies = [];
-
-    return asyncq.mapSeries(torrents, torrent => {
-      if (!torrent) return null;
-
-      const movie = this._getContentData(torrent, lang);
-
-      if (!movie) return null;
-
-      const { movieTitle, slug, language, quality } = movie;
-
-      const matching = movies.find(
-        m => m.movieTitle === movieTitle && m.slug === slug
-      );
-      if (!matching) return movies.push(movie);
-
-      const index = movies.indexOf(matching);
-
-      const torrentObj = movie.torrents[language][quality];
-      const args = [matching, torrentObj, quality, language];
-      const created = this.attachTorrent(...args);
-
-      movies.splice(index, 1, created);
-    }).then(() => movies);
   }
 
 }
