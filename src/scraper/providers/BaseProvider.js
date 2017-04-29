@@ -158,14 +158,14 @@ export default class BaseProvider extends IProvider {
   _getAllTorrents(totalPages) {
     let torrents = [];
     return asyncq.timesSeries(totalPages, async page => {
+      if (this._query.page) this._query.page = page + 1;
       if (this._query.offset) this._query.offset = page + 1;
 
       logger.info(`${this._name}: Started searching ${this._name} on page ${page + 1} out of ${totalPages}`);
-      let { results, data } = await this._api.search(this._query);
-      results = results ? results : [];
-      data = data ? data.movies : [];
+      const res = await this._api.search(this._query);
+      const data = res.results ? res.results : res.data ? data.movies : [];
 
-      torrents = torrents.concat(results, data);
+      torrents = torrents.concat(data);
     }).then(() => {
       logger.info(`${this._name}: Found ${torrents.length} torrents.`);
       return torrents;
@@ -181,14 +181,11 @@ export default class BaseProvider extends IProvider {
     try {
       const getTotalPages = await this._api.search(this._query);
 
-      let totalPages;
-      if (process.env.NODE_ENV === 'development') {
-        totalPages = 1;
-      } else {
-        totalPages = getTotalPages.total_pages
-                              ? getTotalPages.total_pages
-                              : Math.ceil(getTotalPages.data.movie_count / 50);
-      }
+      const totalPages = process.env.NODE_ENV === 'development'
+                            ? 3
+                            : getTotalPages.total_pages
+                            ? getTotalPages.total_pages
+                            : Math.ceil(getTotalPages.data.movie_count / 50);
 
       if (!totalPages)
         return logger.error(`${this._name}: totalPages returned: '${totalPages}'`);
