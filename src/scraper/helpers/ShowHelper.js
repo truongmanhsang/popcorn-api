@@ -181,19 +181,20 @@ export default class ShowHelper extends BaseHelper {
         if (!episodes[season]) return;
 
         Object.keys(episodes[season]).map(e => {
-          if (`${season}-${e}` !== tvdbEpisode.firstAired) return;
-
-          const { episodeNumber, seasonNumber } = tvdbEpisode;
+          const d = new Date(tvdbEpisode.firstAired)
+                                .toISOString()
+                                .substring(0, 10);
+          if (`${season}-${e.replace(/\./, '-')}` !== d) return;
 
           const episode = {
             tvdb_id: tvdbEpisode.id,
-            season: seasonNumber,
-            episode: episodeNumber,
+            season: parseInt(tvdbEpisode.seasonNumber, 10),
+            episode: parseInt(tvdbEpisode.episodeNumber, 10),
             title: tvdbEpisode.episodeName,
             overview: tvdbEpisode.overview,
             date_based: true,
             first_aired: new Date(tvdbEpisode.firstAired).getTime() / 1000.0,
-            torrents: episodes[seasonNumber][episodeNumber]
+            torrents: episodes[season][e]
           };
 
           if (episode.first_aired > show.latest_episode)
@@ -201,9 +202,9 @@ export default class ShowHelper extends BaseHelper {
 
           if (episode.season === 0) return;
 
-          episode.torrents[0] = episodes[seasonNumber][episodeNumber]['480p']
-                                ? episodes[seasonNumber][episodeNumber]['480p']
-                                : episodes[seasonNumber][episodeNumber]['720p'];
+          episode.torrents[0] = episodes[season][e]['480p']
+                                ? episodes[season][e]['480p']
+                                : episodes[season][e]['720p'];
 
           show.episodes.push(episode);
         });
