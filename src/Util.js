@@ -6,7 +6,7 @@ import path from 'path';
 import Setup from './config/Setup';
 
 /** Class with frequently used methods. */
-class Util {
+export default class Util {
 
   /**
    * The instance used for the singleton pattern.
@@ -14,17 +14,12 @@ class Util {
    */
   static _Instance = undefined;
 
-  /** Create a singleton class for Util. */
-  constructor() {
-    if (!Util.Instance) Util.Instance = this;
-    return Util;
-  }
-
   /**
    * Return the Util singleton instance.
    * @returns {Util} - The Util singleton instance.
    */
   static get Instance() {
+    if (!Util._Instance) Util.Instance = new Util();
     return Util._Instance;
   }
 
@@ -88,10 +83,3 @@ class Util {
   }
 
 }
-
-/**
- * The Util singleton object.
- * @type {Util}
- * @ignore
- */
-export default new Util();
