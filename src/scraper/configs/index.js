@@ -1,5 +1,5 @@
 // TODO: Make it so this script can be run somewhere, maybe via npm.
-/* eslint-disable  no-console */
+/* eslint-disable no-console */
 // Import the neccesary modules.
 import asyncq from 'async-q';
 
@@ -25,21 +25,15 @@ Setup.connectMongoDB();
  * backwards. So in the case for `animes` the HorribleSubs provider configs are
  * inserted first and the Nyaa provider configs are inserted second.
  */
-const animes = [].concat(
-  nyaaanime,
-  horriblesubsanime
-);
-
-const movies = [].concat(
-  // katmovies,
-  etmovies,
-  ytsmovies
-);
-
-const shows = [].concat(
-  // katshows,
+const providers = [].concat(
+  eztvshows,
   etshows,
-  eztvshows
+  // katshows,
+  ytsmovies,
+  etmovies,
+  // katmovies,
+  horriblesubsanime,
+  nyaaanime
 );
 
 /**
@@ -51,16 +45,12 @@ const shows = [].concat(
  * determined by the order of inserting the provider configs. We can do this
  * with: `.sort({ $natural: <order> }).`
  */
-asyncq.eachSeries([
-  ProviderConfig.insertMany(shows),
-  ProviderConfig.insertMany(movies),
-  ProviderConfig.insertMany(animes)
-], promise => promise).then(res => {
-  const length = res.map(r => r.length).reduce((acc, cur) => acc + cur);
-
-  console.log(`Inserted: '${length}' provider configurations.`);
-  process.exit(0);
-}).catch(err => {
-  console.error(`Oops something went wrong: ${err}`);
-  process.exit(1);
-});
+asyncq.eachSeries(providers, provider => new ProviderConfig(provider).save())
+  .then(res => {
+    console.log(`Inserted: '${res.length}' provider configurations.`);
+    process.exit(0);
+  })
+  .catch(err => {
+    console.error(`Oops something went wrong: ${err}`);
+    process.exit(1);
+  });
