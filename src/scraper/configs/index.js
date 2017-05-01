@@ -1,4 +1,3 @@
-// TODO: Make it so this script can be run somewhere, maybe via npm.
 /* eslint-disable no-console */
 // Import the neccesary modules.
 import asyncq from 'async-q';

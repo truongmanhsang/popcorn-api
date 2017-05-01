@@ -59,6 +59,7 @@
     "forever": "cross-env NODE_ENV=prod forever start ./build/popcorn-api.js -m pretty",
     "lint": "eslint -c .eslintrc.js src/**/*.js",
     "prestart": "npm run build",
+    "providers": "cross-env NODE_ENV=production babel-node ./src/scraper/configs",
     "start": "cross-env NODE_ENV=prod node ./build/popcorn-api.js -m pretty",
     "test": "cross-env NODE_ENV=test babel-node dredd"
   },
