@@ -9,7 +9,7 @@ export default class ExportController {
    * Download the export of a collection.
    * @param {!Object} req - The ExpressJS request object.
    * @param {!Object} res - The ExpressJS response object.
-   * @returns {undefined} - The download request of an export of a collection.
+   * @returns {Object} - The download request of an export of a collection.
    */
   getExport(req, res) {
     const { collection } = req.params;
@@ -28,7 +28,7 @@ export default class ExportController {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       error: `Error: '${collection}' is not a valid collection to export.`
     });
   }

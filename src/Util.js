@@ -35,7 +35,7 @@ export default class Util {
   /**
    * Execute a command from within the root folder.
    * @param {!String} cmd - The command to execute.
-   * @returns {Promise<String, String>} - The output of the command.
+   * @returns {Promise<String, Error>} - The output of the command.
    */
   executeCommand(cmd) {
     return new Promise((resolve, reject) => {
@@ -51,7 +51,7 @@ export default class Util {
   /**
    * Export a collection to a JSON file.
    * @param {!String} collection - The collection to export.
-   * @returns {Promise<String, String>} - The promise to export a collection.
+   * @returns {Promise<String, undefined>} - The promise to export a collection.
    */
   exportCollection(collection) {
     const jsonFile = path.join(tempDir, `${collection}s.json`);
@@ -66,7 +66,7 @@ export default class Util {
    * @param {!String} collection - The collection to import.
    * @param {!String} jsonFile - The JSON file to import.
    * @throws {Error} - Error: no such file found for 'JSON_FILE'
-   * @returns {Promise<String, String>} - The promise to import a collection.
+   * @returns {Promise<String, undefined>} - The promise to import a collection.
    */
   importCollection(collection, jsonFile) {
     const file = path.isAbsolute(jsonFile)

@@ -25,7 +25,6 @@ export default class Setup {
    * Setup the ExpressJS service.
    * @param {!Express} app - The ExpresssJS instance.
    * @param {?Boolean} [pretty] - Pretty output with Winston logging.
-   * @returns {undefined}
    */
   constructor(app, pretty) {
     // Function for escaping strings.

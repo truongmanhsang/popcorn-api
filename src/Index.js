@@ -142,7 +142,7 @@ export default class Index {
 
   /**
    * Method to start the API.
-   * @param {!Boolean} [start=true] - Start the scraping.
+   * @param {?Boolean} [start=true] - Start the scraping.
    * @returns {undefined}
    */
   static _startAPI(start = true) {

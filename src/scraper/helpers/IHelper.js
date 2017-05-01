@@ -7,6 +7,7 @@ export default class IHelper {
   /**
    * Default method to check images.
    * @abstract
+   * @protected
    * @throws {Error} - Using default method: '_checkImages'.
    * @returns {undefined}
    */
@@ -17,6 +18,7 @@ export default class IHelper {
   /**
    * Default method to get images.
    * @abstract
+   * @protected
    * @throws {Error} - Using default method: '_getImages'.
    * @returns {undefined}
    */

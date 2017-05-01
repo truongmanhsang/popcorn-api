@@ -44,7 +44,14 @@ const providers = [].concat(
  * determined by the order of inserting the provider configs. We can do this
  * with: `.sort({ $natural: <order> }).`
  */
-asyncq.eachSeries(providers, provider => new ProviderConfig(provider).save())
+asyncq.eachSeries(providers, provider => {
+  return ProviderConfig.findOneAndUpdate({
+    _id: provider.name
+  }, provider, {
+    upsert: true,
+    new : true
+  }).exec();
+})
   .then(res => {
     console.log(`Inserted: '${res.length}' provider configurations.`);
     process.exit(0);

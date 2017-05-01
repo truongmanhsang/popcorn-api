@@ -15,25 +15,25 @@ export default class Scraper {
 
   /**
    * An array of the supported collections for mongodb.
-   * @type {Array}
+   * @type {Array<String>}
    */
   static _Collections = ['anime', 'movie', 'show'];
 
   /**
-   * The name of the status file.
+   * The path of the status file. Default is `./tmp/status.json`.
    * @type {String}
    */
   static StatusPath = path.join(tempDir, 'status.json');
 
   /**
-   * The name of the updated file.
+   * The path of the updated file. Default is `./tmp/updated.json`.
    * @type {String}
    */
   static UpdatedPath = path.join(tempDir, 'updated.json');
 
   /**
    * Get the status object.
-   * @returns {String} - The status of the scraping process.
+   * @returns {Promise<String, Error>} - The status of the scraping process.
    */
   static get Status() {
     return new Promise((resolve, reject) => {
@@ -56,7 +56,7 @@ export default class Scraper {
 
   /**
    * Get the updated object.
-   * @returns {String} - The status of the scraping process.
+   * @returns {Promise<Number, Error>} - The status of the scraping process.
    */
   static get Updated() {
     return new Promise((resolve, reject) => {
@@ -68,7 +68,7 @@ export default class Scraper {
   }
 
   /**
-   * Updates the `lastUpdated.json` file.
+   * Updates the `updated.json` file.
    * @param {!Number} updated - The epoch time when the API last
    * started scraping.
    * @returns {undefined}

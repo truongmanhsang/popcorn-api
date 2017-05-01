@@ -29,21 +29,21 @@ import {
 export default class CLI {
 
   /**
-   * The name of the CLI provider.
+   * The name of the CLI provider. Default is `CLI`.
    * @type {String}
    */
   static _Name = 'CLI';
 
   /** Create a cli object. */
   constructor() {
-    // Create a logger object, will be overwritten if the --modus option is
+    // Create a logger object, will be overwritten if the --mode option is
     // invoked.
     Logger.getLogger('winston', false);
 
     // Setup the CLI program.
     program
       .version(`${name} v${version}`)
-      .option('-m, --modus <type>',
+      .option('-m, --mode <type>',
               'Run the API in a particular mode.',
               /^(pretty|quiet|ugly)$/i)
       .option('--content <type>',
@@ -60,7 +60,7 @@ export default class CLI {
     program.on('--help', () => {
       logger.info('  Examples:\n');
       logger.info('    $ popcorn-api -m <pretty|quiet|ugly>');
-      logger.info('    $ popcorn-api --modus <pretty|quiet|ugly>\n');
+      logger.info('    $ popcorn-api --mode <pretty|quiet|ugly>\n');
       logger.info('    $ popcorn-api --content <anime|movie|show>\n');
       logger.info('    $ popcorn-api --provider\n');
       logger.info('    $ popcorn-api -s');
@@ -74,11 +74,11 @@ export default class CLI {
   }
 
   /**
-   * Handle the --modus CLI option.
-   * @param {!String} m - The modus to run the API in.
+   * Handle the --mode CLI option.
+   * @param {!String} m - The mode to run the API in.
    * @returns {undefined}
    */
-  _modus(m) {
+  _mode(m) {
     const start = program.start ? program.start : false;
 
     switch (m) {
@@ -220,7 +220,6 @@ export default class CLI {
         await showProvider.getContent(show);
         process.exit(0);
       } catch (err) {
-        logger.error(err);
         logger.error(`An error occurred: '${err}'`);
         process.exit(1);
       }
@@ -288,7 +287,7 @@ export default class CLI {
   /**
    * Handle the --export CLI option.
    * @param {!String} e - The collection to export.
-   * @returns {Promise<String, String>} - The promise to export a collection.
+   * @returns {Promise<String, undefined>} - The promise to export a collection.
    */
   _export(e) {
     return Util.Instance.exportCollection(e);
@@ -297,7 +296,8 @@ export default class CLI {
   /**
    * Handle the --import CLI option.
    * @param {!String} i - The collection to import.
-   * @returns {Promise<String, String>|undefined} - The promise to import a
+   * @throws {Error} - Error: no such file found for 'JSON_FILE'
+   * @returns {Promise<String, undefined>|undefined} - The promise to import a
    * collection.
    */
   _import(i) {
@@ -327,8 +327,8 @@ export default class CLI {
    * @returns {undefined}
    */
   run() {
-    if (program.modus) {
-      return this._modus(program.modus);
+    if (program.mode) {
+      return this._mode(program.mode);
     } else if (program.content) {
       return this._content(program.content);
     } else if (program.provider) {

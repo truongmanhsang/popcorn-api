@@ -59,6 +59,6 @@ const ProviderConfig = mongoose.model('ProviderConfig', _ProviderConfigSchema);
 
 /**
  * A model object for provider configuration.
- * @type {Provider}
+ * @type {ProviderConfig}
  */
 export default ProviderConfig;

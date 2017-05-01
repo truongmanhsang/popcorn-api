@@ -25,6 +25,7 @@ export default class BaseContentController extends IContentController {
 
   /**
    * The amount of objects show per page. Default is `50`.
+   * @protected
    * @type {Number}
    */
   _pageSize = 50;
@@ -39,7 +40,7 @@ export default class BaseContentController extends IContentController {
 
     /**
      * The model for the content controller.
-     * @type {Object}
+     * @type {AnimeMovie|AnimeShow|Movie|Show}
      */
     this._model = model;
   }

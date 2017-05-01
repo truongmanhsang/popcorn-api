@@ -7,6 +7,7 @@ export default class AnimeController extends BaseContentController {
 
   /**
    * Object used for the projection of anime.
+   * @protected
    * @type {Object}
    */
   _projection = {

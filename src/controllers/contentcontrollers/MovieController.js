@@ -7,6 +7,7 @@ export default class MovieController extends BaseContentController {
 
   /**
    * Object used for the projection of movies.
+   * @protected
    * @type {Object}
    */
   _projection = {

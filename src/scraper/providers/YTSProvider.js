@@ -24,6 +24,7 @@ export default class YTSProvider extends MovieProvider {
   /**
    * Extract movie information based from a YTS object.
    * @override
+   * @protected
    * @param {!Object} torrent - The torrent to extract the movie information
    * from.
    * @param {!String} [lang=en] - The language of the torrent.
@@ -60,6 +61,7 @@ export default class YTSProvider extends MovieProvider {
   /**
    * Get movie info from a given torrent.
    * @override
+   * @protected
    * @param {!Object} torrent - A torrent object to extract movie information
    * from.
    * @param {!String} [lang=en] - The language of the torrent.

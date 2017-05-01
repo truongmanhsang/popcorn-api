@@ -17,6 +17,7 @@ export default class IProvider {
   /**
    * Default method to extract content.
    * @abstract
+   * @protected
    * @throws {Error} - Using default method: '_extractContent'.
    * @returns {undefined}
    */
@@ -27,6 +28,7 @@ export default class IProvider {
   /**
    * Default method to get content data.
    * @abstract
+   * @protected
    * @throws {Error} - Using default method: '_getContentData'.
    * @returns {undefined}
    */
@@ -47,6 +49,7 @@ export default class IProvider {
   /**
    * Default method to get all content.
    * @abstract
+   * @protected
    * @throws {Error} - Using default method: '_getAllContent'.
    * @returns {undefined}
    */
@@ -57,6 +60,7 @@ export default class IProvider {
   /**
    * Default method to get all torrents.
    * @abstract
+   * @protected
    * @throws {Error} - Using default method: '_getAllTorrents'.
    * @returns {undefined}
    */

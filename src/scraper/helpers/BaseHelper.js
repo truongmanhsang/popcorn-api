@@ -10,29 +10,32 @@ export default class BaseHelper extends IHelper {
 
   /**
    * The default image link.
+   * @protected
    * @type {String}
    */
   static _Holder = 'images/posterholder.png';
 
   /**
    * The default image object.
+   * @protected
    * @type {Object}
    */
   _defaultImages = {
     banner: BaseHelper._Holder,
     fanart: BaseHelper._Holder,
-    poster: BaseHelper._Holder,
-    provider: 'default'
+    poster: BaseHelper._Holder
   };
 
   /**
    * The API factory.
+   * @protected
    * @type {ApiFactory}
    */
   _apiFactory = FactoryProducer.getFactory('api');
 
   /**
    * A configured Fanart API.
+   * @protected
    * @type {Fanart}
    * @see https://github.com/vankasteelj/trakt.tv
    */
@@ -40,6 +43,7 @@ export default class BaseHelper extends IHelper {
 
   /**
    * A configured TMDB API.
+   * @protected
    * @type {TMDB}
    * @see https://github.com/sarathkcm/TheMovieDBClient
    */
@@ -47,6 +51,7 @@ export default class BaseHelper extends IHelper {
 
   /**
    * A configured Trakt API.
+   * @protected
    * @type {Trakt}
    * @see https://github.com/vankasteelj/trakt.tv
    */
@@ -77,8 +82,9 @@ export default class BaseHelper extends IHelper {
   /**
    * Method to check the given images against the default ones.
    * @override
+   * @protected
    * @param {Object} images - The images to check.
-   * @throws {Error} - test
+   * @throws {Error} - An image could not been found!
    * @returns {Object|undefined} - Throws an error if the given images are the
    * same, otherwise it will return the given images.
    */

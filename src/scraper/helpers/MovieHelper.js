@@ -179,6 +179,7 @@ export default class MovieHelper extends BaseHelper {
   /**
    * Get movie images.
    * @override
+   * @protected
    * @param {!Number} tmdb - The tmdb id of the movie you want the images from.
    * @param {!String} imdb - The imdb id of the movie you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.

@@ -7,6 +7,7 @@ export default class ShowController extends BaseContentController {
 
   /**
    * Object used for the projection of shows.
+   * @protected
    * @type {Object}
    */
   _projection = {

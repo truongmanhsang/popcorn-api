@@ -4,6 +4,10 @@ import asyncq from 'async-q';
 import BaseProvider from './BaseProvider';
 import showmap from './maps/showmap.json';
 
+/**
+ * The default regular expressions used to extract data.
+ * @type {Array<Object>}
+ */
 const defaultRegexps = [{
   regex: /(.*).[sS](\d{2})[eE](\d{2})/i,
   dateBased: false
@@ -46,6 +50,7 @@ export default class ShowProvider extends BaseProvider {
   /**
    * Extract show information based on a regex.
    * @override
+   * @protected
    * @param {!Object} torrent - The torrent to extract the show information
    * from.
    * @param {!RegExp} r - The regex to extract the show information.
@@ -122,6 +127,7 @@ export default class ShowProvider extends BaseProvider {
   /**
    * Puts all the found shows from the torrents in an array.
    * @override
+   * @protected
    * @param {!Array<Object>} torrents - A list of torrents to extract show
    * information.
    * @returns {Promise<Array<Object>, undefined>} - A list of objects with show

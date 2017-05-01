@@ -5,6 +5,10 @@ import bytes from 'bytes';
 import BaseProvider from './BaseProvider';
 import moviemap from './maps/moviemap.json';
 
+/**
+ * The default regular expressions used to extract data.
+ * @type {Array<Object>}
+ */
 const defaultRegexps = [{
   regex: /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/i
 }, {
@@ -38,6 +42,7 @@ export default class MovieProvider extends BaseProvider {
   /**
    * Extract movie information based on a regex.
    * @override
+   * @protected
    * @param {!Object} torrent - The torrent to extract the movie information
    * from.
    * @param {!RegExp} r - The regex to extract the movie information.
@@ -108,6 +113,7 @@ export default class MovieProvider extends BaseProvider {
   /**
    * Puts all the found movies from the torrents in an array.
    * @override
+   * @protected
    * @param {!Array<Object>} torrents - A list of torrents to extract movie
    * information.
    * @param {!String} [lang=en] - The language of the torrent.

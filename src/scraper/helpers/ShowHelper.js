@@ -306,6 +306,7 @@ export default class ShowHelper extends BaseHelper {
   /**
    * Get TV show images.
    * @override
+   * @protected
    * @param {!Number} tmdb - The tmdb id of the show you want the images from.
    * @param {!Number} tvdb - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.

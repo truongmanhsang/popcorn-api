@@ -60,7 +60,7 @@ export default class IndexController {
    * Displays the 'popcorn-api.log' file.
    * @param {!Object} req - The ExpressJS request object.
    * @param {!Object} res - The ExpressJS response object.
-   * @returns {undefined} - The content of the log file.
+   * @returns {Object} - The content of the log file.
    */
   getErrorLog(req, res) {
     const file = `${name}.log`;

@@ -12,7 +12,7 @@ export default class Context {
 
   /**
    * Execute the current provider strategy.
-   * @returns {undefined}
+   * @returns {Promise<Array<Object>, undefined>} - The result of the provider.
    */
   execute() {
     return this._provider.search();

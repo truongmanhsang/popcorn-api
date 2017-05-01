@@ -33,9 +33,10 @@ export default class BaseProvider extends IProvider {
 
   /**
    * The maximum web requests can take place at the same time. Default is `2`.
+   * @protected
    * @type {Number}
    */
-  static MaxWebRequest = 2;
+  static _MaxWebRequest = 2;
 
   /**
    * Create a BaseProvider class.
@@ -96,7 +97,7 @@ export default class BaseProvider extends IProvider {
   }
 
   /**
-   * Get the name of the provider
+   * Get the name of the provider.
    * @returns {String} - The name of the provider.
    */
   get name() {
@@ -139,6 +140,7 @@ export default class BaseProvider extends IProvider {
   /**
    * Get content info from a given torrent.
    * @override
+   * @protected
    * @param {!Object} torrent - A torrent object to extract content information
    * from.
    * @param {!String} [lang=en] - The language of the torrent.
@@ -159,6 +161,7 @@ export default class BaseProvider extends IProvider {
   /**
    * Get all the torrents of a given torrent provider.
    * @override
+   * @protected
    * @param {!Number} totalPages - The total pages of the query.
    * @returns {Promise<Array<Object>, undefined>} - A list of all the queried
    * torrents.
@@ -171,7 +174,7 @@ export default class BaseProvider extends IProvider {
 
       logger.info(`${this._name}: Started searching ${this._name} on page ${page + 1} out of ${totalPages}`);
       const res = await this._api.search(this._query);
-      const data = res.results ? res.results : res.data ? data.movies : [];
+      const data = res.results ? res.results : res.data ? res.data.movies : [];
 
       torrents = torrents.concat(data);
     }).then(() => {
@@ -205,7 +208,7 @@ export default class BaseProvider extends IProvider {
       const { language } = this._query;
       const allContent = await this._getAllContent(torrents, language);
 
-      return await asyncq.mapLimit(allContent, BaseProvider.MaxWebRequest,
+      return await asyncq.mapLimit(allContent, BaseProvider._MaxWebRequest,
         content => this.getContent(content)
       );
     } catch (err) {
