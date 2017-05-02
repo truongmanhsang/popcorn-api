@@ -130,12 +130,12 @@ export default class BaseContentController extends IContentController {
         'rating.percentage': order,
         'rating.votes': order
       };
-      if (sort.match(/trending/i)) $sort = {
-        'rating.watching': order
-      };
-      if (sort.match(/released/i)) $sort = {
+      if (sort.match(/(released|updated)/i)) $sort = {
         latest_episode: order,
         released: order
+      };
+      if (sort.match(/trending/i)) $sort = {
+        'rating.watching': order
       };
       if (sort.match(/year/i)) $sort = {
         year: order
