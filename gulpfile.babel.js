@@ -9,6 +9,7 @@ import babel from 'gulp-babel';
  */
 function build() {
   gulp.src('src/**/*.js').pipe(babel()).pipe(gulp.dest('build'));
+  gulp.src('src/**/*.json').pipe(gulp.dest('build'));
 }
 
 // Delete the `build` directory.
