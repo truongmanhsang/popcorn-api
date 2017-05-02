@@ -75,7 +75,7 @@ export default class IndexController {
       });
     }
 
-    return res.json({
+    return res.status(500).json({
       error: `Could not find file: '${filePath}'`
     });
   }
