@@ -340,6 +340,7 @@ export default class ShowHelper extends BaseHelper {
 
         return {
           _id: imdb,
+          imdb_id: imdb,
           title: traktShow.title,
           year: traktShow.year,
           slug: slug,

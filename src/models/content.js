@@ -13,6 +13,7 @@ export default {
       unique: true
     }
   },
+  imdb_id: String,
   title: String,
   year: Number,
   slug: String,
