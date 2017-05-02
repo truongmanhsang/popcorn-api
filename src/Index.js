@@ -16,7 +16,6 @@ import Logger from './config/Logger';
 import Routes from './config/Routes';
 import Scraper from './Scraper';
 import Setup from './config/Setup';
-import { name } from '../package.json';
 
 /**
  * Class for starting the API.
@@ -132,15 +131,6 @@ export default class Index {
   }
 
   /**
-   * Reset the default log file.
-   * @returns {undefined}
-   */
-  static _resetLog() {
-    const logFile = path.join(tempDir, `${name}.log`);
-    if (fs.existsSync(logFile)) fs.unlinkSync(logFile);
-  }
-
-  /**
    * Method to start the API.
    * @param {?Boolean} [start=true] - Start the scraping.
    * @returns {undefined}
@@ -149,9 +139,6 @@ export default class Index {
     if (cluster.isMaster) { // Check is the cluster is the master
       // Setup the temporary directory
       Index._createTemp();
-
-      // Clear the log files from the temp directory.
-      Index._resetLog();
 
       // Fork workers.
       for (let i = 0;i < Math.min(os.cpus().length, Index._Workers);i++)
