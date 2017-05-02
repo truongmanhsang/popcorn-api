@@ -87,6 +87,7 @@ export default class CLI {
       break;
     case 'quiet':
       new Index({
+        pretty: false,
         quiet: true,
         start
       });

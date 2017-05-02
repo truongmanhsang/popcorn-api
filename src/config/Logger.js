@@ -140,13 +140,16 @@ export default class Logger {
    */
   static _createLogger(pretty, quiet) {
     if (!global.logger) global.logger = {};
-    if (quiet) return;
+    const winston = Logger._createWinston();
 
     Object.keys(Logger._Levels).map(level => {
-      const winston = Logger._createWinston();
-      global.logger[level] = pretty
-                ? msg => winston[level](msg)
-                : msg => console[level](msg); // eslint-disable-line no-console
+      if (!quiet) {
+        return global.logger[level] = pretty
+                  ? msg => winston[level](msg)
+                  : msg => console[level](msg); // eslint-disable-line no-console
+      }
+
+      return global.logger[level] = () => {};
     });
   }
 
