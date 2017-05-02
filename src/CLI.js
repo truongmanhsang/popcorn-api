@@ -47,7 +47,7 @@ export default class CLI {
               'Run the API in a particular mode.',
               /^(pretty|quiet|ugly)$/i)
       .option('--content <type>',
-              'Add content to the MongoDB database (anime|show|movie).',
+              'Add content to the MongoDB database (animemovie|animeshow|movie|show).',
               /^(animemovie|animeshow|movie|show)$/i, false)
       .option('--provider', 'Add provider configurations')
       .option('-s, --start', 'Start the scraping process')
@@ -61,7 +61,7 @@ export default class CLI {
       logger.info('  Examples:\n');
       logger.info('    $ popcorn-api -m <pretty|quiet|ugly>');
       logger.info('    $ popcorn-api --mode <pretty|quiet|ugly>\n');
-      logger.info('    $ popcorn-api --content <anime|movie|show>\n');
+      logger.info('    $ popcorn-api --content <animemovie|animeshow|movie|show>\n');
       logger.info('    $ popcorn-api --provider\n');
       logger.info('    $ popcorn-api -s');
       logger.info('    $ popcorn-api --start\n');
