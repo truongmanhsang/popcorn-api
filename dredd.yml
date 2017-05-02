@@ -6,7 +6,7 @@ dry-run: null
 hookfiles: ./test/hooks.js
 language: nodejs
 sandbox: false
-server: node ./build/popcorn-api.js --server
+server: node ./build/popcorn-api.js -m quiet
 server-wait: 10
 init: false
 names: false

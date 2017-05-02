@@ -1,5 +1,6 @@
 {
   "_id": "UniqueString1",
+  "imdb_id": "UniqueString1",
   "title": "String",
   "year": 0,
   "slug": "String",
