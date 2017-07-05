@@ -17,6 +17,7 @@ export default class ShowController {
       tvdb_id: 1,
       title: 1,
       year: 1,
+      synopsis: 1,
       images: 1,
       slug: 1,
       num_seasons: 1,
@@ -84,24 +85,14 @@ export default class ShowController {
       if (!data.order) data.order = -1;
 
       let sort = {
+        "score": { "$meta": "textScore" },
         "rating.votes": parseInt(data.order, 10),
         "rating.percentage": parseInt(data.order, 10),
         "rating.watching": parseInt(data.order, 10)
       };
 
       if (data.keywords) {
-        const words = data.keywords.split(" ");
-        let regex = "^";
-
-        for (let w in words) {
-          words[w] = words[w].replace(/[^a-zA-Z0-9]/g, "");
-          regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
-        }
-
-        query.title = {
-          $regex: new RegExp(`${regex}.*`),
-          $options: "gi"
-        };
+        query.$text = { $search : data.keywords }
       }
 
       if (data.sort) {
@@ -129,9 +120,9 @@ export default class ShowController {
       }
 
       return Show.aggregate([{
-          $sort: sort
-        }, {
           $match: query
+        }, {
+          $sort: sort
         }, {
           $project: ShowController._projections
         }, {
@@ -140,7 +131,7 @@ export default class ShowController {
           $limit: pageSize
         }]).exec()
         .then(docs => res.json(docs))
-        .catch(err => res.jfson(err));
+        .catch(err => res.json(err));
     }
   }
 

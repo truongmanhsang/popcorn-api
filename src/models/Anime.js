@@ -5,10 +5,7 @@ import mongoose from "mongoose";
 const AnimeSchema = new mongoose.Schema({
   _id: {
     type: String,
-    required: true,
-    index: {
-      unique: true
-    }
+    required: true
   },
   mal_id: String,
   title: String,
@@ -39,6 +36,8 @@ const AnimeSchema = new mongoose.Schema({
   genres: [],
   episodes: []
 });
+
+AnimeSchema.index({ title: "text", synopsis: "text", _id: 1 });
 
 // Create the anime model.
 const Anime = mongoose.model("Anime", AnimeSchema);

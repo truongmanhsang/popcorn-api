@@ -5,10 +5,7 @@ import mongoose from "mongoose";
 const MovieSchema = new mongoose.Schema({
   _id: {
     type: String,
-    required: true,
-    index: {
-      unique: true
-    }
+    required: true
   },
   imdb_id: String,
   title: String,
@@ -39,6 +36,8 @@ const MovieSchema = new mongoose.Schema({
   certification: String,
   torrents: {}
 });
+
+MovieSchema.index({ title: "text", synopsis: "text", _id: 1 });
 
 // Create the movie model.
 const Movie = mongoose.model("Movie", MovieSchema);
