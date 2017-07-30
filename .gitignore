@@ -33,3 +33,6 @@ tmp
 
 # Transpiled ES5 code
 build
+
+# Imported flow-typed
+flow-typed/npm/*
