@@ -45,8 +45,9 @@ export default class Routes {
   /**
    * Setup ExpressJS routing.
    * @param {!Express} app - The ExpresssJS application.
+   * @returns {undefined}
    */
-  constructor(app) {
+  static setupRoutes(app: Express): void {
     app.get('/status',
       (req, res) => Routes._IndexController.getIndex(req, res))
     app.get('/logs/error',

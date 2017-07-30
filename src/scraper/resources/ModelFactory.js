@@ -1,8 +1,9 @@
 // Import the necessary modules.
 import IAbstractFactory from './IAbstractFactory'
+import AnimeMovie from '../../models/AnimeMovie'
+import AnimeShow from '../../models/AnimeShow'
 import Movie from '../../models/Movie'
 import Show from '../../models/Show'
-import { AnimeMovie, AnimeShow } from '../../models/Anime'
 
 /**
  * Class for getting a model object.

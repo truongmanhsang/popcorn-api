@@ -385,7 +385,6 @@ export default class ShowHelper extends BaseHelper {
         const { imdb, slug, tvdb } = traktShow.ids
 
         return {
-          _id: imdb,
           imdb_id: imdb,
           title: traktShow.title,
           year: traktShow.year,

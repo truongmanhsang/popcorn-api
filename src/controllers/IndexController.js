@@ -2,6 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
+import Anime from '../models/AnimeShow'
 import AnimeController from './contentcontrollers/AnimeController'
 import Movie from '../models/Movie'
 import MovieController from './contentcontrollers/MovieController'
@@ -9,7 +10,6 @@ import Scraper from '../Scraper'
 import Show from '../models/Show'
 import ShowController from './contentcontrollers/ShowController'
 import Util from '../Util'
-import { AnimeShow as Anime } from '../models/Anime'
 import {
   name,
   repository,

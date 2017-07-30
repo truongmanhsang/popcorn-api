@@ -1,5 +1,5 @@
 // Import the necessary modules.
-import { AnimeShow as Anime } from '../../models/Anime'
+import Anime from '../../models/AnimeShow'
 import BaseContentController from './BaseContentController'
 
 /**

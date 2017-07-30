@@ -47,6 +47,7 @@ const _language = {
 
 /**
  * The schema used by `prompt` insert a movie.
+ * @ignore
  * @type {Object}
  */
 export const movieSchema = {
@@ -96,6 +97,7 @@ const _dateBased = {
 
 /**
  * The schema used by `prompt` insert a show.
+ * @ignore
  * @type {Object}
  */
 export const showSchema = {
@@ -124,6 +126,7 @@ const _confirm = {
 
 /**
  * The schema used by `prompt` to confirm an import.
+ * @ignore
  * @type {Object}
  */
 export const importSchema = {
@@ -200,6 +203,7 @@ const _query = {
 
 /**
  * The schema used by `prompt` to insert a provider configuration.
+ * @ignore
  * @type {Object}
  */
 export const providerSchema = {

@@ -227,7 +227,6 @@ export default class MovieHelper extends BaseHelper {
         const { imdb, slug, tmdb } = traktMovie.ids
 
         return {
-          _id: imdb,
           imdb_id: imdb,
           title: traktMovie.title,
           year: traktMovie.year,
