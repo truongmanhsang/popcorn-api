@@ -1,8 +1,8 @@
 // Import the neccesary modules.
-import mongoose from 'mongoose';
-import { ItemType } from 'butter-provider';
+import mongoose from 'mongoose'
+import { ItemType } from 'butter-provider'
 
-import content from './content';
+import content from './content'
 
 /**
  * The show schema used by mongoose.
@@ -36,13 +36,13 @@ export const ShowSchema = new mongoose.Schema(Object.assign({}, content, {
     first_aired: Number,
     torrents: {}
   }]
-}));
+}))
 
 // Create the show model.
-const Show = mongoose.model('Show', ShowSchema);
+const Show = mongoose.model('Show', ShowSchema)
 
 /**
  * A model object for shows.
  * @type {Show}
  */
-export default Show;
+export default Show

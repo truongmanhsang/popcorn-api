@@ -11,7 +11,7 @@ export default class IAbstractFactory {
    * @returns {undefined}
    */
   getApi() {
-    throw new Error('Using default method: \'getApi\'');
+    throw new Error('Using default method: \'getApi\'')
   }
 
   /**
@@ -21,7 +21,7 @@ export default class IAbstractFactory {
    * @returns {undefined}
    */
   getHelper() {
-    throw new Error('Using default method: \'getHelper\'');
+    throw new Error('Using default method: \'getHelper\'')
   }
 
   /**
@@ -31,7 +31,7 @@ export default class IAbstractFactory {
    * @returns {undefined}
    */
   getModel() {
-    throw new Error('Using default method: \'getModel\'');
+    throw new Error('Using default method: \'getModel\'')
   }
 
 }

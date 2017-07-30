@@ -8,7 +8,7 @@ const _imdb = {
   pattern: /^(tt\d{7}|)|^(.*)/i,
   message: 'Not a valid imdb id.',
   required: true
-};
+}
 
 /**
  * The torrent property.
@@ -19,7 +19,7 @@ const _torrent = {
   type: 'string',
   message: 'Not a valid torrent.',
   required: true
-};
+}
 
 /**
  * The quality property.
@@ -31,7 +31,7 @@ const _quality = {
   pattern: /^(480p|720p|1080p)/i,
   message: 'Not a valid quality.',
   required: true
-};
+}
 
 /**
  * The language property.
@@ -43,7 +43,7 @@ const _language = {
   pattern: /^([a-zA-Z]{2})/i,
   message: 'Not a valid language',
   required: true
-};
+}
 
 /**
  * The schema used by `prompt` insert a movie.
@@ -56,7 +56,7 @@ export const movieSchema = {
     quality: _quality,
     language: _language
   }
-};
+}
 
 /**
  * The season property.
@@ -68,7 +68,7 @@ const _season = {
   pattern: /^(\d+)/i,
   message: 'Not a valid season.',
   required: true
-};
+}
 
 /**
  * The episode property.
@@ -80,8 +80,7 @@ const _episode = {
   pattern: /^(\d+)/i,
   message: 'Not a valid episode.',
   required: true
-};
-
+}
 
 /**
  * The dateBased property.
@@ -93,7 +92,7 @@ const _dateBased = {
   pattern: /^(true|false)i/,
   message: 'Not a valid value for date based.',
   required: true
-};
+}
 
 /**
  * The schema used by `prompt` insert a show.
@@ -108,7 +107,7 @@ export const showSchema = {
     episode: _episode,
     dateBased: _dateBased
   }
-};
+}
 
 /**
  * The confirm property.
@@ -121,7 +120,7 @@ const _confirm = {
   message: 'Type yes/no',
   required: true,
   default: 'no'
-};
+}
 
 /**
  * The schema used by `prompt` to confirm an import.
@@ -131,7 +130,7 @@ export const importSchema = {
   properties: {
     confirm: _confirm
   }
-};
+}
 
 /**
  * The api property.
@@ -143,7 +142,7 @@ const _api = {
   pattern: /^(extratorrent|eztv|horriblesubs|kat|nyaa|yts)$/i,
   message: 'The api must be either extratorrent, eztv,horriblesubs, kat, nyaa or yts',
   required: true
-};
+}
 
 /**
  * The modelType property.
@@ -155,7 +154,7 @@ const _modelType = {
   pattern: /^(animemovie|animeshow|movie|show)$/i,
   message: 'modelType must be either animemovie, animeshow, movie or show',
   required: true
-};
+}
 
 /**
  * The name property.
@@ -165,7 +164,7 @@ const _name = {
   description: 'The name of the provider configuration (can be anything)',
   type: 'string',
   required: true
-};
+}
 
 /**
  * The type property.
@@ -177,7 +176,7 @@ const _type = {
   pattern: /^(movie|tvshow)$/i,
   message: 'type must be either movie or tvshow.',
   required: true
-};
+}
 
 /**
  * The class property.
@@ -187,7 +186,7 @@ const _class = {
   description: 'The name of the class which will be imported before scraping',
   type: 'string',
   required: true
-};
+}
 
 /**
  * The query property.
@@ -197,7 +196,7 @@ const _query = {
   description: 'The query used by the api, should be JSON',
   type: 'string',
   minItems: 0
-};
+}
 
 /**
  * The schema used by `prompt` to insert a provider configuration.
@@ -212,4 +211,4 @@ export const providerSchema = {
     class: _class,
     query: _query
   }
-};
+}

@@ -1,14 +1,14 @@
 // Import the neccesary modules.
-import asyncq from 'async-q';
-import fs from 'fs';
-import path from 'path';
+import asyncq from 'async-q'
+import fs from 'fs'
+import path from 'path'
 
-import Context from './scraper/Context';
-import ProviderConfig from './models/ProviderConfig';
-import Util from './Util';
+import Context from './scraper/Context'
+import ProviderConfig from './models/ProviderConfig'
+import Util from './Util'
 
 // The path to the temporary directory.
-global.tempDir = path.join(process.cwd(), 'tmp');
+global.tempDir = path.join(process.cwd(), 'tmp')
 
 /** Class for Initiating the scraping process. */
 export default class Scraper {
@@ -38,10 +38,13 @@ export default class Scraper {
   static get Status() {
     return new Promise((resolve, reject) => {
       return fs.readFile(Scraper.StatusPath, 'utf8', (err, res) => {
-        if (err) return reject(err);
-        return resolve(res);
-      });
-    });
+        if (err) {
+          return reject(err)
+        }
+
+        return resolve(res)
+      })
+    })
   }
 
   /**
@@ -51,7 +54,7 @@ export default class Scraper {
    * @returns {undefined}
    */
   static set Status(status) {
-    fs.writeFile(Scraper.StatusPath, status, 'utf8', () => {});
+    fs.writeFile(Scraper.StatusPath, status, 'utf8', () => {})
   }
 
   /**
@@ -61,10 +64,13 @@ export default class Scraper {
   static get Updated() {
     return new Promise((resolve, reject) => {
       return fs.readFile(Scraper.UpdatedPath, 'utf8', (err, res) => {
-        if (err) return reject(err);
-        return resolve(Number(res));
-      });
-    });
+        if (err) {
+          return reject(err)
+        }
+
+        return resolve(Number(res))
+      })
+    })
   }
 
   /**
@@ -74,7 +80,7 @@ export default class Scraper {
    * @returns {undefined}
    */
   static set Updated(updated) {
-    fs.writeFile(Scraper.UpdatedPath, updated, 'utf8', () => {});
+    fs.writeFile(Scraper.UpdatedPath, updated, 'utf8', () => {})
   }
 
   /**
@@ -82,9 +88,9 @@ export default class Scraper {
    * @returns {undefined}
    */
   static scrape() {
-    Scraper.Updated = Math.floor(new Date().getTime() / 1000);
+    Scraper.Updated = Math.floor(new Date().getTime() / 1000)
 
-    const context = new Context();
+    const context = new Context()
 
     /**
      * NOTE: `.sort({ $natural: <order> })` sorts the provider configs based on
@@ -95,20 +101,20 @@ export default class Scraper {
     }).exec().then(pConfigs => {
       return asyncq.eachSeries(pConfigs, async pConfig => {
         // XXX: import(``).default does not work.
-        let Provider = await import(`./scraper/providers/${pConfig.class}`);
-        Provider = Provider.default;
+        let Provider = await import(`./scraper/providers/${pConfig.class}`)
+        Provider = Provider.default
 
-        const provider = new Provider(pConfig);
-        context.provider = provider;
-        Scraper.Status = provider.name;
-        return await context.execute();
-      });
-    }).then(() => Scraper.Status = 'Idle')
-      .then(() => asyncq.eachSeries(
-        Scraper._Collections,
-        collection => Util.Instance.exportCollection(collection)
-      ))
-      .catch(err => logger.error(`Error while scraping: ${err}`));
+        const provider = new Provider(pConfig)
+        context.provider = provider
+        Scraper.Status = provider.name
+        return context.execute()
+      })
+    }).then(() => {
+      Scraper.Status = 'Idle'
+    }).then(() => asyncq.eachSeries(
+      Scraper._Collections,
+      collection => Util.Instance.exportCollection(collection)
+    )).catch(err => logger.error(`Error while scraping: ${err}`))
   }
 
 }

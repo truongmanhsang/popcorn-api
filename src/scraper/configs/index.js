@@ -1,22 +1,22 @@
 /* eslint-disable no-console */
 // Import the neccesary modules.
-import asyncq from 'async-q';
+import asyncq from 'async-q'
 
-import ProviderConfig from '../../models/ProviderConfig';
-import Setup from '../../config/Setup';
+import ProviderConfig from '../../models/ProviderConfig'
+import Setup from '../../config/Setup'
 
-import horriblesubsanime from './horriblesubsanime.json';
-import nyaaanime from './nyaaanime.json';
+import horriblesubsanime from './horriblesubsanime.json'
+import nyaaanime from './nyaaanime.json'
 
-import etmovies from './etmovies.json';
+import etmovies from './etmovies.json'
 // import katmovies from './katmovies.json';
-import ytsmovies from './ytsmovies.json';
+import ytsmovies from './ytsmovies.json'
 
-import etshows from './etshows.json';
-import eztvshows from './eztvshows.json';
+import etshows from './etshows.json'
+import eztvshows from './eztvshows.json'
 // import katshows from './katshows.json';
 
-Setup.connectMongoDB();
+Setup.connectMongoDB()
 
 /**
  * NOTE: The order of the json arrays is important. It will determine at what
@@ -33,7 +33,7 @@ const providers = [].concat(
   // katmovies,
   horriblesubsanime,
   nyaaanime
-);
+)
 
 /**
  * NOTE: Again the order of the promises are important. It will determine at
@@ -49,14 +49,12 @@ asyncq.eachSeries(providers, provider => {
     _id: provider.name
   }, provider, {
     upsert: true,
-    new : true
-  }).exec();
+    new: true
+  }).exec()
+}).then(res => {
+  console.log(`Inserted: '${res.length}' provider configurations.`)
+  process.exit(0)
+}).catch(err => {
+  console.error(`Oops something went wrong: ${err}`)
+  process.exit(1)
 })
-  .then(res => {
-    console.log(`Inserted: '${res.length}' provider configurations.`);
-    process.exit(0);
-  })
-  .catch(err => {
-    console.error(`Oops something went wrong: ${err}`);
-    process.exit(1);
-  });

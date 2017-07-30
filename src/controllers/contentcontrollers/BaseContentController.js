@@ -1,5 +1,5 @@
 // Import the neccesary modules.
-import IContentController from './IContentController';
+import IContentController from './IContentController'
 
 /**
  * Base class for getting content from endpoints.
@@ -36,13 +36,13 @@ export default class BaseContentController extends IContentController {
    * content controller.
    */
   constructor(model) {
-    super();
+    super()
 
     /**
      * The model for the content controller.
      * @type {AnimeMovie|AnimeShow|Movie|Show}
      */
-    this._model = model;
+    this._model = model
   }
 
   /**
@@ -54,14 +54,15 @@ export default class BaseContentController extends IContentController {
    */
   getContents(req, res) {
     return this._model.count(BaseContentController.Query).exec().then(count => {
-      const pages = Math.ceil(count / this._pageSize);
-      const docs = [];
+      const pages = Math.ceil(count / this._pageSize)
+      const docs = []
 
-      for (let i = 1;i < pages + 1;i++)
-        docs.push(`${this._model.collection.name}/${i}`);
+      for (let i = 1; i < pages + 1; i++) {
+        docs.push(`${this._model.collection.name}/${i}`)
+      }
 
-      return res.json(docs);
-    }).catch(err => res.json(err));
+      return res.json(docs)
+    }).catch(err => res.json(err))
   }
 
   /**
@@ -83,63 +84,74 @@ export default class BaseContentController extends IContentController {
         }
       }]).exec()
         .then(docs => res.json(docs))
-        .catch(err => res.json(err));
+        .catch(err => res.json(err))
     }
 
-    const page = !isNaN(req.params.page) ? req.params.page - 1 : 0;
-    const offset = page * this._pageSize;
-    const query = Object.assign({}, BaseContentController.Query);
-    const order = req.query.order ? parseInt(req.query.order, 10) : -1;
-    const { keywords, sort } = req.query;
+    const page = !isNaN(req.params.page) ? req.params.page - 1 : 0
+    const offset = page * this._pageSize
+    const query = Object.assign({}, BaseContentController.Query)
+    const order = req.query.order ? parseInt(req.query.order, 10) : -1
+    const { keywords, sort } = req.query
 
-    let { genre } = req.query,
-      $sort = {
-        'rating.votes': order,
-        'rating.percentage': order,
-        'rating.watching': order
-      };
+    let { genre } = req.query
+    let $sort = {
+      'rating.votes': order,
+      'rating.percentage': order,
+      'rating.watching': order
+    }
 
     if (genre && !genre.match(/all/i)) {
       // XXX: Bit of a hack, should be handled by the client.
-      if (genre.match(/science[-\s]fiction/i) || genre.match(/sci[-\s]fi/i))
-        genre = 'science-fiction';
+      if (genre.match(/science[-\s]fiction/i) || genre.match(/sci[-\s]fi/i)) {
+        genre = 'science-fiction'
+      }
 
-      query.genres = genre.toLowerCase();
+      query.genres = genre.toLowerCase()
     }
 
     if (keywords) {
-      const words = keywords.split(' ');
-      let regex = '^';
+      const words = keywords.split(' ')
+      let regex = '^'
 
       for (const w in words) {
-        words[w] = words[w].replace(/[^a-zA-Z0-9]/g, '');
-        regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`;
+        words[w] = words[w].replace(/[^a-zA-Z0-9]/g, '')
+        regex += `(?=.*\\b${RegExp.escape(words[w].toLowerCase())}\\b)`
       }
 
       query.title = {
         $regex: new RegExp(`${regex}.*`),
         $options: 'gi'
-      };
+      }
     }
 
     if (sort) {
-      if (sort.match(/name/i)) $sort = {
-        title: order
-      };
-      if (sort.match(/rating/i)) $sort = {
-        'rating.percentage': order,
-        'rating.votes': order
-      };
-      if (sort.match(/(released|updated)/i)) $sort = {
-        latest_episode: order,
-        released: order
-      };
-      if (sort.match(/trending/i)) $sort = {
-        'rating.watching': order
-      };
-      if (sort.match(/year/i)) $sort = {
-        year: order
-      };
+      if (sort.match(/name/i)) {
+        $sort = {
+          title: order
+        }
+      }
+      if (sort.match(/rating/i)) {
+        $sort = {
+          'rating.percentage': order,
+          'rating.votes': order
+        }
+      }
+      if (sort.match(/(released|updated)/i)) {
+        $sort = {
+          latest_episode: order,
+          released: order
+        }
+      }
+      if (sort.match(/trending/i)) {
+        $sort = {
+          'rating.watching': order
+        }
+      }
+      if (sort.match(/year/i)) {
+        $sort = {
+          year: order
+        }
+      }
     }
 
     return this._model.aggregate([{
@@ -154,7 +166,7 @@ export default class BaseContentController extends IContentController {
       $limit: this._pageSize
     }]).exec()
       .then(docs => res.json(docs))
-      .catch(err => res.json(err));
+      .catch(err => res.json(err))
   }
 
   /**
@@ -171,7 +183,7 @@ export default class BaseContentController extends IContentController {
       latest_episode: 0
     }).exec()
       .then(docs => res.json(docs))
-      .catch(err => res.json(err));
+      .catch(err => res.json(err))
   }
 
   /**
@@ -192,7 +204,7 @@ export default class BaseContentController extends IContentController {
       $limit: 1
     }]).exec()
       .then(docs => res.json(docs[0]))
-      .catch(err => res.json(err));
+      .catch(err => res.json(err))
   }
 
 }

@@ -11,7 +11,7 @@ export default class IProvider {
    * @returns {undefined}
    */
   getContent() {
-    throw new Error('Using default method: \'getContent\'');
+    throw new Error('Using default method: \'getContent\'')
   }
 
   /**
@@ -22,7 +22,7 @@ export default class IProvider {
    * @returns {undefined}
    */
   _extractContent() {
-    throw new Error('Using default method: \'_extractContent\'');
+    throw new Error('Using default method: \'_extractContent\'')
   }
 
   /**
@@ -33,7 +33,7 @@ export default class IProvider {
    * @returns {undefined}
    */
   _getContentData() {
-    throw new Error('Using default method: \'_getContentData\'');
+    throw new Error('Using default method: \'_getContentData\'')
   }
 
   /**
@@ -43,7 +43,7 @@ export default class IProvider {
    * @returns {undefined}
    */
   attachTorrent() {
-    throw new Error('Using default method: \'attachTorrent\'');
+    throw new Error('Using default method: \'attachTorrent\'')
   }
 
   /**
@@ -54,7 +54,7 @@ export default class IProvider {
    * @returns {undefined}
    */
   _getAllContent() {
-    throw new Error('Using default method: \'_getAllContent\'');
+    throw new Error('Using default method: \'_getAllContent\'')
   }
 
   /**
@@ -65,7 +65,7 @@ export default class IProvider {
    * @returns {undefined}
    */
   _getAllTorrents() {
-    throw new Error('Using default method: \'_getAllTorrents\'');
+    throw new Error('Using default method: \'_getAllTorrents\'')
   }
 
   /**
@@ -75,7 +75,7 @@ export default class IProvider {
    * @returns {undefined}
    */
   search() {
-    throw new Error('Using default method: \'search\'');
+    throw new Error('Using default method: \'search\'')
   }
 
 }

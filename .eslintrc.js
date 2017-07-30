@@ -1,120 +1,87 @@
+'use strict'
+
 module.exports = {
-  parser: 'babel-eslint',
-  extends: 'eslint:recommended',
-  parserOptions: {
-    ecmaVersion: 7,
-    sourceType: 'module'
-  },
+  extends: [
+    'standard',
+    'plugin:flowtype/recommended'
+  ],
   env: {
-    node: true,
-    es6: true
+    mocha: true
   },
   globals: {
     logger: true,
     tempDir: true
   },
+  plugins: [
+    'flowtype',
+    'json'
+  ],
   rules: {
-    // Possible Errors
-    'no-console': 'warn',
-    'valid-jsdoc': 'warn',
-    // Best Practices
-    'dot-location': ['warn', 'property'],
-    eqeqeq: 'warn',
-    'no-else-return': 'warn',
-    'no-floating-decimal': 'error',
+    'lines-around-directive': ['error', 'always'],
+    'max-depth': ['error', 4],
+    'max-len': ['error', 80, 2, {
+      ignoreComments: true,
+      ignoreTrailingComments: true,
+      ignoreUrls: true,
+      ignoreStrings: true,
+      ignoreTemplateLiterals: true,
+      ignoreRegExpLiterals: true
+    }],
+    'no-bitwise': ['error', {
+      int32Hint: true
+    }],
+    'no-console': 'error',
+    'no-const-assign': 'error',
+    'no-duplicate-imports': 'error',
+    'no-else-return': 'error',
     'no-implicit-coercion': 'error',
-    'no-multi-spaces': 'warn',
-    'no-new-wrappers': 'error',
-    'no-unused-expressions': 'error',
-    'no-useless-call': 'error',
-    'no-useless-escape': 'warn',
-    'prefer-promise-reject-errors': 'warn',
-    radix: 'error',
-    'require-await': 'error',
-    'vars-on-top': 'warn',
-    // Stylistic Issues
-    'array-bracket-spacing': 'warn',
-    'brace-style': 'warn',
-    'comma-dangle': ['warn', {
-        arrays: 'never',
-        objects: 'never',
-        imports: 'never',
-        exports: 'never',
-        functions: 'never',
-    }],
-    'comma-spacing': ['warn', {
-      before: false,
-      after: true
-    }],
-    'comma-style': 'warn',
-    'func-call-spacing': 'warn',
-    'func-style': ['warn', 'declaration'],
-    indent: ['warn', 2],
-    'keyword-spacing': ['warn', {
-      before: true,
-      after: true
-    }],
-    'lines-around-directive': ['warn', {
-      before: 'never',
-      after: 'always'
-    }],
-    'new-cap': 'warn',
-    'new-parens': 'error',
-    'no-bitwise': 'error',
     'no-lonely-if': 'error',
-    'no-multiple-empty-lines': 'warn',
-    'no-tabs': 'warn',
-    'no-trailing-spaces': 'warn',
-    'no-whitespace-before-property': 'error',
-    'one-var': ['warn', {
-      var: 'never',
-      let: 'always',
-      const: 'never'
-    }],
-    'operator-assignment': 'warn',
-    'operator-linebreak': ['warn', 'before'],
-    'padded-blocks': ['warn', {
-      blocks: 'never',
-      classes: 'always',
-      switches: 'never'
-    }],
-    'quote-props': ['warn', 'consistent-as-needed'],
-    quotes: ['warn', 'single'],
-    'require-jsdoc': ['error', {
-        require: {
-            FunctionDeclaration: true,
-            MethodDefinition: true,
-            ClassDeclaration: true,
-            ArrowFunctionExpression: true
-        }
-    }],
-    'space-before-blocks': 'warn',
-    'space-before-function-paren': ['warn', 'never'],
-    'space-in-parens': 'warn',
-    'space-infix-ops': 'warn',
-    'space-unary-ops': [1, {
-      words: true
-    }],
-    'spaced-comment': 'warn',
-    semi: ['warn', 'always'],
-    'semi-spacing': ['warn', {
-      before: false,
-      after: false
-    }],
-    // ECMAScript 6
-    'arrow-spacing': ['warn', {
-      before: true,
-      after: true
-    }],
-    'no-duplicate-imports': 'warn',
     'no-var': 'error',
-    'prefer-arrow-callback': 'warn',
-    'prefer-const': 'error',
-    'prefer-destructuring': ['warn', {
-      'array': false,
-      'object': true
+    'padded-blocks': ['error', {
+      blocks: 'never',
+      switches: 'never',
+      classes: 'always'
     }],
-    'prefer-template': 'warn',
-    'template-curly-spacing': 'error'
+    'prefer-arrow-callback': 'error',
+    'prefer-const': 'error',
+    'prefer-destructuring': ['error', {
+      array: false,
+      object: true
+    }],
+    'prefer-rest-params': 'error',
+    'prefer-spread': 'error',
+    'prefer-template': 'error',
+    'quote-props': ['error', 'consistent-as-needed'],
+    'radix': 'error',
+    'require-await': 'error',
+    'require-jsdoc': ['error', {
+      require: {
+        FunctionDeclaration: true,
+        MethodDefinition: true,
+        ClassDeclaration: true,
+        ArrowFunctionExpression: true
+      }
+    }],
+    'space-before-function-paren': ['error', {
+      anonymous: 'always',
+      named: 'never',
+      asyncArrow: 'always'
+    }],
+    'valid-jsdoc': 'error',
+
+    'import/export': 'error',
+    'import/first': 'error',
+    'import/no-duplicates': 'error',
+    'import/no-webpack-loader-syntax': 'error',
+
+    'node/no-deprecated-api': 0, // 'node/no-deprecated-api': 'error',
+    'node/process-exit-as-throw': 'error',
+
+    'promise/param-names': 'error',
+
+    'standard/array-bracket-even-spacing': ['error', 'either'],
+    'standard/computed-property-even-spacing': ['error', 'even'],
+    'standard/no-callback-literal': 'error',
+    'standard/object-curly-even-spacing': ['error', 'either'],
   }
-};
+}

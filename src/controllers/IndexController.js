@@ -1,20 +1,20 @@
 // Import the neccesary modules.
-import fs from 'fs';
-import path from 'path';
+import fs from 'fs'
+import path from 'path'
 
-import AnimeController from './contentcontrollers/AnimeController';
-import Movie from '../models/Movie';
-import MovieController from './contentcontrollers/MovieController';
-import Scraper from '../Scraper';
-import Show from '../models/Show';
-import ShowController from './contentcontrollers/ShowController';
-import Util from '../Util';
-import { AnimeShow as Anime } from '../models/Anime';
+import AnimeController from './contentcontrollers/AnimeController'
+import Movie from '../models/Movie'
+import MovieController from './contentcontrollers/MovieController'
+import Scraper from '../Scraper'
+import Show from '../models/Show'
+import ShowController from './contentcontrollers/ShowController'
+import Util from '../Util'
+import { AnimeShow as Anime } from '../models/Anime'
 import {
   name,
   repository,
   version
-} from '../../package.json';
+} from '../../package.json'
 
 /** Class for displaying information about the server the API is running on. */
 export default class IndexController {
@@ -34,10 +34,10 @@ export default class IndexController {
   async getIndex(req, res) {
     try {
       const commit = await Util.Instance
-                               .executeCommand('git rev-parse --short HEAD');
-      const totalAnimes = await Anime.count(AnimeController.Query).exec();
-      const totalMovies = await Movie.count(MovieController.Query).exec();
-      const totalShows = await Show.count(ShowController.Query).exec();
+        .executeCommand('git rev-parse --short HEAD')
+      const totalAnimes = await Anime.count(AnimeController.Query).exec()
+      const totalMovies = await Movie.count(MovieController.Query).exec()
+      const totalShows = await Show.count(ShowController.Query).exec()
 
       return res.json({
         repo: repository.url,
@@ -50,9 +50,9 @@ export default class IndexController {
         uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
         version,
         commit
-      });
+      })
     } catch (err) {
-      return res.json(err);
+      return res.json(err)
     }
   }
 
@@ -63,8 +63,8 @@ export default class IndexController {
    * @returns {Object} - The content of the log file.
    */
   getErrorLog(req, res) {
-    const file = `${name}.log`;
-    const filePath = path.join(tempDir, file);
+    const file = `${name}.log`
+    const filePath = path.join(tempDir, file)
 
     if (fs.existsSync(filePath)) {
       return res.sendFile(file, {
@@ -72,12 +72,12 @@ export default class IndexController {
         headers: {
           'Content-Type': 'text/plain; charset=UTF-8'
         }
-      });
+      })
     }
 
     return res.status(500).json({
       error: `Could not find file: '${filePath}'`
-    });
+    })
   }
 
 }

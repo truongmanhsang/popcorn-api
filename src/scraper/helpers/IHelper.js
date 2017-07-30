@@ -12,7 +12,7 @@ export default class IHelper {
    * @returns {undefined}
    */
   _checkImages() {
-    throw new Error('Using default method: \'_checkImages\'');
+    throw new Error('Using default method: \'_checkImages\'')
   }
 
   /**
@@ -23,7 +23,7 @@ export default class IHelper {
    * @returns {undefined}
    */
   _getImages() {
-    throw new Error('Using default method: \'_getImages\'');
+    throw new Error('Using default method: \'_getImages\'')
   }
 
   /**
@@ -33,7 +33,7 @@ export default class IHelper {
    * @returns {undefined}
    */
   getTraktInfo() {
-    throw new Error('Using default method: \'getTraktInfo\'');
+    throw new Error('Using default method: \'getTraktInfo\'')
   }
 
 }

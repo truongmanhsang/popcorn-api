@@ -1,7 +1,7 @@
 // Import the neccesary modules.
-import asyncq from 'async-q';
+import asyncq from 'async-q'
 
-import BaseHelper from './BaseHelper';
+import BaseHelper from './BaseHelper'
 
 /**
  * Class for saving shows.
@@ -17,15 +17,6 @@ export default class ShowHelper extends BaseHelper {
   _tvdb = this._apiFactory.getApi('tvdb');
 
   /**
-   * Create a helper class for show content.
-   * @param {!String} name - The name of the content provider.
-   * @param {!AnimeShow|Show} model - The model to help fill.
-   */
-  constructor(name, model) {
-    super(name, model);
-  }
-
-  /**
    * Update the number of seasons of a given show.
    * @param {!AnimeShow|Show} show - The show to update the number of seasons.
    * @returns {AnimeShow|Show} - A newly updated show.
@@ -36,19 +27,19 @@ export default class ShowHelper extends BaseHelper {
     }, show, {
       new: true,
       upsert: true
-    }).exec();
+    }).exec()
 
     const distinct = await this._model.distinct('episodes.season', {
       _id: saved._id
-    }).exec();
-    saved.num_seasons = distinct.length;
+    }).exec()
+    saved.num_seasons = distinct.length
 
-    return await this._model.findOneAndUpdate({
+    return this._model.findOneAndUpdate({
       _id: saved._id
     }, saved, {
       new: true,
       upsert: true
-    }).exec();
+    }).exec()
   }
 
   /**
@@ -60,29 +51,38 @@ export default class ShowHelper extends BaseHelper {
    * @returns {Show} - A show with merged torrents.
    */
   _updateEpisode(matching, found, show, quality) {
-    const index = show.episodes.indexOf(matching);
+    const index = show.episodes.indexOf(matching)
 
-    const foundTorrents = found.torrents[quality];
-    let matchingTorrents = matching.torrents[quality];
+    const foundTorrents = found.torrents[quality]
+    let matchingTorrents = matching.torrents[quality]
 
     if (foundTorrents && matchingTorrents) {
-      let update = false;
+      let update = false
 
-      if (foundTorrents.seeds > matchingTorrents.seeds
-          || foundTorrents.url === matchingTorrents.url)
-        update = true;
+      if (
+        foundTorrents.seeds > matchingTorrents.seeds ||
+        foundTorrents.url === matchingTorrents.url
+      ) {
+        update = true
+      }
 
       if (update) {
-        if (quality === '480p') matching.torrents['0'] = foundTorrents;
-        matchingTorrents = foundTorrents;
+        if (quality === '480p') {
+          matching.torrents['0'] = foundTorrents
+        }
+
+        matchingTorrents = foundTorrents
       }
     } else if (foundTorrents && !matchingTorrents) {
-      if (quality === '480p') matching.torrents['0'] = foundTorrents;
-      matchingTorrents = foundTorrents;
+      if (quality === '480p') {
+        matching.torrents['0'] = foundTorrents
+      }
+
+      matchingTorrents = foundTorrents
     }
 
-    show.episodes.splice(index, 1, matching);
-    return show;
+    show.episodes.splice(index, 1, matching)
+    return show
   }
 
   /**
@@ -94,33 +94,36 @@ export default class ShowHelper extends BaseHelper {
     try {
       const found = await this._model.findOne({
         _id: show._id
-      }).exec();
+      }).exec()
       if (!found) {
-        logger.info(`${this._name}: '${show.title}' is a new show!`);
-        const newShow = await new this._model(show).save();
-        return await this._updateNumSeasons(newShow);
+        logger.info(`${this._name}: '${show.title}' is a new show!`)
+        const newShow = await new this._model(show).save()
+        return await this._updateNumSeasons(newShow)
       }
 
-      logger.info(`${this._name}: '${found.title}' is an existing show.`);
+      logger.info(`${this._name}: '${found.title}' is an existing show.`)
 
       found.episodes.map(e => {
         const matching = show.episodes.find(
           s => s.season === e.season && s.episode === e.episode
-        );
+        )
 
-        if (e.first_aired > show.latest_episode)
-          show.latest_episode = e.first_aired;
+        if (e.first_aired > show.latest_episode) {
+          show.latest_episode = e.first_aired
+        }
 
-        if (!matching) return show.episodes.push(e);
+        if (!matching) {
+          return show.episodes.push(e)
+        }
 
-        show = this._updateEpisode(matching, e, show, '480p');
-        show = this._updateEpisode(matching, e, show, '720p');
-        show = this._updateEpisode(matching, e, show, '1080p');
-      });
+        show = this._updateEpisode(matching, e, show, '480p')
+        show = this._updateEpisode(matching, e, show, '720p')
+        show = this._updateEpisode(matching, e, show, '1080p')
+      })
 
-      return await this._updateNumSeasons(show);
+      return await this._updateNumSeasons(show)
     } catch (err) {
-      logger.error(err);
+      logger.error(err)
     }
   }
 
@@ -139,7 +142,9 @@ export default class ShowHelper extends BaseHelper {
       extended: 'full'
     }).then(traktEpisodes => {
       traktEpisodes.map(e => {
-        if (!episodes[season][e.number]) return;
+        if (!episodes[season][e.number]) {
+          return
+        }
 
         const episode = {
           tvdb_id: e.ids['tvdb'],
@@ -150,20 +155,21 @@ export default class ShowHelper extends BaseHelper {
           date_based: false,
           first_aired: new Date(e.first_aired).getTime() / 1000.0,
           torrents: episodes[season][e.number]
-        };
+        }
 
-        if (episode.first_aired > show.latest_episode)
-          show.latest_episode = episode.first_aired;
+        if (episode.first_aired > show.latest_episode) {
+          show.latest_episode = episode.first_aired
+        }
 
         episode.torrents[0] = episodes[season][e.number]['480p']
-                              ? episodes[season][e.number]['480p']
-                              : episodes[season][e.number]['720p'];
+          ? episodes[season][e.number]['480p']
+          : episodes[season][e.number]['720p']
 
-        show.episodes.push(episode);
-      });
+        show.episodes.push(episode)
+      })
     }).catch(err =>
       logger.error(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`)
-    );
+    )
   }
 
   /**
@@ -174,17 +180,19 @@ export default class ShowHelper extends BaseHelper {
    * @returns {undefined}
    */
   _addDateBasedSeason(show, episodes, season) {
-    if (!show.tvdb_id) return;
+    if (!show.tvdb_id) return
 
     return this._tvdb.getSeriesAllById(show.tvdb_id).then(tvdbShow => {
       tvdbShow.episodes.map(tvdbEpisode => {
-        if (!episodes[season]) return;
+        if (!episodes[season]) {
+          return
+        }
 
         Object.keys(episodes[season]).map(e => {
           const d = new Date(tvdbEpisode.firstAired)
-                                .toISOString()
-                                .substring(0, 10);
-          if (`${season}-${e.replace(/\./, '-')}` !== d) return;
+            .toISOString()
+            .substring(0, 10)
+          if (`${season}-${e.replace(/\./, '-')}` !== d) return
 
           const episode = {
             tvdb_id: tvdbEpisode.id,
@@ -195,23 +203,26 @@ export default class ShowHelper extends BaseHelper {
             date_based: true,
             first_aired: new Date(tvdbEpisode.firstAired).getTime() / 1000.0,
             torrents: episodes[season][e]
-          };
+          }
 
-          if (episode.first_aired > show.latest_episode)
-            show.latest_episode = episode.first_aired;
+          if (episode.first_aired > show.latest_episode) {
+            show.latest_episode = episode.first_aired
+          }
 
-          if (episode.season === 0) return;
+          if (episode.season === 0) {
+            return
+          }
 
           episode.torrents[0] = episodes[season][e]['480p']
-                                ? episodes[season][e]['480p']
-                                : episodes[season][e]['720p'];
+            ? episodes[season][e]['480p']
+            : episodes[season][e]['720p']
 
-          show.episodes.push(episode);
-        });
-      });
+          show.episodes.push(episode)
+        })
+      })
     }).catch(err =>
       logger.error(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`)
-    );
+    )
   }
 
   /**
@@ -222,17 +233,18 @@ export default class ShowHelper extends BaseHelper {
    * @returns {Show} - A show with updated torrents.
    */
   addEpisodes(show, episodes, slug) {
-    let { dateBased } = episodes;
-    delete episodes.dateBased;
-    dateBased = dateBased ? dateBased : show.dateBased;
+    let { dateBased } = episodes
+    delete episodes.dateBased
+    dateBased = dateBased || show.dateBased
 
     return asyncq.each(Object.keys(episodes), season => {
-      if (dateBased)
-        return this._addDateBasedSeason(show, episodes, season, slug);
+      if (dateBased) {
+        return this._addDateBasedSeason(show, episodes, season, slug)
+      }
 
-      return this._addSeasonalSeason(show, episodes, season, slug);
+      return this._addSeasonalSeason(show, episodes, season, slug)
     }).then(() => this._updateEpisodes(show))
-      .catch(err => logger.error(err));
+      .catch(err => logger.error(err))
   }
 
   /**
@@ -244,23 +256,23 @@ export default class ShowHelper extends BaseHelper {
     return this._tmdb.tv.images({
       tv_id: tmdb
     }).then(i => {
-      const baseUrl = 'http://image.tmdb.org/t/p/w500';
+      const baseUrl = 'http://image.tmdb.org/t/p/w500'
 
       const tmdbPoster = i.posters.filter(
         poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null
-      )[0].file_path;
+      )[0].file_path
       const tmdbBackdrop = i.backdrops.filter(
         backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null
-      )[0].file_path;
+      )[0].file_path
 
       const images = {
         banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper._Holder,
         fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : BaseHelper._Holder,
         poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper._Holder
-      };
+      }
 
-      return this._checkImages(images);
-    });
+      return this._checkImages(images)
+    })
   }
 
   /**
@@ -270,16 +282,16 @@ export default class ShowHelper extends BaseHelper {
    */
   _getTvdbImages(tvdb) {
     return this._tvdb.getSeriesById(tvdb).then(i => {
-      const baseUrl = 'http://thetvdb.com/banners/';
+      const baseUrl = 'http://thetvdb.com/banners/'
 
       const images = {
         banner: i.banner ? `${baseUrl}${i.banner}` : BaseHelper._Holder,
         fanart: i.fanart ? `${baseUrl}${i.fanart}` : BaseHelper._Holder,
         poster: i.poster ? `${baseUrl}${i.poster}` : BaseHelper._Holder
-      };
+      }
 
-      return this._checkImages(images);
-    });
+      return this._checkImages(images)
+    })
   }
 
   /**
@@ -292,15 +304,15 @@ export default class ShowHelper extends BaseHelper {
       const images = {
         banner: i.tvbanner ? i.tvbanner[0].url : BaseHelper._Holder,
         fanart: i.showbackground
-                        ? i.showbackground[0].url
-                        : i.clearart
-                        ? i.clearart[0].url
-                        : BaseHelper._Holder,
+          ? i.showbackground[0].url
+          : i.clearart
+            ? i.clearart[0].url
+            : BaseHelper._Holder,
         poster: i.tvposter ? i.tvposter[0].url : BaseHelper._Holder
-      };
+      }
 
-      return this._checkImages(images);
-    });
+      return this._checkImages(images)
+    })
   }
 
   /**
@@ -315,7 +327,7 @@ export default class ShowHelper extends BaseHelper {
     return this._getTmdbImages(tmdb)
       .catch(() => this._getTvdbImages(tvdb))
       .catch(() => this._getFanartImages(tmdb))
-      .catch(() => this._defaultImages);
+      .catch(() => this._defaultImages)
   }
 
   /**
@@ -329,14 +341,16 @@ export default class ShowHelper extends BaseHelper {
       const traktShow = await this._trakt.shows.summary({
         id: slug,
         extended: 'full'
-      });
+      })
       const traktWatchers = await this._trakt.shows.watching({
         id: slug
-      });
+      })
 
-      if (traktShow && traktShow.ids.imdb
-          && traktShow.ids.tmdb && traktShow.ids.tvdb) {
-        const { imdb, slug, tvdb } = traktShow.ids;
+      if (
+        traktShow && traktShow.ids.imdb &&
+        traktShow.ids.tmdb && traktShow.ids.tvdb
+      ) {
+        const { imdb, slug, tvdb } = traktShow.ids
 
         return {
           _id: imdb,
@@ -363,10 +377,10 @@ export default class ShowHelper extends BaseHelper {
           last_updated: Number(new Date()),
           latest_episode: 0,
           episodes: []
-        };
+        }
       }
     } catch (err) {
-      logger.error(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      logger.error(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`)
     }
   }
 

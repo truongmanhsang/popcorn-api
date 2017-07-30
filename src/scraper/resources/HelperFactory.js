@@ -1,8 +1,8 @@
 // Import the neccesary modules.
-import IAbstractFactory from './IAbstractFactory';
-import MovieHelper from '../helpers/MovieHelper';
-import Provider from '../providers/BaseProvider';
-import ShowHelper from '../helpers/ShowHelper';
+import IAbstractFactory from './IAbstractFactory'
+import MovieHelper from '../helpers/MovieHelper'
+import Provider from '../providers/BaseProvider'
+import ShowHelper from '../helpers/ShowHelper'
 
 /**
  * Class for getting a helper class.
@@ -20,15 +20,17 @@ export default class HelperFactory extends IAbstractFactory {
    * @returns {MovieHelper|ShowHelper|undefined} - A helper class.
    */
   getHelper(name, model, type) {
-    if (!type || !model || !type) return undefined;
+    if (!type || !model || !type) {
+      return undefined
+    }
 
     switch (type) {
-    case Provider.Types.Movie:
-      return new MovieHelper(name, model);
-    case Provider.Types.Show:
-      return new ShowHelper(name, model);
-    default:
-      return undefined;
+      case Provider.Types.Movie:
+        return new MovieHelper(name, model)
+      case Provider.Types.Show:
+        return new ShowHelper(name, model)
+      default:
+        return undefined
     }
   }
 

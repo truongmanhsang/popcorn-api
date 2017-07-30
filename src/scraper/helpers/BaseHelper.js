@@ -1,6 +1,6 @@
 // Import the neccesary modules.
-import FactoryProducer from '../resources/FactoryProducer';
-import IHelper from './IHelper';
+import FactoryProducer from '../resources/FactoryProducer'
+import IHelper from './IHelper'
 
 /**
  * Base class for saving content.
@@ -63,20 +63,20 @@ export default class BaseHelper extends IHelper {
    * @param {!AnimeMovie|AnimeShow|Movie|Show} model - The model to help fill.
    */
   constructor(name, model) {
-    super();
+    super()
 
     /**
      * The name of the torrent provider.
      * @type {String}
      */
-    this._name = name;
+    this._name = name
 
     /**
      * The model to create or alter.
      * @type {AnimeMovie|AnimeShow|Movie|Show}
      * @see http://mongoosejs.com/docs/models.html
      */
-    this._model = model;
+    this._model = model
   }
 
   /**
@@ -90,11 +90,12 @@ export default class BaseHelper extends IHelper {
    */
   _checkImages(images) {
     for (const i in images) {
-      if (images[i] === BaseHelper._Holder)
-        throw new Error('An image could not been found!');
+      if (images[i] === BaseHelper._Holder) {
+        throw new Error('An image could not been found!')
+      }
     }
 
-    return images;
+    return images
   }
 
 }

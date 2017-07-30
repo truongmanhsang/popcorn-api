@@ -3,59 +3,59 @@
  * An EZTV API wrapper to get data from eztv.ag.
  * @external {EztvAPI} https://github.com/ChrisAlderson/eztv-api-pt
  */
-import EztvAPI from 'eztv-api-pt';
+import EztvAPI from 'eztv-api-pt'
 /**
  * A Fanart.tv API wrapper for NodeJS.
  * @external {Fanart} https://github.com/ChrisAlderson/fanart.tv-api
  */
-import Fanart from 'fanart.tv-api';
+import Fanart from 'fanart.tv-api'
 /**
  * A HorribleSubs API wrapper to get data from horriblesubs.info
  * @external {HorribleSubsAPI} https://github.com/ChrisAlderson/horriblesubs-api
  */
-import HorribleSubsAPI from 'horriblesubs-api';
+import HorribleSubsAPI from 'horriblesubs-api'
 /**
  * A KickassTorrents API wrapper for NodeJs.
  * @external {KatAPI} https://github.com/ChrisAlderson/kat-api-pt
  */
-import KatAPI from 'kat-api-pt';
+import KatAPI from 'kat-api-pt'
 /**
  * A nyaa.se API wrapper for NodeJS.
  * @external {NyaaAPI} https://github.com/ChrisAlderson/nyaa-api-pt
  */
-import NyaaAPI from 'nyaa-api-pt';
+import NyaaAPI from 'nyaa-api-pt'
 /**
  * An OMDB API wrapper for NodeJS.
  * @external {OMDB} https://github.com/ChrisAlderson/omdb-api-pt
  */
-import OMDB from 'omdb-api-pt';
+import OMDB from 'omdb-api-pt'
 /**
  * TheMovieDB API wrapper, written in node.js
  * @external {TMDB} https://github.com/vankasteelj/tmdbapi
  */
-import TMDB from 'tmdbapi';
+import TMDB from 'tmdbapi'
 /**
  * A Trakt.tv API wrapper for Node.js
  * @external {Trakt} https://github.com/vankasteelj/trakt.tv
  */
-import Trakt from 'trakt.tv';
+import Trakt from 'trakt.tv'
 /**
  * Node.js library for accessing TheTVDB API
  * @external {TVDB} https://github.com/edwellbrook/node-tvdb
  */
-import TVDB from 'node-tvdb';
+import TVDB from 'node-tvdb'
 /**
  * A NodeJS wrapper for yts.ag
  * @external {YtsAPI} https://github.com/ChrisAlderson/yts-api-pt
  */
-import YtsAPI from 'yts-api-pt';
+import YtsAPI from 'yts-api-pt'
 /**
  * An ExtraTorrent wrapper for NodeJS.
  * @external {ExtraTorrentAPI} https://github.com/ChrisAlderson/extratorrent-api
  */
-import { Website as ExtraTorrentAPI } from 'extratorrent-api';
+import { Website as ExtraTorrentAPI } from 'extratorrent-api'
 
-import IAbstractFactory from './IAbstractFactory';
+import IAbstractFactory from './IAbstractFactory'
 
 /**
  * Class for getting an external API wrapper.
@@ -148,14 +148,14 @@ export default class ApiFactory extends IAbstractFactory {
 
   /** Create an ApiFactory class. */
   constructor() {
-    super();
+    super()
 
     // XXX: Fix this hack.
-    this._eztvAPI.getAll = this._eztvAPI.getAllShows;
-    this._eztvAPI.getData = this._eztvAPI.getShowData;
-    this._horribleSubsAPI.getAll = this._horribleSubsAPI.getAllAnime;
-    this._horribleSubsAPI.getData = this._horribleSubsAPI.getAnimeData;
-    this._ytsAPI.search = this._ytsAPI.getMovies;
+    this._eztvAPI.getAll = this._eztvAPI.getAllShows
+    this._eztvAPI.getData = this._eztvAPI.getShowData
+    this._horribleSubsAPI.getAll = this._horribleSubsAPI.getAllAnime
+    this._horribleSubsAPI.getData = this._horribleSubsAPI.getAnimeData
+    this._ytsAPI.search = this._ytsAPI.getMovies
   }
 
   /**
@@ -165,35 +165,37 @@ export default class ApiFactory extends IAbstractFactory {
    * @returns {ExtraTorrentAPI|EztvAPI|Fanart|HorribleSubsAPI|KatAPI|NyaaAPI|OMDB|TMDB|Trakt|TVDB|YtsAPI|undefined} - An external API wrapper.
    */
   getApi(api) {
-    if (!api) return undefined;
+    if (!api) {
+      return undefined
+    }
 
-    const a = api.toUpperCase();
+    const a = api.toUpperCase()
 
     switch (a) {
-    case 'EXTRATORRENT':
-      return this._extraTorrentAPI;
-    case 'EZTV':
-      return this._eztvAPI;
-    case 'FANART':
-      return this._fanartAPI;
-    case 'HORRIBLESUBS':
-      return this._horribleSubsAPI;
-    case 'KAT':
-      return this._katAPI;
-    case 'NYAA':
-      return this._nyaaAPI;
-    case 'OMDB':
-      return this._omdbAPI;
-    case 'TMDB':
-      return this._tmdbAPI;
-    case 'TRAKT':
-      return this._traktAPI;
-    case 'TVDB':
-      return this._tvdbAPI;
-    case 'YTS':
-      return this._ytsAPI;
-    default:
-      return undefined;
+      case 'EXTRATORRENT':
+        return this._extraTorrentAPI
+      case 'EZTV':
+        return this._eztvAPI
+      case 'FANART':
+        return this._fanartAPI
+      case 'HORRIBLESUBS':
+        return this._horribleSubsAPI
+      case 'KAT':
+        return this._katAPI
+      case 'NYAA':
+        return this._nyaaAPI
+      case 'OMDB':
+        return this._omdbAPI
+      case 'TMDB':
+        return this._tmdbAPI
+      case 'TRAKT':
+        return this._traktAPI
+      case 'TVDB':
+        return this._tvdbAPI
+      case 'YTS':
+        return this._ytsAPI
+      default:
+        return undefined
     }
   }
 

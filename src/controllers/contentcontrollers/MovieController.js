@@ -1,6 +1,6 @@
 // Import the neccesary modules.
-import BaseContentController from './BaseContentController';
-import Movie from '../../models/Movie';
+import BaseContentController from './BaseContentController'
+import Movie from '../../models/Movie'
 
 /** Class for getting movie data from the MongoDB. */
 export default class MovieController extends BaseContentController {
@@ -32,7 +32,7 @@ export default class MovieController extends BaseContentController {
    * @param {!Movie} [model=Movie] - The model for the movie controller.
    */
   constructor(model = Movie) {
-    super(model);
+    super(model)
   }
 
 }

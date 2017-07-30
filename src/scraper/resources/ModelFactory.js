@@ -1,8 +1,8 @@
 // Import the neccesary modules.
-import IAbstractFactory from './IAbstractFactory';
-import Movie from '../../models/Movie';
-import Show from '../../models/Show';
-import { AnimeMovie, AnimeShow } from '../../models/Anime';
+import IAbstractFactory from './IAbstractFactory'
+import Movie from '../../models/Movie'
+import Show from '../../models/Show'
+import { AnimeMovie, AnimeShow } from '../../models/Anime'
 
 /**
  * Class for getting a model object.
@@ -17,21 +17,23 @@ export default class ModelFactory extends IAbstractFactory {
    * @returns {AnimeMovie|AnimeShow|Movie|Show|undefined} - A model object.
    */
   getModel(modelType) {
-    if (!modelType) return undefined;
+    if (!modelType) {
+      return undefined
+    }
 
-    const mt = modelType.toUpperCase();
+    const mt = modelType.toUpperCase()
 
     switch (mt) {
-    case 'ANIMEMOVIE':
-      return AnimeMovie;
-    case 'ANIMESHOW':
-      return AnimeShow;
-    case 'MOVIE':
-      return Movie;
-    case 'SHOW':
-      return Show;
-    default:
-      return undefined;
+      case 'ANIMEMOVIE':
+        return AnimeMovie
+      case 'ANIMESHOW':
+        return AnimeShow
+      case 'MOVIE':
+        return Movie
+      case 'SHOW':
+        return Show
+      default:
+        return undefined
     }
   }
 

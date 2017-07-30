@@ -1,5 +1,5 @@
 // Import the neccesary modules.
-import { ItemType } from 'butter-provider';
+import { ItemType } from 'butter-provider'
 
 /**
  * Base structure of the database content.
@@ -32,7 +32,6 @@ export default {
   genres: [String],
   type: {
     type: String,
-    enum: Object.keys(ItemType)
-                .map(key => ItemType[key])
+    enum: Object.keys(ItemType).map(key => ItemType[key])
   }
-};
+}

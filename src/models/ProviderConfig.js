@@ -1,7 +1,7 @@
 // Import the neccesary modules.
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-import BaseProvider from '../scraper/providers/BaseProvider';
+import BaseProvider from '../scraper/providers/BaseProvider'
 
 /**
  * The provider configuration schema used by mongoose.
@@ -23,7 +23,7 @@ const _ProviderConfigSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: Object.keys(BaseProvider.ModelTypes)
-                .map(key => BaseProvider.ModelTypes[key])
+      .map(key => BaseProvider.ModelTypes[key])
   },
   name: {
     type: String,
@@ -33,7 +33,7 @@ const _ProviderConfigSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: Object.keys(BaseProvider.Types)
-                .map(key => BaseProvider.Types[key])
+      .map(key => BaseProvider.Types[key])
   },
   class: {
     type: String,
@@ -43,22 +43,22 @@ const _ProviderConfigSchema = new mongoose.Schema({
   query: {
     type: Object
   }
-});
+})
 
 /**
  * Pre-hook for inserting a provider configuration. Sets the '_id' as the name
  * of the provider configuration
  */
-_ProviderConfigSchema.pre('save', function(next) {
-  this._id = this.name;
-  return next();
-});
+_ProviderConfigSchema.pre('save', function (next) {
+  this._id = this.name
+  return next()
+})
 
 // Create the provider configration model.
-const ProviderConfig = mongoose.model('ProviderConfig', _ProviderConfigSchema);
+const ProviderConfig = mongoose.model('ProviderConfig', _ProviderConfigSchema)
 
 /**
  * A model object for provider configuration.
  * @type {ProviderConfig}
  */
-export default ProviderConfig;
+export default ProviderConfig

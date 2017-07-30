@@ -1,9 +1,9 @@
 // Import the neccesary modules.
-import asyncq from 'async-q';
-import bytes from 'bytes';
+import asyncq from 'async-q'
+import bytes from 'bytes'
 
-import BaseProvider from './BaseProvider';
-import moviemap from './maps/moviemap.json';
+import BaseProvider from './BaseProvider'
+import moviemap from './maps/moviemap.json'
 
 /**
  * The default regular expressions used to extract data.
@@ -15,7 +15,7 @@ const defaultRegexps = [{
   regex: /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/i
 }, {
   regex: /(.*).(\d{4})\D+(\d{3,4}p)/i
-}];
+}]
 
 /**
  * Class for scraping movie content from various sources.
@@ -36,7 +36,7 @@ export default class MovieProvider extends BaseProvider {
    * @param {!String} config.type - The type of content to scrape.
    */
   constructor({api, name, modelType, query, regexps = defaultRegexps, type}) {
-    super({api, name, modelType, query, regexps, type});
+    super({api, name, modelType, query, regexps, type})
   }
 
   /**
@@ -51,34 +51,38 @@ export default class MovieProvider extends BaseProvider {
    * @returns {Object} - Information about a movie from the torrent.
    */
   _extractContent(torrent, r, lang = 'en') {
-    let movieTitle, slug;
+    let movieTitle
+    let slug
 
     const {
-      title, size, seeds, peers, magnet, torrent_link, fileSize
-    } = torrent;
+      title, size, seeds, peers, magnet, torrentLink, fileSize
+    } = torrent
 
-    movieTitle = title.match(r.regex)[1];
-    if (movieTitle.endsWith(' '))
-      movieTitle = movieTitle.substring(0, movieTitle.length - 1);
-    movieTitle = movieTitle.replace(/\./g, ' ');
+    movieTitle = title.match(r.regex)[1]
+    if (movieTitle.endsWith(' ')) {
+      movieTitle = movieTitle.substring(0, movieTitle.length - 1)
+    }
+    movieTitle = movieTitle.replace(/\./g, ' ')
 
     slug = movieTitle.replace(/[^a-zA-Z0-9 ]/gi, '')
-                      .replace(/\s+/g, '-')
-                      .toLowerCase();
-    if (slug.endsWith('-')) slug = slug.substring(0, slug.length - 1);
-    slug = slug in moviemap ? moviemap[slug] : slug;
+      .replace(/\s+/g, '-')
+      .toLowerCase()
+    if (slug.endsWith('-')) {
+      slug = slug.substring(0, slug.length - 1)
+    }
+    slug = slug in moviemap ? moviemap[slug] : slug
 
-    const year = title.match(r.regex)[2];
-    const quality = title.match(r.regex)[3];
+    const year = title.match(r.regex)[2]
+    const quality = title.match(r.regex)[3]
 
     const torrentObj = {
-      url: magnet ? magnet : torrent_link,
-      seeds: seeds ? seeds : 0,
-      peers: peers ? peers : 0,
+      url: magnet || torrentLink,
+      seeds: seeds || 0,
+      peers: peers || 0,
       size: bytes(size.replace(/\s/g, '')),
-      filesize: size ? size : fileSize,
+      filesize: size || fileSize,
       provider: this._name
-    };
+    }
 
     const movie = {
       movieTitle,
@@ -89,9 +93,9 @@ export default class MovieProvider extends BaseProvider {
       language: lang,
       type: this._type,
       torrents: {}
-    };
+    }
 
-    return this.attachTorrent(...[movie, torrentObj, quality, lang]);
+    return this.attachTorrent(...[movie, torrentObj, quality, lang])
   }
 
   /**
@@ -104,10 +108,14 @@ export default class MovieProvider extends BaseProvider {
    * @returns {Object} - The movie with the newly attached torrent.
    */
   attachTorrent(movie, torrent, quality, lang = 'en') {
-    if (!movie.torrents[lang]) movie.torrents[lang] = {};
-    if (!movie.torrents[lang][quality]) movie.torrents[lang][quality] = torrent;
+    if (!movie.torrents[lang]) {
+      movie.torrents[lang] = {}
+    }
+    if (!movie.torrents[lang][quality]) {
+      movie.torrents[lang][quality] = torrent
+    }
 
-    return movie;
+    return movie
   }
 
   /**
@@ -121,32 +129,38 @@ export default class MovieProvider extends BaseProvider {
    * movie information extracted from the torrents.
    */
   _getAllContent(torrents, lang = 'en') {
-    const movies = [];
+    const movies = []
 
     return asyncq.mapSeries(torrents, torrent => {
-      if (!torrent) return null;
+      if (!torrent) {
+        return
+      }
 
-      const movie = this._getContentData(torrent, lang);
+      const movie = this._getContentData(torrent, lang)
 
-      if (!movie) return null;
+      if (!movie) {
+        return
+      }
 
-      const { movieTitle, slug, language, quality } = movie;
+      const { movieTitle, slug, language, quality } = movie
 
       const matching = movies.find(
-        m => m.movieTitle.toLowerCase() === movieTitle.toLowerCase()
-              && m.slug.toLowerCase() === slug.toLowerCase()
-              && m.type.toLowerCase() === this._type.toLowerCase()
-      );
-      if (!matching) return movies.push(movie);
+        m => m.movieTitle.toLowerCase() === movieTitle.toLowerCase() &&
+          m.slug.toLowerCase() === slug.toLowerCase() &&
+          m.type.toLowerCase() === this._type.toLowerCase()
+      )
+      if (!matching) {
+        return movies.push(movie)
+      }
 
-      const index = movies.indexOf(matching);
+      const index = movies.indexOf(matching)
 
-      const torrentObj = movie.torrents[language][quality];
-      const args = [matching, torrentObj, quality, language];
-      const created = this.attachTorrent(...args);
+      const torrentObj = movie.torrents[language][quality]
+      const args = [matching, torrentObj, quality, language]
+      const created = this.attachTorrent(...args)
 
-      movies.splice(index, 1, created);
-    }).then(() => movies);
+      movies.splice(index, 1, created)
+    }).then(() => movies)
   }
 
 }

@@ -11,7 +11,7 @@ export default class IContentController {
    * @returns {undefined}
    */
   getContents() {
-    throw new Error('Using default method: \'getContents\'');
+    throw new Error('Using default method: \'getContents\'')
   }
 
   /**
@@ -21,7 +21,7 @@ export default class IContentController {
    * @returns {undefined}
    */
   getPage() {
-    throw new Error('Using default method: \'getPage\'');
+    throw new Error('Using default method: \'getPage\'')
   }
 
   /**
@@ -31,7 +31,7 @@ export default class IContentController {
    * @returns {undefined}
    */
   getContent() {
-    throw new Error('Using default method: \'getContent\'');
+    throw new Error('Using default method: \'getContent\'')
   }
 
   /**
@@ -41,7 +41,7 @@ export default class IContentController {
    * @returns {undefined}
    */
   getRandomContent() {
-    throw new Error('Using default method: \'getRandomContent\'');
+    throw new Error('Using default method: \'getRandomContent\'')
   }
 
 }

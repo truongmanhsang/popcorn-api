@@ -1,9 +1,9 @@
 // Import the neccesary modules.
-import asyncq from 'async-q';
-import { ItemType } from 'butter-provider';
+import asyncq from 'async-q'
+import { ItemType } from 'butter-provider'
 
-import FactoryProducer from '../resources/FactoryProducer';
-import IProvider from './IProvider';
+import FactoryProducer from '../resources/FactoryProducer'
+import IProvider from './IProvider'
 
 /**
  * Class for scraping content from various sources.
@@ -51,49 +51,49 @@ export default class BaseProvider extends IProvider {
    * @param {!String} config.type - The type of content to scrape.
    */
   constructor({api, name, modelType, query, regexps, type}) {
-    super();
+    super()
 
-    const apiFactory = FactoryProducer.getFactory('api');
-    const helperFactory = FactoryProducer.getFactory('helper');
-    const modelFactory = FactoryProducer.getFactory('model');
+    const apiFactory = FactoryProducer.getFactory('api')
+    const helperFactory = FactoryProducer.getFactory('helper')
+    const modelFactory = FactoryProducer.getFactory('model')
 
-    const model = modelFactory.getModel(modelType);
+    const model = modelFactory.getModel(modelType)
 
     /**
      * The api of the torrent provider.
      * @type {Object}
      */
-    this._api = apiFactory.getApi(api);
+    this._api = apiFactory.getApi(api)
 
     /**
      * The name of the torrent provider.
      * @type {String}
      */
-    this._name = name;
+    this._name = name
 
     /**
      * The helper class for adding movies.
      * @type {BaseHelper}
      */
-    this._helper = helperFactory.getHelper(this._name, model, type);
+    this._helper = helperFactory.getHelper(this._name, model, type)
 
     /**
      * The query object for the api.
      * @type {Object}
      */
-    this._query = query;
+    this._query = query
 
     /**
      * The regexps used to extract information about movies.
      * @type {Array<RegExp>}
      */
-    this._regexps = regexps;
+    this._regexps = regexps
 
     /**
      * The type of content to scrape.
      * @type {String}
      */
-    this._type = type;
+    this._type = type
   }
 
   /**
@@ -101,7 +101,7 @@ export default class BaseProvider extends IProvider {
    * @returns {String} - The name of the provider.
    */
   get name() {
-    return this._name;
+    return this._name
   }
 
   /**
@@ -114,26 +114,28 @@ export default class BaseProvider extends IProvider {
    */
   async getContent(content) {
     try {
-      let newContent;
+      let newContent
 
       if (this._type === BaseProvider.Types.Movie) {
-        const { slugYear, torrents } = content;
-        newContent = await this._helper.getTraktInfo(slugYear);
+        const { slugYear, torrents } = content
+        newContent = await this._helper.getTraktInfo(slugYear)
 
-        if (newContent && newContent._id)
-          return await this._helper.addTorrents(newContent, torrents);
+        if (newContent && newContent._id) {
+          return await this._helper.addTorrents(newContent, torrents)
+        }
       } else if (this._type === BaseProvider.Types.Show) {
-        const { episodes, slug } = content;
-        delete episodes[0];
-        newContent = await this._helper.getTraktInfo(slug);
+        const { episodes, slug } = content
+        delete episodes[0]
+        newContent = await this._helper.getTraktInfo(slug)
 
-        if (newContent && newContent._id)
-          return await this._helper.addEpisodes(newContent, episodes, slug);
+        if (newContent && newContent._id) {
+          return await this._helper.addEpisodes(newContent, episodes, slug)
+        }
       } else {
-        throw new Error(`'${this._type}' is not a valid value for Types!`);
+        throw new Error(`'${this._type}' is not a valid value for Types!`)
       }
     } catch (err) {
-      logger.error(err);
+      logger.error(err)
     }
   }
 
@@ -150,12 +152,13 @@ export default class BaseProvider extends IProvider {
   _getContentData(torrent, lang = 'en') {
     const regex = this._regexps.find(
       r => r.regex.test(torrent.title) ? r : null
-    );
+    )
 
-    if (regex)
-      return this._extractContent(torrent, regex, lang);
+    if (regex) {
+      return this._extractContent(torrent, regex, lang)
+    }
 
-    logger.warn(`${this._name}: Could not find data from torrent: '${torrent.title}'`);
+    logger.warn(`${this._name}: Could not find data from torrent: '${torrent.title}'`)
   }
 
   /**
@@ -167,20 +170,24 @@ export default class BaseProvider extends IProvider {
    * torrents.
    */
   _getAllTorrents(totalPages) {
-    let torrents = [];
+    let torrents = []
     return asyncq.timesSeries(totalPages, async page => {
-      if (this._query.page) this._query.page = page + 1;
-      if (this._query.offset) this._query.offset = page + 1;
+      if (this._query.page) {
+        this._query.page = page + 1
+      }
+      if (this._query.offset) {
+        this._query.offset = page + 1
+      }
 
-      logger.info(`${this._name}: Started searching ${this._name} on page ${page + 1} out of ${totalPages}`);
-      const res = await this._api.search(this._query);
-      const data = res.results ? res.results : res.data ? res.data.movies : [];
+      logger.info(`${this._name}: Started searching ${this._name} on page ${page + 1} out of ${totalPages}`)
+      const res = await this._api.search(this._query)
+      const data = res.results ? res.results : res.data ? res.data.movies : []
 
-      torrents = torrents.concat(data);
+      torrents = torrents.concat(data)
     }).then(() => {
-      logger.info(`${this._name}: Found ${torrents.length} torrents.`);
-      return torrents;
-    });
+      logger.info(`${this._name}: Found ${torrents.length} torrents.`)
+      return torrents
+    })
   }
 
   /**
@@ -190,29 +197,32 @@ export default class BaseProvider extends IProvider {
    */
   async search() {
     try {
-      const getTotalPages = await this._api.search(this._query);
+      const getTotalPages = await this._api.search(this._query)
 
       const totalPages = process.env.NODE_ENV === 'development'
-                            ? 3
-                            : getTotalPages.total_pages
-                            ? getTotalPages.total_pages
-                            : Math.ceil(getTotalPages.data.movie_count / 50);
+        ? 3
+        : getTotalPages.total_pages
+          ? getTotalPages.total_pages
+          : Math.ceil(getTotalPages.data.movie_count / 50)
 
-      if (!totalPages)
-        return logger.error(`${this._name}: totalPages returned: '${totalPages}'`);
+      if (!totalPages) {
+        return logger.error(
+          `${this._name}: totalPages returned: '${totalPages}'`
+        )
+      }
 
-      logger.info(`${this._name}: Total pages ${totalPages}`);
+      logger.info(`${this._name}: Total pages ${totalPages}`)
 
-      const torrents = await this._getAllTorrents(totalPages);
+      const torrents = await this._getAllTorrents(totalPages)
 
-      const { language } = this._query;
-      const allContent = await this._getAllContent(torrents, language);
+      const { language } = this._query
+      const allContent = await this._getAllContent(torrents, language)
 
       return await asyncq.mapLimit(allContent, BaseProvider._MaxWebRequest,
         content => this.getContent(content)
-      );
+      )
     } catch (err) {
-      logger.error(err);
+      logger.error(err)
     }
   }
 

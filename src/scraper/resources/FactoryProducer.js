@@ -1,7 +1,7 @@
 // Import the neccesary modules.
-import ApiFactory from './ApiFactory';
-import HelperFactory from './HelperFactory';
-import ModelFactory from './ModelFactory';
+import ApiFactory from './ApiFactory'
+import HelperFactory from './HelperFactory'
+import ModelFactory from './ModelFactory'
 
 /** Class for getting a factory from the abstract factory. */
 export default class FactoryProducer {
@@ -13,19 +13,21 @@ export default class FactoryProducer {
    * class.
    */
   static getFactory(choice) {
-    if (!choice) return undefined;
+    if (!choice) {
+      return undefined
+    }
 
-    const c = choice.toUpperCase();
+    const c = choice.toUpperCase()
 
     switch (c) {
-    case 'API':
-      return new ApiFactory();
-    case 'HELPER':
-      return new HelperFactory();
-    case 'MODEL':
-      return new ModelFactory();
-    default:
-      return undefined;
+      case 'API':
+        return new ApiFactory()
+      case 'HELPER':
+        return new HelperFactory()
+      case 'MODEL':
+        return new ModelFactory()
+      default:
+        return undefined
     }
   }
 

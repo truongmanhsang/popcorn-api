@@ -1,5 +1,5 @@
 // Import the neccesary modules.
-import IProvider from './providers/IProvider';
+import IProvider from './providers/IProvider'
 
 /** Class for the scraper context. */
 export default class Context {
@@ -15,7 +15,7 @@ export default class Context {
    * @returns {Promise<Array<Object>, undefined>} - The result of the provider.
    */
   execute() {
-    return this._provider.search();
+    return this._provider.search()
   }
 
   /**
@@ -24,7 +24,7 @@ export default class Context {
    * @returns {undefined}
    */
   set provider(provider) {
-    this._provider = provider;
+    this._provider = provider
   }
 
 }

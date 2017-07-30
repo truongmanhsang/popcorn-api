@@ -1,8 +1,8 @@
 // Import the neccesary modules.
-import mongoose from 'mongoose';
-import { ItemType } from 'butter-provider';
+import mongoose from 'mongoose'
+import { ItemType } from 'butter-provider'
 
-import content from './content';
+import content from './content'
 
 /**
  * The movie schema used by mongoose.
@@ -22,13 +22,13 @@ export const MovieSchema = new mongoose.Schema(Object.assign({}, content, {
     default: ItemType.MOVIE
   },
   torrents: {}
-}));
+}))
 
 // Create the movie model.
-const Movie = mongoose.model('Movie', MovieSchema);
+const Movie = mongoose.model('Movie', MovieSchema)
 
 /**
  * A model object for movies.
  * @type {Movie}
  */
-export default Movie;
+export default Movie

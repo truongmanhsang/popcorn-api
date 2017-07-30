@@ -1,6 +1,6 @@
 // Import the neccesary modules.
-import BaseContentController from './BaseContentController';
-import Show from '../../models/Show';
+import BaseContentController from './BaseContentController'
+import Show from '../../models/Show'
 
 /** Class for getting show data from the MongoDB. */
 export default class ShowController extends BaseContentController {
@@ -29,7 +29,7 @@ export default class ShowController extends BaseContentController {
    * @param {!Show} [model=Show] - The model for the show controller.
    */
   constructor(model = Show) {
-    super(model);
+    super(model)
   }
 
 }

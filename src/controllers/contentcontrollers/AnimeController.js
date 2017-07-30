@@ -1,6 +1,6 @@
 // Import the neccesary modules.
-import { AnimeShow as Anime } from '../../models/Anime';
-import BaseContentController from './BaseContentController';
+import { AnimeShow as Anime } from '../../models/Anime'
+import BaseContentController from './BaseContentController'
 
 /** Class for getting anime data from the MongoDB. */
 export default class AnimeController extends BaseContentController {
@@ -36,7 +36,7 @@ export default class AnimeController extends BaseContentController {
    * controller.
    */
   constructor(model = Anime) {
-    super(model);
+    super(model)
   }
 
 }
