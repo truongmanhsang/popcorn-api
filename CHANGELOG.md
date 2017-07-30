@@ -1,4 +1,6 @@
-# 2.2.4 - Keep it working - 17 December 2016
+# Changelog
+
+## 2.2.4 - Keep it working - 17 December 2016
 
  - **New features:**
    - Testing with [Dredd](https://github.com/apiaryio/dredd) in favor of mocha.
@@ -7,7 +9,7 @@
  - **Bug fixes:**
    - Fixed ExtraTorrent scraping with [extratorrent-api@1.0.9](https://github.com/ChrisAlderson/extratorrent-api).
 
-# 2.2.3 - Can you see me now? - 19 November 2016
+## 2.2.3 - Can you see me now? - 19 November 2016
 
 - **New features:**
   - Added `themoviedbclient` as a provider for images.
@@ -19,7 +21,7 @@
   - Moved `/` to `/status`.
   - Removed JSCS for ESLint.
 
-# 2.2.2 - The key is in the words - 26 October 2016
+## 2.2.2 - The key is in the words - 26 October 2016
 
 - **Bug fixes:**
   - Removed special characters when searching with keywords [#44](https://github.com/popcorn-official/popcorn-api/issues/44).
@@ -28,14 +30,14 @@
   - Movie images are now coming from Fanart.tv or OMDB.
   - Show images are now coming from Fanart.tv or TVDB.
 
-# 2.2.1 - That's for later - 23 August 2016
+## 2.2.1 - That's for later - 23 August 2016
 
  - **Bug fixes:**
    - Fixed an issue where the API could return an anime with the type `movie`.
    - Fixed an issue where a season of a date based show could be `0`.
    - Fixed an issue where date based shows where not added correctly.
 
-# 2.2.0 - Extra Torrents? - 11 August 2016
+## 2.2.0 - Extra Torrents? - 11 August 2016
 
  - **New features:**
    - Added extractors to extract torrents and content data from content providers.
@@ -47,7 +49,7 @@
    - Added tests for the controllers.
    - Changed `num_episodes` to `num_seasons` for the `Anime` model.
 
-# 2.1.0 - You weeaboos - 2 August 2016
+## 2.1.0 - You weeaboos - 2 August 2016
 
  - **New features:**
    - Anime! For all you weeaboos.
@@ -64,7 +66,7 @@
    - Added Travis CI.
    - Using ES6 classes instead of factory functions.
 
-# 2.0.0 - Whatcha Babbling about? - 20 June 2016
+## 2.0.0 - Whatcha Babbling about? - 20 June 2016
 
  - **New features:**
    - Get a random movie at `/random/movie`.
@@ -94,7 +96,7 @@
    - Redid the [README.md](README.md).
    - Redid the kat providers.
 
-# 1.1.0 - Wanna catch a movie? - 20 March 2016
+## 1.1.0 - Wanna catch a movie? - 20 March 2016
 
  - **New features:**
    - Movies!
@@ -114,7 +116,7 @@
    - Required NodeJS version was changed in 1.0.2 to NodeJS v.5.0.0.
    - Fixed several issues with adding content through the CLI.
 
-# 1.0.2 - Wanna retry? - 14 March 2016
+## 1.0.2 - Wanna retry? - 14 March 2016
 
  - **New features:**
    - Resets the log files on each scrape.
@@ -128,12 +130,12 @@
    - Removed dependency on Q.
    - Replaced `slug` with `imdb` for getting seasonal metadata from trakt.tv.
 
-# 1.0.1 - What's trending? - 6 March 2016
+## 1.0.1 - What's trending? - 6 March 2016
 
  - **Bug fixes:**
    - Sort by trending.
 
-# 1.0.0 - Let's kick some ass! - 1 March 2016
+## 1.0.0 - Let's kick some ass! - 1 March 2016
 
  - **Features:**
    - Scraping EZTV.ag just like the old API.
