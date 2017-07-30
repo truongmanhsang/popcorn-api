@@ -9,8 +9,7 @@ module.exports = {
     mocha: true
   },
   globals: {
-    logger: true,
-    tempDir: true
+    logger: true
   },
   plugins: [
     'flowtype',

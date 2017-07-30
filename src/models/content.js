@@ -1,4 +1,4 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import { ItemType } from 'butter-provider'
 
 /**

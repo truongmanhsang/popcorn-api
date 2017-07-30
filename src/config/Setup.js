@@ -11,7 +11,7 @@ import Logger from './Logger'
  * @type {Setup}
  * @flow
  */
-export default class Setup<Express> {
+export default class Setup {
 
   /**
    * The name of the database. Default is `popcorn-development`.
@@ -88,7 +88,7 @@ export default class Setup<Express> {
    * Setup the ExpressJS service.
    * @param {!Express} app - The ExpresssJS instance.
    * @param {?boolean} [pretty] - Pretty output with Winston logging.
-   * @returns {void}
+   * @returns {undefined}
    */
   static setupDatabase(app: Express, pretty?: boolean): void {
     // Function for escaping strings.
@@ -123,7 +123,7 @@ export default class Setup<Express> {
 
   /**
    * Connection and configuration of the MongoDB database.
-   * @returns {Promise<void, Error>} - The promise to connect to MongoDB.
+   * @returns {Promise<undefined, Error>} - The promise to connect to MongoDB.
    */
   static connectMongoDb(): Promise<void, Error> {
     let uri = 'mongodb://'
@@ -140,7 +140,8 @@ export default class Setup<Express> {
 
   /**
    * Disconnect from the MongoDB database.
-   * @returns {Promise<void, Error>} - The promise to disconnect from MongoDB.
+   * @returns {Promise<undefined, Error>} - The promise to disconnect from
+   * MongoDB.
    */
   static disconnectMongoDb(): Promise<void, Error> {
     return mongoose.connection.close()

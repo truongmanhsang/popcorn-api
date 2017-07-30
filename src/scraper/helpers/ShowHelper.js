@@ -1,4 +1,4 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import asyncq from 'async-q'
 
 import BaseHelper from './BaseHelper'
@@ -6,22 +6,40 @@ import BaseHelper from './BaseHelper'
 /**
  * Class for saving shows.
  * @extends {BaseHelper}
+ * @type {ShowHelper}
+ * @flow
  */
 export default class ShowHelper extends BaseHelper {
 
   /**
-   * A configured TVDB API.
-   * @type {TVDB}
+   * A configured Tvdb API.
+   * @type {Tvdb}
    * @see https://github.com/edwellbrook/node-tvdb
    */
-  _tvdb = this._apiFactory.getApi('tvdb');
+  _tvdb: Tvdb
+
+  /**
+   * Create a show helper class for content.
+   * @param {!string} name - The name of the content provider.
+   * @param {!AnimeShow|Show} model - The model to help fill.
+   */
+  constructor(name, model): void {
+    super(name, model)
+
+    /**
+     * A configured Tvdb API.
+     * @type {Tvdb}
+     * @see https://github.com/edwellbrook/node-tvdb
+     */
+    this._tvdb = this._apiFactory.getApi('tvdb')
+  }
 
   /**
    * Update the number of seasons of a given show.
    * @param {!AnimeShow|Show} show - The show to update the number of seasons.
    * @returns {AnimeShow|Show} - A newly updated show.
    */
-  async _updateNumSeasons(show) {
+  async _updateNumSeasons(show: AnimeShow | Show): AnimeShow | Show {
     const saved = await this._model.findOneAndUpdate({
       _id: show._id
     }, show, {
@@ -47,10 +65,15 @@ export default class ShowHelper extends BaseHelper {
    * @param {!Object} matching - The matching episode of new the show.
    * @param {!Object} found - The matching episode existing show.
    * @param {!AnimeShow|Show} show - The show to merge the episodes to.
-   * @param {!String} quality - The quality of the torrent.
-   * @returns {Show} - A show with merged torrents.
+   * @param {!string} quality - The quality of the torrent.
+   * @returns {AnimeShow|Show} - A show with merged torrents.
    */
-  _updateEpisode(matching, found, show, quality) {
+  _updateEpisode(
+    matching: Object,
+    found: Object,
+    show: AnimeShow | Show,
+    quality: string
+  ): AnimeShow | Show {
     const index = show.episodes.indexOf(matching)
 
     const foundTorrents = found.torrents[quality]
@@ -90,7 +113,7 @@ export default class ShowHelper extends BaseHelper {
    * @param {!AnimeShow|Show} show - The show to update its episodes.
    * @returns {AnimeShow|Show} - A newly updated show.
    */
-  async _updateEpisodes(show) {
+  async _updateEpisodes(show: AnimeShow | Show): AnimeShow | Show {
     try {
       const found = await this._model.findOne({
         _id: show._id
@@ -131,11 +154,16 @@ export default class ShowHelper extends BaseHelper {
    * Adds one seasonal season to a show.
    * @param {!AnimeShow|Show} show - The show to add the torrents to.
    * @param {!Object} episodes - The episodes containing the torrents.
-   * @param {!Number} season - The season number.
-   * @param {!String} slug - The slug of the show.
+   * @param {!number} season - The season number.
+   * @param {!string} slug - The slug of the show.
    * @returns {undefined}
    */
-  _addSeasonalSeason(show, episodes, season, slug) {
+  _addSeasonalSeason(
+    show: AnimeShow | Show,
+    episodes: Object,
+    season: number,
+    slug: string
+  ): void {
     return this._trakt.seasons.season({
       id: slug,
       season,
@@ -176,10 +204,14 @@ export default class ShowHelper extends BaseHelper {
    * Adds one datebased season to a show.
    * @param {!AnimeShow|Show} show - The show to add the torrents to.
    * @param {!Object} episodes - The episodes containing the torrents.
-   * @param {!Number} season - The season number.
+   * @param {!number} season - The season number.
    * @returns {undefined}
    */
-  _addDateBasedSeason(show, episodes, season) {
+  _addDateBasedSeason(
+    show: AnimeShow | Show,
+    episodes: Object,
+    season: number
+  ): void {
     if (!show.tvdb_id) return
 
     return this._tvdb.getSeriesAllById(show.tvdb_id).then(tvdbShow => {
@@ -229,10 +261,10 @@ export default class ShowHelper extends BaseHelper {
    * Adds episodes to a show.
    * @param {!AnimeShow|Show} show - The show to add the torrents to.
    * @param {!Object} episodes - The episodes containing the torrents.
-   * @param {!String} slug - The slug of the show.
+   * @param {!string} slug - The slug of the show.
    * @returns {Show} - A show with updated torrents.
    */
-  addEpisodes(show, episodes, slug) {
+  addEpisodes(show: AnimeShow | Show, episodes: Object, slug: string): Show {
     let { dateBased } = episodes
     delete episodes.dateBased
     dateBased = dateBased || show.dateBased
@@ -249,10 +281,10 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Get TV show images from TMDB.
-   * @param {!Number} tmdb - The tmdb id of the show you want the images from.
+   * @param {!number} tmdb - The tmdb id of the show you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getTmdbImages(tmdb) {
+  _getTmdbImages(tmdb: number): Object {
     return this._tmdb.tv.images({
       tv_id: tmdb
     }).then(i => {
@@ -277,10 +309,10 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Get TV show images from TVDB.
-   * @param {!Number} tvdb - The tvdb id of the show you want the images from.
+   * @param {!number} tvdb - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getTvdbImages(tvdb) {
+  _getTvdbImages(tvdb: number): Object {
     return this._tvdb.getSeriesById(tvdb).then(i => {
       const baseUrl = 'http://thetvdb.com/banners/'
 
@@ -296,10 +328,10 @@ export default class ShowHelper extends BaseHelper {
 
   /**
    * Get TV show images from Fanart.
-   * @param {!Number} tvdb - The tvdb id of the show you want the images from.
+   * @param {!number} tvdb - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getFanartImages(tvdb) {
+  _getFanartImages(tvdb: number): Object {
     return this._fanart.getShowImages(tvdb).then(i => {
       const images = {
         banner: i.tvbanner ? i.tvbanner[0].url : BaseHelper._Holder,
@@ -319,11 +351,11 @@ export default class ShowHelper extends BaseHelper {
    * Get TV show images.
    * @override
    * @protected
-   * @param {!Number} tmdb - The tmdb id of the show you want the images from.
-   * @param {!Number} tvdb - The tvdb id of the show you want the images from.
+   * @param {!number} tmdb - The tmdb id of the show you want the images from.
+   * @param {!number} tvdb - The tvdb id of the show you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getImages(tmdb, tvdb) {
+  _getImages(tmdb: number, tvdb: number): Object {
     return this._getTmdbImages(tmdb)
       .catch(() => this._getTvdbImages(tvdb))
       .catch(() => this._getFanartImages(tmdb))
@@ -333,10 +365,10 @@ export default class ShowHelper extends BaseHelper {
   /**
    * Get info from Trakt and make a new show object.
    * @override
-   * @param {!String} slug - The slug to query https://trakt.tv/.
+   * @param {!string} slug - The slug to query https://trakt.tv/.
    * @returns {Show} - A new show without the episodes attached.
    */
-  async getTraktInfo(slug) {
+  async getTraktInfo(slug: string): Show {
     try {
       const traktShow = await this._trakt.shows.summary({
         id: slug,

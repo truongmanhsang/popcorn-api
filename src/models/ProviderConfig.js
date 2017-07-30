@@ -1,6 +1,8 @@
-// Import the neccesary modules.
-import mongoose from 'mongoose'
-
+// Import the necessary modules.
+import mongoose, {
+  Model,
+  Schema
+} from 'mongoose'
 import BaseProvider from '../scraper/providers/BaseProvider'
 
 /**
@@ -8,7 +10,7 @@ import BaseProvider from '../scraper/providers/BaseProvider'
  * @type {Object}
  * @see http://mongoosejs.com/docs/guide.html
  */
-const _ProviderConfigSchema = new mongoose.Schema({
+const _providerConfigSchema = new Schema({
   _id: {
     type: String,
     index: {
@@ -49,13 +51,13 @@ const _ProviderConfigSchema = new mongoose.Schema({
  * Pre-hook for inserting a provider configuration. Sets the '_id' as the name
  * of the provider configuration
  */
-_ProviderConfigSchema.pre('save', function (next) {
+_providerConfigSchema.pre('save', function (next) {
   this._id = this.name
   return next()
 })
 
 // Create the provider configration model.
-const ProviderConfig = mongoose.model('ProviderConfig', _ProviderConfigSchema)
+const ProviderConfig = mongoose.model('ProviderConfig', _providerConfigSchema)
 
 /**
  * A model object for provider configuration.

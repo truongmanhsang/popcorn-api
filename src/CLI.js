@@ -1,4 +1,4 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import bytes from 'bytes'
 import fs from 'fs'
 import parseTorrent from 'parse-torrent'
@@ -29,29 +29,33 @@ import {
   showSchema
 } from './promptschemas.js'
 
-/** Class The class for the command line interface. */
+/**
+ * Class The class for the command line interface.
+ * @type {CLI}
+ * @flow
+ */
 export default class CLI {
 
   /**
    * The name of the CLI provider. Default is `CLI`.
-   * @type {String}
+   * @type {string}
    */
-  static _Name = 'CLI'
+  static _Name: string = 'CLI'
 
   /**
    * The comand line parser to process the CLI inputs.
    * @type {Command}
    */
-  _program
+  _program: Command
 
   /**
    * Flag for when in testing mode.
    * @type {boolean}
    */
-  _testing
+  _testing: boolean
 
   /** Create a cli object. */
-  constructor() {
+  constructor(): void {
     // Create a logger object, will be overwritten if the --mode option is
     // invoked.
     Logger.getLogger('winston', false)
@@ -96,10 +100,10 @@ export default class CLI {
 
   /**
    * Handle the --mode CLI option.
-   * @param {!String} m - The mode to run the API in.
+   * @param {!string} m - The mode to run the API in.
    * @returns {undefined}
    */
-  _mode(m) {
+  _mode(m: string): void {
     const start = this._program.start ? this._program.start : false
     const testing = this._testing ? this._testing : false
 
@@ -120,12 +124,12 @@ export default class CLI {
 
   /**
    * Return a torrent object for a movie.
-   * @param {!String} magnet - The magnet url to bind.
+   * @param {!string} magnet - The magnet url to bind.
    * @param {!Object} health - The health object for seeders and peers.
    * @param {!Object} remote - The remote data object from 'parseTorrent'.
    * @returns {Object} - A torrent object for a movie.
    */
-  _movieTorrent(magnet, health, remote) {
+  _movieTorrent(magnet: string, health: Object, remote: Object): Object {
     return {
       url: magnet,
       seeds: health.seeds,
@@ -138,11 +142,11 @@ export default class CLI {
 
   /**
    * Return a torrent object for a show.
-   * @param {!String} magnet - The magnet url to bind.
+   * @param {!string} magnet - The magnet url to bind.
    * @param {!Object} health - The health object for seeders and peers.
    * @returns {Object} - A torrent object for a show.
    */
-  _tvshowTorrent(magnet, health) {
+  _tvshowTorrent(magnet: string, health: Object): Object {
     return {
       url: magnet,
       seeds: health.seeds,
@@ -153,12 +157,12 @@ export default class CLI {
 
   /**
    * Get a torrent object based on the type.
-   * @param {!String} link - The link to bind to the torrent object.
-   * @param {!String} type - The type of torrent object (movie|show).
+   * @param {!string} link - The link to bind to the torrent object.
+   * @param {!string} type - The type of torrent object (movie|show).
    * @returns {Promise<Object, undefined>} - A torrent object for a movie or
    * show.
    */
-  _getTorrent(link, type) {
+  _getTorrent(link: string, type: string): Promise<Object, undefined> {
     return new Promise((resolve, reject) => {
       return parseTorrent.remote(link, (err, remote) => {
         if (err) {
@@ -175,10 +179,10 @@ export default class CLI {
 
   /**
    * Handle the --content CLI option to insert a movie torrent.
-   * @param {!String} t - The content type to add to the database.
+   * @param {!string} t - The content type to add to the database.
    * @returns {undefined}
    */
-  _moviePrompt(t) {
+  _moviePrompt(t: string): undefined {
     prompt.get(movieSchema, async (err, res) => {
       try {
         if (err) {
@@ -212,10 +216,10 @@ export default class CLI {
 
   /**
    * Handle the --content CLI option to insert a movie torrent.
-   * @param {!String} t - The content type to add to the database.
+   * @param {!string} t - The content type to add to the database.
    * @returns {undefined}
    */
-  _showPrompt(t) {
+  _showPrompt(t: string): void {
     prompt.get(showSchema, async (err, res) => {
       try {
         if (err) {
@@ -250,10 +254,10 @@ export default class CLI {
 
   /**
    * Handle the --content CLI option.
-   * @param {!String} t - The content type to add to the database.
+   * @param {!string} t - The content type to add to the database.
    * @returns {undefined}
    */
-  _content(t) {
+  _content(t: string): void {
     Setup.connectMongoDB()
 
     switch (t) {
@@ -279,7 +283,7 @@ export default class CLI {
    * Handle the --provider CLI option.
    * @returns {undefined}
    */
-  _provider() {
+  _provider(): void {
     prompt.get(providerSchema, (err, res) => {
       if (err) {
         logger.error(err)
@@ -308,21 +312,21 @@ export default class CLI {
 
   /**
    * Handle the --export CLI option.
-   * @param {!String} e - The collection to export.
-   * @returns {Promise<String, undefined>} - The promise to export a collection.
+   * @param {!string} e - The collection to export.
+   * @returns {Promise<string, undefined>} - The promise to export a collection.
    */
-  _export(e) {
+  _export(e: string): Promise<string, undefined> {
     return Util.Instance.exportCollection(e)
   }
 
   /**
    * Handle the --import CLI option.
-   * @param {!String} i - The collection to import.
+   * @param {!string} i - The collection to import.
    * @throws {Error} - Error: no such file found for 'JSON_FILE'
-   * @returns {Promise<String, undefined>|undefined} - The promise to import a
+   * @returns {Promise<string, undefined>|undefined} - The promise to import a
    * collection.
    */
-  _import(i) {
+  _import(i: string): Promise<string, undefined> | undefined {
     if (!fs.existsSync(i)) {
       logger.error(`File '${i}' does not exists!`)
       process.exit(1)
@@ -350,7 +354,7 @@ export default class CLI {
    * Run the CLI program.
    * @returns {undefined}
    */
-  run() {
+  run(): void {
     if (this._program.mode) {
       return this._mode(this._program.mode)
     } else if (this._program.content) {

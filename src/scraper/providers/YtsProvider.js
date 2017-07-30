@@ -1,14 +1,16 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import MovieProvider from './MovieProvider'
 
 /**
  * Class for scraping content from YTS.ag.
  * @extends {MovieProvider}
+ * @type {YtsProvider}
+ * @flow
  */
-export default class YTSProvider extends MovieProvider {
+export default class YtsProvider extends MovieProvider {
 
   /**
-   * Create a YTSProvider class.
+   * Create a YtsProvider class.
    * @param {!Object} config - The configuration object for the torrent
    * provider.
    * @param {!Object} config.api - The name of api for the torrent provider.
@@ -17,7 +19,7 @@ export default class YTSProvider extends MovieProvider {
    * @param {!Object} config.query - The query object for the api.
    * @param {!String} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, type}) {
+  constructor({api, name, modelType, query, type}: Object): void {
     super({api, name, modelType, query, type})
   }
 
@@ -30,7 +32,7 @@ export default class YTSProvider extends MovieProvider {
    * @param {!String} [lang=en] - The language of the torrent.
    * @returns {Object} - Information about a movie from the torrent.
    */
-  _extractContent(torrent, lang = 'en') {
+  _extractContent(torrent: Object, lang: string = 'en'): Object {
     const movie = {
       movieTitle: torrent.title,
       slug: torrent.imdb_code,
@@ -67,7 +69,7 @@ export default class YTSProvider extends MovieProvider {
    * @param {!String} [lang=en] - The language of the torrent.
    * @returns {Object|undefined} - Information about a movie from the torrent.
    */
-  _getContentData(torrent, lang = 'en') {
+  _getContentData(torrent: Object, lang: string = 'en'): Object | void {
     if (
       torrent && torrent.torrents &&
       torrent.imdb_code &&

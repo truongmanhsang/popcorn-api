@@ -1,5 +1,8 @@
-// Import the neccesary modules.
-import mongoose from 'mongoose'
+// Import the necessary modules.
+import mongoose, {
+  Model,
+  Schema
+} from 'mongoose'
 import { ItemType } from 'butter-provider'
 
 import content from './content'
@@ -9,7 +12,7 @@ import content from './content'
  * @type {Object}
  * @see http://mongoosejs.com/docs/guide.html
  */
-export const ShowSchema = new mongoose.Schema(Object.assign({}, content, {
+export const showSchema = new Schema({
   tvdb_id: String,
   country: String,
   network: String,
@@ -35,14 +38,25 @@ export const ShowSchema = new mongoose.Schema(Object.assign({}, content, {
     date_based: Boolean,
     first_aired: Number,
     torrents: {}
-  }]
-}))
+  }],
+  ...content
+})
+
+/**
+ * Class for show attributes and methods.
+ * @extends {Model}
+ * @type {Show}
+ */
+export class Show extends Model {}
+
+// Attatch the fuctions from the Show class to the showSchema.
+showSchema.loadClass(Show)
 
 // Create the show model.
-const Show = mongoose.model('Show', ShowSchema)
+const ShowModel = mongoose.model('Show', showSchema)
 
 /**
  * A model object for shows.
- * @type {Show}
+ * @type {ShowModel}
  */
-export default Show
+export default ShowModel

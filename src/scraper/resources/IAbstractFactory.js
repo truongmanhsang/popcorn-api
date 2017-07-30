@@ -1,6 +1,8 @@
 /**
  * Interface for the abstract factory pattern.
  * @interface
+ * @type {IAbstractFactory}
+ * @flow
  */
 export default class IAbstractFactory {
 
@@ -10,7 +12,7 @@ export default class IAbstractFactory {
    * @throws {Error} - Using default method: 'getApi'.
    * @returns {undefined}
    */
-  getApi() {
+  getApi(): void {
     throw new Error('Using default method: \'getApi\'')
   }
 
@@ -20,7 +22,7 @@ export default class IAbstractFactory {
    * @throws {Error} - Using default method: 'getHelper'.
    * @returns {undefined}
    */
-  getHelper() {
+  getHelper(): void {
     throw new Error('Using default method: \'getHelper\'')
   }
 
@@ -30,7 +32,7 @@ export default class IAbstractFactory {
    * @throws {Error} - Using default method: 'getModel'.
    * @returns {undefined}
    */
-  getModel() {
+  getModel(): void {
     throw new Error('Using default method: \'getModel\'')
   }
 

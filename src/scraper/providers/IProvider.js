@@ -1,6 +1,8 @@
 /**
  * Interface for scraping content from various sources.
  * @interface
+ * @type {IProvider}
+ * @flow
  */
 export default class IProvider {
 
@@ -10,7 +12,7 @@ export default class IProvider {
    * @throws {Error} - Using default method: 'getContent'.
    * @returns {undefined}
    */
-  getContent() {
+  getContent(): void {
     throw new Error('Using default method: \'getContent\'')
   }
 
@@ -21,7 +23,7 @@ export default class IProvider {
    * @throws {Error} - Using default method: '_extractContent'.
    * @returns {undefined}
    */
-  _extractContent() {
+  _extractContent(): void {
     throw new Error('Using default method: \'_extractContent\'')
   }
 
@@ -32,7 +34,7 @@ export default class IProvider {
    * @throws {Error} - Using default method: '_getContentData'.
    * @returns {undefined}
    */
-  _getContentData() {
+  _getContentData(): void {
     throw new Error('Using default method: \'_getContentData\'')
   }
 
@@ -42,7 +44,7 @@ export default class IProvider {
    * @throws {Error} - Using default method: 'attachTorrent'.
    * @returns {undefined}
    */
-  attachTorrent() {
+  attachTorrent(): void {
     throw new Error('Using default method: \'attachTorrent\'')
   }
 
@@ -53,7 +55,7 @@ export default class IProvider {
    * @throws {Error} - Using default method: '_getAllContent'.
    * @returns {undefined}
    */
-  _getAllContent() {
+  _getAllContent(): void {
     throw new Error('Using default method: \'_getAllContent\'')
   }
 
@@ -64,7 +66,7 @@ export default class IProvider {
    * @throws {Error} - Using default method: '_getAllTorrents'.
    * @returns {undefined}
    */
-  _getAllTorrents() {
+  _getAllTorrents(): void {
     throw new Error('Using default method: \'_getAllTorrents\'')
   }
 
@@ -74,7 +76,7 @@ export default class IProvider {
    * @throws {Error} - Using default method: 'search'.
    * @returns {undefined}
    */
-  search() {
+  search(): void {
     throw new Error('Using default method: \'search\'')
   }
 

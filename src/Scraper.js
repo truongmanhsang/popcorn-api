@@ -1,41 +1,58 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import asyncq from 'async-q'
 import fs from 'fs'
-import path from 'path'
+import { join } from 'path'
 
 import Context from './scraper/Context'
 import ProviderConfig from './models/ProviderConfig'
 import Util from './Util'
 
-// The path to the temporary directory.
-global.tempDir = path.join(process.cwd(), 'tmp')
-
-/** Class for Initiating the scraping process. */
+/**
+ * Class for Initiating the scraping process.
+ * @type {Scraper}
+ * @flow
+ */
 export default class Scraper {
 
   /**
    * An array of the supported collections for mongodb.
-   * @type {Array<String>}
+   * @type {Array<string>}
    */
-  static _Collections = ['anime', 'movie', 'show'];
+  static _Collections: Array<string> = ['anime', 'movie', 'show']
 
   /**
    * The path of the status file. Default is `./tmp/status.json`.
-   * @type {String}
+   * @type {string}
    */
-  static StatusPath = path.join(tempDir, 'status.json');
+  static StatusPath: string
+
+  /**
+   * Get path of the status file.
+   * @return {string} - The path of the status file.
+   */
+  static get StatusPath(): string {
+    return join(process.env.TEMP_DIR, 'status.json')
+  }
 
   /**
    * The path of the updated file. Default is `./tmp/updated.json`.
-   * @type {String}
+   * @type {string}
    */
-  static UpdatedPath = path.join(tempDir, 'updated.json');
+  static UpdatedPath: string
+
+  /**
+   * Get path of the updated file.
+   * @return {string} - The path of the updated file.
+   */
+  static get UpdatedPath(): string {
+    return join(process.env.TEMP_DIR, 'updated.json')
+  }
 
   /**
    * Get the status object.
-   * @returns {Promise<String, Error>} - The status of the scraping process.
+   * @returns {Promise<string, Error>} - The status of the scraping process.
    */
-  static get Status() {
+  static get Status(): Promise<string, Error> {
     return new Promise((resolve, reject) => {
       return fs.readFile(Scraper.StatusPath, 'utf8', (err, res) => {
         if (err) {
@@ -49,19 +66,28 @@ export default class Scraper {
 
   /**
    * Updates the `status.json` file.
-   * @param {!String} status - The status which will be set to in the
+   * @param {!string} status - The status which will be set to in the
    * `status.json` file.
-   * @returns {undefined}
+   * @returns {Promise<string, Error>} - 'ok' if saved, or the error is there is
+   * one.
    */
-  static set Status(status) {
-    fs.writeFile(Scraper.StatusPath, status, 'utf8', () => {})
+  static set Status(status: string): Promise<string, Error> {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(Scraper.StatusPath, status, 'utf8', err => {
+        if (err) {
+          return reject(err)
+        }
+
+        return resolve('ok')
+      })
+    })
   }
 
   /**
    * Get the updated object.
-   * @returns {Promise<Number, Error>} - The status of the scraping process.
+   * @returns {Promise<number, Error>} - The status of the scraping process.
    */
-  static get Updated() {
+  static get Updated(): Promise<number, Error> {
     return new Promise((resolve, reject) => {
       return fs.readFile(Scraper.UpdatedPath, 'utf8', (err, res) => {
         if (err) {
@@ -75,19 +101,27 @@ export default class Scraper {
 
   /**
    * Updates the `updated.json` file.
-   * @param {!Number} updated - The epoch time when the API last
-   * started scraping.
-   * @returns {undefined}
+   * @param {!number} updated - The epoch time when the API last started
+   * scraping.
+   * @returns {Promise<string, Error>} - 'ok' if saved, or the error is there is
+   * one.
    */
-  static set Updated(updated) {
-    fs.writeFile(Scraper.UpdatedPath, updated, 'utf8', () => {})
-  }
+  static set Updated(updated: number): Promise<string, Error> {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(Scraper.UpdatedPath, String(updated), 'utf8', err => {
+        if (err) {
+          return reject(err)
+        }
 
+        return resolve('ok')
+      })
+    })
+  }
   /**
    * Initiate the scraping.
    * @returns {undefined}
    */
-  static scrape() {
+  static scrape(): void {
     Scraper.Updated = Math.floor(new Date().getTime() / 1000)
 
     const context = new Context()

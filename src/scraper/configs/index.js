@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-// Import the neccesary modules.
+// Import the necessary modules.
 import asyncq from 'async-q'
 
 import ProviderConfig from '../../models/ProviderConfig'
@@ -9,12 +9,12 @@ import horriblesubsanime from './horriblesubsanime.json'
 import nyaaanime from './nyaaanime.json'
 
 import etmovies from './etmovies.json'
-// import katmovies from './katmovies.json';
+// import katmovies from './katmovies.json'
 import ytsmovies from './ytsmovies.json'
 
 import etshows from './etshows.json'
 import eztvshows from './eztvshows.json'
-// import katshows from './katshows.json';
+// import katshows from './katshows.json'
 
 Setup.connectMongoDB()
 

@@ -1,5 +1,8 @@
-// Import the neccesary modules.
-import mongoose from 'mongoose'
+// Import the necessary modules.
+import mongoose, {
+  Model,
+  Schema
+} from 'mongoose'
 import { ItemType } from 'butter-provider'
 
 import content from './content'
@@ -7,9 +10,11 @@ import content from './content'
 /**
  * The movie schema used by mongoose.
  * @type {Object}
+ * @flow
+ * @ignore
  * @see http://mongoosejs.com/docs/guide.html
  */
-export const MovieSchema = new mongoose.Schema(Object.assign({}, content, {
+export const movieSchema = new Schema({
   language: String,
   released: Number,
   trailer: {
@@ -21,14 +26,26 @@ export const MovieSchema = new mongoose.Schema(Object.assign({}, content, {
     type: String,
     default: ItemType.MOVIE
   },
-  torrents: {}
-}))
+  torrents: {},
+  ...content
+})
+
+/**
+ * Class for movie attributes and methods.
+ * @extends {Model}
+ * @type {Movie}
+ */
+export class Movie extends Model {}
+
+// Attatch the fuctions from the Movie class to the movieSchema.
+movieSchema.loadClass(Movie)
 
 // Create the movie model.
-const Movie = mongoose.model('Movie', MovieSchema)
+const MovieModel = mongoose.model('Movie', movieSchema)
 
 /**
  * A model object for movies.
- * @type {Movie}
+ * @type {MovieModel}
+ * @ignore
  */
-export default Movie
+export default MovieModel

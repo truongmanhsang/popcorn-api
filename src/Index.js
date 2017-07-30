@@ -69,7 +69,7 @@ export default class Index {
    * @param {?boolean} [pretty=true] - Pretty output with Winston logging.
    * @param {?boolean} [quiet=false] - No output.
    * @param {?boolean} [debug=false] - Option to debug requests.
-   * @returns {void}
+   * @returns {undefined}
    */
   static setupApi(
     start?: boolean = true,
@@ -92,7 +92,7 @@ export default class Index {
 
   /**
    * Create the temporary directory.
-   * @returns {void}
+   * @returns {undefined}
    */
   static _createTemp(): void {
     del.sync([process.env.TEMP_DIR])
@@ -109,7 +109,7 @@ export default class Index {
    * Method to setup the cronjob.
    * @param {?boolean} [start] - Start the cronjob.
    * @param {?boolean} [debug] - Option to debug requests.
-   * @return {void}
+   * @return {undefined}
    */
   static _startApi(start?: boolean, debug?: boolean): void {
     if (cluster.isMaster) { // Check is the cluster is the master
@@ -170,7 +170,7 @@ export default class Index {
   /**
    * Method to stop the API from running.
    * @param {?Function} [done=undefined] - function to exit the API.
-   * @returns {void}
+   * @returns {undefined}
    */
   static closeApi(done?: Function = undefined): void {
     Index._Server.close(() => {

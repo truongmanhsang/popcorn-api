@@ -1,4 +1,4 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import asyncq from 'async-q'
 import bytes from 'bytes'
 
@@ -6,37 +6,43 @@ import BaseProvider from './BaseProvider'
 import moviemap from './maps/moviemap.json'
 
 /**
- * The default regular expressions used to extract data.
- * @type {Array<Object>}
- */
-const defaultRegexps = [{
-  regex: /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/i
-}, {
-  regex: /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/i
-}, {
-  regex: /(.*).(\d{4})\D+(\d{3,4}p)/i
-}]
-
-/**
  * Class for scraping movie content from various sources.
  * @extends {BaseProvider}
+ * @type {MovieProvider}
+ * @flow
  */
 export default class MovieProvider extends BaseProvider {
+
+  /**
+   * The regular expressions used to extract information about movies.
+   * @type {Array<Object>}
+   */
+  _regexps: Array<Object>
 
   /**
    * Create a MovieProvider class.
    * @param {!Object} config - The configuration object for the torrent
    * provider.
    * @param {?Object} config.api - The name of api for the torrent provider.
-   * @param {!String} config.name - The name of the torrent provider.
-   * @param {!String} config.modelType - The model type for the helper.
+   * @param {!string} config.name - The name of the torrent provider.
+   * @param {!string} config.modelType - The model type for the helper.
    * @param {?Object} config.query - The query object for the api.
-   * @param {?Array<RegExp>} [config.regexps=defaultRegexps] - The regular
-   * expressions used to extract information about movies.
-   * @param {!String} config.type - The type of content to scrape.
+   * @param {!string} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, regexps = defaultRegexps, type}) {
-    super({api, name, modelType, query, regexps, type})
+  constructor({api, name, modelType, query, type}: Object): void {
+    super({api, name, modelType, query, type})
+
+    /**
+     * The regular expressions used to extract information about movies.
+     * @type {Array<Object>}
+     */
+    this._regexps = [{
+      regex: /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/i
+    }, {
+      regex: /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/i
+    }, {
+      regex: /(.*).(\d{4})\D+(\d{3,4}p)/i
+    }]
   }
 
   /**
@@ -46,11 +52,11 @@ export default class MovieProvider extends BaseProvider {
    * @param {!Object} torrent - The torrent to extract the movie information
    * from.
    * @param {!RegExp} r - The regex to extract the movie information.
-   * @param {!String} [lang=en] - The language of the torrent.
+   * @param {!string} [lang=en] - The language of the torrent.
    *
    * @returns {Object} - Information about a movie from the torrent.
    */
-  _extractContent(torrent, r, lang = 'en') {
+  _extractContent(torrent: Object, r: RegExp, lang: string = 'en'): Object {
     let movieTitle
     let slug
 
@@ -103,11 +109,16 @@ export default class MovieProvider extends BaseProvider {
    * @override
    * @param {!Object} movie - The movie to attach a torrent to.
    * @param {!Object} torrent - The torrent object.
-   * @param {!String} quality - The quality of the torrent.
-   * @param {!String} [lang=en] - The language of the torrent
+   * @param {!string} quality - The quality of the torrent.
+   * @param {!string} [lang=en] - The language of the torrent
    * @returns {Object} - The movie with the newly attached torrent.
    */
-  attachTorrent(movie, torrent, quality, lang = 'en') {
+  attachTorrent(
+    movie: Object,
+    torrent: Object,
+    quality: string,
+    lang: string = 'en'
+  ): Object {
     if (!movie.torrents[lang]) {
       movie.torrents[lang] = {}
     }
@@ -124,11 +135,14 @@ export default class MovieProvider extends BaseProvider {
    * @protected
    * @param {!Array<Object>} torrents - A list of torrents to extract movie
    * information.
-   * @param {!String} [lang=en] - The language of the torrent.
+   * @param {!string} [lang=en] - The language of the torrent.
    * @returns {Promise<Array<Object>, undefined>} - A list of objects with
    * movie information extracted from the torrents.
    */
-  _getAllContent(torrents, lang = 'en') {
+  _getAllContent(
+    torrents: Array<Object>,
+    lang: string = 'en'
+  ): Promise<Array<Object>, void> {
     const movies = []
 
     return asyncq.mapSeries(torrents, torrent => {

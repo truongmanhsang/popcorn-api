@@ -1,4 +1,4 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import asyncq from 'async-q'
 import { ItemType } from 'butter-provider'
 
@@ -8,6 +8,8 @@ import IProvider from './IProvider'
 /**
  * Class for scraping content from various sources.
  * @implements {IProvider}
+ * @type {BaseProvider}
+ * @flow
  */
 export default class BaseProvider extends IProvider {
 
@@ -15,7 +17,7 @@ export default class BaseProvider extends IProvider {
    * The types of models available for the API.
    * @type {Object}
    */
-  static ModelTypes = {
+  static ModelTypes: Object = {
     AnimeMovie: 'animemovie',
     AnimeShow: 'animeshow',
     Movie: 'movie',
@@ -26,7 +28,7 @@ export default class BaseProvider extends IProvider {
    * The types of content available for the API.
    * @type {Object}
    */
-  static Types = {
+  static Types: Object = {
     Movie: ItemType.MOVIE,
     Show: ItemType.TVSHOW
   }
@@ -34,23 +36,51 @@ export default class BaseProvider extends IProvider {
   /**
    * The maximum web requests can take place at the same time. Default is `2`.
    * @protected
-   * @type {Number}
+   * @type {number}
    */
-  static _MaxWebRequest = 2;
+  static _MaxWebRequest: number = 2
+
+  /**
+   * The api of the torrent provider.
+   * @type {Object}
+   */
+  _api: Object
+
+  /**
+   * The name of the torrent provider.
+   * @type {string}
+   */
+  _name: string
+
+  /**
+   * The helper class for adding movies.
+   * @type {MovieHelper|ShowHelper}
+   */
+  _helper: MovieHelper | ShowHelper
+
+  /**
+   * The query object for the api.
+   * @type {Object}
+   */
+  _query: Object
+
+  /**
+   * The type of content to scrape.
+   * @type {string}
+   */
+  _type: string
 
   /**
    * Create a BaseProvider class.
    * @param {!Object} config - The configuration object for the torrent
    * provider.
    * @param {!Object} config.api - The name of api for the torrent provider.
-   * @param {!String} config.name - The name of the torrent provider.
-   * @param {!String} config.modelType - The model type for the helper.
+   * @param {!string} config.name - The name of the torrent provider.
+   * @param {!string} config.modelType - The model type for the helper.
    * @param {!Object} config.query - The query object for the api.
-   * @param {?Array<RegExp>} [config.regexps] - The regular expressions used
-   * to extract information about movies.
-   * @param {!String} config.type - The type of content to scrape.
+   * @param {!string} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, regexps, type}) {
+  constructor({api, name, modelType, query, type}: Object): void {
     super()
 
     const apiFactory = FactoryProducer.getFactory('api')
@@ -67,13 +97,13 @@ export default class BaseProvider extends IProvider {
 
     /**
      * The name of the torrent provider.
-     * @type {String}
+     * @type {string}
      */
     this._name = name
 
     /**
      * The helper class for adding movies.
-     * @type {BaseHelper}
+     * @type {MovieHelper|ShowHelper}
      */
     this._helper = helperFactory.getHelper(this._name, model, type)
 
@@ -84,23 +114,17 @@ export default class BaseProvider extends IProvider {
     this._query = query
 
     /**
-     * The regexps used to extract information about movies.
-     * @type {Array<RegExp>}
-     */
-    this._regexps = regexps
-
-    /**
      * The type of content to scrape.
-     * @type {String}
+     * @type {string}
      */
     this._type = type
   }
 
   /**
    * Get the name of the provider.
-   * @returns {String} - The name of the provider.
+   * @returns {string} - The name of the provider.
    */
-  get name() {
+  get name(): string {
     return this._name
   }
 
@@ -112,7 +136,7 @@ export default class BaseProvider extends IProvider {
    * @throws {Error} - 'CONTENT_TYPE' is not a valid value for Types!
    * @returns {Promise<Object, undefined>} - A content object.
    */
-  async getContent(content) {
+  async getContent(content: Object): Promise<Object, void> {
     try {
       let newContent
 
@@ -145,11 +169,11 @@ export default class BaseProvider extends IProvider {
    * @protected
    * @param {!Object} torrent - A torrent object to extract content information
    * from.
-   * @param {!String} [lang=en] - The language of the torrent.
+   * @param {!string} [lang=en] - The language of the torrent.
    * @returns {Object|undefined} - Information about the content from the
    * torrent.
    */
-  _getContentData(torrent, lang = 'en') {
+  _getContentData(torrent: Object, lang: string = 'en'): Object | void {
     const regex = this._regexps.find(
       r => r.regex.test(torrent.title) ? r : null
     )
@@ -165,11 +189,11 @@ export default class BaseProvider extends IProvider {
    * Get all the torrents of a given torrent provider.
    * @override
    * @protected
-   * @param {!Number} totalPages - The total pages of the query.
+   * @param {!number} totalPages - The total pages of the query.
    * @returns {Promise<Array<Object>, undefined>} - A list of all the queried
    * torrents.
    */
-  _getAllTorrents(totalPages) {
+  _getAllTorrents(totalPages: number): Promise<Array<Object>, void> {
     let torrents = []
     return asyncq.timesSeries(totalPages, async page => {
       if (this._query.page) {
@@ -195,7 +219,7 @@ export default class BaseProvider extends IProvider {
    * @override
    * @returns {Promise<Array<Object>, undefined>} - A list of scraped content.
    */
-  async search() {
+  async search(): Promise<Array<Object>, void> {
     try {
       const getTotalPages = await this._api.search(this._query)
 

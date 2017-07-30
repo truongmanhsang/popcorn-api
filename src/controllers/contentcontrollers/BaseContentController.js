@@ -1,9 +1,11 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import IContentController from './IContentController'
 
 /**
  * Base class for getting content from endpoints.
  * @implements {IContentController}
+ * @type {BaseContentController}
+ * @flow
  */
 export default class BaseContentController extends IContentController {
 
@@ -11,7 +13,7 @@ export default class BaseContentController extends IContentController {
    * Object used to query for content.
    * @type {Object}
    */
-  static Query = {
+  static Query: Object = {
     $or: [{
       num_seasons: {
         $gt: 0
@@ -21,21 +23,21 @@ export default class BaseContentController extends IContentController {
         $exists: true
       }
     }]
-  };
+  }
 
   /**
    * The amount of objects show per page. Default is `50`.
    * @protected
-   * @type {Number}
+   * @type {number}
    */
-  _pageSize = 50;
+  _pageSize: number
 
   /**
    * Create a new content controller.
    * @param {!AnimeMovie|AnimeShow|Movie|Show} model - The model for the
    * content controller.
    */
-  constructor(model) {
+  constructor(model: AnimeMovie | AnimeShow | Movie | Show): void {
     super()
 
     /**
@@ -43,26 +45,37 @@ export default class BaseContentController extends IContentController {
      * @type {AnimeMovie|AnimeShow|Movie|Show}
      */
     this._model = model
+
+    /**
+     * The amount of objects show per page. Default is `50`.
+     * @type {number}
+     */
+    this._pageSize = 50
   }
 
   /**
    * Get all the available pages.
    * @param {!Object} req - The ExpressJS request object.
    * @param {!Object} res - The ExpressJS response object.
-   * @returns {Promise<Array<String>, Object>} - A list of pages which are
+   * @returns {Promise<Array<string>, Object>} - A list of pages which are
    * available.
    */
-  getContents(req, res) {
-    return this._model.count(BaseContentController.Query).exec().then(count => {
-      const pages = Math.ceil(count / this._pageSize)
-      const docs = []
+  getContents(req: Object, res: Object): Promise<Array<string>, Object> {
+    return this._model.count(BaseContentController.Query).exec()
+      .then(count => {
+        const pages = Math.ceil(count / this._pageSize)
+        const docs = []
 
-      for (let i = 1; i < pages + 1; i++) {
-        docs.push(`${this._model.collection.name}/${i}`)
-      }
+        for (let i = 1; i < pages + 1; i++) {
+          docs.push(`${this._model.collection.name}/${i}`)
+        }
 
-      return res.json(docs)
-    }).catch(err => res.json(err))
+        if (docs.length === 0) {
+          return res.status(204).json()
+        }
+
+        return res.json(docs)
+      }).catch(err => res.json(err))
   }
 
   /**
@@ -72,7 +85,10 @@ export default class BaseContentController extends IContentController {
    * @returns {Promise<Array<AnimeMovie|AnimeShow|Movie|Show>, Object>} - The
    * content of one page.
    */
-  getPage(req, res) {
+  getPage(
+    req: Object,
+    res: Object
+  ): Promise<Array<AnimeMovie | AnimeShow | Movie | Show>, Object> {
     if (req.params.page.match(/all/i)) {
       return this._model.aggregate([{
         $match: BaseContentController.Query
@@ -82,9 +98,13 @@ export default class BaseContentController extends IContentController {
         $sort: {
           title: -1
         }
-      }]).exec()
-        .then(docs => res.json(docs))
-        .catch(err => res.json(err))
+      }]).exec().then(docs => {
+        if (docs.length === 0) {
+          return res.status(204).json()
+        }
+
+        return res.json(docs)
+      }).catch(err => res.json(err))
     }
 
     const page = !isNaN(req.params.page) ? req.params.page - 1 : 0
@@ -164,9 +184,13 @@ export default class BaseContentController extends IContentController {
       $skip: offset
     }, {
       $limit: this._pageSize
-    }]).exec()
-      .then(docs => res.json(docs))
-      .catch(err => res.json(err))
+    }]).exec().then(docs => {
+      if (docs.length === 0) {
+        return res.status(204).json()
+      }
+
+      return res.json(docs)
+    }).catch(err => res.json(err))
   }
 
   /**
@@ -176,14 +200,21 @@ export default class BaseContentController extends IContentController {
    * @returns {Promise<AnimeMovie|AnimeShow|Movie|Show, Object>} - The details
    * of a single item.
    */
-  getContent(req, res) {
+  getContent(
+    req: Object,
+    res: Object
+  ): Promise<AnimeMovie | AnimeShow | Movie | Show, Object> {
     return this._model.findOne({
       _id: req.params.id
     }, {
       latest_episode: 0
-    }).exec()
-      .then(docs => res.json(docs))
-      .catch(err => res.json(err))
+    }).exec().then(docs => {
+      if (!docs) {
+        return res.status(204).json()
+      }
+
+      return res.json(docs)
+    }).catch(err => res.json(err))
   }
 
   /**
@@ -193,7 +224,10 @@ export default class BaseContentController extends IContentController {
    * @returns {Promise<AnimeMovie|AnimeShow|Movie|Show, Object>} - A random
    * item.
    */
-  getRandomContent(req, res) {
+  getRandomContent(
+    req: Object,
+    res: Object
+  ): Promise<AnimeMovie | AnimeShow | Movie | Show, Object> {
     return this._model.aggregate([{
       $match: BaseContentController.Query
     }, {
@@ -202,9 +236,13 @@ export default class BaseContentController extends IContentController {
       }
     }, {
       $limit: 1
-    }]).exec()
-      .then(docs => res.json(docs[0]))
-      .catch(err => res.json(err))
+    }]).exec().then(docs => {
+      if (docs.length === 0) {
+        return res.status(204).json()
+      }
+
+      return res.json(docs[0])
+    }).catch(err => res.json(err))
   }
 
 }

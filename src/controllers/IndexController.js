@@ -1,4 +1,4 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import fs from 'fs'
 import path from 'path'
 
@@ -16,14 +16,18 @@ import {
   version
 } from '../../package.json'
 
-/** Class for displaying information about the server the API is running on. */
+/**
+ * Class for displaying information about the server the API is running on.
+ * @type {IndexController}
+ * @flow
+ */
 export default class IndexController {
 
   /**
    * The name of the server. Default is `serv01`.
-   * @type {String}
+   * @type {string}
    */
-  _server = 'serv01';
+  static _Server: string = 'serv01'
 
   /**
    * Get general information about the server.
@@ -31,7 +35,7 @@ export default class IndexController {
    * @param {!Object} res - The ExpressJS response object.
    * @returns {Promise<Object, Object>} - General information about the server.
    */
-  async getIndex(req, res) {
+  async getIndex(req: Object, res: Object): Promise<Object, Object> {
     try {
       const commit = await Util.Instance
         .executeCommand('git rev-parse --short HEAD')
@@ -41,7 +45,7 @@ export default class IndexController {
 
       return res.json({
         repo: repository.url,
-        server: this._server,
+        server: IndexController._Server,
         status: await Scraper.Status,
         totalAnimes: totalAnimes || 0,
         totalMovies: totalMovies || 0,
@@ -52,7 +56,7 @@ export default class IndexController {
         commit
       })
     } catch (err) {
-      return res.json(err)
+      return res.status(500).json(err)
     }
   }
 
@@ -62,13 +66,13 @@ export default class IndexController {
    * @param {!Object} res - The ExpressJS response object.
    * @returns {Object} - The content of the log file.
    */
-  getErrorLog(req, res) {
+  getErrorLog(req: Object, res: Object): Object {
     const file = `${name}.log`
-    const filePath = path.join(tempDir, file)
+    const filePath = path.join(process.env.TEMP_DIR, file)
 
     if (fs.existsSync(filePath)) {
       return res.sendFile(file, {
-        root: tempDir,
+        root: process.env.TEMP_DIR,
         headers: {
           'Content-Type': 'text/plain; charset=UTF-8'
         }

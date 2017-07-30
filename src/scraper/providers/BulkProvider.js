@@ -1,4 +1,4 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import asyncq from 'async-q'
 
 import BaseProvider from './BaseProvider'
@@ -6,6 +6,8 @@ import BaseProvider from './BaseProvider'
 /**
  * Class for scraping content from EZTV and HorribleSubs.
  * @extends {BaseProvider}
+ * @type {BulkProvider}
+ * @flow
  */
 export default class BulkProvider extends BaseProvider {
 
@@ -14,11 +16,11 @@ export default class BulkProvider extends BaseProvider {
    * @param {!Object} config - The configuration object for the torrent
    * provider.
    * @param {!Object} config.api - The name of api for the torrent provider.
-   * @param {!String} config.name - The name of the torrent provider.
-   * @param {!String} config.modelType - The model type for the helper.
-   * @param {!String} config.type - The type of content to scrape.
+   * @param {!string} config.name - The name of the torrent provider.
+   * @param {!string} config.modelType - The model type for the helper.
+   * @param {!string} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, type}) {
+  constructor({api, name, modelType, type}: Object): void {
     super({api, name, modelType, type})
   }
 
@@ -27,7 +29,7 @@ export default class BulkProvider extends BaseProvider {
    * @override
    * @returns {Promise<Array<Object>, undefined>} - A list of scraped content.
    */
-  async search() {
+  async search(): Promise<Array<Object>, void> {
     try {
       logger.info(`${this._name}: Started scraping...`)
       const contents = await this._api.getAll()

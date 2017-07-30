@@ -1,35 +1,22 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import asyncq from 'async-q'
 
 import BaseProvider from './BaseProvider'
 import showmap from './maps/showmap.json'
 
 /**
- * The default regular expressions used to extract data.
- * @type {Array<Object>}
- */
-const defaultRegexps = [{
-  regex: /(.*).[sS](\d{2})[eE](\d{2})/i,
-  dateBased: false
-}, {
-  regex: /(.*).(\d{1,2})[x](\d{2})/i,
-  dateBased: false
-}, {
-  regex: /(.*).(\d{4}).(\d{2}.\d{2})/i,
-  dateBased: true
-}, {
-  regex: /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i,
-  dateBased: false
-}, {
-  regex: /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i,
-  dateBased: false
-}]
-
-/**
  * Class for scraping show content from various sources.
  * @extends {BaseProvider}
+ * @type {ShowProvider}
+ * @flow
  */
 export default class ShowProvider extends BaseProvider {
+
+  /**
+   * The regular expressions used to extract information about shows.
+   * @type {Array<Object>}
+   */
+  _regexps: Array<Object>
 
   /**
    * Create a ShowProvider class.
@@ -39,12 +26,31 @@ export default class ShowProvider extends BaseProvider {
    * @param {!String} config.name - The name of the torrent provider.
    * @param {!String} config.modelType - The model type for the helper.
    * @param {?Object} config.query - The query object for the api.
-   * @param {?Array<RegExp>} [config.regexps=defaultRegexps] - The regular
-   * expressions used to extract information about movies.
    * @param {!String} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, regexps = defaultRegexps, type}) {
-    super({api, name, modelType, query, regexps, type})
+  constructor({api, name, modelType, query, type}) {
+    super({api, name, modelType, query, type})
+
+    /**
+     * The regular expressions used to extract information about shows.
+     * @type {Array<Object>}
+     */
+    this._regexps = [{
+      regex: /(.*).[sS](\d{2})[eE](\d{2})/i,
+      dateBased: false
+    }, {
+      regex: /(.*).(\d{1,2})[x](\d{2})/i,
+      dateBased: false
+    }, {
+      regex: /(.*).(\d{4}).(\d{2}.\d{2})/i,
+      dateBased: true
+    }, {
+      regex: /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i,
+      dateBased: false
+    }, {
+      regex: /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i,
+      dateBased: false
+    }]
   }
 
   /**
@@ -56,7 +62,7 @@ export default class ShowProvider extends BaseProvider {
    * @param {!RegExp} r - The regex to extract the show information.
    * @returns {Object} - Information about a show from the torrent.
    */
-  _extractContent(torrent, r) {
+  _extractContent(torrent: Object, r: RegExp): Object {
     let episode
     let season
     let slug
@@ -108,12 +114,18 @@ export default class ShowProvider extends BaseProvider {
    * @override
    * @param {!Object} show - The show to attach a torrent to.
    * @param {!Object} torrent - The torrent object.
-   * @param {!Number} season - The season number for the torrent.
-   * @param {!Number} episode - The episode number for the torrent.
-   * @param {!String} quality - The quality of the episode.
+   * @param {!number} season - The season number for the torrent.
+   * @param {!number} episode - The episode number for the torrent.
+   * @param {!string} quality - The quality of the episode.
    * @returns {Object} - The show with the newly attached torrent.
    */
-  attachTorrent(show, torrent, season, episode, quality) {
+  attachTorrent(
+    show: Object,
+    torrent: Object,
+    season: number,
+    episode: number,
+    quality: string
+  ): Object {
     if (!show.episodes[season]) {
       show.episodes[season] = {}
     }
@@ -141,7 +153,7 @@ export default class ShowProvider extends BaseProvider {
    * @returns {Promise<Array<Object>, undefined>} - A list of objects with show
    * information extracted from the torrents.
    */
-  _getAllContent(torrents) {
+  _getAllContent(torrents: Array<Object>): Promise<Array<Object>, void> {
     const shows = []
 
     return asyncq.mapSeries(torrents, torrent => {

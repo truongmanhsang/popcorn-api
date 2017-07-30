@@ -1,4 +1,4 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import mongoose from 'mongoose'
 
 import { MovieSchema } from './Movie'

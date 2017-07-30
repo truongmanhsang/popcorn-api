@@ -1,4 +1,4 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 import asyncq from 'async-q'
 
 import BaseHelper from './BaseHelper'
@@ -6,25 +6,48 @@ import BaseHelper from './BaseHelper'
 /**
  * Class for saving movies.
  * @extends {BaseHelper}
+ * @type {MovieHelper}
+ * @flow
  */
 export default class MovieHelper extends BaseHelper {
 
   /**
-   * A configured OMDB API.
-   * @type {OMDB}
+   * A configured Omdb API.
+   * @type {Omdb}
    * @see https://github.com/ChrisAlderson/omdb-api-pt
    */
-  _omdb = this._apiFactory.getApi('omdb');
+  _omdb: Omdb
+
+  /**
+   * Create a movie helper class for content.
+   * @param {!string} name - The name of the content provider.
+   * @param {!AnimeMovie|Movie} model - The model to help fill.
+   */
+  constructor(name, model): void {
+    super(name, model)
+
+    /**
+     * A configured Omdb API.
+     * @type {Omdb}
+     * @see https://github.com/ChrisAlderson/omdb-api-pt
+     */
+    this._omdb = this._apiFactory.getApi('omdb')
+  }
 
   /**
    * Update the torrents for an existing movie.
    * @param {!AnimeMovie|Movie} movie - The new movie.
    * @param {!AnimeMovie|Movie} found - The existing movie.
-   * @param {!String} language - The language of the torrent.
-   * @param {!String} quality - The quality of the torrent.
+   * @param {!string} language - The language of the torrent.
+   * @param {!string} quality - The quality of the torrent.
    * @returns {AnimeMovie|Movie} - A movie with merged torrents.
    */
-  _updateTorrent(movie, found, language, quality) {
+  _updateTorrent(
+    movie: AnimeMovie | Movie,
+    found: AnimeMovie | Movie,
+    language: string,
+    quality: string
+  ): AnimeMovie | Movie {
     let update = false
     let movieTorrent = movie.torrents[language]
 
@@ -56,7 +79,7 @@ export default class MovieHelper extends BaseHelper {
    * @param {!AnimeMovie|Movie} movie - The movie to update its torrent.
    * @returns {AnimeMovie|Movie} - A newly updated movie.
    */
-  async _updateMovie(movie) {
+  async _updateMovie(movie: AnimeMovie | Movie): AnimeMovie | Movie {
     try {
       const found = await this._model.findOne({
         _id: movie._id
@@ -90,7 +113,10 @@ export default class MovieHelper extends BaseHelper {
    * @param {!Object} torrents - The torrents to add to the movie.
    * @returns {AnimeMovie|Movie} - A movie with torrents attached.
    */
-  addTorrents(movie, torrents) {
+  addTorrents(
+    movie: AnimeMovie | Movie,
+    torrents: Object
+  ): AnimeMovie | Movie {
     return asyncq.each(
       Object.keys(torrents),
       torrent => {
@@ -101,10 +127,10 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Get movie images from TMDB.
-   * @param {!Number} tmdb - The tmdb id of the movie you want the images from.
+   * @param {!number} tmdb - The tmdb id of the movie you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getTmdbImages(tmdb) {
+  _getTmdbImages(tmdb: number): Object {
     return this._tmdb.movie.images({
       movie_id: tmdb
     }).then(i => {
@@ -129,10 +155,10 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Get movie images from OMDB.
-   * @param {!String} imdb - The imdb id of the movie you want the images from.
+   * @param {!string} imdb - The imdb id of the movie you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getOmdbImages(imdb) {
+  _getOmdbImages(imdb: string): Object {
     return this._omdb.byID({
       imdb,
       type: 'movie'
@@ -149,10 +175,10 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Get movie images from Fanart.
-   * @param {!Number} tmdb - The tvdb id of the movie you want the images from.
+   * @param {!number} tmdb - The tvdb id of the movie you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getFanartImages(tmdb) {
+  _getFanartImages(tmdb: number): Object {
     return this._fanart.getMovieImages(tmdb).then(i => {
       const images = {
         banner: i.moviebanner ? i.moviebanner[0].url : BaseHelper._Holder,
@@ -172,11 +198,11 @@ export default class MovieHelper extends BaseHelper {
    * Get movie images.
    * @override
    * @protected
-   * @param {!Number} tmdb - The tmdb id of the movie you want the images from.
-   * @param {!String} imdb - The imdb id of the movie you want the images from.
+   * @param {!number} tmdb - The tmdb id of the movie you want the images from.
+   * @param {!string} imdb - The imdb id of the movie you want the images from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getImages(tmdb, imdb) {
+  _getImages(tmdb: number, imdb: string): Object {
     return this._getTmdbImages(imdb)
       .catch(() => this._getOmdbImages(tmdb))
       .catch(() => this._getFanartImages(tmdb))
@@ -186,10 +212,10 @@ export default class MovieHelper extends BaseHelper {
   /**
    * Get info from Trakt and make a new movie object.
    * @override
-   * @param {!String} slug - The slug to query trakt.tv.
+   * @param {!string} slug - The slug to query trakt.tv.
    * @returns {AnimeMovie|Movie} - A new movie.
    */
-  async getTraktInfo(slug) {
+  async getTraktInfo(slug: string): AnimeMovie | Movie {
     try {
       const traktMovie = await this._trakt.movies.summary({
         id: slug,

@@ -1,6 +1,8 @@
 /**
  * Interface for saving content.
  * @interface
+ * @type {IHelper}
+ * @flow
  */
 export default class IHelper {
 
@@ -11,7 +13,7 @@ export default class IHelper {
    * @throws {Error} - Using default method: '_checkImages'.
    * @returns {undefined}
    */
-  _checkImages() {
+  _checkImages(): void {
     throw new Error('Using default method: \'_checkImages\'')
   }
 
@@ -22,7 +24,7 @@ export default class IHelper {
    * @throws {Error} - Using default method: '_getImages'.
    * @returns {undefined}
    */
-  _getImages() {
+  _getImages(): void {
     throw new Error('Using default method: \'_getImages\'')
   }
 
@@ -32,7 +34,7 @@ export default class IHelper {
    * @throws {Error} - Using default method: 'getTraktInfo'.
    * @returns {undefined}
    */
-  getTraktInfo() {
+  getTraktInfo(): void {
     throw new Error('Using default method: \'getTraktInfo\'')
   }
 

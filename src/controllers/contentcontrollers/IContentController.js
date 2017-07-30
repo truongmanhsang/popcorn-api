@@ -1,6 +1,8 @@
 /**
  * Interface for handling the content endpoints.
  * @interface
+ * @type {IContentController}
+ * @flow
  */
 export default class IContentController {
 
@@ -10,7 +12,7 @@ export default class IContentController {
    * @throws {Error} - Using default method: 'getContents'.
    * @returns {undefined}
    */
-  getContents() {
+  getContents(): void {
     throw new Error('Using default method: \'getContents\'')
   }
 
@@ -20,7 +22,7 @@ export default class IContentController {
    * @throws {Error} - Using default method: 'getPage'.
    * @returns {undefined}
    */
-  getPage() {
+  getPage(): void {
     throw new Error('Using default method: \'getPage\'')
   }
 
@@ -30,7 +32,7 @@ export default class IContentController {
    * @throws {Error} - Using default method: 'getContent'.
    * @returns {undefined}
    */
-  getContent() {
+  getContent(): void {
     throw new Error('Using default method: \'getContent\'')
   }
 
@@ -40,7 +42,7 @@ export default class IContentController {
    * @throws {Error} - Using default method: 'getRandomContent'.
    * @returns {undefined}
    */
-  getRandomContent() {
+  getRandomContent(): void {
     throw new Error('Using default method: \'getRandomContent\'')
   }
 

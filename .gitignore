@@ -36,3 +36,6 @@ build
 
 # Imported flow-typed
 flow-typed/npm/*
+
+# Dotenv
+.env

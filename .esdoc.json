@@ -30,7 +30,7 @@
     "name": "esdoc-ecmascript-proposal-plugin",
     "option": {
       "classProperties": true,
-      "objectRestSpread": false,
+      "objectRestSpread": true,
       "doExpressions": false,
       "functionBind": false,
       "functionSent": false,
