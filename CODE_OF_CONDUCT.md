@@ -1,10 +1,4 @@
 # Contributor Covenant Code of Conduct
- - [Our Pledge](#our-pledge)
- - [Our Standards](#our-standards)
- - [Our Responsibilities](#our-responsibilities)
- - [Scope](#scope)
- - [Enforcement](#enforcement)
- - [Attribution](#attribution)
 
 ## Our Pledge
 In the interest of fostering an open and welcoming environment, we as

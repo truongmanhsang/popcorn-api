@@ -1,25 +1,25 @@
 // Import the neccesary modules.
-import del from 'del';
-import gulp from 'gulp';
-import babel from 'gulp-babel';
+import del from 'del'
+import gulp from 'gulp'
+import babel from 'gulp-babel'
 
 /**
  * The default build function.
- * @returns {void}
+ * @returns {undefined}
  */
 function build() {
-  gulp.src('src/**/*.js').pipe(babel()).pipe(gulp.dest('build'));
-  gulp.src('src/**/*.json').pipe(gulp.dest('build'));
+  gulp.src('src/**/*.js').pipe(babel()).pipe(gulp.dest('build'))
+  gulp.src('src/**/*.json').pipe(gulp.dest('build'))
 }
 
 // Delete the `build` directory.
-gulp.task('clean', () => del(['build']));
+gulp.task('clean', () => del(['build', 'tmp']))
 
 // Transpile the `src` directory with Babel.
-gulp.task('build', ['clean'], build);
+gulp.task('build', ['clean'], build)
 
 // Watch the `src` directory and build when a file changes.
-gulp.task('watch', ['build'], () => gulp.watch('src/**/*.js', ['build']));
+gulp.task('watch', ['build'], () => gulp.watch('src/**/*.js', ['build']))
 
 // Set the default task as `build`.
-gulp.task('default', ['clean'], build);
+gulp.task('default', ['clean'], build)
