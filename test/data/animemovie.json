@@ -1,6 +1,5 @@
 {
-  "_id": "UniqueString1",
-  "imdb_id": "UniqueString1",
+  "imdb_id": "animemovie",
   "title": "String",
   "year": 0,
   "slug": "String",
@@ -17,7 +16,6 @@
     "poster": "String"
   },
   "genres": ["String"],
-  "type": "String",
   "language": "String",
   "released": 0,
   "trailer": "String",

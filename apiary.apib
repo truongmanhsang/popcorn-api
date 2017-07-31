@@ -139,8 +139,27 @@ Gives some basic information about the server on which the API is running on.
 
 ### Get Error Logs [GET]
 Display the error log. Each message will be in JSON format.
-  + Response 500 (application/json; charset=utf-8)
   + Response 200 (text/plain; charset=UTF-8)
+
+  + Response 500 (application/json; charset=utf-8)
+
+      + Body
+
+            {
+                "error": "Error: could not find file: './tmp/popcorn-api.log'"
+            }
+
+      + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    }
+                }
+            }
 
 
 # Group Export
@@ -157,6 +176,29 @@ Download the contents a collection in a JSON file.
               + `show`
 
   + Response 500 (application/json; charset=utf-8)
+
+      + Body
+
+            {
+                "error": "Error: no such file found for './tmp/animes.json'"
+            }
+
+            {
+                "error": "Error: invalid is not a valid collection to export.'"
+            }
+
+      + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    }
+                }
+            }
+  
   + Response 200 (attachment; filename="animes.json")
 
 
@@ -166,14 +208,16 @@ Download the contents a collection in a JSON file.
 
 ### Pages [GET]
 Gives an array of the available pages for anime content.
- + Response 200 (application/json; charset=utf-8)
+  + Response 200 (application/json; charset=utf-8)
 
-    + Body
+      + Body
 
             ["animes/1","animes/2","animes/3","animes/4","animes/5","animes/6","animes/7","animes/8","animes/9","animes/10"]
 
-    + Attributes (array[string])
+      + Attributes (array[string])
 
+  + Response 204 (charset=utf-8)
+  
 ## Get Page [/animes/{page}{?sort,order,genre,keywords}]
 
 ### Page [GET]
@@ -203,12 +247,14 @@ Gives an array of anime shows. The array has a has a maximum length of 50 anime 
 
       + Attributes (array[Movie]) (array[Show])
 
+  + Response 204 (charset=utf-8)
+
 ## Get Details [/anime/{imdb_id}]
 
 ### Details [GET]
 Gives information about a single anime show based on the given id.
   + Parameters
-      + imdb_id (string, `UniqueString1`) - The imdb id of the anime you want details on.
+      + imdb_id (string, `animeshow`) - The imdb id of the anime you want details on.
 
   + Response 200 (application/json; charset=utf-8)
 
@@ -219,6 +265,8 @@ Gives information about a single anime show based on the given id.
             {"_id":"UniqueString2","imdb_id":"UniqueString2","title":"String","year":0,"slug":"String","synopsis":"String","runtime":0,"rating":{"percentage":0,"watching":0,"votes":0},"images":{"banner":"String","fanart":"String","poster":"String"},"genres":["String"],"type":"String","tvdb_id":"String","country":"String","network":"String","air_day":"String","air_time":"String","status":"String","num_seasons":1,"last_updated":0,"latest_episode":0,"episodes":[{"tvdb_id":0,"season":0,"episode":0,"title":"String","overview":"String","date_based":false,"first_aired":0,"torrents":{"0":{"provider":"String","peers":0,"seeds":0,"url":"String"},"480p":{"provider":"String","peers":0,"seeds":0,"url":"String"},"720p":{"provider":"String","peers":0,"seeds":0,"url":"String"},"1080p":{"provider":"String","peers":0,"seeds":0,"url":"String"}}}]}
 
       + Attributes (Movie) (Show)
+
+  + Response 204 (charset=utf-8)
 
 ## Get Random [/random/anime]
 
@@ -234,6 +282,8 @@ Gives a random anime from the database.
 
       + Attributes (Movie) (Show)
 
+  + Response 204 (charset=utf-8)
+
 
 # Group Movie
 
@@ -248,6 +298,8 @@ Gives an array of the available pages for movie content.
             ["movies/1","movies/2","movies/3","movies/4","movies/5","movies/6","movies/7","movies/8","movies/9","movies/10"]
 
       + Attributes (array[string])
+
+  + Response 204 (charset=utf-8)
 
 ## Get Page [/movies/{page}{?sort,order,genre,keywords}]
 
@@ -278,12 +330,14 @@ Gives an array of movies. The array has a has a maximum length of 50 movies per 
 
       + Attributes (array[Movie])
 
+  + Response 204 (charset=utf-8)
+
 ## Get Details [/movie/{imdb_id}]
 
 ### Details [GET]
 Gives information about a single movie based on the given imdb id.
   + Parameters
-      + imdb_id (string, `UniqueString1`) - The imdb id of the movie you want details on.
+      + imdb_id (string, `movie`) - The imdb id of the movie you want details on.
 
   + Response 200 (application/json; charset=utf-8)
 
@@ -292,6 +346,8 @@ Gives information about a single movie based on the given imdb id.
             {"_id":"UniqueString1","imdb_id":"UniqueString1","title":"String","year":0,"slug":"String","synopsis":"String","runtime":0,"rating":{"percentage":0,"watching":0,"votes":0},"images":{"banner":"String","fanart":"String","poster":"String"},"genres":["String"],"type":"String","language":"String","released":0,"trailer":"String","certification":"String","torrents":{"en":{"1080p":{"provider":"String","filesize":"String","size":0,"peer":0,"seed":0,"url":"String"},"720p":{"provider":"String","filesize":"String","size":0,"peer":0,"seed":0,"url":"String"}}}}
 
       + Attributes (Movie)
+
+  + Response 204 (charset=utf-8)
 
 ## Get Random [/random/movie]
 
@@ -305,6 +361,8 @@ Gives a random movie from the database.
 
       + Attributes (Movie)
 
+  + Response 204 (charset=utf-8)
+  
 
 # Group Show
 
@@ -312,13 +370,15 @@ Gives a random movie from the database.
 
 ### Pages [GET]
 Gives an array of the available pages for show content.
- + Response 200 (application/json; charset=utf-8)
+  + Response 200 (application/json; charset=utf-8)
 
-    + Body
+      + Body
 
             ["shows/1","shows/2","shows/3","shows/4","shows/5","shows/6","shows/7","shows/8","shows/9","shows/10"]
 
-    + Attributes (array[string])
+      + Attributes (array[string])
+
+  + Response 204 (charset=utf-8)
 
 ## Get Page [/shows/{page}{?sort,order,genre,keywords}]
 
@@ -349,12 +409,14 @@ Gives an array of shows. The array has a has a maximum length of 50 shows per pa
 
       + Attributes (array[Show])
 
+  + Response 204 (charset=utf-8)
+
 ## Get Details [/show/{imdb_id}]
 
 ### Details [GET]
 Gives information about a single show based on the given imdb id.
   + Parameters
-      + imdb_id (string, `UniqueString2`) - The imdb id of the show you want details on.
+      + imdb_id (string, `show`) - The imdb id of the show you want details on.
 
   + Response 200 (application/json; charset=utf-8)
 
@@ -363,6 +425,8 @@ Gives information about a single show based on the given imdb id.
             {"_id":"UniqueString2","imdb_id":"UniqueString2","title":"String","year":0,"slug":"String","synopsis":"String","runtime":0,"rating":{"percentage":0,"watching":0,"votes":0},"images":{"banner":"String","fanart":"String","poster":"String"},"genres":["String"],"type":"String","tvdb_id":"String","country":"String","network":"String","air_day":"String","air_time":"String","status":"String","num_seasons":1,"last_updated":0,"latest_episode":0,"episodes":[{"tvdb_id":0,"season":0,"episode":0,"title":"String","overview":"String","date_based":false,"first_aired":0,"torrents":{"0":{"provider":"String","peers":0,"seeds":0,"url":"String"},"480p":{"provider":"String","peers":0,"seeds":0,"url":"String"},"720p":{"provider":"String","peers":0,"seeds":0,"url":"String"},"1080p":{"provider":"String","peers":0,"seeds":0,"url":"String"}}}]}
 
       + Attributes (Show)
+
+  + Response 204 (charset=utf-8)
 
 ## Get Random [/random/show]
 
@@ -376,6 +440,8 @@ Gives a random show from the database.
 
 
       + Attributes (Show)
+
+  + Response 204 (charset=utf-8)
 
 
 # Group Genres

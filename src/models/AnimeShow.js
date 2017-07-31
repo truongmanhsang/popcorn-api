@@ -13,10 +13,12 @@ export class AnimeShow extends Show {}
 // Attatch the fuctions from the AnimeShow class to the showSchema.
 showSchema.loadClass(AnimeShow)
 
+// Create the anime show model.
+const AnimeShowModel = mongoose.model(AnimeShow, showSchema, 'animes')
+
 /**
  * A model object for anime shows.
  * @ignore
  * @type {AnimeShow}
  */
-export const AnimeShowModel = mongoose
-  .model('AnimeShow', showSchema, 'animes')
+export default AnimeShowModel

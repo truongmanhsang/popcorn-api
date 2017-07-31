@@ -3,7 +3,7 @@ custom:
   apiaryApiKey: 9001e90aad0ddff493ae4b9606c995bc
   apiaryApiName: popcornofficial
 dry-run: null
-hookfiles: ./test/hooks.js
+hookfiles: ./dredd.hooks.js
 language: nodejs
 sandbox: false
 server: node ./build/popcorn-api.js -m quiet

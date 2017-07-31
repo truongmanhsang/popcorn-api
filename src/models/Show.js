@@ -1,12 +1,10 @@
 /* eslint-disable camelcase */
 // Import the necessary modules.
-import mongoose, {
-  Model,
-  Schema
-} from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 import { ItemType } from 'butter-provider'
 
 import content, { Content } from './Content'
+import Episode, { episodeSchema } from './Episode'
 
 /**
  * The show schema used by mongoose.
@@ -32,141 +30,13 @@ export const showSchema = new Schema({
     type: String,
     default: ItemType.TVSHOW
   },
-  episodes: [{
-    tvdb_id: Number,
-    season: Number,
-    episode: Number,
-    title: String,
-    overview: String,
-    date_based: Boolean,
-    first_aired: Number,
-    torrents: {}
-  }],
+  episodes: {
+    type: [episodeSchema],
+    require: true,
+    ref: 'Episode'
+  },
   ...content
 })
-
-/**
- * Class for episode attributes and methods.
- * @extends {Model}
- * @type {Episode}
- */
-export class Episode extends Model {
-
-  /**
-   * The tvdb id of the episode.
-   * @type {number}
-   */
-  tvdb_id: number
-
-  /**
-   *The season of the episode..
-   * @type {number}
-   */
-  season: number
-
-  /**
-   * The episode of the episode.
-   * @type {number}
-   */
-  episode: number
-
-  /**
-   * The title of the episode.
-   * @type {number}
-   */
-  title: string
-
-  /**
-   * The overview of the episode.
-   * @type {number}
-   */
-  overview: string
-
-  /**
-   * Whenever the episode is date based..
-   * @type {number}
-   */
-  date_based: boolean
-
-  /**
-   * The time the episode first aired.
-   * @type {number}
-   */
-  first_aired: number
-
-  /**
-   * The torrents of the episode.
-   * @type {number}
-   */
-  torrents: Object
-
-  /**
-   * Create a new Episode object.
-   * @param {!Object} config - The configuration object for the episode.
-   * @param {!number} tvdb_id - The tvdb id of the episode.
-   * @param {!number} season - The season of the episode.
-   * @param {!number} episode - The episode of the episode.
-   * @param {!string} title - The title of the episode.
-   * @param {!string} overview - The overview of the episode.
-   * @param {!boolean} date_based - Whenever the episode is date based.
-   * @param {!number} first_aired - The time the episode first aired.
-   * @param {!Object} torrents - The torrents of the episode.
-   */
-  constructor({
-    tvdb_id,
-    season,
-    episode,
-    title,
-    overview,
-    date_based,
-    first_aired,
-    torrents
-  }) {
-    super()
-
-    /**
-     * The tvdb id of the episode.
-     * @type {number}
-     */
-    this.tvdb_id = tvdb_id
-    /**
-     *The season of the episode..
-     * @type {number}
-     */
-    this.season = season
-    /**
-     * The episode of the episode.
-     * @type {number}
-     */
-    this.episode = episode
-    /**
-     * The title of the episode.
-     * @type {number}
-     */
-    this.title = title
-    /**
-     * The overview of the episode.
-     * @type {number}
-     */
-    this.overview = overview
-    /**
-     * Whenever the episode is date based..
-     * @type {number}
-     */
-    this.date_based = date_based
-    /**
-     * The time the episode first aired.
-     * @type {number}
-     */
-    this.first_aired = first_aired
-    /**
-     * The torrents of the episode.
-     * @type {number}
-     */
-    this.torrents = torrents
-  }
-
-}
 
 /**
  * Class for show attributes and methods.
@@ -237,7 +107,7 @@ export class Show extends Content {
 
   /**
    * Create a new Show object.
-   * @param {!Object} config - The configuration object for the show.
+   * @param {!Object} config={} - The configuration object for the show.
    * @param {!string} imdb_id - The imdb id of the show.
    * @param {!string} title - The title of the show.
    * @param {!number} year - The year of the show.
@@ -280,7 +150,8 @@ export class Show extends Content {
     last_updated,
     lastest_episode,
     episodes
-  }) {
+    }: Object = {}
+  ): void {
     super({
       imdb_id,
       title,
@@ -334,7 +205,6 @@ export class Show extends Content {
      * @type {number}
      */
     this.last_updated = last_updated
-    this.last_updated = last_updated
     /**
      * The lastest episode of the show.
      * @type {number}
@@ -353,7 +223,7 @@ export class Show extends Content {
 showSchema.loadClass(Show)
 
 // Create the show model.
-const ShowModel = mongoose.model('Show', showSchema)
+const ShowModel = mongoose.model(Show, showSchema)
 
 /**
  * A model object for shows.

@@ -66,7 +66,7 @@ export class Movie extends Content {
 
   /**
    * Create a new Movie object.
-   * @param {!Object} config - The configuration object for the movie.
+   * @param {!Object} config={} - The configuration object for the movie.
    * @param {!string} imdb_id - The imdb id of the movie.
    * @param {!string} title - The title of the movie.
    * @param {!number} year - The year of the movie.
@@ -99,7 +99,7 @@ export class Movie extends Content {
     trailer,
     certification,
     torrents
-    }: Object
+    }: Object = {}
   ): void {
     super({
       imdb_id,
@@ -147,7 +147,7 @@ export class Movie extends Content {
 movieSchema.loadClass(Movie)
 
 // Create the movie model.
-const MovieModel = mongoose.model('Movie', movieSchema)
+const MovieModel = mongoose.model(Movie, movieSchema)
 
 /**
  * A model object for movies.

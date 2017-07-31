@@ -208,12 +208,12 @@ export default class BaseContentController extends IContentController {
       _id: req.params.id
     }, {
       latest_episode: 0
-    }).exec().then(docs => {
-      if (!docs) {
+    }).exec().then(doc => {
+      if (!doc) {
         return res.status(204).json()
       }
 
-      return res.json(docs)
+      return res.json(doc)
     }).catch(err => res.json(err))
   }
 

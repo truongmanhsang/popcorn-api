@@ -1,6 +1,5 @@
 {
-  "_id": "UniqueString2",
-  "imdb_id": "UniqueString2",
+  "imdb_id": "animeshow",
   "title": "String",
   "year": 0,
   "slug": "String",
@@ -17,8 +16,7 @@
     "poster": "String"
   },
   "genres": ["String"],
-  "type": "String",
-  "tvdb_id": "String",
+  "tvdb_id": 0,
   "country": "String",
   "network": "String",
   "air_day": "String",
