@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-// import IHelper from '../../../src/scraper/helpers/IHelper'
+import IHelper from '../../../src/scraper/helpers/IHelper'
 
 /**
  * @test {IHelper}
@@ -11,24 +11,36 @@ import { expect } from 'chai'
  */
 describe('IHelper', () => {
 
-  // let iHelper: IHelper
+  /**
+   * The IHelper object to be tested.
+   * @type {IHelper}
+   */
+  let iHelper: IHelper
 
   /**
    * Hook for setting up the IHelper tests.
    * @type {Function}
    */
   before(() => {
-    // iHelper = new IHelper()
+    iHelper = new IHelper()
   })
 
-  it('should test something', () => {
-    expect(true).to.be.true
+  /** @test {IHelper#attachTorrent} */
+  it('should throw an error when calling the attachTorrent method', () => {
+    expect(iHelper.getTraktInfo).to
+      .throw('Using default method: \'getTraktInfo\'')
   })
 
-  /**
-   * Hook for teaing down the IHelper tests.
-   * @type {Function}
-   */
-  after(() => {})
+  /** @test {IHelper#getContent} */
+  it('should throw an error when calling the getContent method', () => {
+    expect(iHelper._checkImages).to
+      .throw('Using default method: \'_checkImages\'')
+  })
+
+  /** @test {IHelper#search} */
+  it('should throw an error when calling the search method', () => {
+    expect(iHelper._getImages).to
+      .throw('Using default method: \'_getImages\'')
+  })
 
 })

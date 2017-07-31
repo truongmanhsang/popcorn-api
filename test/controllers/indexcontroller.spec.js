@@ -34,6 +34,18 @@ describe('IndexController', () => {
   /** @test {IndexController} */
   describe('200 status code', () => {
 
+    /** @test {IndexController#getErrorLog} */
+    it('should test the GET [/logs/error] route with a 200 status', done => {
+      chai.request(Index._App).get('/logs/error')
+        .then(res => {
+          expect(res).to.have.status(200)
+          expect(res).to.be.text
+          expect(res).to.not.redirect
+
+          done()
+        }).catch(done)
+    })
+
     /** @test {IndexController#getIndex} */
     it('should test the GET [/status] route with a 200 status', done => {
       chai.request(Index._App).get('/status').then(res => {
@@ -56,18 +68,6 @@ describe('IndexController', () => {
 
         done()
       }).catch(done)
-    })
-
-    /** @test {IndexController#getErrorLog} */
-    it('should test the GET [/logs/error] route with a 200 status', done => {
-      chai.request(Index._App).get('/logs/error')
-        .then(res => {
-          expect(res).to.have.status(200)
-          expect(res).to.be.text
-          expect(res).to.not.redirect
-
-          done()
-        }).catch(done)
     })
 
     /**
@@ -100,11 +100,9 @@ describe('IndexController', () => {
       temp = process.uptime
     })
 
-    /** @test {IndexController#getIndex} */
-    it('should test the GET [/status] route with a 500 status', done => {
-      process.uptime = new Error('Failing on purpose')
-
-      chai.request(Index._App).get('/status')
+    /** @test {IndexController#getErrorLog} */
+    it('should test the GET [/logs/error] route with a 500 status', done => {
+      chai.request(Index._App).get('/logs/error')
         .then(done)
         .catch(err => {
           expect(err).to.have.status(500)
@@ -114,9 +112,11 @@ describe('IndexController', () => {
         })
     })
 
-    /** @test {IndexController#getErrorLog} */
-    it('should test the GET [/logs/error] route with a 500 status', done => {
-      chai.request(Index._App).get('/logs/error')
+    /** @test {IndexController#getIndex} */
+    it('should test the GET [/status] route with a 500 status', done => {
+      process.uptime = new Error('Failing on purpose')
+
+      chai.request(Index._App).get('/status')
         .then(done)
         .catch(err => {
           expect(err).to.have.status(500)

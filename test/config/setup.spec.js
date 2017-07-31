@@ -13,38 +13,38 @@ import Setup from '../../src/config/Setup'
  */
 describe('Setup', () => {
 
-  /** @test {Setup._DbName} */
-  it('should test if Setup has a _DbName', () => {
-    expect(Setup._DbName).to.exist
-    expect(Setup._DbName).to.be.a('string')
-  })
-
   /** @test {Setup._DbHosts} */
-  it('should test if Setup has a _DbHosts', () => {
+  it('should check if Setup has a _DbHosts', () => {
     expect(Setup._DbHosts).to.exist
     expect(Setup._DbHosts).to.be.an('array')
   })
 
+  /** @test {Setup._DbName} */
+  it('should check if Setup has a _DbName', () => {
+    expect(Setup._DbName).to.exist
+    expect(Setup._DbName).to.be.a('string')
+  })
+
+  /** @test {Setup._DbPassword} */
+  it('should check if Setup has a _DbPassword', () => {
+    expect(Setup._DbPassword).to.exist
+    expect(Setup._DbPassword).to.be.an('string')
+  })
+
   /** @test {Setup._DbPort} */
-  it('should test if Setup has a _DbPort', () => {
+  it('should check if Setup has a _DbPort', () => {
     expect(Setup._DbPort).to.exist
     expect(Setup._DbPort).to.be.an('string')
   })
 
   /** @test {Setup._DbUsername} */
-  it('should test if Setup has a _DbUsername', () => {
+  it('should check if Setup has a _DbUsername', () => {
     expect(Setup._DbUsername).to.exist
     expect(Setup._DbUsername).to.be.an('string')
   })
 
-  /** @test {Setup._DbPassword} */
-  it('should test if Setup has a _DbPassword', () => {
-    expect(Setup._DbPassword).to.exist
-    expect(Setup._DbPassword).to.be.an('string')
-  })
-
   /** @test {Setup.connectMongoDb} */
-  it('should test the connectMongoDb method', done => {
+  it('should connect to MongoDb', done => {
     expect(mongoose.connection.readyState).to.be.a('number')
     // expect(mongoose.connection.readyState).to.equal(0)
 
@@ -59,7 +59,7 @@ describe('Setup', () => {
   })
 
   /** @test {Setup.disconnectMongoDb} */
-  it('should test the disconnectMongoDb method', done => {
+  it('should disconnect from MongoDb', done => {
     expect(mongoose.connection.readyState).to.be.a('number')
     expect(mongoose.connection.readyState).to.equal(1)
 
@@ -74,7 +74,7 @@ describe('Setup', () => {
   })
 
   /** @test {Setup.setupDatabase} */
-  it('should test the setupDatabase method', () => {
+  it('should setup MongoDb and express', () => {
     const express = new Express()
     Setup.setupDatabase(express, true)
     expect(express).to.not.equal(new Express())

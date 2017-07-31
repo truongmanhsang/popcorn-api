@@ -12,9 +12,9 @@ import Routes from '../../src/config/Routes'
  */
 describe('Routes', () => {
 
-  /** @test {Routes._IndexController} */
-  it('should check if Routes has an _IndexController', () => {
-    expect(Routes._IndexController).to.exist
+  /** @test {Routes._AnimeController} */
+  it('should test if Routes has an _AnimeController', () => {
+    expect(Routes._AnimeController).to.exist
   })
 
   /** @test {Routes._ExportController} */
@@ -22,9 +22,9 @@ describe('Routes', () => {
     expect(Routes._ExportController).to.exist
   })
 
-  /** @test {Routes._AnimeController} */
-  it('should test if Routes has an _AnimeController', () => {
-    expect(Routes._AnimeController).to.exist
+  /** @test {Routes._IndexController} */
+  it('should check if Routes has an _IndexController', () => {
+    expect(Routes._IndexController).to.exist
   })
 
   /** @test {Routes._MovieController} */
