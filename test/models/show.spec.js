@@ -3,8 +3,8 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import Show from '../../src/models/Show'
-import testShow from '../data/show.json'
+// import Show from '../../src/models/Show'
+// import testShow from '../data/show.json'
 
 /**
  * @test {Show}
@@ -12,16 +12,16 @@ import testShow from '../data/show.json'
  */
 describe('Show', () => {
 
-  let show: Show
+  // let show: Show
 
   /**
    * Hook for setting up the Show tests.
    * @type {Function}
    */
   before(() => {
-    show = new Show(testShow)
+    // show = new Show(testShow)
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

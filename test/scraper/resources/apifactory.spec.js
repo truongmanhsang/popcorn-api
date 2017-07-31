@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import ApiFactory from '../../../src/scraper/resources/ApiFactory'
+// import ApiFactory from '../../../src/scraper/resources/ApiFactory'
 
 /**
  * @test {ApiFactory}
@@ -11,16 +11,16 @@ import ApiFactory from '../../../src/scraper/resources/ApiFactory'
  */
 describe('ApiFactory', () => {
 
-  let apiFactory: ApiFactory
+  // let apiFactory: ApiFactory
 
   /**
    * Hook for setting up the ApiFactory tests.
    * @type {Function}
    */
   before(() => {
-    apiFactory = new ApiFactory()
+    // apiFactory = new ApiFactory()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })
@@ -32,4 +32,3 @@ describe('ApiFactory', () => {
   after(() => {})
 
 })
-

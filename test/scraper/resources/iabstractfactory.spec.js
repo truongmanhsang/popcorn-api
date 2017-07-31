@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import IAbstractFactory from '../../../src/scraper/resources/IAbstractFactory'
+// import IAbstractFactory from '../../../src/scraper/resources/IAbstractFactory'
 
 /**
  * @test {IAbstractFactory}
@@ -11,15 +11,15 @@ import IAbstractFactory from '../../../src/scraper/resources/IAbstractFactory'
  */
 describe('IAbstractFactory', () => {
 
-  let iAbstractFactory: IAbstractFactory
+  // let iAbstractFactory: IAbstractFactory
   /**
    * Hook for setting up the IAbstractFactory tests.
    * @type {Function}
    */
   before(() => {
-    iAbstractFactory = new IAbstractFactory()
+    // iAbstractFactory = new IAbstractFactory()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

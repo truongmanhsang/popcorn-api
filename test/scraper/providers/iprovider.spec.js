@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import IProvider from '../../../src/scraper/providers/IProvider'
+// import IProvider from '../../../src/scraper/providers/IProvider'
 
 /**
  * @test {IProvider}
@@ -11,16 +11,16 @@ import IProvider from '../../../src/scraper/providers/IProvider'
  */
 describe('IProvider', () => {
 
-  let iProvider: IProvider
+  // let iProvider: IProvider
 
   /**
    * Hook for setting up the IProvider tests.
    * @type {Function}
    */
   before(() => {
-    iProvider = new IProvider()
+    // iProvider = new IProvider()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

@@ -74,14 +74,12 @@ export default class Routes {
       Routes._AnimeController.getRandomContent.bind(Routes._AnimeController)
     )
 
-    app.get
-      ('/movies',
+    app.get('/movies',
       Routes._MovieController.getContents.bind(Routes._MovieController)
     )
-    app.get
-      ('/movies/:page',
+    app.get('/movies/:page',
       Routes._MovieController.getPage.bind(Routes._MovieController)
-     )
+    )
     app.get(
       '/movie/:id',
       Routes._MovieController.getContent.bind(Routes._MovieController)
@@ -91,8 +89,7 @@ export default class Routes {
       Routes._MovieController.getRandomContent.bind(Routes._MovieController)
     )
 
-    app.get
-      ('/shows',
+    app.get('/shows',
       Routes._ShowController.getContents.bind(Routes._ShowController)
     )
     app.get(

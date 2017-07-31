@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import MovieHelper from '../../../src/scraper/helpers/MovieHelper'
+// import MovieHelper from '../../../src/scraper/helpers/MovieHelper'
 
 /**
  * @test {MovieHelper}
@@ -11,16 +11,16 @@ import MovieHelper from '../../../src/scraper/helpers/MovieHelper'
  */
 describe('MovieHelper', () => {
 
-  let movieHelper: MovieHelper
+  // let movieHelper: MovieHelper
 
   /**
    * Hook for setting up the MovieHelper tests.
    * @type {Function}
    */
   before(() => {
-    movieHelper = new MovieHelper()
+    // movieHelper = new MovieHelper()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

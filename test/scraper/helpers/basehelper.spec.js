@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import BaseHelper from '../../../src/scraper/helpers/BaseHelper'
+// import BaseHelper from '../../../src/scraper/helpers/BaseHelper'
 
 /**
  * @test {BaseHelper}
@@ -11,16 +11,16 @@ import BaseHelper from '../../../src/scraper/helpers/BaseHelper'
  */
 describe('BaseHelper', () => {
 
-  let baseHelper: BaseHelper
+  // let baseHelper: BaseHelper
 
   /**
    * Hook for setting up the BaseHelper tests.
    * @type {Function}
    */
   before(() => {
-    baseHelper = new BaseHelper()
+    // baseHelper = new BaseHelper()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

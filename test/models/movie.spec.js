@@ -3,8 +3,8 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import Movie from '../../src/models/Movie'
-import testMovie from '../data/movie.json'
+// import Movie from '../../src/models/Movie'
+// import testMovie from '../data/movie.json'
 
 /**
  * @test {Movie}
@@ -12,16 +12,16 @@ import testMovie from '../data/movie.json'
  */
 describe('Movie', () => {
 
-  let movie: Movie
+  // let movie: Movie
 
   /**
    * Hook for setting up the Movie tests.
    * @type {Function}
    */
   before(() => {
-    movie = new Movie(testMovie)
+    // movie = new Movie(testMovie)
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

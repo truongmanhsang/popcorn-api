@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import IContentController from '../../../src/controllers/contentcontrollers/IContentController'
+// import IContentController from '../../../src/controllers/contentcontrollers/IContentController'
 
 /**
  * @test {IContentController}
@@ -11,16 +11,16 @@ import IContentController from '../../../src/controllers/contentcontrollers/ICon
  */
 describe('IContentController', () => {
 
-  let iContentController: IContentController
+  // let iContentController: IContentController
 
   /**
    * Hook for setting up the IContentController tests.
    * @type {Function}
    */
   before(() => {
-    iContentController = new IContentController()
+    // iContentController = new IContentController()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

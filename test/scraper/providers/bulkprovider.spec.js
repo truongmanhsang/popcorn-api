@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import BulkProvider from '../../../src/scraper/providers/BulkProvider'
+// import BulkProvider from '../../../src/scraper/providers/BulkProvider'
 
 /**
  * @test {BulkProvider}
@@ -11,16 +11,16 @@ import BulkProvider from '../../../src/scraper/providers/BulkProvider'
  */
 describe('BulkProvider', () => {
 
-  let bulkProvider: BulkProvider
+  // let bulkProvider: BulkProvider
 
   /**
    * Hook for setting up the BulkProvider tests.
    * @type {Function}
    */
   before(() => {
-    bulkProvider = new BulkProvider({})
+    // bulkProvider = new BulkProvider({})
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

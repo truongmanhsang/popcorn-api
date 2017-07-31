@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import MovieProvider from '../../../src/scraper/providers/MovieProvider'
+// import MovieProvider from '../../../src/scraper/providers/MovieProvider'
 
 /**
  * @test {MovieProvider}
@@ -11,16 +11,16 @@ import MovieProvider from '../../../src/scraper/providers/MovieProvider'
  */
 describe('MovieProvider', () => {
 
-  let movieProvider: MovieProvider
+  // let movieProvider: MovieProvider
 
   /**
    * Hook for setting up the MovieProvider tests.
    * @type {Function}
    */
   before(() => {
-    movieProvider = new MovieProvider({})
+    // movieProvider = new MovieProvider({})
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

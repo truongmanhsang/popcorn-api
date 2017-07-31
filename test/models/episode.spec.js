@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import Episode from '../../src/models/Episode'
+// import Episode from '../../src/models/Episode'
 
 /**
  * @test {Episode}
@@ -11,16 +11,16 @@ import Episode from '../../src/models/Episode'
  */
 describe('Episode', () => {
 
-  let episode: Episode
+  // let episode: Episode
 
   /**
    * Hook for setting up the Episode tests.
    * @type {Function}
    */
   before(() => {
-    episode = new Episode()
+    // episode = new Episode()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

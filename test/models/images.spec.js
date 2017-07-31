@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import Images from '../../src/models/Images'
+// import Images from '../../src/models/Images'
 
 /**
  * @test {Images}
@@ -11,16 +11,16 @@ import Images from '../../src/models/Images'
  */
 describe('Images', () => {
 
-  let images: Images
+  // let images: Images
 
   /**
    * Hook for setting up the Images tests.
    * @type {Function}
    */
   before(() => {
-    images = new Images()
+    // images = new Images()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

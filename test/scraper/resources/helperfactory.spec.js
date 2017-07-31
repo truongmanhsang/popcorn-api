@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import HelperFactory from '../../../src/scraper/resources/HelperFactory'
+// import HelperFactory from '../../../src/scraper/resources/HelperFactory'
 
 /**
  * @test {HelperFactory}
@@ -11,16 +11,16 @@ import HelperFactory from '../../../src/scraper/resources/HelperFactory'
  */
 describe('HelperFactory', () => {
 
-  let helperFactory: HelperFactory
+  // let helperFactory: HelperFactory
 
   /**
    * Hook for setting up the HelperFactory tests.
    * @type {Function}
    */
   before(() => {
-    helperFactory = new HelperFactory()
+    // helperFactory = new HelperFactory()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import ModelFactory from '../../../src/scraper/resources/ModelFactory'
+// import ModelFactory from '../../../src/scraper/resources/ModelFactory'
 
 /**
  * @test {ModelFactory}
@@ -11,16 +11,16 @@ import ModelFactory from '../../../src/scraper/resources/ModelFactory'
  */
 describe('ModelFactory', () => {
 
-  let modelFactory: ModelFactory
+  // let modelFactory: ModelFactory
 
   /**
    * Hook for setting up the ModelFactory tests.
    * @type {Function}
    */
   before(() => {
-    modelFactory = new ModelFactory()
+    // modelFactory = new ModelFactory()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

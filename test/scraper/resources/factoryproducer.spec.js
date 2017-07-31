@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import FactoryProducer from '../../../src/scraper/resources/FactoryProducer'
+// import FactoryProducer from '../../../src/scraper/resources/FactoryProducer'
 
 /**
  * @test {FactoryProducer}
@@ -11,16 +11,16 @@ import FactoryProducer from '../../../src/scraper/resources/FactoryProducer'
  */
 describe('FactoryProducer', () => {
 
-  let factoryProducer: FactoryProducer
+  // let factoryProducer: FactoryProducer
 
   /**
    * Hook for setting up the FactoryProducer tests.
    * @type {Function}
    */
   before(() => {
-    factoryProducer = new FactoryProducer()
+    // factoryProducer = new FactoryProducer()
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

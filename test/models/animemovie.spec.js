@@ -3,8 +3,8 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import AnimeMovie from '../../src/models/AnimeMovie'
-import testAnimeMovie from '../data/animemovie.json'
+// import AnimeMovie from '../../src/models/AnimeMovie'
+// import testAnimeMovie from '../data/animemovie.json'
 
 /**
  * @test {AnimeMovie}
@@ -12,16 +12,16 @@ import testAnimeMovie from '../data/animemovie.json'
  */
 describe('AnimeMovie', () => {
 
-  let animeMovie: AnimeMovie
+  // let animeMovie: AnimeMovie
 
   /**
    * Hook for setting up the AnimeMovie tests.
    * @type {Function}
    */
   before(() => {
-    animeMovie = new AnimeMovie(testAnimeMovie)
+    // animeMovie = new AnimeMovie(testAnimeMovie)
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

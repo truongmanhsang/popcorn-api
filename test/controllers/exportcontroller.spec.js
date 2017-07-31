@@ -20,7 +20,7 @@ describe('ExportController', () => {
     chai.use(chaiHttp)
     Index.setupApi(false, false, true)
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })

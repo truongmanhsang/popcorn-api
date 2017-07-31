@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import ShowProvider from '../../../src/scraper/providers/ShowProvider'
+// import ShowProvider from '../../../src/scraper/providers/ShowProvider'
 
 /**
  * @test {ShowProvider}
@@ -11,16 +11,16 @@ import ShowProvider from '../../../src/scraper/providers/ShowProvider'
  */
 describe('ShowProvider', () => {
 
-  let showProvider: ShowProvider
+  // let showProvider: ShowProvider
 
   /**
    * Hook for setting up the ShowProvider tests.
    * @type {Function}
    */
   before(() => {
-    showProvider = new ShowProvider({})
+    // showProvider = new ShowProvider({})
   })
-  
+
   it('should test something', () => {
     expect(true).to.be.true
   })
