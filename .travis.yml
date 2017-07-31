@@ -35,33 +35,29 @@ git:
 jobs:
   include:
   - stage: prepare cache # lint
-    node_js:
-      - 6
-      - 7
-      - 8
+    node_js: '8'
     before_script:
       - npm i -g flow-typed
       - flow-typed install
     script: npm run lint
   - stage: test
-    node_js:
-      - 6
-      - 7
-      - 8
+    node_js: '6'
+    script: npm run test
+    after_success: npm run coveralls
+  - stage: test
+    node_js: '7'
+    script: npm run test
+    after_success: npm run coveralls
+  - stage: test
+    node_js: '8'
     script: npm run test
     after_success: npm run coveralls
   - stage: build
-    node_js:
-      - 6
-      - 7
-      - 8
+    node_js: '8'
     before_script: npm i -g gulp
-    script: npm run gulp
+    script: npm run build
   - stage: pages
-    node_js:
-      - 6
-      - 7
-      - 8
+    node_js: '8'
     script: npm run docs
 
 notifications:
