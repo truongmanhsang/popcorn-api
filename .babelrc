@@ -3,6 +3,11 @@
     "es2015",
     "flow"
   ],
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  },
   "plugins": [
     "dynamic-import-node",
     "syntax-dynamic-import",

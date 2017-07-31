@@ -48,40 +48,70 @@ export default class Routes {
    * @returns {undefined}
    */
   static setupRoutes(app: Express): void {
-    app.get('/status',
-      (req, res) => Routes._IndexController.getIndex(req, res))
-    app.get('/logs/error',
-      (req, res) => Routes._IndexController.getErrorLog(req, res))
+    app.get(
+      '/status',
+      Routes._IndexController.getIndex.bind(Routes._IndexController)
+    )
+    app.get(
+      '/logs/error',
+      Routes._IndexController.getErrorLog.bind(Routes._IndexController)
+    )
 
-    app.get('/animes',
-      (req, res) => Routes._AnimeController.getContents(req, res))
-    app.get('/animes/:page',
-      (req, res) => Routes._AnimeController.getPage(req, res))
-    app.get('/anime/:id',
-      (req, res) => Routes._AnimeController.getContent(req, res))
-    app.get('/random/anime',
-      (req, res) => Routes._AnimeController.getRandomContent(req, res))
+    app.get(
+      '/animes',
+      Routes._AnimeController.getContents.bind(Routes._AnimeController)
+    )
+    app.get(
+      '/animes/:page',
+      Routes._AnimeController.getPage.bind(Routes._AnimeController)
+    )
+    app.get(
+      '/anime/:id',
+      Routes._AnimeController.getContent.bind(Routes._AnimeController)
+    )
+    app.get(
+      '/random/anime',
+      Routes._AnimeController.getRandomContent.bind(Routes._AnimeController)
+    )
 
-    app.get('/movies',
-      (req, res) => Routes._MovieController.getContents(req, res))
-    app.get('/movies/:page',
-      (req, res) => Routes._MovieController.getPage(req, res))
-    app.get('/movie/:id',
-      (req, res) => Routes._MovieController.getContent(req, res))
-    app.get('/random/movie',
-      (req, res) => Routes._MovieController.getRandomContent(req, res))
+    app.get
+      ('/movies',
+      Routes._MovieController.getContents.bind(Routes._MovieController)
+    )
+    app.get
+      ('/movies/:page',
+      Routes._MovieController.getPage.bind(Routes._MovieController)
+     )
+    app.get(
+      '/movie/:id',
+      Routes._MovieController.getContent.bind(Routes._MovieController)
+    )
+    app.get(
+      '/random/movie',
+      Routes._MovieController.getRandomContent.bind(Routes._MovieController)
+    )
 
-    app.get('/shows',
-      (req, res) => Routes._ShowController.getContents(req, res))
-    app.get('/shows/:page',
-      (req, res) => Routes._ShowController.getPage(req, res))
-    app.get('/show/:id',
-      (req, res) => Routes._ShowController.getContent(req, res))
-    app.get('/random/show',
-      (req, res) => Routes._ShowController.getRandomContent(req, res))
+    app.get
+      ('/shows',
+      Routes._ShowController.getContents.bind(Routes._ShowController)
+    )
+    app.get(
+      '/shows/:page',
+      Routes._ShowController.getPage.bind(Routes._ShowController)
+    )
+    app.get(
+      '/show/:id',
+      Routes._ShowController.getContent.bind(Routes._ShowController)
+    )
+    app.get(
+      '/random/show',
+      Routes._ShowController.getRandomContent.bind(Routes._ShowController)
+    )
 
-    app.get('/exports/:collection',
-      (req, res) => Routes._ExportController.getExport(req, res))
+    app.get(
+      '/exports/:collection',
+      Routes._ExportController.getExport.bind(Routes._ExportController)
+    )
   }
 
 }

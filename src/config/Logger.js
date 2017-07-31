@@ -114,7 +114,6 @@ export default class Logger {
           name,
           levels: Logger._Levels,
           formatter: Logger._consoleFormatter,
-          handleExceptions: true,
           prettyPrint: true
         }),
         new transports.File({
@@ -122,8 +121,7 @@ export default class Logger {
           json: false,
           level: 'warn',
           formatter: Logger._fileFormatter,
-          maxsize: 5242880,
-          handleExceptions: true
+          maxsize: 5242880
         })
       ],
       exitOnError: false

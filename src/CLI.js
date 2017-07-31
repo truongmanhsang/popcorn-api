@@ -54,11 +54,15 @@ export default class CLI {
    */
   _testing: boolean
 
-  /** Create a cli object. */
-  constructor(): void {
+  /**
+   * Create a cli object.
+   * @param {?boolean} testing - Bollean for when in testing mode.
+   */
+  constructor(testing: boolean): void {
+    this._testing = testing
     // Create a logger object, will be overwritten if the --mode option is
     // invoked.
-    Logger.getLogger('winston', false)
+    Logger.getLogger('winston', false, this._testing)
 
     /**
      * The comand line parser to process the CLI inputs.
@@ -82,28 +86,34 @@ export default class CLI {
       .option('--import <collection>', 'Import a JSON file to the database.')
 
     // Extra output on top of the default help output
-    this._program.on('--help', () => {
-      logger.info('  Examples:\n')
-      logger.info(`    $ ${name} -m <pretty|quiet|ugly>`)
-      logger.info(`    $ ${name} --mode <pretty|quiet|ugly>\n`)
-      logger.info(`    $ ${name} --content <animemovie|animeshow|movie|show>\n`)
-      logger.info(`    $ ${name} --provider\n`)
-      logger.info(`    $ ${name} -s`)
-      logger.info(`    $ ${name} --start\n`)
-      logger.info(`    $ ${name} --export <anime|movie|show>\n`)
-      logger.info(`    $ ${name} --import <path-to-json>\n`)
-    })
+    this._program.on('--help', CLI._help)
 
     // Parse the command line arguments.
     this._program.parse(process.argv)
   }
 
   /**
-   * Handle the --mode CLI option.
-   * @param {!string} m - The mode to run the API in.
+   * Method for displaying the --help option
    * @returns {undefined}
    */
-  _mode(m: string): void {
+  static _help(): void {
+    logger.info('  Examples:\n')
+    logger.info(`    $ ${name} -m <pretty|quiet|ugly>`)
+    logger.info(`    $ ${name} --mode <pretty|quiet|ugly>\n`)
+    logger.info(`    $ ${name} --content <animemovie|animeshow|movie|show>\n`)
+    logger.info(`    $ ${name} --provider\n`)
+    logger.info(`    $ ${name} -s`)
+    logger.info(`    $ ${name} --start\n`)
+    logger.info(`    $ ${name} --export <anime|movie|show>\n`)
+    logger.info(`    $ ${name} --import <path-to-json>\n`)
+  }
+
+  /**
+   * Handle the --mode CLI option.
+   * @param {?string} m - The mode to run the API in.
+   * @returns {undefined}
+   */
+  _mode(m?: string): void {
     const start = this._program.start ? this._program.start : false
     const testing = this._testing ? this._testing : false
 
@@ -352,9 +362,10 @@ export default class CLI {
 
   /**
    * Run the CLI program.
+   * @param {?Function} [done=null] - The done function for mocha.
    * @returns {undefined}
    */
-  run(): void {
+  run(done?: Function = null): void {
     if (this._program.mode) {
       return this._mode(this._program.mode)
     } else if (this._program.content) {
@@ -368,7 +379,7 @@ export default class CLI {
     }
 
     logger.error('\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m')
-    this._program.help()
+    return typeof done === 'function' ? done : this._program.help()
   }
 
 }
