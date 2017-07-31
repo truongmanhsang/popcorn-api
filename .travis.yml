@@ -9,11 +9,15 @@ node_js:
   - 7
   - 8
 
+cache:
+  directories:
+    - node_modules
+
 addons:
   apt:
     sources:
       - mongodb-upstart
-      - mongodb-3.2-precise
+      - mongodb-3.4-precise
     packages:
       - mongodb-org-server
       - mongodb-org-shell
@@ -35,7 +39,7 @@ git:
 
 jobs:
   include:
-  - stage: lint
+  - stage: prepare cache # lint
     before_script:
       - npm i -g flow-typed
       - flow-typed install
@@ -51,3 +55,10 @@ jobs:
 
   - stage: pages
     script: npm run docs
+
+notifications:
+  email:
+    recipients:
+      - chrisalderson@protonmail.com
+    on_success: always
+    on_failure: always

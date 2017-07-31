@@ -12,6 +12,12 @@
     "dynamic-import-node",
     "syntax-dynamic-import",
     "transform-class-properties",
-    "transform-object-rest-spread"
+    "transform-object-rest-spread",
+    "transform-regenerator", [
+      "transform-runtime", {
+        "polyfill": false,
+        "regenerator": true
+      }
+    ]
   ]
 }

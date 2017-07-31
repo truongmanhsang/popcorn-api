@@ -4,11 +4,8 @@ import del from 'del'
 import dotenv from 'dotenv'
 import hooks from 'hooks'
 
-// dotenv.config()
-
 import AnimeMovie from './src/models/AnimeMovie'
 import AnimeShow from './src/models/AnimeShow'
-// import Content from './src/models/Content'
 import Movie from './src/models/Movie'
 import Setup from './src/config/Setup'
 import Show from './src/models/Show'
