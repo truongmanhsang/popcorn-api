@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-// import FactoryProducer from '../../../src/scraper/resources/FactoryProducer'
+import FactoryProducer from '../../../src/scraper/resources/FactoryProducer'
 
 /**
  * @test {FactoryProducer}
@@ -11,24 +11,34 @@ import { expect } from 'chai'
  */
 describe('FactoryProducer', () => {
 
-  // let factoryProducer: FactoryProducer
-
-  /**
-   * Hook for setting up the FactoryProducer tests.
-   * @type {Function}
-   */
-  before(() => {
-    // factoryProducer = new FactoryProducer()
+  /** @test {FactoryProducer.getFactory} */
+  it('should get the api factory', () => {
+    const factory = FactoryProducer.getFactory('api')
+    expect(factory).to.be.an('object')
   })
 
-  it('should test something', () => {
-    expect(true).to.be.true
+  /** @test {FactoryProducer.getFactory} */
+  it('should get the factory factory', () => {
+    const factory = FactoryProducer.getFactory('helper')
+    expect(factory).to.be.an('object')
   })
 
-  /**
-   * Hook for teaing down the FactoryProducer tests.
-   * @type {Function}
-   */
-  after(() => {})
+  /** @test {FactoryProducer.getFactory} */
+  it('should get the model factory', () => {
+    const factory = FactoryProducer.getFactory('model')
+    expect(factory).to.be.an('object')
+  })
+
+  /** @test {FactoryProducer.getFactory} */
+  it('should not get a factory', () => {
+    const factory = FactoryProducer.getFactory()
+    expect(factory).to.be.undefined
+  })
+
+  /** @test {FactoryProducer.getFactory} */
+  it('should get the default factory', () => {
+    const factory = FactoryProducer.getFactory('faulty')
+    expect(factory).to.be.undefined
+  })
 
 })
