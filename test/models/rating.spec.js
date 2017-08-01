@@ -22,7 +22,7 @@ describe('Rating', () => {
    * @type {Rating}
    */
   let ratingEmpty: Rating
-    
+
   /**
    * The value for the rating.
    * @type {string}

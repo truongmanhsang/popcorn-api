@@ -22,7 +22,7 @@ describe('Images', () => {
    * @type {Images}
    */
   let imagesEmpty: Images
-    
+
   /**
    * The value for the images.
    * @type {string}

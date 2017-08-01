@@ -199,7 +199,7 @@ export class Content extends Model {
      * The images of the content.
      * @type {Images}
      */
-    this.images = images ? new Images(images) : undefined 
+    this.images = images ? new Images(images) : undefined
     /**
      * The genres of the content.
      * @type {Array<string>}

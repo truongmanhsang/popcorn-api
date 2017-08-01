@@ -22,7 +22,7 @@ describe('Show', () => {
    * The show obejct initiated without a constructor object.
    * @type {Show}
    */
-  let showEmpty: Show 
+  let showEmpty: Show
 
   /**
    * Hook for setting up the Show tests.
