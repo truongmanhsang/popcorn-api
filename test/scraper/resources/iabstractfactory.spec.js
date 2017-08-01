@@ -11,6 +11,10 @@ import IAbstractFactory from '../../../src/scraper/resources/IAbstractFactory'
  */
 describe('IAbstractFactory', () => {
 
+  /**
+   * The abstract factory object to test
+   * @type {IAbstractFactory}
+   */
   let iAbstractFactory: IAbstractFactory
 
   /**

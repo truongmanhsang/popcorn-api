@@ -12,6 +12,10 @@ import Context from '../../src/scraper/Context'
  */
 describe('Context', () => {
 
+  /**
+   * The context object to test
+   * @type {Context}
+   */
   let context: Context
 
   /**

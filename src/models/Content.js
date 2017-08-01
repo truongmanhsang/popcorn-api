@@ -7,8 +7,14 @@
 import { Model } from 'mongoose'
 import { ItemType } from 'butter-provider'
 
-import Images, { imagesSchema } from './Images'
-import Rating, { ratingSchema } from './Rating'
+import {
+  Images,
+  imagesSchema
+} from './Images'
+import {
+  Rating,
+  ratingSchema
+} from './Rating'
 
 /**
  * Base structure of the database content.
@@ -145,7 +151,7 @@ export class Content extends Model {
     images,
     genres,
     type
-    }: Object = {}
+    }: Object
   ): void {
     super()
 
@@ -188,12 +194,12 @@ export class Content extends Model {
      * The rating of the content.
      * @type {Rating}
      */
-    this.rating = new Rating(rating)
+    this.rating = rating ? new Rating(rating) : undefined
     /**
      * The images of the content.
      * @type {Images}
      */
-    this.images = new Images(images)
+    this.images = images ? new Images(images) : undefined 
     /**
      * The genres of the content.
      * @type {Array<string>}

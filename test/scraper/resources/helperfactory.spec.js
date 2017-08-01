@@ -14,6 +14,10 @@ import Show from '../../../src/models/Show'
  */
 describe('HelperFactory', () => {
 
+  /**
+   * The helper factory object to test
+   * @type {HelperFactory}
+   */
   let helperFactory: HelperFactory
 
   /**

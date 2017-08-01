@@ -18,6 +18,7 @@ addons:
       - mongodb-org-server
       - mongodb-org-shell
       - mongodb-org-tools
+        
 services:
   - mongodb
 
@@ -29,20 +30,21 @@ env:
     - secure: AriCIaTU+72/3bRxYea4w6ufT0PVH1E5Lhke0FGnA3Q5QkS95wxuUZmJHdUCuo+uzt99Xuo6p7NikaHC8W/nehtt/B/Dca1K/xZmChVslJLwyiDlzIAgDvJ9wxZvo3kanCovmUt9f2emT1koMnFLYs59OZ9Lgfl4kHOqgxZiz8X+F0snk6ogyvSO//wgQImXCStqGVI+5LJ053dzaaZUtSEpYEsq9PdBzurywrYnwTyUnxyb4xN8l0gxeoStBAWdeueKrrEJp1M+wdh8Gd70Uff1euLnkzgNmDpLemd2TCQicuA9aWATzYkngcHLfGp6nOd+L7hFdbZ8v+bezAkDKw0YPgLQN4A/Vbyb13cm5mjar0CCOjs22xceKjPgGxVXiZxElyyYhNTGS4mVFMidKsutB0jfBUgMntg9sZR66Af0Rkwburo5nKpoXuOjFldMv31xI8wJjFJbLE/Eop1O32GJotZwL39A0atpou2jBUvqpI1PjZQ9JYMxXFn97YPMNt7aP6u3u2KLfISD75ApKBXMPpXaryvSOxQRBfuZ3dotPkfd09qt0woObet0G864NHgqVulPxR47Um3di1bFgf3noJay7O1yA0lNUAN2cmcDhcqN+IT9JW+LAHZdF5rV6snQ5PDJYcjhntcivnV0d7lLr4kvDBcsTF4vvDH0YcA=
     - secure: eLj0PkTSEnTKhBqzM1/IXR58tkz1xHcthlT+FcLCPDOVpLqXjjtQSM3dlxPr4iuqKMQ88xwAe8tIrL5D++N7y6DPPBqrar1p3dx3HLEclncw8b1fQ5iNUljX/lQbAKS6FDARpB6CUPsNRastnlAMc2BVZg/I6Mf+8Kck7JSct4sABAnXv4O9kKj2oSKWmXEqCj0ZZGg8jduUwfm8QM86wSJEJJNeaEQcI8Uz2qJz1eNvY5iVb6yBdRvIPRhZ9f04iCEyvip5f6lWn+0k9zs6nYccMfeZBUAyouZLwAr1rxktqxcdWh8dRW78dDK0N7e/IUKYflHskMr4XgfyZil72RAVn4iudfGNoqDX1m+4kJDw4llvJKxfcBz2OwEAjdM7Gcpn+uRkRGohjqUZqZT6xZiQZbryilJ8asrUyNKNSvPJThc3XIuRT+awfBgsxZv1MlUj1WImjVfciIXq5WQgQ9sFNlp8JwChlNw90wAdio75FMgvYrkYu1EAe6YNYbuo5BnPiVmRKRPw9xWAgCZXz0mI286msjQKUxzBDY72QTjYyMYsa0nCNwra6igmh3fgkPaUzXYyVQRf0CR4HcmC7+cRRLSPytjVm4FRG92ZXasfesbiGntnoomN3sKLKfPfW1ufZMHLaJVg8h2vYUA/Kcoy83iArGW0fSQLKV2RT/0=
     - secure: Z3oc3yk8BylpIc+xhklCJGyajgKHjskwradnlBbi6Uus7DmR69xWahlGcUQfWdKxzv3qi61YWPoCjigG0HhnDHgLdQz+qh2tBVLlcB/UoaXy231yKmz29JJFSB5bEQTy+6CnAlPIdlLJ37b64n7V1HWFVINhrKaeRlDeJsPUIPKbwVZsc6XzTSioyerU5nMVg+D7nVYxnVRIZw9VtOdwgv+yoTFKf/1uWtl3Ms5kEMQa3YwhfoVdW2ZMNxD3/X8xFbqfFLg//0BR3F1HTXktC0ptqA/Z+qjHtvaiL5JslLAL37QmqkoTwEqK3uotFnjYjFeRPMY2vu5LKH9AocIvwdRWQP1NkZnqPJS5GbtO5mK7PlSNS0gxLkZ8QeSXOgOivVNK89WXM77ZFnYo+ODx879+iUEAlq+xEKDTkSc6OPa4XT6IHUDo1UZoz/RhdneDe9pVc6ifFbEk8b1mpbllL10SWeBJOaQOvj4IRarnxywLlUM7d0k3skmP59N63s3f9Km/ApqMPnd9PwatsNlI2lEbUCz+cilR2cWYtC2qbXD3QsGBJmJsU1kQ5ybWQghKE+ctoggZL0Fonj86McfbU563LYb81Nlv+gH4ZHrhCKMdowufh49yeD2FXRHjVWqfWYpeTTHMkZXMqEb55wTdWKeYYf6xjCfUAkgn7qpcHPs=
+    - secure: Qka+sF0yzo6IVNbmAjPhhLbi4tJlSKZKu472/AZQe+YAxiqNPkACYT00CyEhsRv5zeEmMbDOuLNFbTJwrzHImfk8IZ+ZL0/eYF3xjl8LinC50TnfoDhMxkeV1HdLGSCSOwiGfwDYxiDTBFeZ2pIAQTlFhPdgg2hriz4hWSj8V7tRxT00ab9tIP3z27Qrq4sAzmOy/faDcqWhXKAsPSsxOypZrjSij6XKiTI5TQkRj6v5zdxRqUQ7CD86Df6rSSxcHsl4Gigm3oxVqurUzg2RMSosdF57tyE70So9CKJC+U+5Jyrt3vwQF2Pq64pzWllzgSi87IlLGYEZE159MA8E3JLvuHWepBNd5cCyUURg0H59V7qAYpDBSB7ocl4C3nbfBO3DPUfXylKX/bOaGrjTKonm6otzmLvfTpbOB9WUWVtqLvjp9NA9K6tSxLlBksy5f740nZ5pAzg98oxmEA19aY/064+yH4tW5XYmJjXzeGhpEZAEDEmklPZhZwDmtxvEjpeO6JgxTKAtwJig9BnBeyQkzF9SZMC4S5XPIDt5W4qrkvOGSdLgI6OeV0107fNRgzSdjQJ6dTvijLoB46vIDKVO6wh9IVwWKSSl/8Ftd1i5AJ9GW/3uyBjBHvO1IvU0vXQFzE8c0tDStZumIbCODa98OiNupUXVTfc7xwLRKo8=
 
 git:
   submodules: false
 
 jobs:
   include:
-  - stage: prepare cache # lint
+  - stage: prepare cache
     node_js: '8'
     before_script:
-      - npm i -g flow-typed
-      - flow-typed install
+    - npm i -g flow-typed
+    - flow-typed install
     script:
-      - npm run flow
-      - npm run lint
+    - npm run flow
+    - npm run lint
   - stage: test
     node_js: '6'
     script: npm run test

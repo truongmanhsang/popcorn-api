@@ -12,6 +12,7 @@ import content, { Content } from './Content'
  * @see http://mongoosejs.com/docs/guide.html
  */
 export const movieSchema = new Schema({
+  ...content,
   language: String,
   released: Number,
   trailer: {
@@ -23,8 +24,7 @@ export const movieSchema = new Schema({
     type: String,
     default: ItemType.MOVIE
   },
-  torrents: {},
-  ...content
+  torrents: {}
 })
 
 /**

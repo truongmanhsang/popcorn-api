@@ -11,6 +11,10 @@ import ApiFactory from '../../../src/scraper/resources/ApiFactory'
  */
 describe('ApiFactory', () => {
 
+  /**
+   * The API factory object to test
+   * @type {ApiFactory}
+   */
   let apiFactory: ApiFactory
 
   /**

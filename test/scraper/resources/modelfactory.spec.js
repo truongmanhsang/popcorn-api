@@ -11,6 +11,10 @@ import ModelFactory from '../../../src/scraper/resources/ModelFactory'
  */
 describe('ModelFactory', () => {
 
+  /**
+   * The model factory object to test
+   * @type {ModelFactory}
+   */
   let modelFactory: ModelFactory
 
   /**

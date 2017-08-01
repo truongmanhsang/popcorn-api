@@ -4,7 +4,7 @@ import mongoose, {
   Schema
 } from 'mongoose'
 
-// import BaseProvider from '../scraper/providers/BaseProvider'
+import BaseProvider from '../scraper/providers/BaseProvider'
 
 /**
  * The provider configuration schema used by mongoose.
@@ -26,9 +26,9 @@ const _providerConfigSchema = new Schema({
   },
   modelType: {
     type: String,
-    required: true
-    // enum: Object.keys(BaseProvider.ModelTypes)
-    //   .map(key => BaseProvider.ModelTypes[key])
+    required: true,
+    enum: Object.keys(BaseProvider.ModelTypes)
+      .map(key => BaseProvider.ModelTypes[key])
   },
   name: {
     type: String,
@@ -36,11 +36,11 @@ const _providerConfigSchema = new Schema({
   },
   type: {
     type: String,
-    required: true
-    // enum: Object.keys(BaseProvider.Types)
-    //   .map(key => BaseProvider.Types[key])
+    required: true,
+    enum: Object.keys(BaseProvider.Types)
+      .map(key => BaseProvider.Types[key])
   },
-  class: {
+  clazz: {
     type: String,
     required: true
     // XXX: Create enum based on the classnames in ./scraper/providers
@@ -109,7 +109,7 @@ export class ProviderConfig extends Model {
    * @param {!string} clazz - The clazz of the provider configration.
    * @param {?Object} query - The query of the provider configration.
    */
-  constructor({api, modelType, name, type, clazz, query}: Object): void {
+  constructor({api, modelType, name, type, clazz, query}: Object = {}): void {
     super()
 
     /**
@@ -153,7 +153,7 @@ export class ProviderConfig extends Model {
    * Getter for the id of the provider configuration.
    * @return {string} - The id of the provider configuration.
    */
-  get id() {
+  get id(): string {
     return this._id
   }
 
@@ -165,7 +165,7 @@ _providerConfigSchema.loadClass(ProviderConfig)
 
 // Create the provider configration model.
 const ProviderConfigModel = mongoose
-  .model('ProviderConfig', _providerConfigSchema)
+  .model(ProviderConfig, _providerConfigSchema)
 
 /**
  * A model object for provider configuration.
