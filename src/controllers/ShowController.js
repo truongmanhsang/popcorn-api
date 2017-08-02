@@ -15,6 +15,7 @@ export default class ShowController {
       _id: 1,
       imdb_id: 1,
       tvdb_id: 1,
+      tmdb_id: 1,
       title: 1,
       year: 1,
       synopsis: 1,
