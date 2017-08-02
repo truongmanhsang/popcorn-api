@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -10,7 +9,6 @@ import FactoryProducer from '../../../src/scraper/resources/FactoryProducer'
  * @flow
  */
 describe('FactoryProducer', () => {
-
   /** @test {FactoryProducer.getFactory} */
   it('should get the api factory', () => {
     const factory = FactoryProducer.getFactory('api')
@@ -40,5 +38,4 @@ describe('FactoryProducer', () => {
     const factory = FactoryProducer.getFactory('faulty')
     expect(factory).to.be.undefined
   })
-
 })

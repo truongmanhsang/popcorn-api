@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -10,7 +9,6 @@ import ModelFactory from '../../../src/scraper/resources/ModelFactory'
  * @flow
  */
 describe('ModelFactory', () => {
-
   /**
    * The model factory object to test
    * @type {ModelFactory}
@@ -60,5 +58,4 @@ describe('ModelFactory', () => {
     const model = modelFactory.getModel('faulty')
     expect(model).to.be.undefined
   })
-
 })

@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -10,7 +9,6 @@ import IHelper from '../../../src/scraper/helpers/IHelper'
  * @flow
  */
 describe('IHelper', () => {
-
   /**
    * The IHelper object to be tested.
    * @type {IHelper}
@@ -42,5 +40,4 @@ describe('IHelper', () => {
     expect(iHelper._getImages).to
       .throw('Using default method: \'_getImages\'')
   })
-
 })

@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import Express from 'express'
 import { expect } from 'chai'
@@ -11,7 +10,6 @@ import Routes from '../../src/config/Routes'
  * @flow
  */
 describe('Routes', () => {
-
   /** @test {Routes._AnimeController} */
   it('should test if Routes has an _AnimeController', () => {
     expect(Routes._AnimeController).to.exist
@@ -43,5 +41,4 @@ describe('Routes', () => {
     Routes.setupRoutes(express)
     expect(express).to.not.equal(new Express())
   })
-
 })

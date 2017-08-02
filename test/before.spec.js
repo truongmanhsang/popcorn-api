@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import dotenv from 'dotenv'
 import { expect } from 'chai'
@@ -11,7 +10,6 @@ import { join } from 'path'
  * @flow
  */
 describe('dotenv', () => {
-
   /**
    * Hook for setting up the dotenv tests.
    * @type {Function}
@@ -29,5 +27,4 @@ describe('dotenv', () => {
   it('Dummy test to execute this module', () => {
     expect(true).to.be.true
   })
-
 })

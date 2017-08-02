@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -13,7 +12,6 @@ import Show from '../../../src/models/Show'
  * @flow
  */
 describe('HelperFactory', () => {
-
   /**
    * The helper factory object to test
    * @type {HelperFactory}
@@ -28,28 +26,27 @@ describe('HelperFactory', () => {
     helperFactory = new HelperFactory()
   })
 
-  /** @test {HelperFactory#getFactory} */
+  /** @test {HelperFactory#getHelper} */
   it('should get the api factory', () => {
     const helper = helperFactory.getHelper('test', Movie, Provider.Types.Movie)
     expect(helper).to.be.an('object')
   })
 
-  /** @test {HelperFactory#getFactory} */
+  /** @test {HelperFactory#getHelper} */
   it('should get the helper factory', () => {
     const helper = helperFactory.getHelper('test', Show, Provider.Types.Show)
     expect(helper).to.be.an('object')
   })
 
-  /** @test {HelperFactory#getFactory} */
+  /** @test {HelperFactory#getHelper} */
   it('should not get a helper factory', () => {
     const helper = helperFactory.getHelper()
     expect(helper).to.be.undefined
   })
 
-  /** @test {HelperFactory#getFactory} */
+  /** @test {HelperFactory#getHelper} */
   it('should get the default helper factory', () => {
     const helper = helperFactory.getHelper('test', Movie, 'faulty')
     expect(helper).to.be.undefined
   })
-
 })

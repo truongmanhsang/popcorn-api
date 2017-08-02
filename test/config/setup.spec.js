@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import Express from 'express'
 import mongoose from 'mongoose'
@@ -12,7 +11,6 @@ import Setup from '../../src/config/Setup'
  * @flow
  */
 describe('Setup', () => {
-
   /** @test {Setup._DbHosts} */
   it('should check if Setup has a _DbHosts', () => {
     expect(Setup._DbHosts).to.exist
@@ -79,5 +77,4 @@ describe('Setup', () => {
     Setup.setupDatabase(express, true)
     expect(express).to.not.equal(new Express())
   })
-
 })

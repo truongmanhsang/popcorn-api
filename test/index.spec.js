@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import del from 'del'
 import fs from 'fs'
@@ -15,7 +14,6 @@ import { name } from '../package.json'
  * @flow
  */
 describe('Index', () => {
-
   /**
    * Hook for setting up the Index tests.
    * @type {Function}
@@ -116,5 +114,4 @@ describe('Index', () => {
   it('should test the _startApi method', () => {
     expect(true).to.be.true
   })
-
 })

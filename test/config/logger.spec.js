@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -10,7 +9,6 @@ import Logger from '../../src/config/Logger'
  * @flow
  */
 describe('Logger', () => {
-
   /**
    * Test the global logger object for functions.
    * @returns {void}
@@ -119,5 +117,4 @@ describe('Logger', () => {
     const nothing = Logger._getLevelColor(undefined)
     expect(nothing).to.equal('\x1b[36m')
   })
-
 })

@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -10,7 +9,6 @@ import { expect } from 'chai'
  * @flow
  */
 describe('MovieProvider', () => {
-
   // let movieProvider: MovieProvider
 
   /**
@@ -30,5 +28,4 @@ describe('MovieProvider', () => {
    * @type {Function}
    */
   after(() => {})
-
 })

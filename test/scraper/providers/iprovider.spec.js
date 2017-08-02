@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -10,7 +9,6 @@ import IProvider from '../../../src/scraper/providers/IProvider'
  * @flow
  */
 describe('IProvider', () => {
-
   /**
    * The IProvider object to be tested.
    * @type {IProvider}
@@ -72,5 +70,4 @@ describe('IProvider', () => {
    * @type {Function}
    */
   after(() => {})
-
 })

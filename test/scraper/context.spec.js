@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -11,7 +10,6 @@ import Context from '../../src/scraper/Context'
  * @flow
  */
 describe('Context', () => {
-
   /**
    * The context object to test
    * @type {Context}
@@ -46,5 +44,4 @@ describe('Context', () => {
     expect(context._provider).to.not.equal(current)
     expect(context._provider).to.equal(baseProvider)
   })
-
 })

@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -11,7 +10,6 @@ import Index from '../src/Index'
  * @flow
  */
 describe('CLI', () => {
-
   /**
    * The CLI object to test
    * @type {CLI}
@@ -93,5 +91,4 @@ describe('CLI', () => {
 
     Index.closeApi(done)
   })
-
 })

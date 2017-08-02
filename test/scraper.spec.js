@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import del from 'del'
 import fs from 'fs'
@@ -14,7 +13,6 @@ import Setup from '../src/config/Setup'
  * @flow
  */
 describe('Scraper', () => {
-
   /**
    * Hook for setting up the Scraper tests.
    * @type {Function}
@@ -106,5 +104,4 @@ describe('Scraper', () => {
     Setup.disconnectMongoDb()
     del.sync([join(process.cwd(), 'audios')])
   })
-
 })

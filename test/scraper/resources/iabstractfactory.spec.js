@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -10,7 +9,6 @@ import IAbstractFactory from '../../../src/scraper/resources/IAbstractFactory'
  * @flow
  */
 describe('IAbstractFactory', () => {
-
   /**
    * The abstract factory object to test
    * @type {IAbstractFactory}
@@ -42,5 +40,4 @@ describe('IAbstractFactory', () => {
     expect(iAbstractFactory.getModel).to
       .throw('Using default method: \'getModel\'')
   })
-
 })
