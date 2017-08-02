@@ -30,7 +30,7 @@ export default class BaseContentController extends IContentController {
    * @protected
    * @type {number}
    */
-  _pageSize: number
+  static _PageSize: number = 50
 
   /**
    * Create a new content controller.
@@ -45,12 +45,6 @@ export default class BaseContentController extends IContentController {
      * @type {AnimeMovie|AnimeShow|Movie|Show}
      */
     this._model = model
-
-    /**
-     * The amount of objects show per page. Default is `50`.
-     * @type {number}
-     */
-    this._pageSize = 50
   }
 
   /**
@@ -63,7 +57,7 @@ export default class BaseContentController extends IContentController {
   getContents(req: Object, res: Object): Promise<Array<string>, Object> {
     return this._model.count(BaseContentController.Query).exec()
       .then(count => {
-        const pages = Math.ceil(count / this._pageSize)
+        const pages = Math.ceil(count / BaseContentController._PageSize)
         const docs = []
 
         for (let i = 1; i < pages + 1; i++) {
@@ -108,7 +102,7 @@ export default class BaseContentController extends IContentController {
     }
 
     const page = !isNaN(req.params.page) ? req.params.page - 1 : 0
-    const offset = page * this._pageSize
+    const offset = page * BaseContentController._PageSize
     const query = Object.assign({}, BaseContentController.Query)
     const order = req.query.order ? parseInt(req.query.order, 10) : -1
     const { keywords, sort } = req.query
@@ -183,7 +177,7 @@ export default class BaseContentController extends IContentController {
     }, {
       $skip: offset
     }, {
-      $limit: this._pageSize
+      $limit: BaseContentController._PageSize
     }]).exec().then(docs => {
       if (docs.length === 0) {
         return res.status(204).json()
