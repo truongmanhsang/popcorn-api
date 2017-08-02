@@ -198,8 +198,8 @@ Download the contents a collection in a JSON file.
                     }
                 }
             }
-  
-  + Response 200 (attachment; filename="animes.json")
+
+  + Response 200 (application/json)
 
 
 # Group Anime
@@ -217,7 +217,7 @@ Gives an array of the available pages for anime content.
       + Attributes (array[string])
 
   + Response 204 (charset=utf-8)
-  
+
 ## Get Page [/animes/{page}{?sort,order,genre,keywords}]
 
 ### Page [GET]
@@ -362,7 +362,7 @@ Gives a random movie from the database.
       + Attributes (Movie)
 
   + Response 204 (charset=utf-8)
-  
+
 
 # Group Show
 

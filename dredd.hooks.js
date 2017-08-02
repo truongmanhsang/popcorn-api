@@ -3,6 +3,7 @@ import asyncq from 'async-q'
 import del from 'del'
 import dotenv from 'dotenv'
 import hooks from 'hooks'
+import { join } from 'path'
 
 import AnimeMovie from './src/models/AnimeMovie'
 import AnimeShow from './src/models/AnimeShow'
@@ -19,6 +20,12 @@ const models = []
 
 hooks.beforeAll((t, done) => {
   dotenv.config()
+
+  // Set the TEMP_DIR environment variable if it is not set in the .env file.
+  process.env.TEMP_DIR = process.env.TEMP_DIR
+    ? process.env.TEMP_DIR
+    : join(process.cwd(), 'tmp')
+
   Setup.connectMongoDb()
 
   models.push({
@@ -57,7 +64,7 @@ hooks.afterAll((t, done) => {
     }, model.model).exec()
       .then(res => hooks.log(`Removed conent: '${res.id}'`))
   }).then(() => Setup.disconnectMongoDb())
-    .then(del.sync(['tmp']))
+    .then(del.sync([process.env.TEMP_DIR]))
     .then(done)
     .catch(err => {
       hooks.error(`Uhoh an error occured during the afterAll hook: '${err}'`)
