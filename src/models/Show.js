@@ -9,6 +9,7 @@ const ShowSchema = new mongoose.Schema({
   },
   imdb_id: String,
   tvdb_id: String,
+  tmdb_id: String,
   title: String,
   year: String,
   slug: String,
