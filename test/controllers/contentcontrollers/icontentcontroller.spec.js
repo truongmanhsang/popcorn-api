@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -10,7 +9,6 @@ import IContentController from '../../../src/controllers/contentcontrollers/ICon
  * @flow
  */
 describe('IContentController', () => {
-
   /**
    * The IContentController object to be tested.
    * @type {IContentController}
@@ -48,5 +46,4 @@ describe('IContentController', () => {
     expect(iContentController.getRandomContent).to
       .throw('Using default method: \'getRandomContent\'')
   })
-
 })

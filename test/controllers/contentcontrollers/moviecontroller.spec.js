@@ -1,36 +1,21 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
-import chai, { expect } from 'chai'
-import chaiHttp from 'chai-http'
-
-import Index from '../../../src/Index'
+import Movie from '../../../src/models/Movie'
+import MovieController from '../../../src/controllers/contentcontrollers/MovieController'
+import testBaseContentController from './basecontentcontroller.spec'
+import testMovie from '../../data/movie.json'
 
 /**
  * @test {MovieController}
  * @flow
  */
 describe('MovieController', () => {
-
-  /**
-   * Hook for setting up the MovieController tests.
-   * @type {Function}
-   */
-  before(() => {
-    chai.use(chaiHttp)
-    Index.setupApi(false, false, true)
+  it('should test the movie controller', () => {
+    testBaseContentController(
+      MovieController,
+      Movie,
+      new Movie(testMovie),
+      'movie'
+    )
   })
-
-  it('should test something', () => {
-    expect(true).to.be.true
-  })
-
-  /**
-   * Hook for teaing down the MovieController tests.
-   * @type {Function}
-   */
-  after(done => {
-    Index.closeApi(done)
-  })
-
 })

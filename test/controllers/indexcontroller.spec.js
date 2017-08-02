@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import chai, { expect } from 'chai'
 import chaiHttp from 'chai-http'
@@ -15,7 +14,6 @@ import { name } from '../../package.json'
  * @flow
  */
 describe('IndexController', () => {
-
   /**
    * Hook for setting up the IndexController tests.
    * @type {Function}
@@ -33,7 +31,6 @@ describe('IndexController', () => {
 
   /** @test {IndexController} */
   describe('200 status code', () => {
-
     /** @test {IndexController#getErrorLog} */
     it('should test the GET [/logs/error] route with a 200 status', done => {
       chai.request(Index._App).get('/logs/error')
@@ -80,12 +77,10 @@ describe('IndexController', () => {
 
       fs.unlinkSync(filePath)
     })
-
   })
 
   /** @test {IndexController} */
   describe('500 status code', () => {
-
     /**
      * Temporary variable used to set the uptime function back.
      * @type {Function}
@@ -133,7 +128,6 @@ describe('IndexController', () => {
     after(() => {
       process.uptime = temp
     })
-
   })
 
   /**
@@ -143,5 +137,4 @@ describe('IndexController', () => {
   after(done => {
     Index.closeApi(done)
   })
-
 })
