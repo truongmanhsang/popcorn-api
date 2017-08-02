@@ -1,5 +1,4 @@
 // Import the necessary modules.
-/* eslint-disable padded-blocks */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
@@ -10,7 +9,6 @@ import Images from '../../src/models/Images'
  * @flow
  */
 describe('Images', () => {
-
   /**
    * The images object to test.
    * @type {Images}
@@ -44,36 +42,19 @@ describe('Images', () => {
   })
 
   /** @test {Images#banner} */
-  it('should check if Images has a banner', () => {
+  it('should check the attributes of an images', () => {
     expect(images.banner).to.be.a('string')
     expect(images.banner).to.equal(image)
-  })
-
-  /** @test {Images#fanart} */
-  it('should check if Images has a fanart', () => {
     expect(images.fanart).to.be.a('string')
     expect(images.fanart).to.equal(image)
-  })
-
-  /** @test {Images#poster} */
-  it('should check if Images has a poster', () => {
     expect(images.poster).to.be.a('string')
     expect(images.poster).to.equal(image)
   })
 
   /** @test {Images#banner} */
-  it('should check if banner is undefined', () => {
+  it('should check the attributes of an empty images', () => {
     expect(imagesEmpty.banner).to.be.undefined
-  })
-
-  /** @test {Images#fanart} */
-  it('should check if fanart is undefined', () => {
     expect(imagesEmpty.fanart).to.be.undefined
-  })
-
-  /** @test {Images#poster} */
-  it('should check if poster is undefined', () => {
     expect(imagesEmpty.poster).to.be.undefined
   })
-
 })
