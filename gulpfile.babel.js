@@ -1,7 +1,17 @@
-// Import the neccesary modules.
-import del from 'del'
-import gulp from 'gulp'
+// Import the necessary modules.
 import babel from 'gulp-babel'
+import del from 'del'
+import dotenv from 'dotenv'
+import gulp from 'gulp'
+import { join } from 'path'
+
+// initialize the dotenv module.
+dotenv.config()
+
+// Set the TEMP_DIR environment variable if it is not set in the .env file.
+process.env.TEMP_DIR = process.env.TEMP_DIR
+  ? process.env.TEMP_DIR
+  : join(process.cwd(), 'tmp')
 
 /**
  * The default build function.
@@ -13,7 +23,12 @@ function build() {
 }
 
 // Delete the `build` directory.
-gulp.task('clean', () => del(['build', 'tmp']))
+gulp.task('clean', () => del([
+  '.nyc_output',
+  'build',
+  'coverage',
+  process.env.TEMP_DIR
+]))
 
 // Transpile the `src` directory with Babel.
 gulp.task('build', ['clean'], build)
