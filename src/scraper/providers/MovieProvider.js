@@ -1,5 +1,5 @@
 // Import the necessary modules.
-import asyncq from 'async-q'
+import pMap from 'p-map'
 import bytes from 'bytes'
 
 import BaseProvider from './BaseProvider'
@@ -52,11 +52,10 @@ export default class MovieProvider extends BaseProvider {
    * @param {!Object} torrent - The torrent to extract the movie information
    * from.
    * @param {!RegExp} r - The regex to extract the movie information.
-   * @param {!string} [lang=en] - The language of the torrent.
-   *
+   * @param {!string} [lang] - The language of the torrent.
    * @returns {Object} - Information about a movie from the torrent.
    */
-  _extractContent(torrent: Object, r: RegExp, lang: string = 'en'): Object {
+  _extractContent(torrent: Object, r: RegExp, lang: string): Object {
     let movieTitle
     let slug
 
@@ -110,14 +109,14 @@ export default class MovieProvider extends BaseProvider {
    * @param {!Object} movie - The movie to attach a torrent to.
    * @param {!Object} torrent - The torrent object.
    * @param {!string} quality - The quality of the torrent.
-   * @param {!string} [lang=en] - The language of the torrent
+   * @param {!string} [lang] - The language of the torrent
    * @returns {Object} - The movie with the newly attached torrent.
    */
   attachTorrent(
     movie: Object,
     torrent: Object,
     quality: string,
-    lang: string = 'en'
+    lang: string
   ): Object {
     if (!movie.torrents[lang]) {
       movie.torrents[lang] = {}
@@ -145,7 +144,7 @@ export default class MovieProvider extends BaseProvider {
   ): Promise<Array<Object>, void> {
     const movies = []
 
-    return asyncq.mapSeries(torrents, torrent => {
+    return pMap(torrents, torrent => {
       if (!torrent) {
         return
       }
@@ -174,6 +173,8 @@ export default class MovieProvider extends BaseProvider {
       const created = this.attachTorrent(...args)
 
       movies.splice(index, 1, created)
+    }, {
+      concurrency: 1
     }).then(() => movies)
   }
 

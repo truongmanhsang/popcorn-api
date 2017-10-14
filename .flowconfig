@@ -8,9 +8,15 @@
 <PROJECT_ROOT>/tmp/.*
 
 [include]
+<PROJECT_ROOT>/dredd.hooks.js/.*
+<PROJECT_ROOT>/src/.*
+<PROJECT_ROOT>/test/.*
 
 [libs]
 
 [options]
+experimental.const_params=true
+include_warnings=true
+munge_underscores=true
 unsafe.enable_getters_and_setters=true
 suppress_comment= \\(.\\|\n\\)*\\flow-ignore

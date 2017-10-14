@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#! /usr/bin/env node
 
 // Import the necessary modules.
 import dotenv from 'dotenv'
@@ -11,7 +11,7 @@ import('./CLI').then(res => {
   // Set the TEMP_DIR environment variable if it is not set in the .env file.
   process.env.TEMP_DIR = process.env.TEMP_DIR
     ? process.env.TEMP_DIR
-    : join(process.cwd(), 'tmp')
+    : join(__dirname, '..', 'tmp')
 
   // Run the CLI program.
   const CLI = res.default

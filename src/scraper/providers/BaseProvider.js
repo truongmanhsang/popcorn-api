@@ -1,5 +1,6 @@
 // Import the necessary modules.
-import asyncq from 'async-q'
+import pMap from 'p-map'
+import pTimes from 'p-times'
 import { ItemType } from 'butter-provider'
 
 import FactoryProducer from '../resources/FactoryProducer'
@@ -80,7 +81,7 @@ export default class BaseProvider extends IProvider {
    * @param {!Object} config.query - The query object for the api.
    * @param {!string} config.type - The type of content to scrape.
    */
-  constructor({api, name, modelType, query, type}: Object): void {
+  constructor({api, name, modelType, query = {}, type}: Object): void {
     super()
 
     const apiFactory = FactoryProducer.getFactory('api')
@@ -94,25 +95,21 @@ export default class BaseProvider extends IProvider {
      * @type {Object}
      */
     this._api = apiFactory.getApi(api)
-
     /**
      * The name of the torrent provider.
      * @type {string}
      */
     this._name = name
-
     /**
      * The helper class for adding movies.
      * @type {MovieHelper|ShowHelper}
      */
     this._helper = helperFactory.getHelper(this._name, model, type)
-
     /**
      * The query object for the api.
      * @type {Object}
      */
     this._query = query
-
     /**
      * The type of content to scrape.
      * @type {string}
@@ -144,7 +141,7 @@ export default class BaseProvider extends IProvider {
         const { slugYear, torrents } = content
         newContent = await this._helper.getTraktInfo(slugYear)
 
-        if (newContent && newContent._id) {
+        if (newContent && newContent.imdb_id) {
           return await this._helper.addTorrents(newContent, torrents)
         }
       } else if (this._type === BaseProvider.Types.Show) {
@@ -152,7 +149,7 @@ export default class BaseProvider extends IProvider {
         delete episodes[0]
         newContent = await this._helper.getTraktInfo(slug)
 
-        if (newContent && newContent._id) {
+        if (newContent && newContent.imdb_id) {
           return await this._helper.addEpisodes(newContent, episodes, slug)
         }
       } else {
@@ -175,7 +172,7 @@ export default class BaseProvider extends IProvider {
    */
   _getContentData(torrent: Object, lang: string = 'en'): Object | void {
     const regex = this._regexps.find(
-      r => r.regex.test(torrent.title) ? r : null
+      r => (r.regex.test(torrent.title) ? r : null)
     )
 
     if (regex) {
@@ -195,7 +192,7 @@ export default class BaseProvider extends IProvider {
    */
   _getAllTorrents(totalPages: number): Promise<Array<Object>, void> {
     let torrents = []
-    return asyncq.timesSeries(totalPages, async page => {
+    return pTimes(totalPages, async page => {
       if (this._query.page) {
         this._query.page = page + 1
       }
@@ -208,10 +205,22 @@ export default class BaseProvider extends IProvider {
       const data = res.results ? res.results : res.data ? res.data.movies : []
 
       torrents = torrents.concat(data)
+    }, {
+      concurrency: 1
     }).then(() => {
       logger.info(`${this._name}: Found ${torrents.length} torrents.`)
       return torrents
     })
+  }
+
+  /**
+   * Get the total pages to scrape for the provider query.
+   * @returns {Promise<number, Error>} - The number of total pages to scrape.
+   */
+  _getTotalPages(): Promise<number, Error> {
+    this._api.search(this._query).then(
+      res => res.total_pages || Math.ceil(res.data.movie_count / 50)
+    )
   }
 
   /**
@@ -221,13 +230,7 @@ export default class BaseProvider extends IProvider {
    */
   async search(): Promise<Array<Object>, void> {
     try {
-      const getTotalPages = await this._api.search(this._query)
-
-      const totalPages = process.env.NODE_ENV === 'development'
-        ? 3
-        : getTotalPages.total_pages
-          ? getTotalPages.total_pages
-          : Math.ceil(getTotalPages.data.movie_count / 50)
+      const totalPages = await this._getTotalPages()
 
       if (!totalPages) {
         return logger.error(
@@ -242,9 +245,9 @@ export default class BaseProvider extends IProvider {
       const { language } = this._query
       const allContent = await this._getAllContent(torrents, language)
 
-      return await asyncq.mapLimit(allContent, BaseProvider._MaxWebRequest,
-        content => this.getContent(content)
-      )
+      return await pMap(allContent, content => this.getContent(content), {
+        concurrency: BaseProvider._MaxWebRequest
+      })
     } catch (err) {
       logger.error(err)
     }

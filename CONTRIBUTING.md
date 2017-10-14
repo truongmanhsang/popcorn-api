@@ -1,4 +1,5 @@
 # Contributing
+
 So you're interested in giving us a hand? That's awesome! We've put together
 some brief guidelines that should help you get started quickly and easily.
 
@@ -12,6 +13,7 @@ There are lots and lots of ways to get involved, this document covers:
    - [Documentation Styleguide](#documentation-styleguide)
 
 ## Raising Issues
+
 If you're about to raise an issue because you think that you've found a problem
 with Butter, or you'd like to make a request for a new feature in the codebase,
 or any other reason… please read this first.
@@ -28,6 +30,7 @@ requested your idea.
 respect the opinions of others.
 
 ### Report A Bug
+
 A bug is a _demonstrable problem_ that is caused by the code in the repository.
 Good bug reports are extremely helpful - thank you!
 
@@ -45,6 +48,7 @@ information. Be sure to include all the possible required details and the steps
 to take to reproduce the issue.
 
 ### Feature Requests
+
 Feature requests are welcome. Before you submit one be sure to:
 1. **Use the [Github Issues search](https://github.com/popcorn-official/popcorn-api/issues)**
 and check the feature hasn't already been requested.
@@ -60,6 +64,7 @@ itself, or for packages like Providers, Metadatas, or other.
 ## Styleguides
 
 ### JavaScript Styleguide
+
 All JavaScript must adhere to [JavaScript Standard Style](http://standardjs.com/).
 
 * Inline `export`s with expressions whenever possible
@@ -77,11 +82,13 @@ All JavaScript must adhere to [JavaScript Standard Style](http://standardjs.com/
   ```
 
 ### Tests Styleguide
+
 - Include thoughtfully-worded, well-structured [Mocha](https://mochajs.org/) tests in the `./tests` folder.
 - Treat `describe` as a noun or situation.
 - Treat `it` as a statement about state or how an operation changes state.
 
 ### Documentation Styleguide
+
  * Use [Markdown](https://daringfireball.net/projects/markdown).
  * Reference methods and classes in markdown with the custom `{}` notation:
    * Reference classes with `{ClassName}`

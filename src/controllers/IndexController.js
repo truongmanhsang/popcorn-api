@@ -3,12 +3,11 @@ import fs from 'fs'
 import path from 'path'
 
 import Anime from '../models/AnimeShow'
-import AnimeController from './contentcontrollers/AnimeController'
+import IController from './IController'
+import BaseContentController from './BaseContentController'
 import Movie from '../models/Movie'
-import MovieController from './contentcontrollers/MovieController'
 import Scraper from '../Scraper'
 import Show from '../models/Show'
-import ShowController from './contentcontrollers/ShowController'
 import Util from '../Util'
 import {
   name,
@@ -19,15 +18,26 @@ import {
 /**
  * Class for displaying information about the server the API is running on.
  * @type {IndexController}
+ * @implements {IController}
  * @flow
  */
-export default class IndexController {
+export default class IndexController extends IController {
 
   /**
    * The name of the server. Default is `serv01`.
    * @type {string}
    */
   static _Server: string = 'serv01'
+
+  /**
+   * Register the routes for the index controller to the Express instance.
+   * @param {!Express} app - The Express instance to register the routes to.
+   * @returns { undefined}
+   */
+  registerRoutes(app: Express): void {
+    app.get('/status', this.getIndex)
+    app.get('/logs/error', this.getErrorLog)
+  }
 
   /**
    * Get general information about the server.
@@ -37,19 +47,20 @@ export default class IndexController {
    */
   async getIndex(req: Object, res: Object): Promise<Object, Object> {
     try {
-      const commit = await Util.Instance
-        .executeCommand('git rev-parse --short HEAD')
-      const totalAnimes = await Anime.count(AnimeController.Query).exec()
-      const totalMovies = await Movie.count(MovieController.Query).exec()
-      const totalShows = await Show.count(ShowController.Query).exec()
+      const commit = await Util.executeCommand('git rev-parse --short HEAD')
+
+      const query = BaseContentController.Query
+      const totalAnimes = await Anime.count(query).exec()
+      const totalMovies = await Movie.count(query).exec()
+      const totalShows = await Show.count(query).exec()
 
       return res.json({
         repo: repository.url,
         server: IndexController._Server,
         status: await Scraper.Status,
-        totalAnimes: totalAnimes || 0,
-        totalMovies: totalMovies || 0,
-        totalShows: totalShows || 0,
+        totalAnimes,
+        totalMovies,
+        totalShows,
         updated: await Scraper.Updated,
         uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
         version,

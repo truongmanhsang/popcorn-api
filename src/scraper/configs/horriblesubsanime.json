@@ -3,5 +3,5 @@
   "name": "HorribleSubs",
   "modelType": "animeshow",
   "type": "tvshow",
-  "class": "BulkProvider"
+  "clazz": "BulkProvider"
 }]

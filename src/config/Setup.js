@@ -4,7 +4,9 @@ import compress from 'compression'
 import mongoose from 'mongoose'
 import responseTime from 'response-time'
 
+import controllers from '../controllers'
 import Logger from './Logger'
+import { name } from '../../package.json'
 
 /**
  * Class for setting up ExpressJS and MongoDB.
@@ -14,7 +16,8 @@ import Logger from './Logger'
 export default class Setup {
 
   /**
-   * The name of the database. Default is `popcorn-development`.
+   * The name of the database. Default is the package name with the
+   * environment mode.
    * @type {string}
    */
   static _DbName: string
@@ -45,15 +48,15 @@ export default class Setup {
 
   /**
    * Get the database name of the API.
-   * @return {string} - The database name of the API.
+   * @returns {string} - The database name of the API.
    */
   static get _DbName(): string {
-    return `${process.env.MONGO_DATABASE || 'popcorn'}-${process.env.NODE_ENV || 'development'}`
+    return `${process.env.MONGO_DATABASE || name}-${process.env.NODE_ENV}`
   }
 
   /**
    * Get the database hosts of the API.
-   * @return {Array<string>} - The database hosts of the API.
+   * @returns {Array<string>} - The database hosts of the API.
    */
   static get _DbHosts(): Array<string> {
     return [process.env.MONGO_PORT_27017_TCP_ADDR || 'localhost']
@@ -61,7 +64,7 @@ export default class Setup {
 
   /**
    * Get the port of the database of the API.
-   * @return {string} - The port of the database of the API.
+   * @returns {string} - The port of the database of the API.
    */
   static get _DbPort(): string {
     const { MONGO_PORT, MONGO_PORT_27017_TCP_PORT } = process.env
@@ -70,7 +73,7 @@ export default class Setup {
 
   /**
    * Get the username of the database of the API.
-   * @return {string} - The username of the database of the API.
+   * @returns {string} - The username of the database of the API.
    */
   static get _DbUsername(): string {
     return process.env.MONGO_USER || ''
@@ -78,15 +81,30 @@ export default class Setup {
 
   /**
    * Get the password of the database of the API.
-   * @return {string} - The password of the database of the API.
+   * @returns {string} - The password of the database of the API.
    */
   static get _DbPassword(): string {
     return process.env.MONGO_PASS || ''
   }
 
   /**
+   * Register the controllers found in the controllers directory.
+   * @param {!Express} app - The Express instance to register the controllers
+   * to.
+   * @returns {undefined}
+   */
+  static registerControllers(app: Express): void {
+    return controllers.map(c => {
+      const { controller, constructor } = c
+      const cont = new controller(...constructor) // eslint-disable-line new-cap
+
+      return cont.registerRoutes(app)
+    })
+  }
+
+  /**
    * Setup the ExpressJS service.
-   * @param {!Express} app - The ExpresssJS instance.
+   * @param {!Express} app - The ExpressJS instance.
    * @param {?boolean} [pretty] - Pretty output with Winston logging.
    * @returns {undefined}
    */
@@ -107,7 +125,7 @@ export default class Setup {
 
     // Enables compression of response bodies.
     app.use(compress({
-      threshold: 1400,
+      threshold: 1399,
       level: 4,
       memLevel: 3
     }))
@@ -119,6 +137,9 @@ export default class Setup {
     if (pretty) {
       app.use(Logger.getLogger('express'))
     }
+
+    // Register the controllers.
+    Setup.registerControllers(app)
   }
 
   /**
@@ -135,7 +156,7 @@ export default class Setup {
     mongoose.Promise = global.Promise
     return mongoose.connect(uri, {
       useMongoClient: true
-    })
+    }).catch(err => Promise.reject(new Error(err)))
   }
 
   /**

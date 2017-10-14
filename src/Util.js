@@ -13,38 +13,11 @@ import Setup from './config/Setup'
 export default class Util {
 
   /**
-   * The instance used for the singleton pattern.
-   * @type {Util}
-   */
-  static _Instance: Util
-
-  /**
-   * Return the Util singleton instance.
-   * @returns {Util} - The Util singleton instance.
-   */
-  static get Instance(): Util {
-    if (!Util._Instance) {
-      Util.Instance = new Util()
-    }
-
-    return Util._Instance
-  }
-
-  /**
-   * Set the Util singleton class.
-   * @param {!Util} Instance - The instance to set.
-   * @returns {undefined}
-   */
-  static set Instance(Instance: Util): void {
-    Util._Instance = Instance
-  }
-
-  /**
    * Execute a command from within the root folder.
    * @param {!string} cmd - The command to execute.
    * @returns {Promise<string, Error>} - The output of the command.
    */
-  executeCommand(cmd: string): Promise<string, Error> {
+  static executeCommand(cmd: string): Promise<string, Error> {
     return new Promise((resolve, reject) => {
       childProcess.exec(cmd, {
         cwd: __dirname
@@ -63,7 +36,7 @@ export default class Util {
    * @param {!string} collection - The collection to export.
    * @returns {Promise<string, undefined>} - The promise to export a collection.
    */
-  exportCollection(collection: string): Promise<string, undefined> {
+  static exportCollection(collection: string): Promise<string, undefined> {
     const jsonFile = path.join(process.env.TEMP_DIR, `${collection}s.json`)
     logger.info(`Exporting collection: '${collection}s', to: '${jsonFile}'`)
 
@@ -78,7 +51,7 @@ export default class Util {
    * @throws {Error} - Error: no such file found for 'JSON_FILE'
    * @returns {Promise<string, undefined>} - The promise to import a collection.
    */
-  importCollection(
+  static importCollection(
     collection: string,
     jsonFile: string
   ): Promise<string, undefined> {
@@ -86,8 +59,9 @@ export default class Util {
       ? jsonFile
       : path.join(process.cwd(), jsonFile)
 
-    if (!fs.existsSync(jsonFile)) {
-      throw new Error(`Error: no such file found for '${file}'`)
+    if (!fs.existsSync(file)) {
+      const err = new Error(`Error: no such file found for '${file}'`)
+      return Promise.reject(err)
     }
 
     logger.info(`Importing collection: '${collection}', from: '${file}'`)

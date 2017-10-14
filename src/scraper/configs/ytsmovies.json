@@ -3,7 +3,7 @@
   "name": "YTS",
   "modelType": "movie",
   "type": "movie",
-  "class": "YTSProvider",
+  "clazz": "YTSProvider",
   "query": {
     "page": 1,
     "limit": 50

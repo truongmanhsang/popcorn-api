@@ -33,8 +33,5 @@ gulp.task('clean', () => del([
 // Transpile the `src` directory with Babel.
 gulp.task('build', ['clean'], build)
 
-// Watch the `src` directory and build when a file changes.
-gulp.task('watch', ['build'], () => gulp.watch('src/**/*.js', ['build']))
-
 // Set the default task as `build`.
 gulp.task('default', ['clean'], build)

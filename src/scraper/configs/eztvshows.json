@@ -3,5 +3,5 @@
   "name": "EZTV",
   "modelType": "show",
   "type": "tvshow",
-  "class": "BulkProvider"
+  "clazz": "BulkProvider"
 }]

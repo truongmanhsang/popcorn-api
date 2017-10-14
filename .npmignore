@@ -31,5 +31,7 @@ node_modules
 # Generated files by popcorn-api.
 tmp
 
-# untranspiled ES6 code
+# Development resources 
+flow-typed
 src
+test

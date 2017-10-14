@@ -10,9 +10,9 @@ export default class IProvider {
    * Default method to get content.
    * @abstract
    * @throws {Error} - Using default method: 'getContent'.
-   * @returns {undefined}
+   * @returns {Error} - Error suggesting to implement this method.
    */
-  getContent(): void {
+  getContent(): Error {
     throw new Error('Using default method: \'getContent\'')
   }
 
@@ -21,9 +21,9 @@ export default class IProvider {
    * @abstract
    * @protected
    * @throws {Error} - Using default method: '_extractContent'.
-   * @returns {undefined}
+   * @returns {Error} - Error suggesting to implement this method.
    */
-  _extractContent(): void {
+  _extractContent(): Error {
     throw new Error('Using default method: \'_extractContent\'')
   }
 
@@ -32,9 +32,9 @@ export default class IProvider {
    * @abstract
    * @protected
    * @throws {Error} - Using default method: '_getContentData'.
-   * @returns {undefined}
+   * @returns {Error} - Error suggesting to implement this method.
    */
-  _getContentData(): void {
+  _getContentData(): Error {
     throw new Error('Using default method: \'_getContentData\'')
   }
 
@@ -42,9 +42,9 @@ export default class IProvider {
    * Default method to attach a torrent.
    * @abstract
    * @throws {Error} - Using default method: 'attachTorrent'.
-   * @returns {undefined}
+   * @returns {Error} - Error suggesting to implement this method.
    */
-  attachTorrent(): void {
+  attachTorrent(): Error {
     throw new Error('Using default method: \'attachTorrent\'')
   }
 
@@ -53,9 +53,9 @@ export default class IProvider {
    * @abstract
    * @protected
    * @throws {Error} - Using default method: '_getAllContent'.
-   * @returns {undefined}
+   * @returns {Error} - Error suggesting to implement this method.
    */
-  _getAllContent(): void {
+  _getAllContent(): Error {
     throw new Error('Using default method: \'_getAllContent\'')
   }
 
@@ -64,9 +64,9 @@ export default class IProvider {
    * @abstract
    * @protected
    * @throws {Error} - Using default method: '_getAllTorrents'.
-   * @returns {undefined}
+   * @returns {Error} - Error suggesting to implement this method.
    */
-  _getAllTorrents(): void {
+  _getAllTorrents(): Error {
     throw new Error('Using default method: \'_getAllTorrents\'')
   }
 
@@ -74,9 +74,9 @@ export default class IProvider {
    * Default method to search for torrents.
    * @abstract
    * @throws {Error} - Using default method: 'search'.
-   * @returns {undefined}
+   * @returns {Error} - Error suggesting to implement this method.
    */
-  search(): void {
+  search(): Error {
     throw new Error('Using default method: \'search\'')
   }
 

@@ -150,7 +150,7 @@ export class Show extends Content {
     last_updated,
     lastest_episode,
     episodes
-    }: Object = {}
+  }: Object = {}
   ): void {
     super({
       imdb_id,

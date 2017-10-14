@@ -1,5 +1,5 @@
 // Import the necessary modules.
-import asyncq from 'async-q'
+import pMap from 'p-map'
 
 import BaseHelper from './BaseHelper'
 
@@ -70,7 +70,10 @@ export default class MovieHelper extends BaseHelper {
       }
     }
 
-    if (update) movieTorrent[quality] = foundTorrent[quality]
+    if (update) {
+      movieTorrent[quality] = foundTorrent[quality]
+    }
+
     return movie
   }
 
@@ -81,8 +84,9 @@ export default class MovieHelper extends BaseHelper {
    */
   async _updateMovie(movie: AnimeMovie | Movie): AnimeMovie | Movie {
     try {
+      let m = movie
       const found = await this._model.findOne({
-        _id: movie._id
+        _id: m._id
       }).exec()
 
       if (found) {
@@ -90,18 +94,18 @@ export default class MovieHelper extends BaseHelper {
 
         if (found.torrents) {
           Object.keys(found.torrents).map(language => {
-            movie = this._updateTorrent(movie, found, language, '720p')
-            movie = this._updateTorrent(movie, found, language, '1080p')
+            m = this._updateTorrent(m, found, language, '720p')
+            m = this._updateTorrent(m, found, language, '1080p')
           })
         }
 
         return await this._model.findOneAndUpdate({
-          _id: movie._id
-        }, movie).exec()
+          _id: m._id
+        }, m).exec()
       }
 
-      logger.info(`${this._name}: '${movie.title}' is a new movie!`)
-      return await new this._model(movie).save()
+      logger.info(`${this._name}: '${m.title}' is a new movie!`)
+      return await new this._model(m).save()
     } catch (err) {
       logger.error(err)
     }
@@ -117,7 +121,7 @@ export default class MovieHelper extends BaseHelper {
     movie: AnimeMovie | Movie,
     torrents: Object
   ): AnimeMovie | Movie {
-    return asyncq.each(
+    return pMap(
       Object.keys(torrents),
       torrent => {
         movie.torrents[torrent] = torrents[torrent]
@@ -230,7 +234,7 @@ export default class MovieHelper extends BaseHelper {
           imdb_id: imdb,
           title: traktMovie.title,
           year: traktMovie.year,
-          slug: slug,
+          slug,
           synopsis: traktMovie.overview,
           runtime: traktMovie.runtime,
           rating: {

@@ -1,5 +1,5 @@
 // Import the necessary modules.
-import asyncq from 'async-q'
+import pMap from 'p-map'
 
 import BaseProvider from './BaseProvider'
 
@@ -35,14 +35,12 @@ export default class BulkProvider extends BaseProvider {
       const contents = await this._api.getAll()
       logger.info(`${this._name}: Found ${contents.length} ${this._type}s.`)
 
-      return await asyncq.mapLimit(
-        contents,
-        BaseProvider._MaxWebRequest,
-        async content => {
-          content = await this._api.getData(content)
-          return this.getContent(content)
-        }
-      )
+      return await pMap(contents, async c => {
+        const content = await this._api.getData(c)
+        return this.getContent(content)
+      }, {
+        concurrency: BaseProvider._MaxWebRequest
+      })
     } catch (err) {
       logger.error(err)
     }

@@ -11,9 +11,9 @@ export default class IHelper {
    * @abstract
    * @protected
    * @throws {Error} - Using default method: '_checkImages'.
-   * @returns {undefined}
+   * @returns {Error} - Error suggesting to implement this method.
    */
-  _checkImages(): void {
+  _checkImages(): Error {
     throw new Error('Using default method: \'_checkImages\'')
   }
 
@@ -22,9 +22,9 @@ export default class IHelper {
    * @abstract
    * @protected
    * @throws {Error} - Using default method: '_getImages'.
-   * @returns {undefined}
+   * @returns {Error} - Error suggesting to implement this method.
    */
-  _getImages(): void {
+  _getImages(): Error {
     throw new Error('Using default method: \'_getImages\'')
   }
 
@@ -32,9 +32,9 @@ export default class IHelper {
    * Default method to get images.
    * @abstract
    * @throws {Error} - Using default method: 'getTraktInfo'.
-   * @returns {undefined}
+   * @returns {Error} - Error suggesting to implement this method.
    */
-  getTraktInfo(): void {
+  getTraktInfo(): Error {
     throw new Error('Using default method: \'getTraktInfo\'')
   }
 

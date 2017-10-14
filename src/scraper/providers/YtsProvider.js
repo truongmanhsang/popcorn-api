@@ -29,10 +29,10 @@ export default class YtsProvider extends MovieProvider {
    * @protected
    * @param {!Object} torrent - The torrent to extract the movie information
    * from.
-   * @param {!String} [lang=en] - The language of the torrent.
+   * @param {!String} [lang] - The language of the torrent.
    * @returns {Object} - Information about a movie from the torrent.
    */
-  _extractContent(torrent: Object, lang: string = 'en'): Object {
+  _extractContent(torrent: Object, lang: string): Object {
     const movie = {
       movieTitle: torrent.title,
       slug: torrent.imdb_code,

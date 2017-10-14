@@ -15,7 +15,7 @@
     "fanart": "String",
     "poster": "String"
   },
-  "genres": ["String"],
+  "genres": ["string", "science-fiction"],
   "tvdb_id": 0,
   "country": "String",
   "network": "String",

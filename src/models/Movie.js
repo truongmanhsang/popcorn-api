@@ -99,7 +99,7 @@ export class Movie extends Content {
     trailer,
     certification,
     torrents
-    }: Object = {}
+  }: Object = {}
   ): void {
     super({
       imdb_id,

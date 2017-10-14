@@ -1,5 +1,5 @@
 // Import the necessary modules.
-import asyncq from 'async-q'
+import pMap from 'p-map'
 
 import BaseHelper from './BaseHelper'
 
@@ -115,36 +115,37 @@ export default class ShowHelper extends BaseHelper {
    */
   async _updateEpisodes(show: AnimeShow | Show): AnimeShow | Show {
     try {
+      let s = show
       const found = await this._model.findOne({
-        _id: show._id
+        _id: s._id
       }).exec()
       if (!found) {
-        logger.info(`${this._name}: '${show.title}' is a new show!`)
-        const newShow = await new this._model(show).save()
+        logger.info(`${this._name}: '${s.title}' is a new show!`)
+        const newShow = await new this._model(s).save()
         return await this._updateNumSeasons(newShow)
       }
 
       logger.info(`${this._name}: '${found.title}' is an existing show.`)
 
       found.episodes.map(e => {
-        const matching = show.episodes.find(
+        const matching = s.episodes.find(
           s => s.season === e.season && s.episode === e.episode
         )
 
-        if (e.first_aired > show.latest_episode) {
-          show.latest_episode = e.first_aired
+        if (e.first_aired > s.latest_episode) {
+          s.latest_episode = e.first_aired
         }
 
         if (!matching) {
-          return show.episodes.push(e)
+          return s.episodes.push(e)
         }
 
-        show = this._updateEpisode(matching, e, show, '480p')
-        show = this._updateEpisode(matching, e, show, '720p')
-        show = this._updateEpisode(matching, e, show, '1080p')
+        s = this._updateEpisode(matching, e, s, '480p')
+        s = this._updateEpisode(matching, e, s, '720p')
+        s = this._updateEpisode(matching, e, s, '1080p')
       })
 
-      return await this._updateNumSeasons(show)
+      return await this._updateNumSeasons(s)
     } catch (err) {
       logger.error(err)
     }
@@ -269,7 +270,7 @@ export default class ShowHelper extends BaseHelper {
     delete episodes.dateBased
     dateBased = dateBased || show.dateBased
 
-    return asyncq.each(Object.keys(episodes), season => {
+    return pMap(Object.keys(episodes), season => {
       if (dateBased) {
         return this._addDateBasedSeason(show, episodes, season, slug)
       }
@@ -388,7 +389,7 @@ export default class ShowHelper extends BaseHelper {
           imdb_id: imdb,
           title: traktShow.title,
           year: traktShow.year,
-          slug: slug,
+          slug,
           synopsis: traktShow.overview,
           runtime: traktShow.runtime,
           rating: {

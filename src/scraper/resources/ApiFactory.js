@@ -166,7 +166,7 @@ export default class ApiFactory extends IAbstractFactory {
    * @see https://github.com/ChrisAlderson/fanart.tv-api
    */
     this._fanartApi = new Fanart({
-      api_key: process.env.FANART_KEY
+      apiKey: process.env.FANART_KEY
     })
 
     /**

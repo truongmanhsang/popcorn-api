@@ -13,6 +13,7 @@
     "syntax-dynamic-import",
     "transform-class-properties",
     "transform-object-rest-spread",
+    "transform-strict-mode",
     "transform-regenerator", [
       "transform-runtime", {
         "polyfill": false,

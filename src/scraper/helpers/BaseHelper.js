@@ -81,14 +81,12 @@ export default class BaseHelper extends IHelper {
      * @type {string}
      */
     this._name = name
-
     /**
      * The model to create or alter.
      * @type {AnimeMovie|AnimeShow|Movie|Show}
      * @see http://mongoosejs.com/docs/models.html
      */
     this._model = model
-
     /**
      * The default image object.
      * @type {Object}
@@ -98,27 +96,23 @@ export default class BaseHelper extends IHelper {
       fanart: BaseHelper._Holder,
       poster: BaseHelper._Holder
     }
-
     /**
      * The API factory.
      * @type {ApiFactory}
      */
     this._apiFactory = FactoryProducer.getFactory('api')
-
     /**
      * A configured Fanart API.
      * @type {Fanart}
      * @see https://github.com/vankasteelj/trakt.tv
      */
     this._fanart = this._apiFactory.getApi('fanart')
-
     /**
      * A configured TMDB API.
      * @type {Tmdb}
      * @see https://github.com/sarathkcm/TheMovieDBClient
      */
     this._tmdb = this._apiFactory.getApi('tmdb')
-
     /**
      * A configured Trakt API.
      * @type {Trakt}

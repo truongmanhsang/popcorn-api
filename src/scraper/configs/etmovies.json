@@ -3,7 +3,7 @@
   "modelType": "movie",
   "name": "ETRG BRRip",
   "type": "movie",
-  "class": "MovieProvider",
+  "clazz": "MovieProvider",
   "query": {
     "page": 1,
     "language": "en",
@@ -15,7 +15,7 @@
   "modelType": "movie",
   "name": "ETRG BluRay",
   "type": "movie",
-  "class": "MovieProvider",
+  "clazz": "MovieProvider",
   "query": {
     "page": 1,
     "language": "en",
@@ -27,7 +27,7 @@
   "modelType": "movie",
   "name": "YIFY",
   "type": "movie",
-  "class": "MovieProvider",
+  "clazz": "MovieProvider",
   "query": {
     "page": 1,
     "language": "en",

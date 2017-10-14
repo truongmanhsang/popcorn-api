@@ -1,5 +1,5 @@
 // Import the necessary modules.
-import asyncq from 'async-q'
+import pMap from 'p-map'
 
 import BaseProvider from './BaseProvider'
 import showmap from './maps/showmap.json'
@@ -156,7 +156,7 @@ export default class ShowProvider extends BaseProvider {
   _getAllContent(torrents: Array<Object>): Promise<Array<Object>, void> {
     const shows = []
 
-    return asyncq.mapSeries(torrents, torrent => {
+    return pMap(torrents, torrent => {
       if (!torrent) {
         return
       }
@@ -184,6 +184,8 @@ export default class ShowProvider extends BaseProvider {
       const created = this.attachTorrent(...args)
 
       shows.splice(index, 1, created)
+    }, {
+      concurrency: 1
     }).then(() => shows)
   }
 

@@ -151,7 +151,7 @@ export class Content extends Model {
     images,
     genres,
     type
-    }: Object
+  }: Object
   ): void {
     super()
 

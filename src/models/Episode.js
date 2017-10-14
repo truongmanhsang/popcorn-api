@@ -101,7 +101,7 @@ export class Episode extends Model {
     date_based,
     first_aired,
     torrents
-    }: Object = {}
+  }: Object = {}
   ): void {
     super()
 

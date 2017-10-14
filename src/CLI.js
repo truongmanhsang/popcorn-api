@@ -3,6 +3,7 @@ import bytes from 'bytes'
 import fs from 'fs'
 import parseTorrent from 'parse-torrent'
 import path from 'path'
+import pMap from 'p-map'
 import prompt from 'prompt'
 import webtorrentHealth from 'webtorrent-health'
 /**
@@ -11,10 +12,11 @@ import webtorrentHealth from 'webtorrent-health'
  */
 import { Command } from 'commander'
 
-import Index from './Index'
+import Server from './Server'
 import Logger from './config/Logger'
 import MovieProvider from './scraper/providers/MovieProvider'
 import ProviderConfig from './models/ProviderConfig'
+import providerConfigs from './scraper/configs'
 import Setup from './config/Setup'
 import ShowProvider from './scraper/providers/ShowProvider'
 import Util from './Util'
@@ -25,7 +27,6 @@ import {
 import {
   confirmSchema,
   movieSchema,
-  providerSchema,
   showSchema
 } from './promptschemas.js'
 
@@ -48,24 +49,14 @@ export default class CLI {
    */
   _program: Command
 
-  /**
-   * Flag for when in testing mode.
-   * @type {boolean}
-   */
-  _testing: boolean
-
-  /**
-   * Create a cli object.
-   * @param {?boolean} testing - Bollean for when in testing mode.
-   */
-  constructor(testing: boolean): void {
-    this._testing = testing
+  /** Create a CLI object. */
+  constructor(): void {
     // Create a logger object, will be overwritten if the --mode option is
     // invoked.
-    Logger.getLogger('winston', false, this._testing)
+    Logger.getLogger('winston', false, process.env.NODE_ENV === 'test')
 
     /**
-     * The comand line parser to process the CLI inputs.
+     * The command line parser to process the CLI inputs.
      * @type {Command}
      */
     this._program = new Command()
@@ -78,13 +69,16 @@ export default class CLI {
       .option('--content <type>',
         'Add content to the MongoDB database (animemovie|animeshow|movie|show).',
         /^(animemovie|animeshow|movie|show)$/i, false)
-      .option('--provider', 'Add provider configurations')
+      .option(
+        '--providers <env>',
+        'Add provider configurations',
+        /^(development|production|test)$/i
+      )
       .option('-s, --start', 'Start the scraping process')
       .option('--export <collection>',
         'Export a collection to a JSON file.',
         /^(anime|movie|show)$/i, false)
       .option('--import <collection>', 'Import a JSON file to the database.')
-
     // Extra output on top of the default help output
     this._program.on('--help', CLI._help)
 
@@ -110,25 +104,24 @@ export default class CLI {
 
   /**
    * Handle the --mode CLI option.
-   * @param {?string} m - The mode to run the API in.
+   * @param {?string} [m] - The mode to run the API in.
    * @returns {undefined}
    */
   _mode(m?: string): void {
-    const start = this._program.start ? this._program.start : false
-    const testing = this._testing ? this._testing : false
+    const start = this._program.start || false
+    const testing = process.env.NODE_ENV === 'test'
 
     switch (m) {
-      case 'pretty':
-        Index.setupApi(start, !testing, testing)
-        break
       case 'quiet':
-        Index.setupApi(start, false, true)
+        Server.setupApi(start, false, true)
         break
       case 'ugly':
-        Index.setupApi(start, false, testing)
+        Server.setupApi(start, false, testing)
         break
+      case 'pretty':
       default:
-        Index.setupApi(start, !testing, testing)
+        Server.setupApi(start, !testing, testing)
+        break
     }
   }
 
@@ -290,33 +283,28 @@ export default class CLI {
   }
 
   /**
-   * Handle the --provider CLI option.
+   * Handle the --providers CLI option.
+   * @param {?string} [p] - The environment to run the --providers option in.
    * @returns {undefined}
    */
-  _provider(): void {
-    prompt.get(providerSchema, (err, res) => {
-      if (err) {
-        logger.error(err)
-        process.exit(1)
-      }
+  _providers(p?: string): void {
+    process.env.NODE_ENV = p
 
-      Setup.connectMongoDB()
+    return Setup.connectMongoDb().then(() => {
+      return pMap(providerConfigs, async p => {
+        const provider = await ProviderConfig.findOne({
+          _id: p.name
+        }).exec()
 
-      /**
-       * XXX: BS query should be a schemaless object. Only way to do this for
-       * now is to have the user insert a JSON string and parse it to an
-       * object. Of course this not userfriendly.
-       */
-      res.query = JSON.parse(res.query)
-      const providerConfig = new ProviderConfig(res)
-
-      return providerConfig.save().then(res => {
-        logger.info(`Saved provider configuration '${res.name}'`)
-        process.exit(0)
-      }).catch(err => {
-        logger.error(`An error occurred: '${err}'`)
-        process.exit(0)
-      })
+        return provider
+          ? ProviderConfig.findOneAndUpdate({
+            _id: p.name
+          }, new ProviderConfig(p), {
+            new: true
+          }).exec()
+          : new ProviderConfig(p).save()
+      }).then(res => logger.info(`Inserted: '${res.length}' provider(s)}`))
+        .then(() => Setup.disconnectMongoDb())
     })
   }
 
@@ -326,7 +314,7 @@ export default class CLI {
    * @returns {Promise<string, undefined>} - The promise to export a collection.
    */
   _export(e: string): Promise<string, undefined> {
-    return Util.Instance.exportCollection(e)
+    return Util.exportCollection(e)
   }
 
   /**
@@ -343,7 +331,7 @@ export default class CLI {
     }
 
     if (process.env.NODE_ENV === 'test') {
-      return Util.Instance.importCollection(path.basename(i, '.json'), i)
+      return Util.importCollection(path.basename(i, '.json'), i)
     }
 
     prompt.get(confirmSchema, (err, res) => {
@@ -353,7 +341,7 @@ export default class CLI {
       }
 
       if (res.confirm.test(/^(y|yes)/i)) {
-        return Util.Instance.importCollection(path.basename(i, '.json'), i)
+        return Util.importCollection(path.basename(i, '.json'), i)
       }
 
       process.exit(0)
@@ -362,16 +350,15 @@ export default class CLI {
 
   /**
    * Run the CLI program.
-   * @param {?Function} [done=null] - The done function for mocha.
    * @returns {undefined}
    */
-  run(done?: Function = null): void {
+  run(): void {
     if (this._program.mode) {
       return this._mode(this._program.mode)
     } else if (this._program.content) {
       return this._content(this._program.content)
-    } else if (this._program.provider) {
-      return this._provider(this._program.provider)
+    } else if (this._program.providers) {
+      return this._providers(this._program.provider)
     } else if (this._program.export) {
       return this._export(this._program.export)
     } else if (this._program.import) {
@@ -379,7 +366,7 @@ export default class CLI {
     }
 
     logger.error('\n  \x1b[31mError:\x1b[36m No valid command given. Please check below:\x1b[0m')
-    return typeof done === 'function' ? done : this._program.help()
+    return this._program.help()
   }
 
 }

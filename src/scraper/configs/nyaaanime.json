@@ -3,7 +3,7 @@
   "modelType": "animeshow",
   "name": "Commie",
   "type": "tvshow",
-  "class": "ShowProvider",
+  "clazz": "ShowProvider",
   "query": {
     "category": "anime",
     "sub_category": "english_translated",
@@ -17,7 +17,7 @@
   "modelType": "animeshow",
   "name": "FFF",
   "type": "tvshow",
-  "class": "ShowProvider",
+  "clazz": "ShowProvider",
   "query": {
     "category": "anime",
     "sub_category": "english_translated",
@@ -31,7 +31,7 @@
   "modelType": "animeshow",
   "name": "gg",
   "type": "tvshow",
-  "class": "ShowProvider",
+  "clazz": "ShowProvider",
   "query": {
     "category": "anime",
     "sub_category": "english_translated",

@@ -3,7 +3,7 @@
   "modelType": "movie",
   "name": "Megaradon",
   "type": "movie",
-  "class": "MovieProvider",
+  "clazz": "MovieProvider",
   "query": {
     "page": 1,
     "verified": 1,
@@ -18,7 +18,7 @@
   "modelType": "movie",
   "name": "Z0n321",
   "type": "movie",
-  "class": "MovieProvider",
+  "clazz": "MovieProvider",
   "query": {
     "page": 1,
     "verified": 1,
@@ -33,7 +33,7 @@
   "modelType": "movie",
   "name": "French",
   "type": "movie",
-  "class": "MovieProvider",
+  "clazz": "MovieProvider",
   "query": {
     "page": 1,
     "verified": 1,
@@ -47,7 +47,7 @@
   "modelType": "movie",
   "name": "German",
   "type": "movie",
-  "class": "MovieProvider",
+  "clazz": "MovieProvider",
   "query": {
     "page": 1,
     "verified": 1,
@@ -61,7 +61,7 @@
   "modelType": "movie",
   "name": "Spanish",
   "type": "movie",
-  "class": "MovieProvider",
+  "clazz": "MovieProvider",
   "query": {
     "page": 1,
     "verified": 1,
@@ -75,7 +75,7 @@
   "modelType": "movie",
   "name": "Dutch",
   "type": "movie",
-  "class": "MovieProvider",
+  "clazz": "MovieProvider",
   "query": {
     "page": 1,
     "verified": 1,
