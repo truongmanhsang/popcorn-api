@@ -1,87 +1,11 @@
 [{
   "api": "kat",
   "modelType": "movie",
-  "name": "Megaradon",
+  "name": "",
   "type": "movie",
   "clazz": "MovieProvider",
   "query": {
-    "page": 1,
-    "verified": 1,
-    "adult_filter":  1,
-    "language": "en",
-    "category": "movies",
-    "query": "x264 720p | 1080p",
-    "uploader": "megaradon"
-  }
-}, {
-  "api": "kat",
-  "modelType": "movie",
-  "name": "Z0n321",
-  "type": "movie",
-  "clazz": "MovieProvider",
-  "query": {
-    "page": 1,
-    "verified": 1,
-    "adult_filter":  1,
-    "language": "en",
-    "category": "movies",
-    "query": "x264 720p | 1080p",
-    "uploader": "z0n321"
-  }
-}, {
-  "api": "kat",
-  "modelType": "movie",
-  "name": "French",
-  "type": "movie",
-  "clazz": "MovieProvider",
-  "query": {
-    "page": 1,
-    "verified": 1,
-    "adult_filter":  1,
-    "category": "movies",
-    "query": "720p | 1080p",
-    "language": "fr"
-  }
-}, {
-  "api": "kat",
-  "modelType": "movie",
-  "name": "German",
-  "type": "movie",
-  "clazz": "MovieProvider",
-  "query": {
-    "page": 1,
-    "verified": 1,
-    "adult_filter":  1,
-    "category": "movies",
-    "query": "720p | 1080p",
-    "language": "de"
-  }
-}, {
-  "api": "kat",
-  "modelType": "movie",
-  "name": "Spanish",
-  "type": "movie",
-  "clazz": "MovieProvider",
-  "query": {
-    "page": 1,
-    "verified": 1,
-    "adult_filter":  1,
-    "category": "movies",
-    "query": "720p | 1080p",
-    "language": "es"
-  }
-}, {
-  "api": "kat",
-  "modelType": "movie",
-  "name": "Dutch",
-  "type": "movie",
-  "clazz": "MovieProvider",
-  "query": {
-    "page": 1,
-    "verified": 1,
-    "adult_filter":  1,
-    "category": "movies",
-    "query": "720p | 1080p",
-    "language": "nl"
+    "category": "movies_hd",
+    "query": "x264 BlueRay"
   }
 }]

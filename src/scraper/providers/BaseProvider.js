@@ -134,29 +134,26 @@ export default class BaseProvider extends IProvider {
    * @returns {Promise<Object, undefined>} - A content object.
    */
   async getContent(content: Object): Promise<Object, void> {
-    try {
-      let newContent
+    let newContent
 
-      if (this._type === BaseProvider.Types.Movie) {
-        const { slugYear, torrents } = content
-        newContent = await this._helper.getTraktInfo(slugYear)
+    if (this._type === BaseProvider.Types.Movie) {
+      const { slugYear, torrents } = content
+      newContent = await this._helper.getTraktInfo(slugYear)
 
-        if (newContent && newContent.imdb_id) {
-          return await this._helper.addTorrents(newContent, torrents)
-        }
-      } else if (this._type === BaseProvider.Types.Show) {
-        const { episodes, slug } = content
-        delete episodes[0]
-        newContent = await this._helper.getTraktInfo(slug)
-
-        if (newContent && newContent.imdb_id) {
-          return await this._helper.addEpisodes(newContent, episodes, slug)
-        }
-      } else {
-        throw new Error(`'${this._type}' is not a valid value for Types!`)
+      if (newContent && newContent.imdb_id) {
+        await this._helper.addTorrents(newContent, torrents)
       }
-    } catch (err) {
-      logger.error(err)
+    } else if (this._type === BaseProvider.Types.Show) {
+      const { episodes, slug } = content
+      delete episodes[0]
+      newContent = await this._helper.getTraktInfo(slug)
+
+      if (newContent && newContent.imdb_id) {
+        await this._helper.addEpisodes(newContent, episodes, slug)
+      }
+    } else {
+      const err = new Error(`'${this._type}' is not a valid value for Types!`)
+      return Promise.reject(err)
     }
   }
 
@@ -172,7 +169,7 @@ export default class BaseProvider extends IProvider {
    */
   _getContentData(torrent: Object, lang: string = 'en'): Object | void {
     const regex = this._regexps.find(
-      r => (r.regex.test(torrent.title) ? r : null)
+      r => r.regex.test(torrent.title) || r.regex.test(torrent.name)
     )
 
     if (regex) {
@@ -196,13 +193,16 @@ export default class BaseProvider extends IProvider {
       if (this._query.page) {
         this._query.page = page + 1
       }
-      if (this._query.offset) {
-        this._query.offset = page + 1
-      }
 
       logger.info(`${this._name}: Started searching ${this._name} on page ${page + 1} out of ${totalPages}`)
       const res = await this._api.search(this._query)
-      const data = res.results ? res.results : res.data ? res.data.movies : []
+      const data = res.results
+        ? res.results // Kat & ET
+        : res.data
+          ? res.data.movies // YTS
+          : res.torrents
+            ? res.torrents // Nyaa
+            : []
 
       torrents = torrents.concat(data)
     }, {
@@ -218,9 +218,15 @@ export default class BaseProvider extends IProvider {
    * @returns {Promise<number, Error>} - The number of total pages to scrape.
    */
   _getTotalPages(): Promise<number, Error> {
-    this._api.search(this._query).then(
-      res => res.total_pages || Math.ceil(res.data.movie_count / 50)
-    )
+    return this._api.search(this._query).then(res => {
+      if (res.data) { // Yts
+        return Math.ceil(res.data.movie_count / 50)
+      } else if (res.total_pages) { // Kat & ET
+        return res.total_pages
+      }
+
+      return Math.ceil(res.totalRecordCount / res.queryRecordCount) // Nyaa
+    })
   }
 
   /**
@@ -242,6 +248,7 @@ export default class BaseProvider extends IProvider {
 
       const torrents = await this._getAllTorrents(totalPages)
 
+      // console.log(torrents)
       const { language } = this._query
       const allContent = await this._getAllContent(torrents, language)
 

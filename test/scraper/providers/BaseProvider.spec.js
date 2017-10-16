@@ -1,8 +1,12 @@
 // Import the necessary modules.
 /* eslint-disable no-unused-expressions */
+import sinon from 'sinon'
 import { expect } from 'chai'
 
 import BaseProvider from '../../../src/scraper/providers/BaseProvider'
+import katConfig from '../../../src/scraper/configs/katmovies.json'
+import nyaaConfig from '../../../src/scraper/configs/nyaaanime.json'
+import ytsConfig from '../../../src/scraper/configs/ytsmovies.json'
 
 /**
  * Check the constructor of the base provider.
@@ -40,13 +44,8 @@ describe('BaseProvider', () => {
    * @type {Function}
    */
   before(() => {
-    baseProvider = new BaseProvider({
-      api: 'eztv',
-      name: 'BaseProvider',
-      modelType: 'show',
-      query: {},
-      type: 'tvshow'
-    })
+    nyaaConfig[0].query.limit = 1
+    baseProvider = new BaseProvider(nyaaConfig[0])
   })
 
   /** @test {BaseProvider.ModelTypes} */
@@ -69,42 +68,112 @@ describe('BaseProvider', () => {
 
   /** @test {BaseProvider#constructor} */
   it('should check the attributes of the BaseProvider', () => {
-    checkProviderAttributes(baseProvider, 'BaseProvider')
+    checkProviderAttributes(baseProvider, nyaaConfig[0].name)
   })
 
   /** @test {BaseProvider#name} */
   it('should get the name of the provider', () => {
     const providerName = baseProvider.name
-    expect(providerName).to.equal('BaseProvider')
+    expect(providerName).to.equal(nyaaConfig[0].name)
   })
 
   /** @test {BaseProvider#getConcent} */
-  it.skip('should insert a torrent into the database', done => {
-    expect(true).to.be.true
-    done()
+  it('should return an error ', done => {
+    baseProvider._type = 'faulty'
+    baseProvider.getContent()
+      .then(done)
+      .catch(err => {
+        expect(err).to.be.an('Error')
+        done()
+      })
   })
 
   /** @test {BaseProvider#_getContentData} */
-  it.skip('should get content info form a given torrent', done => {
-    expect(true).to.be.true
-    done()
+  it('should not get info from a given torrent object', () => {
+    baseProvider._regexps = [{
+      regex: /\d+/g
+    }]
+    const contentData = baseProvider._getContentData({
+      title: 'faulty'
+    })
+
+    expect(contentData).to.be.undefined
   })
 
   /** @test {BaseProvider#_getAllTorrents} */
-  it.skip('should get all the torrent for the given torrent provider', done => {
-    expect(true).to.be.true
-    done()
+  it('should get no torrents to concatenate', done => {
+    const stub = sinon.stub(baseProvider._api, 'search')
+    stub.resolves([])
+
+    baseProvider._getAllTorrents(1)
+      .then(res => {
+        expect(res).to.be.an('array')
+        expect(res.length).to.equal(0)
+
+        stub.restore()
+        done()
+      })
+      .catch(done)
+  })
+
+  /**
+   * Helper function to test the `_getTotalPages` method with different
+   * providers.
+   * @param {!Function} done - The done function from mocha.
+   * @returns {undefined}
+   */
+  function executeTotalPages(done): void {
+    baseProvider._getTotalPages()
+      .then(res => {
+        expect(res).to.be.a('number')
+        done()
+      })
+      .catch(done)
+  }
+
+  /** @test {BaseProvider#_getTotalPages} */
+  it('should return a the number of the total pages to scrape for nyaa', done => {
+    baseProvider = new BaseProvider(nyaaConfig[0])
+    executeTotalPages(done)
   })
 
   /** @test {BaseProvider#_getTotalPages} */
-  it.skip('should return a the number of the total pages to scrape', done => {
-    expect(true).to.be.true
-    done()
+  it('should return a the number of the total pages to scrape for kat', done => {
+    baseProvider = new BaseProvider(katConfig[0])
+    executeTotalPages(done)
+  })
+
+  /** @test {BaseProvider#_getTotalPages} */
+  it('should return a the number of the total pages to scrape for YTS', done => {
+    baseProvider = new BaseProvider(ytsConfig[0])
+    executeTotalPages(done)
   })
 
   /** @test {BaseProvider#search} */
-  it.skip('should return a list of all the inserted torrents', done => {
-    expect(true).to.be.true
-    done()
+  it('should not be able to get the total pages to scrape', done => {
+    const stub = sinon.stub(baseProvider, '_getTotalPages')
+    stub.resolves(null)
+
+    baseProvider.search().then(res => {
+      expect(res).to.be.undefined
+
+      stub.restore()
+      done()
+    }).catch(done)
+  })
+
+  /** @test {BaseProvider#search} */
+  it('should throw and catch an error to continue', done => {
+    const stub = sinon.stub(baseProvider, '_getTotalPages')
+    stub.rejects()
+
+    baseProvider.search()
+      .then(done)
+      .catch(err => {
+        expect(err).to.be.undefined
+
+        stub.restore()
+        done()
+      })
   })
 })

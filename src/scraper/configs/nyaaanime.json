@@ -5,12 +5,8 @@
   "type": "tvshow",
   "clazz": "ShowProvider",
   "query": {
-    "category": "anime",
-    "sub_category": "english_translated",
-    "offset": 1,
-    "term": "mkv",
-    "user": 76430,
-    "fiter": "trusted_only"
+    "page": 1,
+    "q": "commie mkv"
   }
 }, {
   "api": "nyaa",
@@ -19,12 +15,8 @@
   "type": "tvshow",
   "clazz": "ShowProvider",
   "query": {
-    "category": "anime",
-    "sub_category": "english_translated",
-    "offset": 1,
-    "term": "mkv",
-    "user": 73859,
-    "filter": "trusted_only"
+    "page": 1,
+    "q": "fff mkv"
   }
 }, {
   "api": "nyaa",
@@ -33,11 +25,7 @@
   "type": "tvshow",
   "clazz": "ShowProvider",
   "query": {
-    "category": "anime",
-    "sub_category": "english_translated",
-    "offset": 1,
-    "term": "mkv",
-    "user": 9001,
-    "filter": "trusted_only"
+    "page": 1,
+    "q": "gg mkv"
   }
 }]

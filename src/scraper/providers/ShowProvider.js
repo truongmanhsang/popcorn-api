@@ -67,8 +67,12 @@ export default class ShowProvider extends BaseProvider {
     let season
     let slug
 
-    const { title } = torrent
-    const match = title.match(r.regex)
+    const { title, name } = torrent
+    const t = r.regex.test(title) ? title : r.regex.test(name) ? name : null
+    if (!t) {
+      return
+    }
+    const match = t.match(r.regex)
 
     const showTitle = match[1].replace(/\./g, ' ')
     slug = showTitle.replace(/[^a-zA-Z0-9\- ]/gi, '')
@@ -84,8 +88,8 @@ export default class ShowProvider extends BaseProvider {
       : parseInt(match[2], 10)
     episode = r.dateBased ? parseInt(match[3], 10) : match[3]
 
-    const quality = title.match(/(\d{3,4})p/) !== null
-      ? title.match(/(\d{3,4})p/)[0]
+    const quality = t.match(/(\d{3,4})p/) !== null
+      ? t.match(/(\d{3,4})p/)[0]
       : '480p'
 
     const torrentObj = {

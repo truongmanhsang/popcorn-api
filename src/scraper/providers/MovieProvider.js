@@ -77,18 +77,17 @@ export default class MovieProvider extends BaseProvider {
     }
     slug = slug in moviemap ? moviemap[slug] : slug
 
-    const year = title.match(r.regex)[2]
+    const year = parseInt(title.match(r.regex)[2], 10)
     const quality = title.match(r.regex)[3]
 
     const torrentObj = {
       url: magnet || torrentLink,
       seeds: seeds || 0,
       peers: peers || 0,
-      size: bytes(size.replace(/\s/g, '')),
+      size: bytes(size),
       filesize: size || fileSize,
       provider: this._name
     }
-
     const movie = {
       movieTitle,
       slug,

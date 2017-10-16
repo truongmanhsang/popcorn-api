@@ -49,11 +49,6 @@ import Tvdb from 'node-tvdb'
  * @external {Yts} https://github.com/ChrisAlderson/yts-api-pt
  */
 import Yts from 'yts-api-pt'
-/**
- * An ExtraTorrent wrapper for NodeJS.
- * @external {ExtraTorrentAPI} https://github.com/ChrisAlderson/extratorrent-api
- */
-import { Website as ExtraTorrent } from 'extratorrent-api'
 
 import IAbstractFactory from './IAbstractFactory'
 
@@ -147,88 +142,74 @@ export default class ApiFactory extends IAbstractFactory {
     super()
 
     /**
-     * A configured ExtraTorrent API.
-     * @type {ExtraTorrent}
-     * @see https://github.com/ChrisAlderson/extratorrent-api
+     * A configured Eztv API.
+     * @type {Eztv}
+     * @see https://github.com/ChrisAlderson/eztv-api-pt
      */
-    this._extraTorrentApi = new ExtraTorrent()
-
-    /**
-   * A configured Eztv API.
-   * @type {Eztv}
-   * @see https://github.com/ChrisAlderson/eztv-api-pt
-   */
     this._eztvApi = new Eztv()
-
     /**
-   * A configured Fanart API.
-   * @type {Fanart}
-   * @see https://github.com/ChrisAlderson/fanart.tv-api
-   */
+     * A configured Fanart API.
+     * @type {Fanart}
+     * @see https://github.com/ChrisAlderson/fanart.tv-api
+     */
     this._fanartApi = new Fanart({
       apiKey: process.env.FANART_KEY
     })
-
     /**
    * A configured HorribleSubs API.
    * @type {HorribleSubs}
    * @see https://github.com/ChrisAlderson/horriblesubs-api
    */
     this._horribleSubsApi = new HorribleSubs()
-
     /**
-   * A configured Kat API.
-   * @type {Kat}
-   * @see https://github.com/ChrisAlderson/kat-api-pt
-   */
+     * A configured Kat API.
+     * @type {Kat}
+     * @see https://github.com/ChrisAlderson/kat-api-pt
+     */
     this._katApi = new Kat()
-
     /**
-   * A configured Nyaa API.
-   * @type {Nyaa}
-   * @see https://github.com/ChrisAlderson/nyaa-api-pt
-   */
-    this._nyaaApi = new Nyaa()
-
+     * A configured Nyaa API.
+     * @type {Nyaa}
+     * @see https://github.com/ChrisAlderson/nyaa-api-pt
+     */
+    this._nyaaApi = new Nyaa({
+      apiToken: process.env.NYAA_KEY
+    })
     /**
-   * A configured Omdb API.
-   * @type {Omdb}
-   * @see https://github.com/ChrisAlderson/omdb-api-pt
-   */
+     * A configured Omdb API.
+     * @type {Omdb}
+     * @see https://github.com/ChrisAlderson/omdb-api-pt
+     */
     this._omdbApi = new Omdb({
       apiKey: process.env.OMDB_KEY
     })
-
     /**
-   * A configured Tmdb API.
-   * @type {Tmdb}
-   * @see https://github.com/vankasteelj/tmdbapi
-   */
+     * A configured Tmdb API.
+     * @type {Tmdb}
+     * @see https://github.com/vankasteelj/tmdbapi
+     */
     this._tmdbApi = new Tmdb({
       apiv3: process.env.TMDB_KEY
     })
-
     /**
-   * A configured Trakt API.
-   * @type {Trakt}
-   * @see https://github.com/vankasteelj/trakt.tv
-   */
+     * A configured Trakt API.
+     * @type {Trakt}
+     * @see https://github.com/vankasteelj/trakt.tv
+     */
     this._traktApi = new Trakt({
       client_id: process.env.TRAKT_KEY
     })
-
     /**
-   * A configured Tvdb API.
-   * @type {Tvdb}
-   * @see https://github.com/edwellbrook/node-tvdb
-   */
+     * A configured Tvdb API.
+     * @type {Tvdb}
+     * @see https://github.com/edwellbrook/node-tvdb
+     */
     this._tvdbApi = new Tvdb(process.env.TVDB_KEY)
-
     /**
-   * A configured Yts API.
-   * @type {Yts}
-   * @see https://github.com/ChrisAlderson/yts-api-pt
-   */
+     * A configured Yts API.
+     * @type {Yts}
+     * @see https://github.com/ChrisAlderson/yts-api-pt
+     */
     this._ytsApi = new Yts()
 
     // XXX: Fix this hack.
@@ -253,8 +234,6 @@ export default class ApiFactory extends IAbstractFactory {
     const a = api.toUpperCase()
 
     switch (a) {
-      case 'EXTRATORRENT':
-        return this._extraTorrentApi
       case 'EZTV':
         return this._eztvApi
       case 'FANART':

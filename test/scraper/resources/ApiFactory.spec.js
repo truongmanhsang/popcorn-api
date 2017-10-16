@@ -25,7 +25,6 @@ describe('ApiFactory', () => {
 
   /** @test {ApiFactory#constructor} */
   it('should check the attributes of the ApiFactory', () => {
-    expect(apiFactory._extraTorrentApi).to.be.an('object')
     expect(apiFactory._eztvApi).to.be.an('object')
     expect(apiFactory._fanartApi).to.be.an('object')
     expect(apiFactory._horribleSubsApi).to.be.an('object')
@@ -36,12 +35,6 @@ describe('ApiFactory', () => {
     expect(apiFactory._traktApi).to.be.an('object')
     expect(apiFactory._tvdbApi).to.be.an('object')
     expect(apiFactory._ytsApi).to.be.an('object')
-  })
-
-  /** @test {ApiFactory#getApi} */
-  it('should get the extratorrent api', () => {
-    const api = apiFactory.getApi('extratorrent')
-    expect(api).to.be.an('object')
   })
 
   /** @test {ApiFactory#getApi} */
