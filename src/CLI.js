@@ -1,10 +1,10 @@
 // Import the necessary modules.
 import bytes from 'bytes'
 import fs from 'fs'
+import inquirer from 'inquirer'
 import parseTorrent from 'parse-torrent'
 import path from 'path'
 import pMap from 'p-map'
-import prompt from 'prompt'
 import webtorrentHealth from 'webtorrent-health'
 /**
  * node.js command-line interfaces made easy
@@ -25,7 +25,7 @@ import {
   version
 } from '../package.json'
 import {
-  confirmSchema,
+  importSchema,
   movieSchema,
   showSchema
 } from './promptschemas.js'
@@ -183,76 +183,66 @@ export default class CLI {
   /**
    * Handle the --content CLI option to insert a movie torrent.
    * @param {!string} t - The content type to add to the database.
-   * @returns {undefined}
+   * @returns {Promise<Movie, Error>} - The inserted movie.
    */
-  _moviePrompt(t: string): undefined {
-    prompt.get(movieSchema, async (err, res) => {
-      try {
-        if (err) {
-          throw err
-        }
+  _moviePrompt(t: string): Promise<Movie, Error> {
+    return inquirer.prompt(movieSchema).then(res => {
+      const { imdb, quality, language, torrent } = res
+      const movie = {
+        slugYear: imdb,
+        torrents: {}
+      }
+      const type = MovieProvider.Types.Movie
+      const movieProvider = new MovieProvider({
+        name: CLI._Name,
+        modelType: t,
+        type
+      })
 
-        const { imdb, quality, language, torrent } = res
-        const movie = {
-          slugYear: imdb,
-          torrents: {}
-        }
-        const type = MovieProvider.Types.Movie
-        const movieProvider = new MovieProvider({
-          name: CLI._Name,
-          modelType: t,
-          type
-        })
-
-        const torrentObj = await this._getTorrent(torrent, type)
-        const args = [movie, torrentObj, quality, language]
+      return this._getTorrent(torrent, type).then(res => {
+        const args = [movie, res, quality, language]
         movieProvider.attachTorrent(...args)
 
-        await movieProvider.getContent(movie)
-        process.exit(0)
-      } catch (err) {
+        return movieProvider.getContent(movie)
+      })
+    }).then(() => process.exit(0))
+      .catch(err => {
         logger.error(`An error occurred: '${err}'`)
         process.exit(1)
-      }
-    })
+      })
   }
 
   /**
    * Handle the --content CLI option to insert a movie torrent.
    * @param {!string} t - The content type to add to the database.
-   * @returns {undefined}
+   * @returns {Promise<Show, Error>} - The inserted show.
    */
-  _showPrompt(t: string): void {
-    prompt.get(showSchema, async (err, res) => {
-      try {
-        if (err) {
-          throw err
-        }
+  _showPrompt(t: string): Promise<Show, Error> {
+    return inquirer.prompt(showSchema).then(res => {
+      const { imdb, season, episode, quality, dateBased, torrent } = res
+      const show = {
+        slug: imdb,
+        dateBased,
+        episodes: {}
+      }
+      const type = MovieProvider.Types.Show
+      const showProvider = new ShowProvider({
+        name: CLI._Name,
+        modelType: t,
+        type
+      })
 
-        const { imdb, season, episode, quality, dateBased, torrent } = res
-        const show = {
-          slug: imdb,
-          dateBased,
-          episodes: {}
-        }
-        const type = MovieProvider.Types.Show
-        const showProvider = new ShowProvider({
-          name: CLI._Name,
-          modelType: t,
-          type
-        })
-
-        const torrentObj = await this._getTorrent(torrent, type)
-        const args = [show, torrentObj, season, episode, quality]
+      return this._getTorrent(torrent, type).then(res => {
+        const args = [show, res, season, episode, quality]
         showProvider.attachTorrent(...args)
 
-        await showProvider.getContent(show)
-        process.exit(0)
-      } catch (err) {
+        return showProvider.getContent(show)
+      })
+    }).then(() => process.exit(0))
+      .catch(err => {
         logger.error(`An error occurred: '${err}'`)
         process.exit(1)
-      }
-    })
+      })
   }
 
   /**
@@ -261,7 +251,7 @@ export default class CLI {
    * @returns {undefined}
    */
   _content(t: string): void {
-    Setup.connectMongoDB()
+    Setup.connectMongoDb()
 
     switch (t) {
       case 'animemovie':
@@ -315,6 +305,11 @@ export default class CLI {
    */
   _export(e: string): Promise<string, undefined> {
     return Util.exportCollection(e)
+      .then(() => process.exti(0))
+      .catch(err => {
+        logger.error(`An error occured: ${err}`)
+        process.exit(1)
+      })
   }
 
   /**
@@ -330,21 +325,15 @@ export default class CLI {
       process.exit(1)
     }
 
-    if (process.env.NODE_ENV === 'test') {
-      return Util.importCollection(path.basename(i, '.json'), i)
-    }
-
-    prompt.get(confirmSchema, (err, res) => {
-      if (err) {
-        logger.error(`An error occured: ${err}`)
-        process.exit(1)
-      }
-
-      if (res.confirm.test(/^(y|yes)/i)) {
+    return inquirer.prompt(importSchema).then(({ confirm }) => {
+      if (confirm) {
         return Util.importCollection(path.basename(i, '.json'), i)
       }
 
       process.exit(0)
+    }).catch(err => {
+      logger.error(`An error occured: ${err}`)
+      process.exit(1)
     })
   }
 

@@ -1,13 +1,21 @@
+// @flow
+
 /**
  * The imdb property.
  * @type {Object}
  */
 const _imdb = {
-  description: 'The imdb id of the show/movie to add (tt1234567)',
-  type: 'string',
-  pattern: /^(tt\d{7}|)|^(.*)/i,
-  message: 'Not a valid imdb id.',
-  required: true
+  type: 'input',
+  name: 'imdb',
+  message: 'The imdb id of the show/movie to add (tt1234567)',
+  validate(value: string): boolean | string {
+    const pass = /^(tt\d{7})/i.test(value)
+    if (pass) {
+      return true
+    }
+
+    return 'Not a valid imdb id.'
+  }
 }
 
 /**
@@ -15,22 +23,39 @@ const _imdb = {
  * @type {Object}
  */
 const _torrent = {
-  description: 'The link to the torrent to add',
-  type: 'string',
-  message: 'Not a valid torrent.',
-  required: true
+  type: 'input',
+  name: 'torrent',
+  message: 'The link to the torrent to add',
+  validate(value: string): boolean | string {
+    if (value && typeof value === 'string') {
+      return true
+    }
+
+    return 'Not a valid torrent.'
+  }
 }
+
+/**
+ * The available qualities for movies
+ * @type {Array<string>}
+ */
+const _movieQualities = ['720p', '1080p']
 
 /**
  * The quality property.
  * @type {Object}
  */
 const _quality = {
-  description: 'The quality of the torrent (480p | 720p | 1080p)',
-  type: 'string',
-  pattern: /^(480p|720p|1080p)/i,
-  message: 'Not a valid quality.',
-  required: true
+  type: 'list',
+  name: 'quality',
+  validate(value: string): boolean | string {
+    const pass = /^(480p|720p|1080p)/i.test(value)
+    if (pass) {
+      return pass
+    }
+
+    return 'Not a valid quality.'
+  }
 }
 
 /**
@@ -38,11 +63,17 @@ const _quality = {
  * @type {Object}
  */
 const _language = {
-  description: 'The language of the torrent to add (en, fr, jp)',
-  type: 'string',
-  pattern: /^([a-zA-Z]{2})/i,
-  message: 'Not a valid language',
-  required: true
+  type: 'input',
+  name: 'language',
+  message: 'The language of the torrent to add (en, fr, jp)',
+  validate(value: string): boolean | string {
+    const pass = /^([a-zA-Z]{2})/i.test(value)
+    if (pass) {
+      return true
+    }
+
+    return 'Not a valid language'
+  }
 }
 
 /**
@@ -50,25 +81,32 @@ const _language = {
  * @ignore
  * @type {Object}
  */
-export const movieSchema = {
-  properties: {
-    imdb: _imdb,
-    torrent: _torrent,
-    quality: _quality,
-    language: _language
-  }
-}
+export const movieSchema = [
+  _imdb,
+  _torrent, {
+    ..._quality,
+    choices: _movieQualities,
+    message: 'The quality of the torrent (720p | 1080p)'
+  },
+  _language
+]
 
 /**
  * The season property.
  * @type {Object}
  */
 const _season = {
-  description: 'The season number of the torrent',
-  type: 'integer',
-  pattern: /^(\d+)/i,
-  message: 'Not a valid season.',
-  required: true
+  type: 'input',
+  name: 'season',
+  message: 'The season number of the torrent',
+  validate(value: string): boolean | string {
+    const pass = /^(\d+)/i.test(value)
+    if (pass) {
+      return true
+    }
+
+    return 'Not a valid season.'
+  }
 }
 
 /**
@@ -76,11 +114,17 @@ const _season = {
  * @type {Object}
  */
 const _episode = {
-  description: 'The episode number of the torrent',
-  type: 'integer',
-  pattern: /^(\d+)/i,
-  message: 'Not a valid episode.',
-  required: true
+  type: 'input',
+  name: 'episode',
+  message: 'The episode number of the torrent',
+  validate(value: string): boolean | string {
+    const pass = /^(\d+)/i.test(value)
+    if (pass) {
+      return true
+    }
+
+    return 'Not a valid episode.'
+  }
 }
 
 /**
@@ -88,11 +132,10 @@ const _episode = {
  * @type {Object}
  */
 const _dateBased = {
-  description: 'If the show is date based (true | false)',
-  type: 'boolean',
-  pattern: /^(true|false)i/,
-  message: 'Not a valid value for date based.',
-  required: true
+  type: 'confirm',
+  name: 'confirm',
+  message: 'Is the show date based?',
+  default: false
 }
 
 /**
@@ -100,37 +143,27 @@ const _dateBased = {
  * @ignore
  * @type {Object}
  */
-export const showSchema = {
-  properties: {
-    imdb: _imdb,
-    torrent: _torrent,
-    quality: _quality,
-    season: _season,
-    episode: _episode,
-    dateBased: _dateBased
-  }
-}
-
-/**
- * The confirm property.
- * @type {Object}
- */
-const _confirm = {
-  description: 'Do you really want to import a collection? This can override the current data!',
-  type: 'string',
-  pattern: /^(yes|no|y|n)$/i,
-  message: 'Type yes/no',
-  required: true,
-  default: 'no'
-}
+export const showSchema = [
+  _imdb,
+  _torrent, {
+    ..._quality,
+    choices: ['480p', ..._movieQualities],
+    message: 'The quality of the torrent (480p | 720p | 1080p)'
+  },
+  _quality,
+  _season,
+  _episode,
+  _dateBased
+]
 
 /**
  * The schema used by `prompt` to confirm an import.
  * @ignore
  * @type {Object}
  */
-export const importSchema = {
-  properties: {
-    confirm: _confirm
-  }
-}
+export const importSchema = [{
+  type: 'confirm',
+  name: 'confirm',
+  message: 'Do you really want to import a collection? This can override the current data!',
+  default: false
+}]
