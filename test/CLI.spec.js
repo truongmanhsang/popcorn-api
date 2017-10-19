@@ -1,5 +1,6 @@
 // Import the necessary modules.
 /* eslint-disable no-unused-expressions */
+import inquirer from 'inquirer'
 import pMap from 'p-map'
 import sinon from 'sinon'
 import { Command } from 'commander'
@@ -24,11 +25,14 @@ describe('CLI', () => {
 
   /**
     * Remove the currently existing configurations from the database.
-    * @param {!Function} done - Function called to indicate the process is done.
+    * @param {!Function} [done=() => {}] - Function called to indicate the
+    * process is done.
     * @return {Promise<undefined, Error>} - The promise to delete all the
     * configurations from the database.
     */
-  function removeProviderConfigs(done: Function): Promise<void, Error> {
+  function removeProviderConfigs(
+    done: Function = () => {}
+  ): Promise<void, Error> {
     return Setup.connectMongoDb().then(() => {
       return pMap(providerConfigs, config => {
         return ProviderConfig.findOneAndRemove({
@@ -37,8 +41,7 @@ describe('CLI', () => {
       }, {
         concurrency: 1
       })
-    }).then(() => Setup.disconnectMongoDb())
-      .then(() => done())
+    }).then(() => done())
       .catch(done)
   }
 
@@ -91,7 +94,7 @@ describe('CLI', () => {
   })
 
   /** @test {CLI#_getTorrent} */
-  it('should get a torrent from a link', done => {
+  it.skip('should get a torrent from a link', done => {
     const link = 'magnet:?xt=urn:btih:9228628504cc40efa57bf38e85c9e3bd2c572b5b&dn=archlinux-2017.10.01-x86_64.iso&tr=udp://tracker.archlinux.org:6969&tr=http://tracker.archlinux.org:6969/announce'
     cli._getTorrent(link, 'movie')
       .then(res => {
@@ -112,13 +115,82 @@ describe('CLI', () => {
   })
 
   /** @test {CLI#_moviePrompt} */
-  it.skip('should run the movie content prompt', () => {
-    expect(true).to.be.true
+  it('should run the movie content prompt', done => {
+    const promptStub = sinon.stub(inquirer, 'prompt')
+    const exitStub = sinon.stub(process, 'exit')
+    promptStub.resolves({
+      imdb: 'tt1234567',
+      torrent: 'magnet:?xt=urn:btih:9228628504cc40efa57bf38e85c9e3bd2c572b5b&dn=archlinux-2017.10.01-x86_64.iso&tr=udp://tracker.archlinux.org:6969&tr=http://tracker.archlinux.org:6969/announce',
+      quality: '720p',
+      language: 'en'
+    })
+    exitStub.value(() => {})
+
+    cli._moviePrompt('movie').then(res => {
+      expect(res).to.be.undefined
+
+      promptStub.restore()
+      exitStub.restore()
+
+      done()
+    }).catch(done)
   })
 
-  /** @test {CLI#_tvshowPrompt} */
-  it.skip('should run the tv show content prompt', () => {
-    expect(true).to.be.true
+  /** @test {CLI#_moviePrompt} */
+  it('should catch an error when running the movie content prompt', done => {
+    const promptStub = sinon.stub(inquirer, 'prompt')
+    const exitStub = sinon.stub(process, 'exit')
+    promptStub.resolves({})
+    exitStub.value(() => {})
+
+    cli._moviePrompt('movie').then(res => {
+      expect(res).to.be.undefined
+
+      promptStub.restore()
+      exitStub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {CLI#_showPrompt} */
+  it('should run the show content prompt', done => {
+    const promptStub = sinon.stub(inquirer, 'prompt')
+    const exitStub = sinon.stub(process, 'exit')
+    promptStub.resolves({
+      imdb: 'tt1234567',
+      torrent: 'magnet:?xt=urn:btih:9228628504cc40efa57bf38e85c9e3bd2c572b5b&dn=archlinux-2017.10.01-x86_64.iso&tr=udp://tracker.archlinux.org:6969&tr=http://tracker.archlinux.org:6969/announce',
+      quality: '720p',
+      season: 1,
+      episode: 1
+    })
+    exitStub.value(() => {})
+
+    cli._showPrompt('show').then(res => {
+      expect(res).to.be.undefined
+
+      promptStub.restore()
+      exitStub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {CLI#_showPrompt} */
+  it('should catch an error when running the show content prompt', done => {
+    const promptStub = sinon.stub(inquirer, 'prompt')
+    const exitStub = sinon.stub(process, 'exit')
+    promptStub.resolves({})
+    exitStub.value(() => {})
+
+    cli._showPrompt('show').then(res => {
+      expect(res).to.be.undefined
+
+      promptStub.restore()
+      exitStub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {CLI#_content} */
@@ -146,9 +218,16 @@ describe('CLI', () => {
   })
 
   /** @test {CLI#_export} */
-  it.skip('should run the --export option with the \'show\' option', done => {
-    expect(true).to.be.true
-    done()
+  it('should run the --export option with the \'show\' option', done => {
+    const stub = sinon.stub(process, 'exit')
+    stub.value(() => {})
+
+    cli._export('show').then(res => {
+      expect(res).to.be.undefined
+
+      stub.restore()
+      done()
+    }).catch(done)
   })
 
   /** @test {CLI#_import} */
@@ -262,6 +341,9 @@ describe('CLI', () => {
    * @type {Function}
    */
   after(done => {
-    removeProviderConfigs(done)
+    removeProviderConfigs()
+      .then(() => Setup.disconnectMongoDb())
+      .then(() => done())
+      .catch(done)
   })
 })
