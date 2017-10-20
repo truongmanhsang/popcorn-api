@@ -59,7 +59,9 @@ export default class MovieHelper extends BaseHelper {
 
       if (foundQuality && movieQuality) {
         if (foundQuality.seeds > movieQuality.seeds ||
-            foundQuality.url === movieQuality.url) { update = true }
+            foundQuality.url === movieQuality.url) {
+          update = true
+        }
       } else if (foundQuality && !movieQuality) {
         update = true
       }
@@ -86,7 +88,7 @@ export default class MovieHelper extends BaseHelper {
     try {
       let m = movie
       const found = await this._model.findOne({
-        _id: m._id
+        imdb_id: m._id
       }).exec()
 
       if (found) {
@@ -163,7 +165,7 @@ export default class MovieHelper extends BaseHelper {
    * @returns {Object} - Object with banner, fanart and poster images.
    */
   _getOmdbImages(imdb: string): Object {
-    return this._omdb.byID({
+    return this._omdb.byId({
       imdb,
       type: 'movie'
     }).then(i => {
@@ -243,7 +245,7 @@ export default class MovieHelper extends BaseHelper {
             percentage: Math.round(traktMovie.rating * 10)
           },
           images: await this._getImages(tmdb, imdb),
-          genres: traktMovie.genres !== null ? traktMovie.genres : ['unknown'],
+          genres: traktMovie.genres ? traktMovie.genres : ['unknown'],
           language: traktMovie.language,
           released: new Date(traktMovie.released).getTime() / 1000.0,
           trailer: traktMovie.trailer,

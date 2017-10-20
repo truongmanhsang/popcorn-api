@@ -398,7 +398,7 @@ export default class ShowHelper extends BaseHelper {
             percentage: Math.round(traktShow.rating * 10)
           },
           images: await this._getImages(tvdb, tvdb),
-          genres: traktShow.genres !== null ? traktShow.genres : ['unknown'],
+          genres: traktShow.genres ? traktShow.genres : ['unknown'],
           tvdb_id: tvdb,
           country: traktShow.country,
           network: traktShow.network,

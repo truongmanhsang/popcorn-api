@@ -34,6 +34,20 @@ export function checkHelperAttributes(
 }
 
 /**
+ * Helper function to test the image attributes
+ * @param {!Object} images - The images object to test. 
+ * @param {!Function} done - The done function of mocha.
+ * @returns {undefined}
+ */
+export function testImages(images: Object, done: Function): void {
+  expect(images).to.be.an('object')
+  expect(images.banner).to.be.a('string')
+  expect(images.fanart).to.be.a('string')
+  expect(images.poster).to.be.a('string')
+  done()
+}
+
+/**
  * @test {BaseHelper}
  * @flow
  */
