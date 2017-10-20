@@ -73,13 +73,6 @@ const query: Object = {
   }]
 }
 
-//   /**
-//    * The amount of objects show per page. Default is `50`.
-//    * @protected
-//    * @type {number}
-//    */
-//   static _PageSize: number = 50
-
 /**
  * The controllers used by the setup process of registering them.
  * @type {Array<Object>}
