@@ -29,7 +29,7 @@
     "tmdbapi": "^1.0.2",
     "trakt.tv": "^6.0.1",
     "webtorrent-health": "^1.1.1",
-    "winston": "^3.0.0-rc0",
+    "winston": "^3.0.0-rc1",
     "yts-api-pt": "^2.0.0"
   },
   "devDependencies": {
