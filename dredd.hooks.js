@@ -1,8 +1,8 @@
 // Import the neccesary modules.
-import asyncq from 'async-q'
 import del from 'del'
 import dotenv from 'dotenv'
 import hooks from 'hooks'
+import pMap from 'p-map'
 import { join } from 'path'
 
 import AnimeMovie from './src/models/AnimeMovie'
@@ -42,7 +42,7 @@ hooks.beforeAll((t, done) => {
     model: new Show(testShow)
   })
 
-  return asyncq.each(models, model => {
+  return pMap(models, model => {
     return model.clazz.findOneAndUpdate({
       _id: model.model.id
     }, model.model, {
@@ -58,7 +58,7 @@ hooks.beforeAll((t, done) => {
 })
 
 hooks.afterAll((t, done) => {
-  return asyncq.each(models, model => {
+  return pMap(models, model => {
     return model.clazz.findOneAndRemove({
       _id: model.model.id
     }, model.model).exec()
