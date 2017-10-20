@@ -1,10 +1,30 @@
-// @flow
+/**
+ * The available qualities for movies.
+ * @flow
+ * @type {Array<string>}
+ */
+const _movieQualities: Array<string> = ['720p', '1080p']
+
+/**
+ * The available qualities for shows. 
+ * @type {Array<string>}
+ */
+const _showQualities: Array<string> = ['480p', ..._movieQualities]
+
+/**
+ * The quality property.
+ * @type {Object}
+ */
+const _baseQuality: Object = {
+  type: 'list',
+  name: 'quality'
+}
 
 /**
  * The imdb property.
  * @type {Object}
  */
-const _imdb = {
+const imdb: Object = {
   type: 'input',
   name: 'imdb',
   message: 'The imdb id of the show/movie to add (tt1234567)',
@@ -22,7 +42,7 @@ const _imdb = {
  * The torrent property.
  * @type {Object}
  */
-const _torrent = {
+const torrent: Object = {
   type: 'input',
   name: 'torrent',
   message: 'The link to the torrent to add',
@@ -36,33 +56,30 @@ const _torrent = {
 }
 
 /**
- * The available qualities for movies
- * @type {Array<string>}
- */
-const _movieQualities = ['720p', '1080p']
-
-/**
- * The quality property.
+ * The movie quality property 
  * @type {Object}
  */
-const _quality = {
-  type: 'list',
-  name: 'quality',
-  validate(value: string): boolean | string {
-    const pass = /^(480p|720p|1080p)/i.test(value)
-    if (pass) {
-      return pass
-    }
+const movieQuality: Object = {
+  ..._baseQuality,
+  choices: _movieQualities,
+  message: 'The quality of the torrent (720p | 1080p)'
+}
 
-    return 'Not a valid quality.'
-  }
+/**
+ * The show quality property.
+ * @type {Object}
+ */
+const showQuality: Object = {
+  ..._baseQuality,
+  choices: _showQualities,
+  message: 'The quality of the torrent (480p | 720p | 1080p)'
 }
 
 /**
  * The language property.
  * @type {Object}
  */
-const _language = {
+const language: Object = {
   type: 'input',
   name: 'language',
   message: 'The language of the torrent to add (en, fr, jp)',
@@ -77,25 +94,10 @@ const _language = {
 }
 
 /**
- * The schema used by `prompt` insert a movie.
- * @ignore
- * @type {Object}
- */
-export const movieSchema = [
-  _imdb,
-  _torrent, {
-    ..._quality,
-    choices: _movieQualities,
-    message: 'The quality of the torrent (720p | 1080p)'
-  },
-  _language
-]
-
-/**
  * The season property.
  * @type {Object}
  */
-const _season = {
+const season: Object = {
   type: 'input',
   name: 'season',
   message: 'The season number of the torrent',
@@ -113,7 +115,7 @@ const _season = {
  * The episode property.
  * @type {Object}
  */
-const _episode = {
+const episode: Object = {
   type: 'input',
   name: 'episode',
   message: 'The episode number of the torrent',
@@ -131,7 +133,7 @@ const _episode = {
  * The dateBased property.
  * @type {Object}
  */
-const _dateBased = {
+const dateBased: Object = {
   type: 'confirm',
   name: 'confirm',
   message: 'Is the show date based?',
@@ -139,31 +141,34 @@ const _dateBased = {
 }
 
 /**
- * The schema used by `prompt` insert a show.
- * @ignore
+ * The confirm propery.
  * @type {Object}
  */
-export const showSchema = [
-  _imdb,
-  _torrent, {
-    ..._quality,
-    choices: ['480p', ..._movieQualities],
-    message: 'The quality of the torrent (480p | 720p | 1080p)'
-  },
-  _quality,
-  _season,
-  _episode,
-  _dateBased
-]
-
-/**
- * The schema used by `prompt` to confirm an import.
- * @ignore
- * @type {Object}
- */
-export const importSchema = [{
+const confirm: Object = {
   type: 'confirm',
   name: 'confirm',
   message: 'Do you really want to import a collection? This can override the current data!',
   default: false
-}]
+}
+
+/**
+ * Bundle the schemas into one object.
+ * @type {Object}
+ */
+const promptSchemas = {
+  imdb,
+  torrent,
+  movieQuality,
+  showQuality,
+  language,
+  season,
+  episode,
+  dateBased,
+  confirm
+}
+
+/**
+ * Export the schemas. 
+ * @type {Object}
+ */
+export default promptSchemas

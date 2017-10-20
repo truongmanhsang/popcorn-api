@@ -15,6 +15,7 @@ import { Command } from 'commander'
 import Server from './Server'
 import Logger from './config/Logger'
 import MovieProvider from './scraper/providers/MovieProvider'
+import promptSchemas from './promptschemas.js'
 import ProviderConfig from './models/ProviderConfig'
 import providerConfigs from './scraper/configs'
 import Setup from './config/Setup'
@@ -24,11 +25,6 @@ import {
   name,
   version
 } from '../package.json'
-import {
-  importSchema,
-  movieSchema,
-  showSchema
-} from './promptschemas.js'
 
 /**
  * Class The class for the command line interface.
@@ -186,6 +182,14 @@ export default class CLI {
    * @returns {Promise<Movie, Error>} - The inserted movie.
    */
   _moviePrompt(t: string): Promise<Movie, Error> {
+    const { imdb, torrent, movieQuality, language } = promptSchemas
+    const movieSchema: Array<Object> = [
+      imdb,
+      torrent,
+      movieQuality,
+      language
+    ]
+
     return inquirer.prompt(movieSchema).then(res => {
       const { imdb, quality, language, torrent } = res
       const movie = {
@@ -218,6 +222,23 @@ export default class CLI {
    * @returns {Promise<Show, Error>} - The inserted show.
    */
   _showPrompt(t: string): Promise<Show, Error> {
+    const {
+      imdb,
+      torrent,
+      showQuality,
+      season,
+      episode,
+      dateBased
+    } = promptSchemas
+    const showSchema: Array<Object> = [
+      imdb,
+      torrent,
+      showQuality,
+      season,
+      episode,
+      dateBased
+    ]
+
     return inquirer.prompt(showSchema).then(res => {
       const { imdb, season, episode, quality, dateBased, torrent } = res
       const show = {
@@ -321,7 +342,8 @@ export default class CLI {
       return process.exit(1)
     }
 
-    return inquirer.prompt(importSchema).then(({ confirm }) => {
+    const { confirm } = promptSchemas
+    return inquirer.prompt([confirm]).then(({ confirm }) => {
       if (confirm) {
         return Util.importCollection(path.basename(i, '.json'), i)
       }
