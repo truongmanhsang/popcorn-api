@@ -208,7 +208,7 @@ export default class CLI {
     }).then(() => process.exit(0))
       .catch(err => {
         logger.error(`An error occurred: '${err}'`)
-        process.exit(1)
+        return process.exit(1)
       })
   }
 
@@ -241,7 +241,7 @@ export default class CLI {
     }).then(() => process.exit(0))
       .catch(err => {
         logger.error(`An error occurred: '${err}'`)
-        process.exit(1)
+        return process.exit(1)
       })
   }
 
@@ -255,20 +255,16 @@ export default class CLI {
 
     switch (t) {
       case 'animemovie':
-        this._moviePrompt(t)
-        break
+        return this._moviePrompt(t)
       case 'animeshow':
-        this._showPrompt(t)
-        break
+        return this._showPrompt(t)
       case 'movie':
-        this._moviePrompt(t)
-        break
+        return this._moviePrompt(t)
       case 'show':
-        this._showPrompt(t)
-        break
+        return this._showPrompt(t)
       default:
         logger.error(`'${t}' is not a valid option for content!`)
-        process.exit(1)
+        return process.exit(1)
     }
   }
 
@@ -308,7 +304,7 @@ export default class CLI {
       .then(() => process.exti(0))
       .catch(err => {
         logger.error(`An error occured: ${err}`)
-        process.exit(1)
+        return process.exit(1)
       })
   }
 
@@ -322,7 +318,7 @@ export default class CLI {
   _import(i: string): Promise<string, undefined> | undefined {
     if (!fs.existsSync(i)) {
       logger.error(`File '${i}' does not exists!`)
-      process.exit(1)
+      return process.exit(1)
     }
 
     return inquirer.prompt(importSchema).then(({ confirm }) => {
@@ -330,10 +326,10 @@ export default class CLI {
         return Util.importCollection(path.basename(i, '.json'), i)
       }
 
-      process.exit(0)
+      return process.exit(0)
     }).catch(err => {
       logger.error(`An error occured: ${err}`)
-      process.exit(1)
+      return process.exit(1)
     })
   }
 

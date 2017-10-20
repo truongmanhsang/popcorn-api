@@ -5,12 +5,14 @@ import pMap from 'p-map'
 import sinon from 'sinon'
 import { Command } from 'commander'
 import { expect } from 'chai'
+import { join } from 'path'
 
 import CLI from '../src/CLI'
 import ProviderConfig from '../src/models/ProviderConfig'
 import providerConfigs from '../src/scraper/configs'
 import Server from '../src/Server'
 import Setup from '../src/config/Setup'
+import Util from '../src/Util'
 
 /**
  * @test {CLI}
@@ -22,6 +24,12 @@ describe('CLI', () => {
    * @type {CLI}
    */
   let cli: CLI
+
+  /**
+   * Stub for the exit method of the `process` module.
+   * @type {Object}
+   */
+  let exitStub: Object
 
   /**
     * Remove the currently existing configurations from the database.
@@ -52,6 +60,9 @@ describe('CLI', () => {
   before(done => {
     Server._Workers = 0
     cli = new CLI(true)
+
+    exitStub = sinon.stub(process, 'exit')
+    exitStub.value(() => {})
 
     removeProviderConfigs(done)
   })
@@ -94,7 +105,7 @@ describe('CLI', () => {
   })
 
   /** @test {CLI#_getTorrent} */
-  it.skip('should get a torrent from a link', done => {
+  it('should get a torrent from a link', done => {
     const link = 'magnet:?xt=urn:btih:9228628504cc40efa57bf38e85c9e3bd2c572b5b&dn=archlinux-2017.10.01-x86_64.iso&tr=udp://tracker.archlinux.org:6969&tr=http://tracker.archlinux.org:6969/announce'
     cli._getTorrent(link, 'movie')
       .then(res => {
@@ -116,9 +127,8 @@ describe('CLI', () => {
 
   /** @test {CLI#_moviePrompt} */
   it('should run the movie content prompt', done => {
-    const promptStub = sinon.stub(inquirer, 'prompt')
-    const exitStub = sinon.stub(process, 'exit')
-    promptStub.resolves({
+    const stub = sinon.stub(inquirer, 'prompt')
+    stub.resolves({
       imdb: 'tt1234567',
       torrent: 'magnet:?xt=urn:btih:9228628504cc40efa57bf38e85c9e3bd2c572b5b&dn=archlinux-2017.10.01-x86_64.iso&tr=udp://tracker.archlinux.org:6969&tr=http://tracker.archlinux.org:6969/announce',
       quality: '720p',
@@ -129,8 +139,7 @@ describe('CLI', () => {
     cli._moviePrompt('movie').then(res => {
       expect(res).to.be.undefined
 
-      promptStub.restore()
-      exitStub.restore()
+      stub.restore()
 
       done()
     }).catch(done)
@@ -138,91 +147,10 @@ describe('CLI', () => {
 
   /** @test {CLI#_moviePrompt} */
   it('should catch an error when running the movie content prompt', done => {
-    const promptStub = sinon.stub(inquirer, 'prompt')
-    const exitStub = sinon.stub(process, 'exit')
-    promptStub.resolves({})
-    exitStub.value(() => {})
+    const stub = sinon.stub(inquirer, 'prompt')
+    stub.resolves({})
 
     cli._moviePrompt('movie').then(res => {
-      expect(res).to.be.undefined
-
-      promptStub.restore()
-      exitStub.restore()
-
-      done()
-    }).catch(done)
-  })
-
-  /** @test {CLI#_showPrompt} */
-  it('should run the show content prompt', done => {
-    const promptStub = sinon.stub(inquirer, 'prompt')
-    const exitStub = sinon.stub(process, 'exit')
-    promptStub.resolves({
-      imdb: 'tt1234567',
-      torrent: 'magnet:?xt=urn:btih:9228628504cc40efa57bf38e85c9e3bd2c572b5b&dn=archlinux-2017.10.01-x86_64.iso&tr=udp://tracker.archlinux.org:6969&tr=http://tracker.archlinux.org:6969/announce',
-      quality: '720p',
-      season: 1,
-      episode: 1
-    })
-    exitStub.value(() => {})
-
-    cli._showPrompt('show').then(res => {
-      expect(res).to.be.undefined
-
-      promptStub.restore()
-      exitStub.restore()
-
-      done()
-    }).catch(done)
-  })
-
-  /** @test {CLI#_showPrompt} */
-  it('should catch an error when running the show content prompt', done => {
-    const promptStub = sinon.stub(inquirer, 'prompt')
-    const exitStub = sinon.stub(process, 'exit')
-    promptStub.resolves({})
-    exitStub.value(() => {})
-
-    cli._showPrompt('show').then(res => {
-      expect(res).to.be.undefined
-
-      promptStub.restore()
-      exitStub.restore()
-
-      done()
-    }).catch(done)
-  })
-
-  /** @test {CLI#_content} */
-  it.skip('should run the --content option with the \'animemovie\'', done => {
-    expect(true).to.be.true
-    done()
-  })
-
-  /** @test {CLI#_content} */
-  it.skip('should run the --content option with the \'animeshow\'', done => {
-    expect(true).to.be.true
-    done()
-  })
-
-  /** @test {CLI#_content} */
-  it.skip('should run the --content option with the \'movie\'', done => {
-    expect(true).to.be.true
-    done()
-  })
-
-  /** @test {CLI#_content} */
-  it.skip('should run the --content option with the \'show\'', done => {
-    expect(true).to.be.true
-    done()
-  })
-
-  /** @test {CLI#_export} */
-  it('should run the --export option with the \'show\' option', done => {
-    const stub = sinon.stub(process, 'exit')
-    stub.value(() => {})
-
-    cli._export('show').then(res => {
       expect(res).to.be.undefined
 
       stub.restore()
@@ -230,10 +158,126 @@ describe('CLI', () => {
     }).catch(done)
   })
 
+  /** @test {CLI#_showPrompt} */
+  it('should run the show content prompt', done => {
+    const stub = sinon.stub(inquirer, 'prompt')
+    stub.resolves({
+      imdb: 'tt1234567',
+      torrent: 'magnet:?xt=urn:btih:9228628504cc40efa57bf38e85c9e3bd2c572b5b&dn=archlinux-2017.10.01-x86_64.iso&tr=udp://tracker.archlinux.org:6969&tr=http://tracker.archlinux.org:6969/announce',
+      quality: '720p',
+      season: 1,
+      episode: 1
+    })
+
+    cli._showPrompt('show').then(res => {
+      expect(res).to.be.undefined
+
+      stub.restore()
+      done()
+    }).catch(done)
+  })
+
+  /** @test {CLI#_showPrompt} */
+  it('should catch an error when running the show content prompt', done => {
+    const stub = sinon.stub(inquirer, 'prompt')
+    stub.resolves({})
+
+    cli._showPrompt('show').then(res => {
+      expect(res).to.be.undefined
+
+      stub.restore()
+      done()
+    }).catch(done)
+  })
+
+  /**
+   * Helper function to test the `_content` method.
+   * @param {!string} t - The type of content to test.
+   * @returns {undefined}
+   */
+  function testContent(t: string): void {
+    /** @test {CLI#_content} */
+    it(`should run the --content option with the '${t}'`, done => {
+      const stub = sinon.stub(inquirer, 'prompt')
+      stub.resolves({
+        torrent: 'magnet:?xt=urn:btih:9228628504cc40efa57bf38e85c9e3bd2c572b5b&dn=archlinux-2017.10.01-x86_64.iso&tr=udp://tracker.archlinux.org:6969&tr=http://tracker.archlinux.org:6969/announce'
+      })
+
+      cli._content(t).then(() => {
+        stub.restore()
+        done()
+      }).catch(done)
+    })
+  }
+
+  const types = [
+    'animemovie',
+    'animeshow',
+    'movie',
+    'show'
+  ]
+  types.map(testContent)
+
+  /** @test {CLI#_content} */
+  it('should run the --content option with the \'null\'', () => {
+    const stub = sinon.stub(process, 'exit')
+    stub.value(() => {})
+
+    const res = cli._content(null)
+    expect(res).to.be.undefined
+
+    stub.restore()
+  })
+
+  /** @test {CLI#_export} */
+  it('should run the --export option with the \'show\' option', done => {
+    cli._export('show').then(res => {
+      expect(res).to.be.undefined
+      done()
+    }).catch(done)
+  })
+
   /** @test {CLI#_import} */
-  it.skip('should run the --import option with a file as input', done => {
-    expect(true).to.be.true
-    done()
+  it('should run the --import option with a non-existing file as input', () => {
+    const res = cli._import('/path/to/faulty/file.json')
+    expect(res).to.be.undefined
+  })
+
+  /**
+   * Helper method to test the `_import` method.
+   * @param {!boolean} confirm - The user input.
+   * @param {!string} type - The type to test.
+   * @returns {void}
+   */
+  function testImport(confirm: boolean, type: string): void {
+    const msg = confirm ? 'confirms' : 'cancels'
+    /** @test {CLI#_import} */
+    it(`should run the --import option with a file as input and the user ${msg}`, done => {
+      const stub = sinon.stub(inquirer, 'prompt')
+      stub.returns(Promise.resolve({ confirm }))
+
+      cli._import(join(process.env.TEMP_DIR, 'shows.json')).then(res => {
+        expect(res).to.be.a(type)
+
+        stub.restore()
+        done()
+      }).catch(done)
+    })
+  }
+
+  // Run the tests.
+  testImport(true, 'string')
+  testImport(false, 'undefined')
+
+  /** @test {CLI#_import} */
+  it('should run the --import option and reject the result', done => {
+    const stub = sinon.stub(inquirer, 'prompt')
+    stub.rejects()
+
+    cli._import(join(process.env.TEMP_DIR, '..', 'package.json')).then(res => {
+      stub.restore()
+      done()
+    }).catch(done)
   })
 
   /** @test {CLI._help} */
@@ -274,13 +318,23 @@ describe('CLI', () => {
     Server.closeApi(done)
   })
 
-  /** @test {CLI#_providers} */
-  it('should run the --providers option', done => {
-    cli._providers(process.env.NODE_ENV).then(res => {
-      expect(res).to.be.undefined
-      done()
-    }).catch(done)
-  })
+  /**
+   * Helper function to test the `_providers` method.
+   * @returns {undefined}
+   */
+  function testProvider(): void {
+    /** @test {CLI#_providers} */
+    it('should run the --providers option', done => {
+      cli._providers(process.env.NODE_ENV).then(res => {
+        expect(res).to.be.undefined
+        done()
+      }).catch(done)
+    })
+  }
+
+  // Test twice for coverage.
+  testProvider()
+  testProvider()
 
   /** @test {CLI#run} */
   it('should invoke the --mode option', done => {
@@ -294,9 +348,18 @@ describe('CLI', () => {
   })
 
   /** @test {CLI#run} */
-  it.skip('should invoke the --content option', done => {
-    expect(true).to.be.true
-    done()
+  it('should invoke the --content option', done => {
+    cli._program.content = 'show'
+    const stub = sinon.stub(inquirer, 'prompt')
+    stub.resolves()
+
+    cli.run().then(res => {
+      expect(res).to.be.undefined
+      cli._program.content = false
+
+      stub.restore()
+      done()
+    }).catch(done)
   })
 
   /** @test {CLI#run} */
@@ -312,15 +375,33 @@ describe('CLI', () => {
   })
 
   /** @test {CLI#run} */
-  it.skip('should invoke the --export', done => {
-    expect(true).to.be.true
-    done()
+  it('should invoke the --export', done => {
+    cli._program.export = true
+    const stub = sinon.stub(Util, 'exportCollection')
+    stub.resolves()
+
+    cli.run().then(res => {
+      expect(res).to.be.undefined
+      cli._program.export = false
+
+      stub.restore()
+      done()
+    }).catch(done)
   })
 
   /** @test {CLI#run} */
-  it.skip('should invoke the --import option', done => {
-    expect(true).to.be.true
-    done()
+  it('should invoke the --import option', done => {
+    cli._program.import = join(process.env.TEMP_DIR, '..', 'package.json')
+    const stub = sinon.stub(inquirer, 'prompt')
+    stub.resolves()
+
+    cli.run().then(res => {
+      expect(res).to.be.undefined
+      cli._program.import = false
+
+      stub.restore()
+      done()
+    }).catch(done)
   })
 
   /** @test {CLI#run} */
@@ -341,6 +422,8 @@ describe('CLI', () => {
    * @type {Function}
    */
   after(done => {
+    exitStub.restore()
+
     removeProviderConfigs()
       .then(() => Setup.disconnectMongoDb())
       .then(() => done())
