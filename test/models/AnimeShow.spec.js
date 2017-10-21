@@ -16,7 +16,7 @@ describe('AnimeShow', () => {
   let animeShow: AnimeShow
 
   /**
-   * The anime show obejct initiated without a constructor object.
+   * The anime show object initiated without a constructor object.
    * @type {AnimeShow}
    */
   let animeShowEmpty: AnimeShow

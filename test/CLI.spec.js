@@ -116,7 +116,7 @@ describe('CLI', () => {
   })
 
   /** @test {CLI#_getTorrent} */
-  it('should failt to get a torrent from a number', done => {
+  it('should fail to get a torrent from a number', done => {
     cli._getTorrent(1, 'movie')
       .then(done)
       .catch(err => {

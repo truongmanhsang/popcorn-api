@@ -75,7 +75,7 @@ export default class ContentService {
      */
     this.query = query
     /**
-     * The item tyep of the service.
+     * The item type of the service.
      * @type {string}
      */
     this._itemType = itemType

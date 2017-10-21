@@ -56,7 +56,7 @@ describe('Movie', () => {
   let movie: Movie
 
   /**
-   * The movie obejct initiated without a constructor object.
+   * The movie object initiated without a constructor object.
    * @type {Movie}
    */
   let movieEmpty: Movie

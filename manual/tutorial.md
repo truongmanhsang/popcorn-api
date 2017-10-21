@@ -397,7 +397,7 @@ Metadata providers are providers which get data on a movie or get seasonal infor
 [Trakt.tv](https://trakt.tv/) is the metadata provider for movies and shows. It uses a module from [Jean van Kasteel](https://github.com/vankasteelj) called [trakt.tv](https://github.com/vankasteelj/trakt.tv). For more information about the Trakt API you can click [here](http://docs.trakt.apiary.io/).
 
 ### [TheTVDB.com](https://thetvdb.com/)
-[TheTVDB.com](https://thetvdb.com/) is the metadata provider for shows which have are datebased like '@Midnight'. It uses a module from [Ed Wellbrook](https://github.com/edwellbrook) called [node-tvdb](https://github.com/edwellbrook/node-tvdb). For more information about the TVBDB API you can click [here](https://www.thetvdb.com/wiki/index.php/Programmers_API).
+[TheTVDB.com](https://thetvdb.com/) is the metadata provider for shows which have are datebased like '@Midnight'. It uses a module from [Ed Wellbrook](https://github.com/edwellbrook) called [node-tvdb](https://github.com/edwellbrook/node-tvdb). For more information about the TVDB API you can click [here](https://www.thetvdb.com/wiki/index.php/Programmers_API).
 
 ### [Hummingbird.me](https://hummingbird.me)
 [Hummingbird.me](https://hummingbird.me) is the metadata provider for anime. It uses the [hummingbird-api](https://github.com/ChrisAlderson/hummingbird-api) module. For more information about the Hummingbird API you can click [here](https://github.com/hummingbird-me/hummingbird/wiki).

@@ -78,7 +78,7 @@ describe('YtsProvider', () => {
   })
 
   /** @test {YtsProvider#search} */
-  it('should return a list of all the intersted torrents', done => {
+  it('should return a list of all the inserted torrents', done => {
     const stub = sinon.stub(ytsProvider, '_getTotalPages')
     stub.resolves(1)
 

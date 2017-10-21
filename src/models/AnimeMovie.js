@@ -10,7 +10,7 @@ import { movieSchema, Movie } from './Movie'
  */
 export class AnimeMovie extends Movie {}
 
-// Attatch the fuctions from the AnimeMovie class to the movieSchema.
+// Attach the fuctions from the AnimeMovie class to the movieSchema.
 movieSchema.loadClass(AnimeMovie)
 
 // Create the anime movie model.

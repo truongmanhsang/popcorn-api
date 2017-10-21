@@ -324,7 +324,7 @@ export default class CLI {
     return Util.exportCollection(e)
       .then(() => process.exti(0))
       .catch(err => {
-        logger.error(`An error occured: ${err}`)
+        logger.error(`An error occurred: ${err}`)
         return process.exit(1)
       })
   }
@@ -350,7 +350,7 @@ export default class CLI {
 
       return process.exit(0)
     }).catch(err => {
-      logger.error(`An error occured: ${err}`)
+      logger.error(`An error occurred: ${err}`)
       return process.exit(1)
     })
   }

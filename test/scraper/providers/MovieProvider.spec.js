@@ -39,7 +39,7 @@ describe('MovieProvider', () => {
     expect(movieProvider._regexps.length).to.be.at.least(1)
   })
 
-  /** @test {MovieProvider#_extractCotent} */
+  /** @test {MovieProvider#_extractContent} */
   it('should extract movie information based on a regex', () => {
     movieMap.testpool = 'deadpool'
     const content = movieProvider._extractContent({
@@ -102,7 +102,7 @@ describe('MovieProvider', () => {
   })
 
   /** @test {MovieProvider#search} */
-  it('should return a list of all the intersted torrents', done => {
+  it('should return a list of all the inserted torrents', done => {
     const stub = sinon.stub(movieProvider, '_getTotalPages')
     stub.resolves(1)
 

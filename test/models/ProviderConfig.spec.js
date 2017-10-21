@@ -16,7 +16,7 @@ describe('ProviderConfig', () => {
   let providerConfig: ProviderConfig
 
   /**
-   * The provider configuration obejct initiated without a constructor object.
+   * The provider configuration object initiated without a constructor object.
    * @type {ProviderConfig}
    */
   let providerConfigEmpty: ProviderConfig

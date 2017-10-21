@@ -16,7 +16,7 @@ describe('Rating', () => {
   let rating: Rating
 
   /**
-   * The rating obejct initiated without a constructor object.
+   * The rating object initiated without a constructor object.
    * @type {Rating}
    */
   let ratingEmpty: Rating

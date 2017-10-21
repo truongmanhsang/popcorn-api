@@ -40,7 +40,7 @@ export function testContentAttributes(
 }
 
 /**
- * It should check the attributes of an emptry content object.
+ * It should check the attributes of an empty content object.
  * @param {Content} contentEmpty - The content to test with.
  * @param {string} type - The type of content to check for.
  * @returns {undefined}

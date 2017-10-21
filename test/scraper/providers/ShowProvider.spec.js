@@ -60,7 +60,7 @@ describe('ShowProvider', () => {
 
   /** @test {ShowProvider#_extractContent} */
   it('should extract show information based on a seasonal regex', () => {
-    showMap.testworld = 'westwordl'
+    showMap.testworld = 'westworld'
     const content = showProvider._extractContent({
       title: 'Testworld S01E06 720p HDTV x264-FLEET [eztv]',
       seeds: 1,
@@ -100,12 +100,9 @@ describe('ShowProvider', () => {
 
   /** @test {ShowProvider#attachTorrent} */
   it('should create a new show object with a torrent attached', () => {
-    expect(true).to.be.true
-
     let show = showProvider.attachTorrent({
       showTitle: 'repack',
-      episodes: {
-      }
+      episodes: {}
     }, {
       seeds: 2
     }, 1, 1, '480p')
@@ -120,14 +117,12 @@ describe('ShowProvider', () => {
 
   /** @test {ShowProvider#_getAllContent} */
   it('should get no content from an empty torrents array', done => {
-    showProvider._getAllContent([null])
-      .then(res => {
-        expect(res).to.be.an('array')
-        expect(res.length).to.equal(0)
+    showProvider._getAllContent([null]).then(res => {
+      expect(res).to.be.an('array')
+      expect(res.length).to.equal(0)
 
-        done()
-      })
-      .catch(done)
+      done()
+    }).catch(done)
   })
 
   /** @test {ShowProvider#_getAllContent} */
@@ -157,7 +152,7 @@ describe('ShowProvider', () => {
   })
 
   /** @test {ShowProvider#search} */
-  it('should return a list of all the intersted torrents', done => {
+  it('should return a list of all the inserted torrents', done => {
     const stub = sinon.stub(showProvider, '_getTotalPages')
     stub.resolves(1)
 

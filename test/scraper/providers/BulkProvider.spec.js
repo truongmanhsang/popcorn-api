@@ -37,7 +37,7 @@ describe('BulkProvider', () => {
   })
 
   /** @test {BulkProvider#search} */
-  it('should return a list of all the instered torrents', done => {
+  it('should return a list of all the inserted torrents', done => {
     const stub = sinon.stub(bulkProvider._api, 'getAll')
     stub.resolves([{
       show: 'Westworld',

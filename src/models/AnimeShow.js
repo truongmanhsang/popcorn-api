@@ -10,7 +10,7 @@ import { showSchema, Show } from './Show'
  */
 export class AnimeShow extends Show {}
 
-// Attatch the fuctions from the AnimeShow class to the showSchema.
+// Attach the fuctions from the AnimeShow class to the showSchema.
 showSchema.loadClass(AnimeShow)
 
 // Create the anime show model.

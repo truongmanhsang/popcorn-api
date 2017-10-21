@@ -52,7 +52,7 @@ hooks.beforeAll((t, done) => {
       .then(res => hooks.log(`Inserted content: '${res.id}'`))
   }).then(done)
     .catch(err => {
-      hooks.error(`Uhoh an error occured during the beforeAll hook: '${err}'`)
+      hooks.error(`Uhoh an error occurred during the beforeAll hook: '${err}'`)
       done()
     })
 })
@@ -62,12 +62,12 @@ hooks.afterAll((t, done) => {
     return model.clazz.findOneAndRemove({
       _id: model.model.id
     }, model.model).exec()
-      .then(res => hooks.log(`Removed conent: '${res.id}'`))
+      .then(res => hooks.log(`Removed content: '${res.id}'`))
   }).then(() => Setup.disconnectMongoDb())
     .then(del.sync([process.env.TEMP_DIR]))
     .then(done)
     .catch(err => {
-      hooks.error(`Uhoh an error occured during the afterAll hook: '${err}'`)
+      hooks.error(`Uhoh an error occurred during the afterAll hook: '${err}'`)
       done()
     })
 })

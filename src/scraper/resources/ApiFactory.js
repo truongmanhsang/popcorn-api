@@ -61,13 +61,6 @@ import IAbstractFactory from './IAbstractFactory'
 export default class ApiFactory extends IAbstractFactory {
 
   /**
-   * A configured ExtraTorrent API.
-   * @type {ExtraTorrent}
-   * @see https://github.com/ChrisAlderson/extratorrent-api
-   */
-   _extraTorrentApi: ExtraTorrent
-
-  /**
    * A configured Eztv API.
    * @type {Eztv}
    * @see https://github.com/ChrisAlderson/eztv-api-pt

@@ -141,7 +141,7 @@ const dateBased: Object = {
 }
 
 /**
- * The confirm propery.
+ * The confirm property.
  * @type {Object}
  */
 const confirm: Object = {

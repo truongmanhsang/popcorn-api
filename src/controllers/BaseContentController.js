@@ -72,9 +72,9 @@ export default class BaseContentController extends IContentController {
   }
 
   /**
-   * Sort based on a propery.
+   * Sort based on a property.
    * @param {!string} sort - The property to sort on.
-   * @param {!number} order - The way to sort the propery.
+   * @param {!number} order - The way to sort the property.
    * @returns {Object} - The sort object.
    */
   sortContent(sort: string, order: number): Object {

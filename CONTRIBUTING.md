@@ -41,8 +41,8 @@ latest `development` or look for [closed issues](https://github.com/popcorn-offi
 3. **Include a screencast if relevant** - Is your issue about a design or front
 end feature or bug? The most helpful thing in the world is if we can *see* what
 you're talking about. Just drop the picture after writing your issue, it'll be
-uploaded and shown to the developpers.
-3. Use the Issue tab on Github to start [creating a bug report](https://github.com/popcorn-official/popcorn-api/issues/new).
+uploaded and shown to the developers.
+3. Use the Issue tab on GitHub to start [creating a bug report](https://github.com/popcorn-official/popcorn-api/issues/new).
 A good bug report shouldn't leave others needing to chase you up for more
 information. Be sure to include all the possible required details and the steps
 to take to reproduce the issue.
@@ -50,7 +50,7 @@ to take to reproduce the issue.
 ### Feature Requests
 
 Feature requests are welcome. Before you submit one be sure to:
-1. **Use the [Github Issues search](https://github.com/popcorn-official/popcorn-api/issues)**
+1. **Use the [GitHub Issues search](https://github.com/popcorn-official/popcorn-api/issues)**
 and check the feature hasn't already been requested.
 2. Take a moment to think about whether your idea fits with the scope and aims
 of the project, or if it might better fit being an app/plugin.

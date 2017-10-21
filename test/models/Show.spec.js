@@ -70,7 +70,7 @@ describe('Show', () => {
   let show: Show
 
   /**
-   * The show obejct initiated without a constructor object.
+   * The show object initiated without a constructor object.
    * @type {Show}
    */
   let showEmpty: Show

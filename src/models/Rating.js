@@ -27,7 +27,7 @@ export const ratingSchema = new Schema({
 export class Rating extends Model {
 
   /**
-   * The precentage of the rating.
+   * The percentage of the rating.
    * @type {number}
    */
   percentage: number
@@ -47,7 +47,7 @@ export class Rating extends Model {
   /**
    * Create a new Rating object.
    * @param {!Object} config={} - The configuration object for the rating.
-   * @param {!number} config.percentage - The precentage of the rating.
+   * @param {!number} config.percentage - The percentage of the rating.
    * @param {!number} config.watching - The amount of watching for the rating.
    * @param {!number} config.votes - The amount of votes of the rating.
    */
@@ -55,7 +55,7 @@ export class Rating extends Model {
     super()
 
     /**
-     * The precentage of the rating.
+     * The percentage of the rating.
      * @type {number}
      */
     this.percentage = percentage

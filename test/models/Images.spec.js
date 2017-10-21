@@ -16,7 +16,7 @@ describe('Images', () => {
   let images: Images
 
   /**
-   * The images obejct initiated without a constructor object.
+   * The images object initiated without a constructor object.
    * @type {Images}
    */
   let imagesEmpty: Images

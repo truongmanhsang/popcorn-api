@@ -143,7 +143,7 @@ export class Movie extends Content {
 
 }
 
-// Attatch the fuctions from the Movie class to the movieSchema.
+// Attach the fuctions from the Movie class to the movieSchema.
 movieSchema.loadClass(Movie)
 
 // Create the movie model.

@@ -24,7 +24,7 @@ describe('IAbstractFactory', () => {
   })
 
   /** @test {IAbstractFactory#getApi} */
-  it('should throw an error when callign the getApi method', () => {
+  it('should throw an error when calling the getApi method', () => {
     expect(iAbstractFactory.getApi).to
       .throw('Using default method: \'getApi\'')
   })

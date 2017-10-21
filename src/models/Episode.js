@@ -149,7 +149,7 @@ export class Episode extends Model {
 
 }
 
-// Attatch the fuctions from the Episode class to the episodeSchema.
+// Attach the fuctions from the Episode class to the episodeSchema.
 episodeSchema.loadClass(Episode)
 
 // Create the episode model.

@@ -94,7 +94,7 @@ export class Show extends Content {
   last_updated: number
 
   /**
-   * The lastest episode of the show.
+   * The latest episode of the show.
    * @type {number}
    */
   latest_episode: number
@@ -126,7 +126,7 @@ export class Show extends Content {
    * @param {!string} status - The status of the show.
    * @param {!number} num_seasons - The number of seasons of the show.
    * @param {!number} last_updated - The time the show was last updated.
-   * @param {!number} lastest_episode - The lastest episode of the show.
+   * @param {!number} latest_episode - The latest episode of the show.
    * @param {!Array<Episode>} episodes - The episodes of the show.
    */
   constructor({
@@ -148,7 +148,7 @@ export class Show extends Content {
     status,
     num_seasons,
     last_updated,
-    lastest_episode,
+    latest_episode,
     episodes
   }: Object = {}
   ): void {
@@ -206,10 +206,10 @@ export class Show extends Content {
      */
     this.last_updated = last_updated
     /**
-     * The lastest episode of the show.
+     * The latest episode of the show.
      * @type {number}
      */
-    this.lastest_episode = lastest_episode
+    this.lastest_episode = latest_episode
     /**
      * The episodes of the show.
      * @type {Array<Episode>}
@@ -219,7 +219,7 @@ export class Show extends Content {
 
 }
 
-// Attatch the fuctions from the Show class to the showSchema.
+// Attach the fuctions from the Show class to the showSchema.
 showSchema.loadClass(Show)
 
 // Create the show model.

@@ -10,7 +10,7 @@ import ytsConfig from '../../../src/scraper/configs/ytsmovies.json'
 
 /**
  * Check the constructor of the base provider.
- * @param {!BasebaseProvider} provider - The base provider to test.
+ * @param {!BaseProvider} provider - The base provider to test.
  * @param {!string} name - The name to check for.
  * @returns {undefined}
  */
@@ -35,7 +35,7 @@ export function checkProviderAttributes(
 describe('BaseProvider', () => {
   /**
    * The base provider to test.
-   * @type {Baseprovider}
+   * @type {BaseProvider}
    */
   let baseProvider: BaseProvider
 

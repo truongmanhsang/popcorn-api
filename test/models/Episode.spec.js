@@ -16,7 +16,7 @@ describe('Episode', () => {
   let episode: Episode
 
   /**
-   * The episode obejct initiated without a constructor object.
+   * The episode object initiated without a constructor object.
    * @type {Episode}
    */
   let episodeEmpty: Episode
