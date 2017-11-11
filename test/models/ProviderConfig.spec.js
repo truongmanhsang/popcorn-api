@@ -1,13 +1,11 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
-import ProviderConfig from '../../src/models/ProviderConfig'
+import { ProviderConfig } from '../../src/models'
 
-/**
- * @test {ProviderConfig}
- * @flow
- */
+/** @test {ProviderConfig} */
 describe('ProviderConfig', () => {
   /**
    * The provider configuration object to test.

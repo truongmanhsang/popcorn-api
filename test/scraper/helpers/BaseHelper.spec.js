@@ -35,7 +35,7 @@ export function checkHelperAttributes(
 
 /**
  * Helper function to test the image attributes
- * @param {!Object} images - The images object to test. 
+ * @param {!Object} images - The images object to test.
  * @param {!Function} done - The done function of mocha.
  * @returns {undefined}
  */

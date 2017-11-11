@@ -1,12 +1,15 @@
 // Import the necessary modules.
 // @flow
-import AnimeShow from '../models/AnimeShow'
-import BaseContentController from './BaseContentController'
-import ContentService from '../services/ContentService'
+import { ContentService } from 'pop-api'
+
+import ContentController from './ContentController'
 import ExportController from './ExportController'
 import IndexController from './IndexController'
-import Movie from '../models/Movie'
-import Show from '../models/Show'
+import {
+  AnimeShow as Anime,
+  Movie,
+  Show
+} from '../models'
 
 /**
  * Object used as a base projections for content.
@@ -78,27 +81,39 @@ const query: Object = {
  * @type {Array<Object>}
  */
 export default [{
-  controller: IndexController,
-  constructor: []
+  Controller: IndexController,
+  constructor: {}
 }, {
-  controller: ExportController,
-  constructor: []
+  Controller: ExportController,
+  constructor: {}
 }, {
-  controller: BaseContentController,
-  constructor: [
-    new ContentService(AnimeShow, 'anime', animeProjection, query),
-    'anime'
-  ]
+  Controller: ContentController,
+  constructor: {
+    service: new ContentService({
+      Model: Anime,
+      itemType: 'anime',
+      projection: animeProjection,
+      query
+    })
+  }
 }, {
-  controller: BaseContentController,
-  constructor: [
-    new ContentService(Movie, 'move', movieProjection, query),
-    'movie'
-  ]
+  Controller: ContentController,
+  constructor: {
+    service: new ContentService({
+      Model: Movie,
+      itemType: 'move',
+      projection: movieProjection,
+      query
+    })
+  }
 }, {
-  controller: BaseContentController,
-  constructor: [
-    new ContentService(Show, 'show', showProjection, query),
-    'show'
-  ]
+  Controller: ContentController,
+  constructor: {
+    service: new ContentService({
+      Model: Show,
+      itemType: 'show',
+      projections: showProjection,
+      query
+    })
+  }
 }]

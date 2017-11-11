@@ -1,26 +1,39 @@
 // Import the necessary modules.
 /* eslint-disable no-unused-expressions */
 import chai, { expect } from 'chai'
+// @flow
 import chaiHttp from 'chai-http'
+import Express from 'express'
 import fs from 'fs'
+import mkdirp from 'mkdirp'
 import { join } from 'path'
 
-import Server from '../../src/Server'
+import ExportController from '../../src/controllers/ExportController'
 
-/**
- * @test {ExportController}
- * @flow
- */
+/** @test {ExportController} */
 describe('ExportController', () => {
+  /**
+   * The express instance to test with.
+   * @type {Express}
+   */
+  let app: $Application
+
+  /**
+   * The export controller to test.
+   * @type {ExportController}
+   */
+  let exportController: ExportController
+
   /**
    * Hook for setting up the ExportController tests.
    * @type {Function}
    */
   before(() => {
-    Server._Workers = 0
-
     chai.use(chaiHttp)
-    Server.setupApi(false, false, true)
+    app = Express()
+
+    exportController = new ExportController()
+    exportController.registerRoutes(app)
   })
 
   /** @test {ExportController} */
@@ -36,13 +49,27 @@ describe('ExportController', () => {
      * @type {Function}
      */
     before(() => {
-      file = join(process.env.TEMP_DIR, 'animes.json')
+      process.env.TEMP_DIR = process.env.TEMP_DIR || join(...[
+        __dirname,
+        '..',
+        '..',
+        'tmp'
+      ])
+      const tempDir = process.env.TEMP_DIR
+      if (!fs.existsSync(tempDir)) {
+        mkdirp.sync(tempDir)
+      }
+
+      file = join(...[
+        tempDir,
+        'animes.json'
+      ])
       fs.createWriteStream(file).end()
     })
 
     /** @test {ExportController#getExport} */
     it('should get a 200 status from the GET [/exports/:collection] route', done => {
-      chai.request(Server._App).get('/exports/anime')
+      chai.request(app).get('/exports/anime')
         .then(res => {
           expect(res).to.have.status(200)
           expect(res).to.be.json
@@ -54,7 +81,7 @@ describe('ExportController', () => {
 
     /** @test {ExportController#getExport} */
     it('should get a 200 status from the GET [/exports/:collection] route', done => {
-      chai.request(Server._App).get('/exports/animes')
+      chai.request(app).get('/exports/animes')
         .then(res => {
           expect(res).to.have.status(200)
           expect(res).to.be.json
@@ -83,7 +110,7 @@ describe('ExportController', () => {
   describe('will throw errors', () => {
     /** @test {ExportController#getExport} */
     it('should get a 500 status from the GET [/exports/:collection] route', done => {
-      chai.request(Server._App).get('/exports/anime')
+      chai.request(app).get('/exports/anime')
         .then(done)
         .catch(err => {
           expect(err).to.have.status(500)
@@ -95,7 +122,7 @@ describe('ExportController', () => {
 
     /** @test {ExportController#getExport} */
     it('should get a 500 status form the GET [/exports/:collection] route', done => {
-      chai.request(Server._App).get('/exports/faulty')
+      chai.request(app).get('/exports/faulty')
         .then(done)
         .catch(err => {
           expect(err).to.have.status(500)
@@ -104,13 +131,5 @@ describe('ExportController', () => {
           done()
         })
     })
-  })
-
-  /**
-   * Hook for teaing down the ExportController tests.
-   * @type {Function}
-   */
-  after(done => {
-    Server.closeApi(done)
   })
 })

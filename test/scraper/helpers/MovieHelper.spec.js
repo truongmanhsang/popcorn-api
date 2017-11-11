@@ -13,7 +13,7 @@ import * as baseHelperTests from './BaseHelper.spec'
  * @flow
  */
 describe('MovieHelper', () => {
-  /** 
+  /**
    * The movie helper to test.
    * @type {MovieHelper}
    */

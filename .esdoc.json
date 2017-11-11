@@ -2,100 +2,51 @@
   "source": "./src",
   "destination": "./docs",
   "includes": [".js$"],
-  "excludes": ["(node_modules|build|docs|views|gulpfile*|coverage|flow-typed)"],
+  "excludes": ["(node_modules|docs|coverage)"],
   "package": "./package.json",
   "plugins": [{
-    "name": "esdoc-accessor-plugin",
+    "name": "esdoc-standard-plugin",
     "option": {
-      "access": ["public", "protected", "private"],
-      "autoPrivate": true
-    }
-  }, {
-    "name": "esdoc-brand-plugin",
-    "option": {
-      "logo": "./logo.png",
-      "title": "Popcorn API",
-      "description": "Popcorn Time API is developed to make it easier for anyone to create their own version of Popcorn Time.",
-      "repository": "https://github.com/popcorn-official/popcorn-api",
-      "site": "https://popcorntime.sh",
-      "author": "https://twitter.com/popcorntimetv",
-      "image": "https://avatars2.githubusercontent.com/u/7267937"
-    }
-  }, {
-    "name": "esdoc-coverage-plugin",
-    "option": {
-      "enable": true
+      "brand": {
+        "logo": "./logo.png",
+        "title": "pop-api",
+        "description": "The base modules for popcorn-api",
+        "repository": "https://github.com/popcorn-official/pop-api",
+        "site": "https://popcorntime.sh",
+        "author": "https://twitter.com/popcorntimetv",
+        "image": "https://avatars2.githubusercontent.com/u/7267937"
+      },
+      "manual": {
+        "index": "./README.md",
+        "globalIndex": false,
+        "coverage": true,
+        "files": [
+          "./manual/overview.md",
+          "./manual/installation.md",
+          "./manual/usage.md",
+          "./manual/example.md",
+          "./manual/tutorial.md",
+          "./CHANGELOG.md",
+          "./CONTRIBUTING.md",
+          "./CODE_OF_CONDUCT.md"
+        ]
+      },
+      "test": {
+        "source": "./test/",
+        "interfaces": ["describe", "it", "context", "suite", "test"],
+        "includes": ["(spec|Spec|test|Test)\\.js$"],
+        "excludes": ["\\.config\\.js$"]
+      }
     }
   }, {
     "name": "esdoc-ecmascript-proposal-plugin",
     "option": {
-      "classProperties": true,
-      "objectRestSpread": true,
-      "doExpressions": false,
-      "functionBind": false,
-      "functionSent": false,
-      "asyncGenerators": false,
-      "decorators": false,
-      "exportExtensions": false,
-      "dynamicImport": true
-    }
-  }, {
-    "name": "esdoc-external-ecmascript-plugin",
-    "option": {
-      "enable": true
-    }
-  }, {
-    "name": "esdoc-external-nodejs-plugin",
-    "option": {
-      "enable": true
+      "all": true
     }
   }, {
     "name": "esdoc-flow-type-plugin",
-    "option": {
+    "opton": {
       "enable": true
-    }
-  }, {
-    "name": "esdoc-integrate-manual-plugin",
-    "option": {
-      "index": "./README.md",
-      "globalIndex": false,
-      "coverage": true,
-      "asset": null,
-      "files": [
-        "./manual/overview.md",
-        "./manual/installation.md",
-        "./manual/usage.md",
-        "./manual/example.md",
-        "./manual/tutorial.md",
-        "./CHANGELOG.md",
-        "./CONTRIBUTING.md",
-        "./CODE_OF_CONDUCT.md"
-      ]
-    }
-  }, {
-    "name": "esdoc-integrate-test-plugin",
-    "option": {
-      "source": "./test/",
-      "interfaces": ["describe", "it", "context", "suite", "test"],
-      "includes": ["(spec|Spec|test|Test)\\.js$"],
-      "excludes": ["\\.config\\.js$"]
-    }
-  }, {
-    "name": "esdoc-lint-plugin",
-    "option": {
-      "enable": true
-    }
-  }, {
-    "name": "esdoc-publish-html-plugin"
-  }, {
-    "name": "esdoc-undocumented-identifier-plugin",
-    "option": {
-      "enable": true
-    }
-  }, {
-    "name": "esdoc-unexported-identifier-plugin",
-    "option": {
-      "enable": false
     }
   }]
 }

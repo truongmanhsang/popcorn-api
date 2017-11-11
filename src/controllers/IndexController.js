@@ -1,25 +1,34 @@
 // Import the necessary modules.
+// @flow
 import fs from 'fs'
-import path from 'path'
+import { join } from 'path'
+import {
+  IController
+  // utils
+} from 'pop-api'
+import type {
+  $Application,
+  $Request,
+  $Response
+} from 'express'
 
-import Anime from '../models/AnimeShow'
-import IController from './IController'
-import BaseContentController from './BaseContentController'
-import Movie from '../models/Movie'
-import Scraper from '../Scraper'
-import Show from '../models/Show'
-import Util from '../Util'
+import ContentController from './ContentController'
+// import Scraper from '../Scraper'
+import {
+  AnimeShow as Anime,
+  Movie,
+  Show
+} from '../models'
 import {
   name,
   repository,
   version
-} from '../../package.json'
+} from '../../package'
 
 /**
  * Class for displaying information about the server the API is running on.
  * @type {IndexController}
  * @implements {IController}
- * @flow
  */
 export default class IndexController extends IController {
 
@@ -34,7 +43,7 @@ export default class IndexController extends IController {
    * @param {!Express} app - The Express instance to register the routes to.
    * @returns { undefined}
    */
-  registerRoutes(app: Express): void {
+  registerRoutes(app: $Application): void {
     app.get('/status', this.getIndex)
     app.get('/logs/error', this.getErrorLog)
   }
@@ -45,11 +54,11 @@ export default class IndexController extends IController {
    * @param {!Object} res - The ExpressJS response object.
    * @returns {Promise<Object, Object>} - General information about the server.
    */
-  async getIndex(req: Object, res: Object): Promise<Object, Object> {
+  async getIndex(req: $Request, res: $Response): Promise<Object | Object> {
     try {
-      const commit = await Util.executeCommand('git rev-parse --short HEAD')
+      // const commit = await utils.executeCommand('git rev-parse --short HEAD')
 
-      const query = BaseContentController.Query
+      const query = ContentController.Query
       const totalAnimes = await Anime.count(query).exec()
       const totalMovies = await Movie.count(query).exec()
       const totalShows = await Show.count(query).exec()
@@ -57,14 +66,14 @@ export default class IndexController extends IController {
       return res.json({
         repo: repository.url,
         server: IndexController._Server,
-        status: await Scraper.Status,
+        // status: await Scraper.Status,
         totalAnimes,
         totalMovies,
         totalShows,
-        updated: await Scraper.Updated,
+        // updated: await Scraper.Updated,
         uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
-        version,
-        commit
+        version
+        // commit
       })
     } catch (err) {
       return res.status(500).json(err)
@@ -77,13 +86,23 @@ export default class IndexController extends IController {
    * @param {!Object} res - The ExpressJS response object.
    * @returns {Object} - The content of the log file.
    */
-  getErrorLog(req: Object, res: Object): Object {
+  getErrorLog(req: $Request, res: $Response): Object {
+    process.env.TEMP_DIR = process.env.TEMP_DIR || join(...[
+      __dirname,
+      '..',
+      '..',
+      'tmp'
+    ])
+    const root = process.env.TEMP_DIR
     const file = `${name}.log`
-    const filePath = path.join(process.env.TEMP_DIR, file)
+    const filePath = join(...[
+      process.env.TEMP_DIR,
+      file
+    ])
 
     if (fs.existsSync(filePath)) {
       return res.sendFile(file, {
-        root: process.env.TEMP_DIR,
+        root,
         headers: {
           'Content-Type': 'text/plain; charset=UTF-8'
         }

@@ -1,6 +1,10 @@
 {
   "presets": [
-    "es2015",
+    ["env", {
+      "targets": {
+        "node": "7.10.1"
+      }
+    }],
     "flow"
   ],
   "env": {
@@ -10,15 +14,9 @@
   },
   "plugins": [
     "dynamic-import-node",
-    "syntax-dynamic-import",
     "transform-class-properties",
+    "transform-export-extensions",
     "transform-object-rest-spread",
-    "transform-strict-mode",
-    "transform-regenerator", [
-      "transform-runtime", {
-        "polyfill": false,
-        "regenerator": true
-      }
-    ]
+    "transform-strict-mode"
   ]
 }

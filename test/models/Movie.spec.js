@@ -1,21 +1,20 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
-import { ItemType } from 'butter-provider'
 
-import Movie from '../../src/models/Movie'
-import testMovie from '../data/movie.json'
+import testMovie from '../data/movie'
+import { Movie } from '../../src/models'
 import * as contentTests from './Content.spec'
 
 /**
  * It should check the attributes of a movie
- * @flow
  * @param {Movie} movie - The movie to test.
  * @param {Object} testMovie - The movie to test against.
  * @returns {undefined}
  */
 export function testMovieAttributes(movie: Movie, testMovie: Object): void {
-  contentTests.testContentAttributes(movie, testMovie, ItemType.MOVIE)
+  contentTests.testContentAttributes(movie, testMovie, 'movie')
 
   expect(movie.certification).to.be.a('string')
   expect(movie.certification).to.equal(testMovie.certification)
@@ -35,7 +34,7 @@ export function testMovieAttributes(movie: Movie, testMovie: Object): void {
  * @returns {undefined}
  */
 export function testEmptyMovieAttributes(movieEmpty: Movie): void {
-  contentTests.testEmptyContentAttributes(movieEmpty, ItemType.MOVIE)
+  contentTests.testEmptyContentAttributes(movieEmpty, 'movie')
 
   expect(movieEmpty.certification).to.be.undefined
   expect(movieEmpty.language).to.be.a('string')
@@ -44,10 +43,7 @@ export function testEmptyMovieAttributes(movieEmpty: Movie): void {
   expect(movieEmpty.trailer).to.be.undefined
 }
 
-/**
- * @test {Movie}
- * @flow
- */
+/** @test {Movie} */
 describe('Movie', () => {
   /**
    * The movie object to test.

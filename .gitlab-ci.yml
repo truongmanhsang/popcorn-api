@@ -46,15 +46,6 @@ codeclimate:
     name: "$CI_PROJECT_NAME-$CI_JOB_NAME-$CI_PIPELINE_ID"
     paths: [codeclimate.json]
 
-codequality:
-  stage: codequality
-  script:
-    - npm run cqc
-    - npm run cqc -- --format json > cqc.json
-  artifacts:
-    name: "$CI_PROJECT_NAME-$CI_JOB_NAME-$CI_PIPELINE_ID"
-    paths: [cqc.json]
-
 docs:
   stage: docs
   script:
