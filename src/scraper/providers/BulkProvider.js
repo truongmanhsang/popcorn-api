@@ -1,4 +1,5 @@
-// Import the necessary modules.
+// import the necessary modules.
+// @flow
 import pMap from 'p-map'
 
 import BaseProvider from './BaseProvider'
@@ -7,43 +8,44 @@ import BaseProvider from './BaseProvider'
  * Class for scraping content from EZTV and HorribleSubs.
  * @extends {BaseProvider}
  * @type {BulkProvider}
- * @flow
  */
 export default class BulkProvider extends BaseProvider {
 
   /**
-   * Create a BulkProvider class.
-   * @param {!Object} config - The configuration object for the torrent
-   * provider.
-   * @param {!Object} config.api - The name of api for the torrent provider.
-   * @param {!string} config.name - The name of the torrent provider.
-   * @param {!string} config.modelType - The model type for the helper.
-   * @param {!string} config.type - The type of content to scrape.
+   * Get the contents for a configuration.
+   * @param {!Object} config - The config to get content with.
+   * @param {!string} config.name - The name of the config.
+   * @param {!Object} config.api - The API module ot get the content with.
+   * @param {!string} config.contentType - The type of content to scrape.
+   * @param {!MongooseModel} config.Model - The model for the content to
+   * scrape.
+   * @param {!IHelper} config.Helper - The helper class to save the content to
+   * the database.
+   * @returns {Promise<Array<Object>, Error>} - The results of a configuration.
    */
-  constructor({api, name, modelType, type}: Object): void {
-    super({api, name, modelType, type})
-  }
+  scrapeConfig({
+    name,
+    api,
+    contentType,
+    Model,
+    Helper
+  }: Object): Promise<Array<Object> | Error> {
+    this.setConfig({name, api, contentType, Model, Helper})
 
-  /**
-   * Returns a list of all the inserted torrents.
-   * @override
-   * @returns {Promise<Array<Object>, undefined>} - A list of scraped content.
-   */
-  async search(): Promise<Array<Object>, void> {
-    try {
-      logger.info(`${this._name}: Started scraping...`)
-      const contents = await this._api.getAll()
-      logger.info(`${this._name}: Found ${contents.length} ${this._type}s.`)
+    logger.info(`${this.name}: Started scraping...`)
+    return this.api.getAll().then(contents => {
+      logger.info(
+        `${this.name}: Found ${contents.length} ${this.contentType}s.`
+      )
 
-      return await pMap(contents, async c => {
-        const content = await this._api.getData(c)
-        return this.getContent(content)
+      return pMap(contents, c => {
+        return this.api.getData(c)
+          .then(content => this.getContent(content))
+          .catch(err => logger.error(err))
       }, {
-        concurrency: BaseProvider._MaxWebRequest
+        concurrency: this.maxWebRequests
       })
-    } catch (err) {
-      logger.error(err)
-    }
+    })
   }
 
 }

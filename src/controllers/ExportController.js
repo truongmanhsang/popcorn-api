@@ -36,15 +36,18 @@ export default class ExportController extends IController {
     const { collection } = req.params
 
     if (collection.match(/(anime|movie|show)s?/i)) {
-      process.env.TEMP_DIR = process.env.TEMP_DIR || join(...[
-        __dirname,
-        '..',
-        '..',
-        'tmp'
-      ])
+      process.env.TEMP_DIR = process.env.TEMP_DIR
+        ? process.env.TEMP_DIR
+        : join(...[
+          __dirname,
+          '..',
+          '..',
+          'tmp'
+        ])
 
+      const tempDir = process.env.TEMP_DIR
       let jsonFile = join(...[
-        process.env.TEMP_DIR,
+        tempDir,
         `${collection}.json`
       ])
       if (existsSync(jsonFile)) {
@@ -52,7 +55,7 @@ export default class ExportController extends IController {
       }
 
       jsonFile = join(...[
-        process.env.TEMP_DIR,
+        tempDir,
         `${collection}s.json`
       ])
       if (existsSync(jsonFile)) {

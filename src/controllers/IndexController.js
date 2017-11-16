@@ -3,8 +3,9 @@
 import fs from 'fs'
 import { join } from 'path'
 import {
-  IController
-  // utils
+  IController,
+  // PopApi,
+  utils
 } from 'pop-api'
 import type {
   $Application,
@@ -13,7 +14,6 @@ import type {
 } from 'express'
 
 import ContentController from './ContentController'
-// import Scraper from '../Scraper'
 import {
   AnimeShow as Anime,
   Movie,
@@ -56,7 +56,11 @@ export default class IndexController extends IController {
    */
   async getIndex(req: $Request, res: $Response): Promise<Object | Object> {
     try {
-      // const commit = await utils.executeCommand('git rev-parse --short HEAD')
+      const commit = await utils.executeCommand('git', [
+        'rev-parse',
+        '--short',
+        'HEAD'
+      ])
 
       const query = ContentController.Query
       const totalAnimes = await Anime.count(query).exec()
@@ -66,14 +70,14 @@ export default class IndexController extends IController {
       return res.json({
         repo: repository.url,
         server: IndexController._Server,
-        // status: await Scraper.Status,
+        // status: await PopApi.scraper.getStatus(),
         totalAnimes,
         totalMovies,
         totalShows,
-        // updated: await Scraper.Updated,
+        // updated: await PopApi.scraper.getUpdated(),
         uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
-        version
-        // commit
+        version,
+        commit
       })
     } catch (err) {
       return res.status(500).json(err)
@@ -87,12 +91,15 @@ export default class IndexController extends IController {
    * @returns {Object} - The content of the log file.
    */
   getErrorLog(req: $Request, res: $Response): Object {
-    process.env.TEMP_DIR = process.env.TEMP_DIR || join(...[
-      __dirname,
-      '..',
-      '..',
-      'tmp'
-    ])
+    process.env.TEMP_DIR = typeof process.env.TEMP_DIR === 'string'
+      ? process.env.TEMP_DIR
+      : join(...[
+        __dirname,
+        '..',
+        '..',
+        'tmp'
+      ])
+
     const root = process.env.TEMP_DIR
     const file = `${name}.log`
     const filePath = join(...[

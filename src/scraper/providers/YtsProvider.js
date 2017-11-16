@@ -1,11 +1,11 @@
 // Import the necessary modules.
 import MovieProvider from './MovieProvider'
+// @flow
 
 /**
  * Class for scraping content from YTS.ag.
  * @extends {MovieProvider}
  * @type {YtsProvider}
- * @flow
  */
 export default class YtsProvider extends MovieProvider {
 

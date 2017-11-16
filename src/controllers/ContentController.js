@@ -7,8 +7,8 @@ import type {
 } from 'express'
 
 import {
-  BaseContentController
-  // type ContentService
+  BaseContentController,
+  type ContentService
 } from 'pop-api'
 
 /**
@@ -18,21 +18,11 @@ import {
  */
 export default class ContentController extends BaseContentController {
 
-  // /**
-  //  * The service of the content controller.
-  //  * @type {ContentService}
-  //  */
-  // _service: ContentService
-  //
-  // /**
-  //  * Create a new content controller.
-  //  * @param {!Object} options - The options for the base content controller.
-  //  * @param {!ContentService} options.service - The service for the content
-  //  * controller.
-  //  */
-  // constructor({service}: Object): void {
-  //   super({service})
-  // }
+  /**
+   * The service of the content controller.
+   * @type {ContentService}
+   */
+  _service: ContentService
 
   /**
    * Register the default methods to the default routes.
@@ -52,21 +42,11 @@ export default class ContentController extends BaseContentController {
 
   /**
    * Default method to sort the items.
-   * @param {?string} sort - The property to sort on.
+   * @param {!string} sort - The property to sort on.
    * @param {!number} order - The way to sort the property.
    * @returns {Object} - The sort object.
    */
-  sortContent(sort?: string, order: number): Object {
-    const defaultSort = {
-      'rating.votes': order,
-      'rating.precentage': order,
-      'rating.watching': order
-    }
-
-    if (!sort) {
-      return defaultSort
-    }
-
+  sortContent(sort: string, order: number): Object {
     const s = sort.toLowerCase()
 
     switch (s) {
@@ -94,7 +74,11 @@ export default class ContentController extends BaseContentController {
           year: order
         }
       default:
-        return defaultSort
+        return {
+          'rating.votes': order,
+          'rating.precentage': order,
+          'rating.watching': order
+        }
     }
   }
 
@@ -109,13 +93,13 @@ export default class ContentController extends BaseContentController {
     const { sort, order, genre, keywords } = req.query
 
     const o = parseInt(order, 10) ? parseInt(order, 10) : -1
-    const s = this.sortContent(sort, o)
+    const s = typeof sort === 'string' ? this.sortContent(sort, o) : ''
 
     const query = {
       ...this._service.query
     }
 
-    if (typeof genre === 'string' && !genre.toLowerCase() !== 'all') {
+    if (typeof genre === 'string' && genre.toLowerCase() !== 'all') {
       if (genre.match(/science[-\s]fuction/i) || genre.match(/sci[-\s]fi/i)) {
         query.genres = 'science-fiction'
       } else {

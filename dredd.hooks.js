@@ -4,7 +4,9 @@ import del from 'del'
 import dotenv from 'dotenv'
 // @flow-ignore
 import hooks from 'hooks'
+import mkdirp from 'mkdirp'
 import pMap from 'p-map'
+import { createWriteStream } from 'fs'
 import { Database } from 'pop-api'
 import { join } from 'path'
 
@@ -25,6 +27,11 @@ process.env.TEMP_DIR = process.env.TEMP_DIR || join(...['tmp'])
 
 const tempDir = process.env.TEMP_DIR
 const models = []
+
+/**
+ * The database middleware to connect to MongoDb.
+ * @type {Database}
+ */
 let database: Database
 
 hooks.beforeAll((t, done) => {
@@ -32,25 +39,32 @@ hooks.beforeAll((t, done) => {
     database: name
   })
 
+  del.sync([tempDir])
+  mkdirp.sync(tempDir)
+  createWriteStream(join(...[
+    tempDir,
+    `${name}.log`
+  ])).end()
+
   return database.connectMongoDb().then(() => {
     models.push({
-      clazz: AnimeMovie,
-      model: new AnimeMovie(testAnimeMovie)
+      c: AnimeMovie,
+      m: new AnimeMovie(testAnimeMovie)
     }, {
-      clazz: AnimeShow,
-      model: new AnimeShow(testAnimeShow)
+      c: AnimeShow,
+      m: new AnimeShow(testAnimeShow)
     }, {
-      clazz: Movie,
-      model: new Movie(testMovie)
+      c: Movie,
+      m: new Movie(testMovie)
     }, {
-      clazz: Show,
-      model: new Show(testShow)
+      c: Show,
+      m: new Show(testShow)
     })
 
     return pMap(models, model => {
-      return model.clazz.findOneAndUpdate({
-        _id: model.model.id
-      }, model.model, {
+      return model.c.findOneAndUpdate({
+        _id: model.m.id
+      }, model.m, {
         upsert: true,
         new: true
       }).exec()
@@ -67,8 +81,8 @@ hooks.beforeAll((t, done) => {
 hooks.afterAll((t, done) => {
   return database.connectMongoDb().then(() => {
     return pMap(models, model => {
-      return model.clazz.findOneAndRemove({
-        _id: model.model.id
+      return model.c.findOneAndRemove({
+        _id: model.m.id
       }, model.model).exec()
         .then(res => hooks.log(`Removed content: '${res.id}'`))
     })

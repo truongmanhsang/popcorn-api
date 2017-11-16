@@ -101,7 +101,7 @@ export default [{
   constructor: {
     service: new ContentService({
       Model: Movie,
-      itemType: 'move',
+      itemType: 'movie',
       projection: movieProjection,
       query
     })
@@ -112,7 +112,7 @@ export default [{
     service: new ContentService({
       Model: Show,
       itemType: 'show',
-      projections: showProjection,
+      projection: showProjection,
       query
     })
   }

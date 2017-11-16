@@ -45,6 +45,12 @@ describe('ExportController', () => {
     let file: string
 
     /**
+     * The temporary directory to hold the logs.
+     * @type {string}
+     */
+    let tempDir
+
+    /**
      * Hook for setting up the ExportController tests.
      * @type {Function}
      */
@@ -55,7 +61,7 @@ describe('ExportController', () => {
         '..',
         'tmp'
       ])
-      const tempDir = process.env.TEMP_DIR
+      tempDir = process.env.TEMP_DIR
       if (!fs.existsSync(tempDir)) {
         mkdirp.sync(tempDir)
       }
@@ -67,17 +73,31 @@ describe('ExportController', () => {
       fs.createWriteStream(file).end()
     })
 
-    /** @test {ExportController#getExport} */
-    it('should get a 200 status from the GET [/exports/:collection] route', done => {
-      chai.request(app).get('/exports/anime')
-        .then(res => {
-          expect(res).to.have.status(200)
-          expect(res).to.be.json
-          expect(res).to.not.redirect
+    /**
+     * Helper function to test the `/exports/:collection` route.
+     * @param {!string} tempDir - The value for the temporary directory.
+     * @returns {undefined}
+     */
+    function testExportCollection(tempDir: string): void {
+      /** @test {ExportController#getExport} */
+      it('should get a 200 status from the GET [/exports/:collection] route', done => {
+        if (tempDir) {
+          delete process.env.TEMP_DIR
+        }
 
-          done()
-        }).catch(done)
-    })
+        chai.request(app).get('/exports/anime')
+          .then(res => {
+            expect(res).to.have.status(200)
+            expect(res).to.be.json
+            expect(res).to.not.redirect
+
+            done()
+          }).catch(done)
+      })
+    }
+
+    // Execute the tests.
+    [true, false].map(testExportCollection)
 
     /** @test {ExportController#getExport} */
     it('should get a 200 status from the GET [/exports/:collection] route', done => {

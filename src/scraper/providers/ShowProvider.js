@@ -1,57 +1,37 @@
 // Import the necessary modules.
+// @flow
 import pMap from 'p-map'
 
 import BaseProvider from './BaseProvider'
-import showmap from './maps/showmap.json'
+import showmap from './maps/showmap'
+
+// /**
+//  * The regular expressions used to extract information about shows.
+//  * @type {Array<Object>}
+//  */
+// this._regexps = [{
+//   regex: /(.*).[sS](\d{2})[eE](\d{2})/i,
+//   dateBased: false
+// }, {
+//   regex: /(.*).(\d{1,2})[x](\d{2})/i,
+//   dateBased: false
+// }, {
+//   regex: /(.*).(\d{4}).(\d{2}.\d{2})/i,
+//   dateBased: true
+// }, {
+//   regex: /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i,
+//   dateBased: false
+// }, {
+//   regex: /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i,
+//   dateBased: false
+// }]
 
 /**
  * Class for scraping show content from various sources.
  * @extends {BaseProvider}
  * @type {ShowProvider}
- * @flow
  */
 export default class ShowProvider extends BaseProvider {
-
-  /**
-   * The regular expressions used to extract information about shows.
-   * @type {Array<Object>}
-   */
-  _regexps: Array<Object>
-
-  /**
-   * Create a ShowProvider class.
-   * @param {!Object} config - The configuration object for the torrent
-   * provider.
-   * @param {?Object} config.api - The name of api for the torrent provider.
-   * @param {!String} config.name - The name of the torrent provider.
-   * @param {!String} config.modelType - The model type for the helper.
-   * @param {?Object} config.query - The query object for the api.
-   * @param {!String} config.type - The type of content to scrape.
-   */
-  constructor({api, name, modelType, query, type}) {
-    super({api, name, modelType, query, type})
-
-    /**
-     * The regular expressions used to extract information about shows.
-     * @type {Array<Object>}
-     */
-    this._regexps = [{
-      regex: /(.*).[sS](\d{2})[eE](\d{2})/i,
-      dateBased: false
-    }, {
-      regex: /(.*).(\d{1,2})[x](\d{2})/i,
-      dateBased: false
-    }, {
-      regex: /(.*).(\d{4}).(\d{2}.\d{2})/i,
-      dateBased: true
-    }, {
-      regex: /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i,
-      dateBased: false
-    }, {
-      regex: /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i,
-      dateBased: false
-    }]
-  }
 
   /**
    * Extract show information based on a regex.
@@ -60,19 +40,23 @@ export default class ShowProvider extends BaseProvider {
    * @param {!Object} torrent - The torrent to extract the show information
    * from.
    * @param {!RegExp} r - The regex to extract the show information.
-   * @returns {Object} - Information about a show from the torrent.
+   * @returns {Object|undefined} - Information about a show from the torrent.
    */
-  _extractContent(torrent: Object, r: RegExp): Object {
+  extractContent({torrent, regex}: Object): Object | void {
     let episode
     let season
     let slug
 
     const { title, name } = torrent
-    const t = r.regex.test(title) ? title : r.regex.test(name) ? name : null
+    const t = regex.regex.test(title)
+      ? title
+      : regex.regex.test(name)
+        ? name
+        : null
     if (!t) {
       return
     }
-    const match = t.match(r.regex)
+    const match = t.match(regex.regex)
 
     const showTitle = match[1].replace(/\./g, ' ')
     slug = showTitle.replace(/[^a-zA-Z0-9\- ]/gi, '')
@@ -81,12 +65,12 @@ export default class ShowProvider extends BaseProvider {
     slug = slug in showmap ? showmap[slug] : slug
 
     season = 1
-    season = r.dateBased ? parseInt(match[2], 10) : match[2]
+    season = regex.dateBased ? parseInt(match[2], 10) : match[2]
 
     episode = match.length >= 4
       ? parseInt(match[3], 10)
       : parseInt(match[2], 10)
-    episode = r.dateBased ? parseInt(match[3], 10) : match[3]
+    episode = regex.dateBased ? parseInt(match[3], 10) : match[3]
 
     const quality = t.match(/(\d{3,4})p/) !== null
       ? t.match(/(\d{3,4})p/)[0]
@@ -96,7 +80,7 @@ export default class ShowProvider extends BaseProvider {
       url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
       seeds: torrent.seeds ? torrent.seeds : 0,
       peers: torrent.peers ? torrent.peers : 0,
-      provider: this._name
+      provider: this.name
     }
 
     const show = {
@@ -105,12 +89,18 @@ export default class ShowProvider extends BaseProvider {
       season,
       episode,
       quality,
-      dateBased: r.dateBased,
+      dateBased: regex.dateBased,
       episodes: {},
-      type: this._type
+      type: this.contentType
     }
 
-    return this.attachTorrent(...[show, torrentObj, season, episode, quality])
+    return this.attachTorrent({
+      show,
+      season,
+      episode,
+      quality,
+      torrent: torrentObj
+    })
   }
 
   /**
@@ -123,13 +113,13 @@ export default class ShowProvider extends BaseProvider {
    * @param {!string} quality - The quality of the episode.
    * @returns {Object} - The show with the newly attached torrent.
    */
-  attachTorrent(
-    show: Object,
-    torrent: Object,
-    season: number,
-    episode: number,
-    quality: string
-  ): Object {
+  attachTorrent({
+    show,
+    torrent,
+    season,
+    episode,
+    quality
+  }: Object): Object {
     if (!show.episodes[season]) {
       show.episodes[season] = {}
     }
@@ -157,15 +147,15 @@ export default class ShowProvider extends BaseProvider {
    * @returns {Promise<Array<Object>, undefined>} - A list of objects with show
    * information extracted from the torrents.
    */
-  _getAllContent(torrents: Array<Object>): Promise<Array<Object>, void> {
+  _getAllContent({torrents}: Object): Promise<Array<Object>, void> {
     const shows = []
 
-    return pMap(torrents, torrent => {
-      if (!torrent) {
+    return pMap(torrents, t => {
+      if (!t) {
         return
       }
 
-      const show = this._getContentData(torrent)
+      const show = this.getContentData(t)
       if (!show) {
         return
       }
@@ -175,7 +165,7 @@ export default class ShowProvider extends BaseProvider {
       const matching = shows.find(
         s => s.showTitle.toLowerCase() === showTitle.toLowerCase() &&
           s.slug.toLowerCase() === slug.toLowerCase() &&
-          s.type.toLowerCase() === this._type.toLowerCase()
+          s.type.toLowerCase() === this.contentType.toLowerCase()
       )
       if (!matching) {
         return shows.push(show)
@@ -183,9 +173,14 @@ export default class ShowProvider extends BaseProvider {
 
       const index = shows.indexOf(matching)
 
-      const torrentObj = show.episodes[season][episode][quality]
-      const args = [matching, torrentObj, season, episode, quality]
-      const created = this.attachTorrent(...args)
+      const torrent = show.episodes[season][episode][quality]
+      const created = this.attachTorrent({
+        matching,
+        torrent,
+        season,
+        episode,
+        quality
+      })
 
       shows.splice(index, 1, created)
     }, {

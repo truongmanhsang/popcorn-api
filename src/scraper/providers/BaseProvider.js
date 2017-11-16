@@ -1,128 +1,106 @@
 // Import the necessary modules.
+// @flow
 import pMap from 'p-map'
 import pTimes from 'p-times'
-import { ItemType } from 'butter-provider'
+import { AbstractProvider } from 'pop-api-scraper'
 
-import FactoryProducer from '../resources/FactoryProducer'
-import IProvider from './IProvider'
+import type {
+  MovieHelper,
+  ShowHelper
+} from '../helpers'
 
 /**
  * Class for scraping content from various sources.
- * @implements {IProvider}
+ * @implements {AbstractProvider}
  * @type {BaseProvider}
- * @flow
  */
-export default class BaseProvider extends IProvider {
+export default class BaseProvider extends AbstractProvider {
 
   /**
-   * The types of models available for the API.
+   * Map of the available content types to scrape.
    * @type {Object}
    */
-  static ModelTypes: Object = {
-    AnimeMovie: 'animemovie',
-    AnimeShow: 'animeshow',
+  static ContentTypes: Object = {
     Movie: 'movie',
     Show: 'show'
   }
 
   /**
-   * The types of content available for the API.
-   * @type {Object}
-   */
-  static Types: Object = {
-    Movie: ItemType.MOVIE,
-    Show: ItemType.TVSHOW
-  }
-
-  /**
-   * The maximum web requests can take place at the same time. Default is `2`.
-   * @protected
-   * @type {number}
-   */
-  static _MaxWebRequest: number = 2
-
-  /**
    * The api of the torrent provider.
    * @type {Object}
    */
-  _api: Object
+  api: Object
 
   /**
    * The name of the torrent provider.
    * @type {string}
    */
-  _name: string
+  name: string
 
   /**
    * The helper class for adding movies.
    * @type {MovieHelper|ShowHelper}
    */
-  _helper: MovieHelper | ShowHelper
-
-  /**
-   * The query object for the api.
-   * @type {Object}
-   */
-  _query: Object
+  helper: MovieHelper | ShowHelper
 
   /**
    * The type of content to scrape.
    * @type {string}
    */
-  _type: string
+  contentType: string
 
   /**
-   * Create a BaseProvider class.
-   * @param {!Object} config - The configuration object for the torrent
-   * provider.
-   * @param {!Object} config.api - The name of api for the torrent provider.
-   * @param {!string} config.name - The name of the torrent provider.
-   * @param {!string} config.modelType - The model type for the helper.
-   * @param {!Object} config.query - The query object for the api.
-   * @param {!string} config.type - The type of content to scrape.
+   * The max allowed concurrent web requests.
+   * @type {number}
    */
-  constructor({api, name, modelType, query = {}, type}: Object): void {
-    super()
+  maxWebRequests: number
 
-    const apiFactory = FactoryProducer.getFactory('api')
-    const helperFactory = FactoryProducer.getFactory('helper')
-    const modelFactory = FactoryProducer.getFactory('model')
+  /**
+   * The query object for the api.
+   * @type {Object}
+   */
+  query: Object
 
-    const model = modelFactory.getModel(modelType)
+  /**
+   * The regular expressions used to extract information about movies.
+   * @type {Array<Object>}
+   */
+  regexps: Array<Object>
 
-    /**
-     * The api of the torrent provider.
-     * @type {Object}
-     */
-    this._api = apiFactory.getApi(api)
-    /**
-     * The name of the torrent provider.
-     * @type {string}
-     */
-    this._name = name
-    /**
-     * The helper class for adding movies.
-     * @type {MovieHelper|ShowHelper}
-     */
-    this._helper = helperFactory.getHelper(this._name, model, type)
-    /**
-     * The query object for the api.
-     * @type {Object}
-     */
-    this._query = query
-    /**
-     * The type of content to scrape.
-     * @type {string}
-     */
-    this._type = type
+  /**
+   * Gets information about a movie from Trakt.tv and insert the movie into the
+   * MongoDB database.
+   * @param {!Object} content - The content information.
+   * @throws {Error} - 'movie' is not a valid value for Types!
+   * @returns {Promise<Object|undefined, Error>} - A movie object.
+   */
+  _getMovieContent(content: Object): Promise<Object | Error | void> {
+    const { episodes, slug } = content
+    if (episodes && episodes[0]) {
+      delete episodes[0]
+    }
+
+    return this.helper.getTraktInfo(slug).then(res => {
+      if (res && res.imdb_id) {
+        return this.helper.addEpisodes(res, episodes, slug)
+      }
+    })
   }
 
   /**
-   * Get the name of the provider.
-   * @returns {string} - The name of the provider.
+   * Gets information about a show from Trakt.tv and insert the show into the
+   * MongoDB database.
+   * @param {!Object} content - The show information.
+   * @throws {Error} - 'show' is not a valid value for Types!
+   * @returns {Promise<Object, undefined>} - A show object.
    */
-  get name(): string {
-    return this._name
+  _getShowContent(content: Object): Promise<Object | Error | void> {
+    const { slugYear, torrents } = content
+    return this.helper.getTraktInfo(slugYear).then(res => {
+      if (res && res.imdb_id) {
+        return this.helper.addTorrents(res, torrents)
+      }
+    })
   }
 
   /**
@@ -133,28 +111,33 @@ export default class BaseProvider extends IProvider {
    * @throws {Error} - 'CONTENT_TYPE' is not a valid value for Types!
    * @returns {Promise<Object, undefined>} - A content object.
    */
-  async getContent(content: Object): Promise<Object, void> {
-    let newContent
-
-    if (this._type === BaseProvider.Types.Movie) {
-      const { slugYear, torrents } = content
-      newContent = await this._helper.getTraktInfo(slugYear)
-
-      if (newContent && newContent.imdb_id) {
-        await this._helper.addTorrents(newContent, torrents)
-      }
-    } else if (this._type === BaseProvider.Types.Show) {
-      const { episodes, slug } = content
-      delete episodes[0]
-      newContent = await this._helper.getTraktInfo(slug)
-
-      if (newContent && newContent.imdb_id) {
-        await this._helper.addEpisodes(newContent, episodes, slug)
-      }
-    } else {
-      const err = new Error(`'${this._type}' is not a valid value for Types!`)
-      return Promise.reject(err)
+  getContent(content: Object): Promise<Object | void> {
+    if (this.contentType === BaseProvider.ContentTypes.Movie) {
+      return this._getShowContent(content)
+    } else if (this.contentType === BaseProvider.ContentTypes.Show) {
+      return this._getMovieContent(content)
     }
+
+    const err = new Error(`'${this.contentType}' is not a valid value for ContentTypes!`)
+    return Promise.reject(err)
+  }
+
+  /**
+   * Extract content information based on a regex.
+   * @abstract
+   * @protected
+   * @param {!Object} options - The options to extract content information.
+   * @param {!Object} options.torrent - The torrent to extract the content
+   * information.
+   * @param {!Object} options.regex - The regex object to extract the content
+   * information.
+   * @param {?string} [lang] - The language of the torrent.
+   * @throws {Error} - Using default method: 'extractContent'
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
+   */
+  extractContent({torrent, regex, lang}: Object): Object | void {
+    throw new Error('Using default method: \'attachTorrent\'')
   }
 
   /**
@@ -167,35 +150,82 @@ export default class BaseProvider extends IProvider {
    * @returns {Object|undefined} - Information about the content from the
    * torrent.
    */
-  _getContentData(torrent: Object, lang: string = 'en'): Object | void {
-    const regex = this._regexps.find(
+  getContentData(torrent: Object, lang: string = 'en'): Object | void {
+    const regex = this.regexps.find(
       r => r.regex.test(torrent.title) || r.regex.test(torrent.name)
     )
 
     if (regex) {
-      return this._extractContent(torrent, regex, lang)
+      return this.extractContent({
+        torrent,
+        regex,
+        lang
+      })
     }
 
-    logger.warn(`${this._name}: Could not find data from torrent: '${torrent.title}'`)
+    logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`)
+  }
+
+  /**
+   * Attach the torrent object to the content.
+   * @abstract
+   * @protected
+   * @param {!Object} options - The options to attach a torrent to the content.
+   * @param {!Object} options.content - The content to attach a torrent to.
+   * @param {!Object} options.torrent - The torrent object ot attach.
+   * @param {!string} options.quality - The quality of the torrent.
+   * @param {?number} options.season - The season number for the torrent.
+   * @param {?number} options.episode - The episode number for the torrent.
+   * @param {!string} [options.lang] - The language of the torrent.
+   * @throws {Error} - Using default method: 'attachTorrent'
+   * @returns {Object} - The content with the newly attached torrent.
+   */
+  attachTorrent({
+    content,
+    torrent,
+    quality,
+    season,
+    episode,
+    lang
+  }: Object): Object {
+    throw new Error('Using default method: \'attachTorrent\'')
+  }
+
+  /**
+   * Put all the found content from the torrents in an array.
+   * @abstract
+   * @protected
+   * @param {!Object} options - The options to get the content.
+   * @param {!Array<Object>} options.torrents - A list of torrents to extract
+   * content information from.
+   * @param {!string} [options.lang=en] - The language of the torrents.
+   * @throws {Error} - Using default method: 'getAllContent'
+   * @returns {Promise<Array<Object>, Error>} - A list of object with
+   * content information extracted from the torrents.
+   */
+  getAllContent({
+    torrents,
+    lang = 'en'
+  }: Object): Promise<Array<Object> | Error> {
+    throw new Error('Using default method: \'getAllContent\'')
   }
 
   /**
    * Get all the torrents of a given torrent provider.
-   * @override
    * @protected
    * @param {!number} totalPages - The total pages of the query.
    * @returns {Promise<Array<Object>, undefined>} - A list of all the queried
    * torrents.
    */
-  _getAllTorrents(totalPages: number): Promise<Array<Object>, void> {
+  getAllTorrents(totalPages: number): Promise<Array<Object> | void> {
     let torrents = []
     return pTimes(totalPages, async page => {
-      if (this._query.page) {
-        this._query.page = page + 1
+      if (this.query.page) {
+        this.query.page = page + 1
       }
 
-      logger.info(`${this._name}: Started searching ${this._name} on page ${page + 1} out of ${totalPages}`)
-      const res = await this._api.search(this._query)
+      logger.info(`${this.name}: Started searching ${this.name} on page ${page + 1} out of ${totalPages}`)
+      const res = await this.api.search(this.query)
       const data = res.results
         ? res.results // Kat & ET
         : res.data
@@ -208,17 +238,18 @@ export default class BaseProvider extends IProvider {
     }, {
       concurrency: 1
     }).then(() => {
-      logger.info(`${this._name}: Found ${torrents.length} torrents.`)
+      logger.info(`${this.name}: Found ${torrents.length} torrents.`)
       return torrents
     })
   }
 
   /**
    * Get the total pages to scrape for the provider query.
-   * @returns {Promise<number, Error>} - The number of total pages to scrape.
+   * @protected
+   * @returns {Promise<number>} - The number of total pages to scrape.
    */
-  _getTotalPages(): Promise<number, Error> {
-    return this._api.search(this._query).then(res => {
+  getTotalPages(): Promise<number> {
+    return this.api.search(this.query).then(res => {
       if (res.data) { // Yts
         return Math.ceil(res.data.movie_count / 50)
       } else if (res.total_pages) { // Kat & ET
@@ -230,30 +261,75 @@ export default class BaseProvider extends IProvider {
   }
 
   /**
-   * Returns a list of all the inserted torrents.
-   * @override
-   * @returns {Promise<Array<Object>, undefined>} - A list of scraped content.
+   * Set the configuration to scrape with.
+   * @param {!Object} config - The config to get content with.
+   * @param {!string} config.name - The name of the config.
+   * @param {!Object} config.api - The API module ot get the content with.
+   * @param {!string} config.contentType - The type of content to scrape.
+   * @param {!MongooseModel} config.Model - The model for the content to
+   * scrape.
+   * @param {!IHelper} config.Helper - The helper class to save the content to
+   * the database.
+   * @param {?Object} config.query - The query to get the content with for the
+   * api.
+   * @returns {undefined}
    */
-  async search(): Promise<Array<Object>, void> {
-    try {
-      const totalPages = await this._getTotalPages()
+  setConfig({name, api, contentType, Model, Helper, query}: Object): void {
+    this.name = name
+    this.api = api
+    this.contentType = contentType
+    this.helper = new Helper({
+      Model,
+      name
+    })
+    this.query = query
+  }
 
+  /**
+   * Get the contents for a configuration.
+   * @param {!Object} config - The config to get content with.
+   * @param {!string} config.name - The name of the config.
+   * @param {!Object} config.api - The API module ot get the content with.
+   * @param {!string} config.contentType - The type of content to scrape.
+   * @param {!MongooseModel} config.Model - The model for the content to
+   * scrape.
+   * @param {!IHelper} config.Helper - The helper class to save the content to
+   * the database.
+   * @param {?Object} config.query - The query to get the content with for the
+   * api.
+   * @returns {Promise<Array<Object>|undefined, Error>} - The results of a
+   * configuration.
+   */
+  async scrapeConfig({
+    name,
+    api,
+    contentType,
+    Model,
+    Helper,
+    query
+  }: Object): Promise<Array<Object> | void | Error> {
+    try {
+      this.setConfig({name, api, contentType, Model, Helper, query})
+
+      const totalPages = await this.getTotalPages()
       if (!totalPages) {
         return logger.error(
-          `${this._name}: totalPages returned: '${totalPages}'`
+          `${this.name}: totalPages returned: '${totalPages}'`
         )
       }
 
-      logger.info(`${this._name}: Total pages ${totalPages}`)
+      logger.info(`${this.name}: Total pages ${totalPages}`)
 
-      const torrents = await this._getAllTorrents(totalPages)
+      const torrents = await this.getAllTorrents(totalPages)
 
-      // console.log(torrents)
-      const { language } = this._query
-      const allContent = await this._getAllContent(torrents, language)
+      const { language } = this.query
+      const allContent = await this.getAllContent({
+        torrents,
+        language
+      })
 
       return await pMap(allContent, content => this.getContent(content), {
-        concurrency: BaseProvider._MaxWebRequest
+        concurrency: this.maxWebRequests
       })
     } catch (err) {
       logger.error(err)

@@ -35,6 +35,12 @@ describe('IndexController', () => {
   let indexController: IndexController
 
   /**
+   * The temporary directory to hold the logs.
+   * @type {string}
+   */
+  let tempDir
+
+  /**
    * Hook for setting up the IndexController tests.
    * @type {Function}
    */
@@ -51,7 +57,7 @@ describe('IndexController', () => {
       '..',
       'tmp'
     ])
-    const tempDir = process.env.TEMP_DIR
+    tempDir = process.env.TEMP_DIR
     if (!fs.existsSync(tempDir)) {
       mkdirp.sync(tempDir)
     }
@@ -83,17 +89,31 @@ describe('IndexController', () => {
 
   /** @test {IndexController} */
   describe('will work as expected', () => {
-    /** @test {IndexController#getErrorLog} */
-    it('should get a 200 status from the GET [/logs/error] route', done => {
-      chai.request(app).get('/logs/error')
-        .then(res => {
-          expect(res).to.have.status(200)
-          expect(res).to.be.text
-          expect(res).to.not.redirect
+    /**
+     * Helper function to test the `/logs/error` route.
+     * @param {!string} tempDir - The value for the temporary directory.
+     * @returns {undefined}
+     */
+    function testLogsError(tempDir: string): void {
+      /** @test {IndexController#getErrorLog} */
+      it('should get a 200 status from the GET [/logs/error] route', done => {
+        if (tempDir) {
+          delete process.env.TEMP_DIR
+        }
 
-          done()
-        }).catch(done)
-    })
+        chai.request(app).get('/logs/error')
+          .then(res => {
+            expect(res).to.have.status(200)
+            expect(res).to.be.text
+            expect(res).to.not.redirect
+
+            done()
+          }).catch(done)
+      })
+    }
+
+    // Execute the tests.
+    [true, false].map(testLogsError)
 
     /** @test {IndexController#getIndex} */
     it('should get a 200 status from the GET [/status] route', done => {
@@ -107,13 +127,13 @@ describe('IndexController', () => {
         expect(body.repo).to.exist
         expect(body.server).to.exist
         // expect(body.status).to.exist
-        // expect(body.totalAnimes).to.exist
-        // expect(body.totalMovies).to.exist
-        // expect(body.totalShows).to.exist
+        expect(body.totalAnimes).to.exist
+        expect(body.totalMovies).to.exist
+        expect(body.totalShows).to.exist
         // expect(body.updated).to.exist
         expect(body.uptime).to.exist
         expect(body.version).to.exist
-        // expect(body.commit).to.exist
+        expect(body.commit).to.exist
 
         done()
       }).catch(done)

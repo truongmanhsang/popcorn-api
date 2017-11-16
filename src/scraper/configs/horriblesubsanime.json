@@ -1,7 +1,0 @@
-[{
-  "api": "horriblesubs",
-  "name": "HorribleSubs",
-  "modelType": "animeshow",
-  "type": "tvshow",
-  "clazz": "BulkProvider"
-}]
