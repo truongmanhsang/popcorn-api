@@ -284,7 +284,7 @@ describe('Cli', () => {
 
   /** @test {Cli#_export} */
   it('should run the --export option with the \'show\' option', done => {
-    delete process.env.TEMP_DIR 
+    delete process.env.TEMP_DIR
     cli._export('show').then(res => {
       expect(res).to.be.undefined
       done()
