@@ -23,10 +23,9 @@ export default class MovieProvider extends BaseProvider {
    * @param {!Object} options.regex - The regex object to extract the content
    * information.
    * @param {?string} [lang] - The language of the torrent.
-   * @returns {Object|undefined} - Information about the content from the
-   * torrent.
+   * @returns {Object} - Information about the content from the torrent.
    */
-  extractContent({torrent, regex, lang}: Object): Object | void {
+  extractContent({torrent, regex, lang}: Object): Object {
     let movieTitle
     let slug
 
@@ -114,7 +113,7 @@ export default class MovieProvider extends BaseProvider {
   getAllContent({
     torrents,
     lang = 'en'
-  }: Object): Promise<Array<Object> | Error> {
+  }: Object): Promise<Array<Object>> {
     const movies = []
 
     return pMap(torrents, t => {
@@ -146,10 +145,10 @@ export default class MovieProvider extends BaseProvider {
 
       const torrent = movie.torrents[language][quality]
       const created = this.attachTorrent({
-        matching,
         torrent,
         quality,
-        language
+        language,
+        movie: matching
       })
 
       movies.splice(index, 1, created)

@@ -35,10 +35,10 @@ import {
 export default class Cli extends BaseCli {
 
   /**
-   * The name of the CLI provider. Default is `CLI`.
+   * The name of the Cli provider. Default is `Cli`.
    * @type {string}
    */
-  static _Name: string = 'CLI'
+  static _Name: string = 'Cli'
 
   /**
    * The database middleware from `pop-api`.

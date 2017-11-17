@@ -73,9 +73,9 @@ export default class BaseProvider extends AbstractProvider {
    * @protected
    * @param {!Object} content - The content information.
    * @throws {Error} - 'movie' is not a valid value for Types!
-   * @returns {Promise<Object|undefined, Error>} - A movie object.
+   * @returns {Promise<Object, Error>} - A movie object.
    */
-  _getMovieContent(content: Object): Promise<Object | Error | void> {
+  _getMovieContent(content: Object): Promise<Object> {
     const { episodes, slug } = content
     if (episodes && episodes[0]) {
       delete episodes[0]
@@ -94,9 +94,9 @@ export default class BaseProvider extends AbstractProvider {
    * @protected
    * @param {!Object} content - The show information.
    * @throws {Error} - 'show' is not a valid value for Types!
-   * @returns {Promise<Object, undefined>} - A show object.
+   * @returns {Promise<Object, Error>} - A show object.
    */
-  _getShowContent(content: Object): Promise<Object | Error | void> {
+  _getShowContent(content: Object): Promise<Object> {
     const { slugYear, torrents } = content
     return this.helper.getTraktInfo(slugYear).then(res => {
       if (res && res.imdb_id) {
@@ -111,9 +111,9 @@ export default class BaseProvider extends AbstractProvider {
    * @protected
    * @param {!Object} content - The content information.
    * @throws {Error} - 'CONTENT_TYPE' is not a valid value for Types!
-   * @returns {Promise<Object, undefined>} - A content object.
+   * @returns {Promise<Object>} - A content object.
    */
-  getContent(content: Object): Promise<Object | void> {
+  getContent(content: Object): Promise<Object> {
     if (this.contentType === BaseProvider.ContentTypes.Movie) {
       return this._getShowContent(content)
     } else if (this.contentType === BaseProvider.ContentTypes.Show) {
@@ -135,11 +135,10 @@ export default class BaseProvider extends AbstractProvider {
    * information.
    * @param {?string} [lang] - The language of the torrent.
    * @throws {Error} - Using default method: 'extractContent'
-   * @returns {Object|undefined} - Information about the content from the
-   * torrent.
+   * @returns {Object} - Information about the content from the torrent.
    */
-  extractContent({torrent, regex, lang}: Object): Object | void {
-    throw new Error('Using default method: \'attachTorrent\'')
+  extractContent({torrent, regex, lang}: Object): Object {
+    throw new Error('Using default method: \'extractContent\'')
   }
 
   /**
@@ -149,10 +148,9 @@ export default class BaseProvider extends AbstractProvider {
    * @param {!Object} options.torrent - A torrent object to extract content
    * information from.
    * @param {!string} [optiosn.lang=en] - The language of the torrent.
-   * @returns {Object|undefined} - Information about the content from the
-   * torrent.
+   * @returns {Object} - Information about the content from the torrent.
    */
-  getContentData({torrent, lang = 'en'}: Object): Object | void {
+  getContentData({torrent, lang = 'en'}: Object): Object {
     const regex = this.regexps.find(
       r => r.regex.test(torrent.title) || r.regex.test(torrent.name)
     )
@@ -208,7 +206,7 @@ export default class BaseProvider extends AbstractProvider {
   getAllContent({
     torrents,
     lang = 'en'
-  }: Object): Promise<Array<Object> | Error> {
+  }: Object): Promise<Array<Object>> {
     throw new Error('Using default method: \'getAllContent\'')
   }
 
@@ -221,9 +219,7 @@ export default class BaseProvider extends AbstractProvider {
   getAllTorrents(totalPages: number): Promise<Array<Object>> {
     let torrents = []
     return pTimes(totalPages, async page => {
-      if (this.query.page) {
-        this.query.page = page + 1
-      }
+      this.query.page = page + 1
 
       logger.info(`${this.name}: Started searching ${this.name} on page ${page + 1} out of ${totalPages}`)
       const res = await this.api.search(this.query)
@@ -324,7 +320,7 @@ export default class BaseProvider extends AbstractProvider {
     Helper,
     query,
     regexps
-  }: Object): Promise<Array<Object> | void | Error> {
+  }: Object): Promise<Array<Object>> {
     try {
       this.setConfig({name, api, contentType, Model, Helper, query, regexps})
 

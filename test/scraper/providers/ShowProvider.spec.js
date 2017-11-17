@@ -1,4 +1,5 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
 import { expect } from 'chai'
@@ -8,10 +9,9 @@ import ShowProvider from '../../../src/scraper/providers/ShowProvider'
 import showMap from '../../../src/scraper/providers/maps/showMap'
 import { nyaaCommieConfig } from '../../../src/scraper/configs/showConfigs'
 import { name } from '../../../package'
-// @flow
 
 /** @test {ShowProvider} */
-describe.skip('ShowProvider', () => {
+describe('ShowProvider', () => {
   /**
    * The show provider to test.
    * @type {ShowProvider}
@@ -29,7 +29,10 @@ describe.skip('ShowProvider', () => {
    * @type {Function}
    */
   before(done => {
-    showProvider = new ShowProvider(nyaaCommieConfig)
+    showProvider = new ShowProvider({}, {
+      configs: [nyaaCommieConfig]
+    })
+    showProvider.setConfig(nyaaCommieConfig)
 
     database = new Database({}, {
       database: name
@@ -61,12 +64,15 @@ describe.skip('ShowProvider', () => {
   it('should extract show information based on a seasonal regex', () => {
     showMap.testworld = 'westworld'
     const content = showProvider.extractContent({
-      title: 'Testworld S01E06 720p HDTV x264-FLEET [eztv]',
-      seeds: 1,
-      peers: 1
-    }, {
-      regex: /(.*).[sS](\d{2})[eE](\d{2})/i,
-      dateBased: false
+      torrent: {
+        title: 'Testworld S01E06 720p HDTV x264-FLEET [eztv]',
+        seeds: 1,
+        peers: 1
+      },
+      regex: {
+        regex: /(.*).[sS](\d{2})[eE](\d{2})/i,
+        dateBased: false
+      }
     })
 
     testContentAttributes(content, 'string')
@@ -75,12 +81,15 @@ describe.skip('ShowProvider', () => {
   /** @test {ShowProvider#extractContent} */
   it('should extract show information based on a datebased regex', () => {
     const content = showProvider.extractContent({
-      title: 'Jimmy Fallon 2017 10 10 Mandy Moore 720p HDTV x264-CROOKS [eztv]',
-      seeds: 1,
-      peers: 1
-    }, {
-      regex: /(.*).(\d{4}).(\d{2}.\d{2})/i,
-      dateBased: true
+      torrent: {
+        title: 'Jimmy Fallon 2017 10 10 Mandy Moore 720p HDTV x264-CROOKS [eztv]',
+        seeds: 1,
+        peers: 1
+      },
+      regex: {
+        regex: /(.*).(\d{4}).(\d{2}.\d{2})/i,
+        dateBased: true
+      }
     })
 
     testContentAttributes(content, 'number')
@@ -89,9 +98,12 @@ describe.skip('ShowProvider', () => {
   /** @test {ShowProvider#extractContent} */
   it('should not extract show information based on a regex', () => {
     const content = showProvider.extractContent({
-      title: 'faulty'
-    }, {
-      regex: /(.*).[sS](\d{2})[eE](\d{2})/i
+      torrent: {
+        title: 'faulty'
+      },
+      regex: {
+        regex: /(.*).[sS](\d{2})[eE](\d{2})/i
+      }
     })
 
     expect(content).to.be.undefined
@@ -100,23 +112,37 @@ describe.skip('ShowProvider', () => {
   /** @test {ShowProvider#attachTorrent} */
   it('should create a new show object with a torrent attached', () => {
     let show = showProvider.attachTorrent({
-      showTitle: 'repack',
-      episodes: {}
-    }, {
-      seeds: 2
-    }, 1, 1, '480p')
+      show: {
+        showTitle: 'repack',
+        episodes: {}
+      },
+      torrent: {
+        seeds: 2
+      },
+      season: 1,
+      episode: 1,
+      quality: '480p'
+    })
     expect(show).to.be.an('object')
 
     show.showTitle = 'test'
-    show = showProvider.attachTorrent(show, {
-      seeds: 1
-    }, 1, 1, '480p')
+    show = showProvider.attachTorrent({
+      show,
+      torrent: {
+        seeds: 1
+      },
+      season: 1,
+      episode: 1,
+      quality: '480p'
+    })
     expect(show).to.be.an('object')
   })
 
   /** @test {ShowProvider#getAllContent} */
   it('should get no content from an empty torrents array', done => {
-    showProvider.getAllContent([null]).then(res => {
+    showProvider.getAllContent({
+      torrents: [null]
+    }).then(res => {
       expect(res).to.be.an('array')
       expect(res.length).to.equal(0)
 
@@ -126,9 +152,11 @@ describe.skip('ShowProvider', () => {
 
   /** @test {ShowProvider#getAllContent} */
   it('should get no content from a filled torrents array', done => {
-    showProvider.getAllContent([{
-      title: 'faulty'
-    }]).then(res => {
+    showProvider.getAllContent({
+      torrents: [{
+        title: 'faulty'
+      }]
+    }).then(res => {
       expect(res).to.be.an('array')
       expect(res.length).to.equal(0)
 
@@ -138,11 +166,13 @@ describe.skip('ShowProvider', () => {
 
   /** @test {ShowProvider#getAllContent} */
   it('should merge the torrent objects into one', done => {
-    showProvider.getAllContent([{
-      title: 'Westworld S01E06 720p HDTV x264-FLEET [eztv]'
-    }, {
-      title: 'Westworld S01E07 720p HDTV x264-FLEET [eztv]'
-    }]).then(res => {
+    showProvider.getAllContent({
+      torrents: [{
+        title: 'Westworld S01E06 720p HDTV x264-FLEET [eztv]'
+      }, {
+        title: 'Westworld S01E07 720p HDTV x264-FLEET [eztv]'
+      }]
+    }).then(res => {
       expect(res).to.be.an('array')
       expect(res.length).to.equal(1)
 

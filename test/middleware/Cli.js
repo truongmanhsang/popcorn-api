@@ -7,7 +7,7 @@ import sinon from 'sinon'
 import { expect } from 'chai'
 import { join } from 'path'
 
-import Cli from '../../src/middleware/Cli'
+import { Cli } from '../../src/middleware'
 import {
   name,
   version

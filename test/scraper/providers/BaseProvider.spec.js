@@ -33,6 +33,104 @@ describe('BaseProvider', () => {
     expect(BaseProvider.ContentTypes).to.be.an('object')
   })
 
+  /** @test {BaseProvider#_getMovieContent} */
+  it.skip('should get the movie content', done => {
+    done()
+  })
+
+  /** @test {BaseProvider#_getShowContent} */
+  it.skip('should get the show content', done => {
+    done()
+  })
+
+  /** @test {BaseProvider#getContent} */
+  it('should return an error ', done => {
+    baseProvider.contentType = 'faulty'
+    baseProvider.getContent({})
+      .then(done)
+      .catch(err => {
+        expect(err).to.be.an('Error')
+        done()
+      })
+  })
+
+  /** @test {BaseProvider#extractContent} */
+  it('should throw an error when calling the extractContent method', () => {
+    expect(baseProvider.extractContent.bind({}, {})).to
+      .throw('Using default method: \'extractContent\'')
+  })
+
+  /** @test {BaseProvider#getContentData} */
+  it('should not get info from a given torrent object', () => {
+    baseProvider.regexps = [{
+      regex: /\d+/g
+    }]
+    const contentData = baseProvider.getContentData({
+      torrent: {
+        title: 'faulty'
+      }
+    })
+
+    expect(contentData).to.be.undefined
+  })
+
+  /** @test {BaseProvider#attachtTorrent} */
+  it('should throw an error when calling the attachTorrent method', () => {
+    expect(baseProvider.attachTorrent.bind({}, {})).to
+      .throw('Using default method: \'attachTorrent\'')
+  })
+
+  /** @test {BaseProvider#getAllContent} */
+  it('should throw an error when calling the getAllContent method', () => {
+    expect(baseProvider.getAllContent.bind({}, {})).to
+      .throw('Using default method: \'getAllContent\'')
+    expect(baseProvider.getAllContent.bind({}, {
+      lang: 'de'
+    })).to.throw('Using default method: \'getAllContent\'')
+  })
+
+  /** @test {BaseProvider#getAllTorrents} */
+  it('should get no torrents to concatenate', done => {
+    baseProvider.setConfig(ytsConfig)
+    const stub = sinon.stub(baseProvider.api, 'search')
+    stub.resolves([])
+
+    baseProvider.getAllTorrents(1).then(res => {
+      expect(res).to.be.an('array')
+      expect(res.length).to.equal(0)
+      stub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /**
+   * Helper function to test the `getTotalPages` method with different
+   * providers.
+   * @param {!Object} config - The config to test with.
+   * @returns {undefined}
+   */
+  function executeTotalPages(config: Object): void {
+    /** @test {BaseProvider#getTotalPages} */
+    it('should return a the number of the total pages to scrape', done => {
+      baseProvider = new BaseProvider({}, {
+        configs: [config]
+      })
+      baseProvider.setConfig(config)
+
+      baseProvider.getTotalPages().then(res => {
+        expect(res).to.be.a('number')
+        done()
+      }).catch(done)
+    })
+  }
+
+  [
+    nyaaCommieConfig,
+    katMovieConfig,
+    ytsConfig
+  ].map(executeTotalPages)
+
   /** @test {BaseProvider#setConfig} */
   it('should set the configuration to scrape', () => {
     baseProvider.setConfig(ytsConfig)
@@ -51,75 +149,8 @@ describe('BaseProvider', () => {
     // expect(baseProvider.regexps).to.be.an('array')
   })
 
-  /** @test {BaseProvider#getConcent} */
-  it('should return an error ', done => {
-    baseProvider.contentType = 'faulty'
-    baseProvider.getContent({})
-      .then(done)
-      .catch(err => {
-        expect(err).to.be.an('Error')
-        done()
-      })
-  })
-
-  /** @test {BaseProvider#getContentData} */
-  it('should not get info from a given torrent object', () => {
-    baseProvider.regexps = [{
-      regex: /\d+/g
-    }]
-    const contentData = baseProvider.getContentData({
-      torrent: {
-        title: 'faulty'
-      }
-    })
-
-    expect(contentData).to.be.undefined
-  })
-
-  /** @test {BaseProvider#getAllTorrents} */
-  it('should get no torrents to concatenate', done => {
-    baseProvider.setConfig(ytsConfig)
-    const stub = sinon.stub(baseProvider.api, 'search')
-    stub.resolves([])
-
-    baseProvider.getAllTorrents(1)
-      .then(res => {
-        expect(res).to.be.an('array')
-        expect(res.length).to.equal(0)
-
-        stub.restore()
-        done()
-      })
-      .catch(done)
-  })
-
-  /**
-   * Helper function to test the `getTotalPages` method with different
-   * providers.
-   * @param {!Object} config - The config to test with.
-   * @returns {undefined}
-   */
-  function executeTotalPages(config: Object): void {
-    it.skip('should return a the number of the total pages to scrape', done => {
-      baseProvider = new BaseProvider({}, {
-        configs: [config]
-      })
-      baseProvider.getTotalPages().then(res => {
-        expect(res).to.be.a('number')
-        done()
-      }).catch(done)
-    })
-  }
-
-  [
-    nyaaCommieConfig,
-    katMovieConfig,
-    ytsConfig
-  ].map(executeTotalPages)
-
   /** @test {BaseProvider#scrapeConfig} */
-  it.skip('should not be able to get the total pages to scrape', done => {
-    baseProvider.setConfig(ytsConfig)
+  it('should not be able to get the total pages to scrape', done => {
     const stub = sinon.stub(baseProvider, 'getTotalPages')
     stub.resolves(null)
 
@@ -132,8 +163,7 @@ describe('BaseProvider', () => {
   })
 
   /** @test {BaseProvider#scrapeConfig} */
-  it.skip('should throw and catch an error to continue', done => {
-    baseProvider.setConfig(ytsConfig)
+  it('should throw and catch an error to continue', done => {
     const stub = sinon.stub(baseProvider, 'getTotalPages')
     stub.rejects()
 

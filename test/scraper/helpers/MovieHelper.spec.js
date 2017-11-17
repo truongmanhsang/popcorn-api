@@ -4,7 +4,6 @@
 import sinon from 'sinon'
 import { expect } from 'chai'
 
-// import Setup from '../../../src/config/Setup'
 import { Movie } from '../../../src/models'
 import { MovieHelper } from '../../../src/scraper/helpers'
 import {
@@ -150,14 +149,14 @@ describe('MovieHelper', () => {
   /** @test {MovieHelper#getTraktInfo} */
   it('should get info from Trakt and make a new movie object with no genres', done => {
     const stub = sinon.stub(trakt.movies, 'summary')
-    stub.returns(Promise.resolve({
+    stub.resolves({
       ids: {
         imdb: 'imdb',
         tmdb: 'tmdb'
       },
       released: '2016-01-01',
       genres: undefined
-    }))
+    })
 
     movieHelper.getTraktInfo('deadpool-2016').then(res => {
       expect(res).to.be.an('object')

@@ -21,10 +21,9 @@ export default class ShowProvider extends BaseProvider {
    * information.
    * @param {!Object} options.regex - The regex object to extract the content
    * information.
-   * @returns {Object|undefined} - Information about the content from the
-   * torrent.
+   * @returns {Object} - Information about the content from the torrent.
    */
-  extractContent({torrent, regex}: Object): Object | void {
+  extractContent({torrent, regex}: Object): Object {
     let episode
     let season
     let slug
@@ -133,7 +132,7 @@ export default class ShowProvider extends BaseProvider {
    * @returns {Promise<Array<Object>, Error>} - A list of object with
    * content information extracted from the torrents.
    */
-  getAllContent({torrents}: Object): Promise<Array<Object> | Error> {
+  getAllContent({torrents}: Object): Promise<Array<Object>> {
     const shows = []
 
     return pMap(torrents, t => {
@@ -141,7 +140,9 @@ export default class ShowProvider extends BaseProvider {
         return
       }
 
-      const show = this.getContentData(t)
+      const show = this.getContentData({
+        torrent: t
+      })
       if (!show) {
         return
       }
@@ -161,11 +162,11 @@ export default class ShowProvider extends BaseProvider {
 
       const torrent = show.episodes[season][episode][quality]
       const created = this.attachTorrent({
-        matching,
         torrent,
         season,
         episode,
-        quality
+        quality,
+        show: matching
       })
 
       shows.splice(index, 1, created)
