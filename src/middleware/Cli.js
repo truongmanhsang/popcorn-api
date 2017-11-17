@@ -312,7 +312,18 @@ export default class Cli extends BaseCli {
    * @returns {Promise<string, undefined>} - The promise to export a collection.
    */
    _export(e: string): Promise<string | void> {
-     return this._database.exportCollection(e)
+     process.env.TEMP_DIR = process.env.TEMP_DIR || path.join(...[
+       __dirname,
+       '..',
+       '..',
+       'tmp'
+     ])
+     const tempDir = process.env.TEMP_DIR
+
+     return this._database.exportCollection(e, path.join(...[
+       tempDir,
+       `${e}s.json`
+     ]))
        .then(() => process.exit(0))
        .catch(err => {
          console.error(`An error occurred: ${err}`)

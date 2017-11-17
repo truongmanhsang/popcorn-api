@@ -284,15 +284,30 @@ describe('Cli', () => {
 
   /** @test {Cli#_export} */
   it('should run the --export option with the \'show\' option', done => {
+    delete process.env.TEMP_DIR 
     cli._export('show').then(res => {
       expect(res).to.be.undefined
       done()
     }).catch(done)
   })
 
-  /** @test {Cli#_export} */
-  it.skip('should catch an error when exporting a collection', done => {
-    done()
+  /** @test {CLI#_export} */
+  it('should run the --export option and reject the result', done => {
+    const stub = sinon.stub(cli._database, 'exportCollection')
+    stub.rejects()
+
+    const e = join(...[
+      __dirname,
+      '..',
+      '..',
+      'package.json'
+    ])
+    cli._export(e).then(res => {
+      expect(res).to.be.undefined
+      stub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {Cli#_import} */
@@ -306,14 +321,13 @@ describe('Cli', () => {
   /**
    * Helper method to test the `_import` method.
    * @param {!boolean} confirm - The user input.
-   * @param {!string} type - The type to test.
    * @returns {void}
    */
-  function testImport(confirm: boolean, type: string): void {
+  function testImport(confirm: boolean): void {
     const msg = confirm ? 'confirms' : 'cancels'
 
     /** @test {Cli#_import} */
-    it.skip(`should run the --import option with a file as input and the user ${msg}`, done => {
+    it(`should run the --import option with a file as input and the user ${msg}`, done => {
       const stub = sinon.stub(inquirer, 'prompt')
       stub.resolves({ confirm })
 
@@ -322,7 +336,7 @@ describe('Cli', () => {
         'shows.json'
       ])
       cli._import(i).then(res => {
-        expect(res).to.be.a(type)
+        expect(res).to.be.undefined
 
         stub.restore()
         done()
@@ -331,25 +345,28 @@ describe('Cli', () => {
   }
 
   // Execute the tests.
-  testImport(true, 'string')
-  testImport(false, 'undefined')
+  [true, false].map(testImport)
 
   /** @test {CLI#_import} */
-  it.skip('should run the --import option and reject the result', done => {
+  it('should run the --import option and reject the result', done => {
     const stub = sinon.stub(inquirer, 'prompt')
     stub.rejects()
 
     const i = join(...[
-      tempDir,
+      __dirname,
+      '..',
+      '..',
       'package.json'
     ])
     cli._import(i).then(res => {
+      expect(res).to.be.undefined
       stub.restore()
+
       done()
     }).catch(done)
   })
 
-  /** @test {Cli#run} */
+  /** @test {Cli#_run} */
   it('should invoke the --content option', done => {
     const stub = sinon.stub(inquirer, 'prompt')
     stub.resolves()
@@ -368,7 +385,7 @@ describe('Cli', () => {
     }).catch(done)
   })
 
-  /** @test {Cli#run} */
+  /** @test {Cli#_run} */
   it('should invoke the --export', done => {
     const stub = sinon.stub(cli._database, 'exportCollection')
     stub.resolves()
@@ -387,7 +404,7 @@ describe('Cli', () => {
     }).catch(done)
   })
 
-  /** @test {Cli#run} */
+  /** @test {Cli#_run} */
   it('should invoke the --import option', done => {
     const stub = sinon.stub(inquirer, 'prompt')
     stub.resolves()
@@ -398,7 +415,7 @@ describe('Cli', () => {
       '--import',
       join(...[
         tempDir,
-        'package.json'
+        'shows.json'
       ])
     ]).then(res => {
       expect(res).to.be.undefined
@@ -409,8 +426,8 @@ describe('Cli', () => {
     }).catch(done)
   })
 
-  /** @test {Cli#run} */
-  it.skip('should invoke the --start option', () => {
+  /** @test {Cli#_run} */
+  it('should invoke the --start option', () => {
     const res = cli._run({}, [
       '',
       '',
@@ -418,15 +435,15 @@ describe('Cli', () => {
     ])
 
     expect(res).to.be.undefined
-    cli.program.import = false
+    cli.program.start = false
   })
 
   /** @test {Cli#_run} */
-  it.skip('should not parse the arguments since there are none', () => {
+  it('should not parse the arguments since there are none', () => {
     const stub = sinon.stub(cli.program, 'outputHelp')
 
-    const val = cli._run({})
-    expect(val).to.be.undefined
+    const res = cli._run({})
+    expect(res).to.be.undefined
 
     stub.restore()
   })
