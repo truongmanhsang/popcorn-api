@@ -75,7 +75,7 @@
     "start": "cross-env NODE_ENV=production node ./build/index.js -m pretty",
     "test": "npm run test-dredd && npm run test-mocha",
     "test-dredd": "cross-env NODE_ENV=test ./node_modules/.bin/babel-node ./node_modules/dredd/bin/dredd",
-    "test-mocha": "cross-env NODE_ENV=test ./node_modules/.bin/nyc --reporter=lcov --reporter=text ./node_modules/.bin/mocha --recursive --exit --reporter spec test/**"
+    "test-mocha": "cross-env NODE_ENV=test ./node_modules/.bin/nyc --reporter=lcov --reporter=text ./node_modules/.bin/mocha --recursive --exit --timeout 10000 --reporter spec test/**"
   },
   "bin": {
     "popcorn-api": "./build/index.js"

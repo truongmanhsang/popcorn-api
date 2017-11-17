@@ -3,28 +3,7 @@
 import pMap from 'p-map'
 
 import BaseProvider from './BaseProvider'
-import showmap from './maps/showmap'
-
-// /**
-//  * The regular expressions used to extract information about shows.
-//  * @type {Array<Object>}
-//  */
-// this._regexps = [{
-//   regex: /(.*).[sS](\d{2})[eE](\d{2})/i,
-//   dateBased: false
-// }, {
-//   regex: /(.*).(\d{1,2})[x](\d{2})/i,
-//   dateBased: false
-// }, {
-//   regex: /(.*).(\d{4}).(\d{2}.\d{2})/i,
-//   dateBased: true
-// }, {
-//   regex: /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i,
-//   dateBased: false
-// }, {
-//   regex: /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i,
-//   dateBased: false
-// }]
+import showMap from './maps/showMap'
 
 /**
  * Class for scraping show content from various sources.
@@ -34,13 +13,16 @@ import showmap from './maps/showmap'
 export default class ShowProvider extends BaseProvider {
 
   /**
-   * Extract show information based on a regex.
+   * Extract content information based on a regex.
    * @override
    * @protected
-   * @param {!Object} torrent - The torrent to extract the show information
-   * from.
-   * @param {!RegExp} r - The regex to extract the show information.
-   * @returns {Object|undefined} - Information about a show from the torrent.
+   * @param {!Object} options - The options to extract content information.
+   * @param {!Object} options.torrent - The torrent to extract the content
+   * information.
+   * @param {!Object} options.regex - The regex object to extract the content
+   * information.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
   extractContent({torrent, regex}: Object): Object | void {
     let episode
@@ -62,7 +44,7 @@ export default class ShowProvider extends BaseProvider {
     slug = showTitle.replace(/[^a-zA-Z0-9\- ]/gi, '')
       .replace(/\s+/g, '-')
       .toLowerCase()
-    slug = slug in showmap ? showmap[slug] : slug
+    slug = slug in showMap ? showMap[slug] : slug
 
     season = 1
     season = regex.dateBased ? parseInt(match[2], 10) : match[2]
@@ -104,14 +86,17 @@ export default class ShowProvider extends BaseProvider {
   }
 
   /**
-   * Create a new show object with a torrent attached.
+   * Attach the torrent object to the content.
    * @override
-   * @param {!Object} show - The show to attach a torrent to.
-   * @param {!Object} torrent - The torrent object.
-   * @param {!number} season - The season number for the torrent.
-   * @param {!number} episode - The episode number for the torrent.
-   * @param {!string} quality - The quality of the episode.
-   * @returns {Object} - The show with the newly attached torrent.
+   * @protected
+   * @param {!Object} options - The options to attach a torrent to the content.
+   * @param {!Object} options.show - The content to attach a torrent to.
+   * @param {!Object} options.torrent - The torrent object ot attach.
+   * @param {!string} options.quality - The quality of the torrent.
+   * @param {?number} options.season - The season number for the torrent.
+   * @param {?number} options.episode - The episode number for the torrent.
+   * @throws {Error} - Using default method: 'attachTorrent'
+   * @returns {Object} - The content with the newly attached torrent.
    */
   attachTorrent({
     show,
@@ -139,15 +124,16 @@ export default class ShowProvider extends BaseProvider {
   }
 
   /**
-   * Puts all the found shows from the torrents in an array.
+   * Put all the found content from the torrents in an array.
    * @override
    * @protected
-   * @param {!Array<Object>} torrents - A list of torrents to extract show
-   * information.
-   * @returns {Promise<Array<Object>, undefined>} - A list of objects with show
-   * information extracted from the torrents.
+   * @param {!Object} options - The options to get the content.
+   * @param {!Array<Object>} options.torrents - A list of torrents to extract
+   * content information from.
+   * @returns {Promise<Array<Object>, Error>} - A list of object with
+   * content information extracted from the torrents.
    */
-  _getAllContent({torrents}: Object): Promise<Array<Object>, void> {
+  getAllContent({torrents}: Object): Promise<Array<Object> | Error> {
     const shows = []
 
     return pMap(torrents, t => {

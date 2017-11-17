@@ -70,6 +70,7 @@ export default class BaseProvider extends AbstractProvider {
   /**
    * Gets information about a movie from Trakt.tv and insert the movie into the
    * MongoDB database.
+   * @protected
    * @param {!Object} content - The content information.
    * @throws {Error} - 'movie' is not a valid value for Types!
    * @returns {Promise<Object|undefined, Error>} - A movie object.
@@ -90,6 +91,7 @@ export default class BaseProvider extends AbstractProvider {
   /**
    * Gets information about a show from Trakt.tv and insert the show into the
    * MongoDB database.
+   * @protected
    * @param {!Object} content - The show information.
    * @throws {Error} - 'show' is not a valid value for Types!
    * @returns {Promise<Object, undefined>} - A show object.
@@ -106,7 +108,7 @@ export default class BaseProvider extends AbstractProvider {
   /**
    * Gets information about content from Trakt.tv and inserts the content into
    * the MongoDB database.
-   * @override
+   * @protected
    * @param {!Object} content - The content information.
    * @throws {Error} - 'CONTENT_TYPE' is not a valid value for Types!
    * @returns {Promise<Object, undefined>} - A content object.
@@ -142,15 +144,15 @@ export default class BaseProvider extends AbstractProvider {
 
   /**
    * Get content info from a given torrent.
-   * @override
    * @protected
-   * @param {!Object} torrent - A torrent object to extract content information
-   * from.
-   * @param {!string} [lang=en] - The language of the torrent.
+   * @param {!Object} options - The options to get content info from a torrent.
+   * @param {!Object} options.torrent - A torrent object to extract content
+   * information from.
+   * @param {!string} [optiosn.lang=en] - The language of the torrent.
    * @returns {Object|undefined} - Information about the content from the
    * torrent.
    */
-  getContentData(torrent: Object, lang: string = 'en'): Object | void {
+  getContentData({torrent, lang = 'en'}: Object): Object | void {
     const regex = this.regexps.find(
       r => r.regex.test(torrent.title) || r.regex.test(torrent.name)
     )
@@ -214,10 +216,9 @@ export default class BaseProvider extends AbstractProvider {
    * Get all the torrents of a given torrent provider.
    * @protected
    * @param {!number} totalPages - The total pages of the query.
-   * @returns {Promise<Array<Object>, undefined>} - A list of all the queried
-   * torrents.
+   * @returns {Promise<Array<Object>>} - A list of all the queried torrents.
    */
-  getAllTorrents(totalPages: number): Promise<Array<Object> | void> {
+  getAllTorrents(totalPages: number): Promise<Array<Object>> {
     let torrents = []
     return pTimes(totalPages, async page => {
       if (this.query.page) {
@@ -262,6 +263,7 @@ export default class BaseProvider extends AbstractProvider {
 
   /**
    * Set the configuration to scrape with.
+   * @protected
    * @param {!Object} config - The config to get content with.
    * @param {!string} config.name - The name of the config.
    * @param {!Object} config.api - The API module ot get the content with.
@@ -272,9 +274,19 @@ export default class BaseProvider extends AbstractProvider {
    * the database.
    * @param {?Object} config.query - The query to get the content with for the
    * api.
+   * @param {?Array<Ojbect>} config.regexps - The regular expressions used to
+   * extract information from a torrent.
    * @returns {undefined}
    */
-  setConfig({name, api, contentType, Model, Helper, query}: Object): void {
+  setConfig({
+    name,
+    api,
+    contentType,
+    Model,
+    Helper,
+    query,
+    regexps
+  }: Object): void {
     this.name = name
     this.api = api
     this.contentType = contentType
@@ -283,10 +295,12 @@ export default class BaseProvider extends AbstractProvider {
       name
     })
     this.query = query
+    this.regexps = regexps
   }
 
   /**
    * Get the contents for a configuration.
+   * @override
    * @param {!Object} config - The config to get content with.
    * @param {!string} config.name - The name of the config.
    * @param {!Object} config.api - The API module ot get the content with.
@@ -297,6 +311,8 @@ export default class BaseProvider extends AbstractProvider {
    * the database.
    * @param {?Object} config.query - The query to get the content with for the
    * api.
+   * @param {?Array<Ojbect>} config.regexps - The regular expressions used to
+   * extract information from a torrent.
    * @returns {Promise<Array<Object>|undefined, Error>} - The results of a
    * configuration.
    */
@@ -306,10 +322,11 @@ export default class BaseProvider extends AbstractProvider {
     contentType,
     Model,
     Helper,
-    query
+    query,
+    regexps
   }: Object): Promise<Array<Object> | void | Error> {
     try {
-      this.setConfig({name, api, contentType, Model, Helper, query})
+      this.setConfig({name, api, contentType, Model, Helper, query, regexps})
 
       const totalPages = await this.getTotalPages()
       if (!totalPages) {

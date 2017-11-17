@@ -59,6 +59,7 @@ describe('Cli', () => {
         info() {},
         error() {},
         debug() {},
+        warn() {},
         log() {}
       }
     }

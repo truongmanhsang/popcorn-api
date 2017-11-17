@@ -1,20 +1,17 @@
 // Import the necessary modules.
 // @flow
 import {
-  AnimeShow,
-  Show
-} from '../models'
+  bulkConfigs
+  // movieConfigs,
+  // showConfigs,
+  // ytsConfigs
+} from './configs'
 import {
   BulkProvider
   // MovieProvider,
   // ShowProvider,
   // YtsProvider
 } from './providers'
-import {
-  eztv,
-  horribleSubs
-} from './apiModules'
-import { ShowHelper } from './helpers'
 
 /**
  * Export the providers to be attached to the PopApiScraper.
@@ -24,18 +21,6 @@ export default [{
   Provider: BulkProvider,
   constructor: {
     maxWebRequests: 2,
-    configs: [{
-      name: 'EZTV',
-      api: eztv,
-      contentType: BulkProvider.ContentTypes.Show,
-      Helper: ShowHelper,
-      Model: Show
-    }, {
-      name: 'HorribleSubs',
-      api: horribleSubs,
-      contentType: BulkProvider.ContentTypes.Show,
-      Helper: ShowHelper,
-      Model: AnimeShow
-    }]
+    configs: bulkConfigs
   }
 }]
