@@ -71,7 +71,6 @@ describe('Cli', () => {
       'tmp'
     ])
     tempDir = process.env.TEMP_DIR
-    // console.log(tempDir)
     mkdirp.sync(tempDir)
 
     cli = new Cli({}, {
@@ -112,10 +111,10 @@ describe('Cli', () => {
     expect(val).to.be.an('object')
   })
 
-  /** @test {Cli#help} */
-  it('should print the --help option', () => {
-    const val = cli.help()
-    expect(val).to.be.undefined
+  /** @test {Cli#getHelp} */
+  it('should get the help message', () => {
+    const val = cli.getHelp()
+    expect(val).to.be.an('array')
   })
 
   /** @test {Cli#_movieTorrent} */

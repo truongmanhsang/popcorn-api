@@ -46,7 +46,7 @@ hooks.beforeAll((t, done) => {
     `${name}.log`
   ])).end()
 
-  return database.connectMongoDb().then(() => {
+  return database.connect().then(() => {
     models.push({
       c: AnimeMovie,
       m: new AnimeMovie(testAnimeMovie)
@@ -70,7 +70,7 @@ hooks.beforeAll((t, done) => {
       }).exec()
         .then(res => hooks.log(`Inserted content: '${res.id}'`))
     })
-  }).then(() => database.disconnectMongoDb())
+  }).then(() => database.disconnect())
     .then(() => done())
     .catch(err => {
       hooks.error(`Uhoh an error occurred during the beforeAll hook: '${err}'`)
@@ -79,14 +79,14 @@ hooks.beforeAll((t, done) => {
 })
 
 hooks.afterAll((t, done) => {
-  return database.connectMongoDb().then(() => {
+  return database.connect().then(() => {
     return pMap(models, model => {
       return model.c.findOneAndRemove({
         _id: model.m.id
       }, model.model).exec()
         .then(res => hooks.log(`Removed content: '${res.id}'`))
     })
-  }).then(() => database.disconnectMongoDb())
+  }).then(() => database.disconnect())
     .then(del.sync([tempDir]))
     .then(done)
     .catch(err => {

@@ -10,7 +10,8 @@ import {
 import type {
   $Application,
   $Request,
-  $Response
+  $Response,
+  NextFunction
 } from 'express'
 
 import ContentController from './ContentController'
@@ -52,9 +53,14 @@ export default class IndexController extends IController {
    * Get general information about the server.
    * @param {!Object} req - The ExpressJS request object.
    * @param {!Object} res - The ExpressJS response object.
-   * @returns {Promise<Object, Object>} - General information about the server.
+   * @param {!Function} next - The ExpressJS next function.
+   * @returns {Promise<Object, Error>} - General information about the server.
    */
-  async getIndex(req: $Request, res: $Response): Promise<Object | Object> {
+  async getIndex(
+    req: $Request,
+    res: $Response,
+    next: NextFunction
+  ): Promise<Object | mixed> {
     try {
       const commit = await utils.executeCommand('git', [
         'rev-parse',
@@ -80,7 +86,7 @@ export default class IndexController extends IController {
         commit
       })
     } catch (err) {
-      return res.status(500).json(err)
+      return next(err)
     }
   }
 
@@ -88,9 +94,14 @@ export default class IndexController extends IController {
    * Displays the 'popcorn-api.log' file.
    * @param {!Object} req - The ExpressJS request object.
    * @param {!Object} res - The ExpressJS response object.
-   * @returns {Object} - The content of the log file.
+   * @param {!Function} next - The ExpressJS next function.
+   * @returns {Object|Error} - The content of the log file.
    */
-  getErrorLog(req: $Request, res: $Response): Object {
+  getErrorLog(
+    req: $Request,
+    res: $Response,
+    next: NextFunction
+  ): Object | mixed {
     process.env.TEMP_DIR = typeof process.env.TEMP_DIR === 'string'
       ? process.env.TEMP_DIR
       : join(...[
@@ -116,9 +127,7 @@ export default class IndexController extends IController {
       })
     }
 
-    return res.status(500).json({
-      error: `Could not find file: '${filePath}'`
-    })
+    return next(new Error(`Could not find file: '${filePath}'`))
   }
 
 }

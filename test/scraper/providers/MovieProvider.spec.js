@@ -37,7 +37,7 @@ describe('MovieProvider', () => {
     database = new Database({}, {
       database: name
     })
-    database.connectMongoDb()
+    database.connect()
       .then(() => done())
       .catch(done)
   })
@@ -132,7 +132,7 @@ describe('MovieProvider', () => {
    * @type {Function}
    */
   after(done => {
-    database.disconnectMongoDb()
+    database.disconnect()
       .then(() => done())
       .catch(done)
   })

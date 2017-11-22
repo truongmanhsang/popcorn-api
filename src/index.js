@@ -102,7 +102,6 @@ async function init({
     ...PopApi.loggerArgs
   }
   PopApi.use(Logger, loggerOpts)
-  PopApi.use(Logger, loggerOpts)
   PopApi.use(Database, {
     database: name,
     hosts,
@@ -121,7 +120,7 @@ async function init({
   })
   PopApi.use(Cron)
 
-  await PopApi.connection.connectMongoDb()
+  await PopApi.database.connect()
 
   initScraper()
   return PopApi

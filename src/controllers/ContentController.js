@@ -2,9 +2,11 @@
 // @flow
 import type {
   $Application,
+  $Request,
   $Response,
-  $Request
+  NextFunction
 } from 'express'
+import type { MongooseModel } from 'mongoose'
 
 import {
   BaseContentController,
@@ -86,9 +88,15 @@ export default class ContentController extends BaseContentController {
    * Get content from one page.
    * @param {!Object} req - The ExpressJS request object.
    * @param {!Object} res - The ExpressJS response object.
-   * @returns {Promise<Array<Object>, Object>} - The content of one page.
+   * @param {!Function} next - The ExpressJS next function.
+   * @returns {Promise<Array<Object>, Error>} - The content of one
+   * page.
    */
-  getPage(req: $Request, res: $Response): Promise<Array<any> | Object> {
+  getPage(
+    req: $Request,
+    res: $Response,
+    next: NextFunction
+  ): Promise<Array<MongooseModel> | mixed> {
     const { page } = req.params
     const { sort, order, genre, keywords } = req.query
 
@@ -130,7 +138,7 @@ export default class ContentController extends BaseContentController {
       }
 
       return res.json(content)
-    }).catch(err => res.status(500).json(err))
+    }).catch(err => next(err))
   }
 
 }

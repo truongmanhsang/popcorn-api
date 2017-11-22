@@ -82,13 +82,13 @@ const query: Object = {
  */
 export default [{
   Controller: IndexController,
-  constructor: {}
+  args: {}
 }, {
   Controller: ExportController,
-  constructor: {}
+  args: {}
 }, {
   Controller: ContentController,
-  constructor: {
+  args: {
     service: new ContentService({
       Model: Anime,
       itemType: 'anime',
@@ -98,7 +98,7 @@ export default [{
   }
 }, {
   Controller: ContentController,
-  constructor: {
+  args: {
     service: new ContentService({
       Model: Movie,
       itemType: 'movie',
@@ -108,7 +108,7 @@ export default [{
   }
 }, {
   Controller: ContentController,
-  constructor: {
+  args: {
     service: new ContentService({
       Model: Show,
       itemType: 'show',

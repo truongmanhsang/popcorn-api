@@ -83,7 +83,7 @@ function testContentController(
       database = new Database({}, {
         database: name
       })
-      database.connectMongoDb()
+      database.connect()
         .then(() => done())
         .catch(done)
     })
@@ -320,7 +320,7 @@ function testContentController(
       Model.findOneAndRemove({
         _id: testContent.id
       }).exec()
-        .then(() => database.disconnectMongoDb())
+        .then(() => database.disconnect())
         .then(() => done())
         .catch(done)
     })

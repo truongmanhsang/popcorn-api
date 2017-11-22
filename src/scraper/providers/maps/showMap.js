@@ -1,9 +1,12 @@
 // @flow
+
 /**
  * Map for correcting show slugs.
  * @type {Object}
  */
-export default {
+const showMap: {
+  [key: string]: string
+} = {
   '60-minutes-us': '60-minutes',
   '91-days': 'ninety-one-days',
   'ace-attorney': 'gyakuten-saiban',
@@ -264,3 +267,9 @@ export default {
   'zero-no-tsukaima-final': 'zero-no-tsukaima-f',
   'zx-ignition': 'z-x-ignition'
 }
+
+/**
+ * Export the movie map.
+ * @type {Object}
+ */
+export default showMap

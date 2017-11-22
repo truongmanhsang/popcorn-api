@@ -5,7 +5,8 @@ import { existsSync } from 'fs'
 import type {
   $Application,
   $Request,
-  $Response
+  $Response,
+  NextFunction
 } from 'express'
 
 import { IController } from 'pop-api'
@@ -30,9 +31,15 @@ export default class ExportController extends IController {
    * Download the export of a collection.
    * @param {!Object} req - The ExpressJS request object.
    * @param {!Object} res - The ExpressJS response object.
-   * @returns {Object} - The download request of an export of a collection.
+   * @param {!Function} next - The ExpressJS next function.
+   * @returns {Object|Error} - The download request of an export of a
+   * collection.
    */
-  getExport(req: $Request, res: $Response): Object {
+  getExport(
+    req: $Request,
+    res: $Response,
+    next: NextFunction
+  ): Object | mixed {
     const { collection } = req.params
 
     if (collection.match(/(anime|movie|show)s?/i)) {
@@ -62,14 +69,11 @@ export default class ExportController extends IController {
         return res.download(jsonFile)
       }
 
-      return res.status(500).json({
-        error: `Error: no such file found for '${jsonFile}'`
-      })
+      return next(new Error(`Error: no such file found for '${jsonFile}'`))
     }
 
-    return res.status(500).json({
-      error: `Error: '${collection}' is not a valid collection to export.`
-    })
+    const msg = `Error: '${collection}' is not a valid collection to export.`
+    return next(new Error(msg))
   }
 
 }

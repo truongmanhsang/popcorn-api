@@ -111,12 +111,14 @@ export default class Cli extends BaseCli {
    * Method for displaying the --help option
    * @returns {undefined}
    */
-   help(): void {
-     super.help()
-     console.info(`    $ ${this._name} --content <animemovie|animeshow|movie|show>\n`)
-     console.info(`    $ ${this._name} --provider\n`)
-     console.info(`    $ ${this._name} --export <anime|movie|show>\n`)
-     console.info(`    $ ${this._name} --import <path-to-json>\n`)
+   getHelp(): void {
+     const baseHelp = super.getHelp()
+     return baseHelp.concat([
+       `    $ ${this._name} --content <animemovie|animeshow|movie|show>`,
+       `    $ ${this._name} --provider`,
+       `    $ ${this._name} --export <anime|movie|show>`,
+       `    $ ${this._name} --import <path-to-json>`
+     ])
    }
 
   /**
@@ -192,7 +194,7 @@ export default class Cli extends BaseCli {
        language
      ]
 
-     return this._database.connectMongoDb().then(() => {
+     return this._database.connect().then(() => {
        return inquirer.prompt(movieSchema).then(res => {
          const { imdb, quality, language, torrent } = res
          const movie = {
@@ -218,11 +220,13 @@ export default class Cli extends BaseCli {
 
            return movieProvider.getContent(movie)
          })
-       }).then(() => process.exit(0))
-     }).catch(err => {
-       console.error(`An error occurred: '${err}'`)
-       return process.exit(1)
-     })
+       })
+     }).then(() => this._database.disconnect())
+       .then(() => process.exit(0))
+       .catch(err => {
+         console.error(`An error occurred: '${err}'`)
+         return process.exit(1)
+       })
    }
 
   /**
@@ -249,7 +253,7 @@ export default class Cli extends BaseCli {
        dateBased
      ]
 
-     return this._database.connectMongoDb().then(() => {
+     return this._database.connect().then(() => {
        return inquirer.prompt(showSchema).then(res => {
          const { imdb, season, episode, quality, dateBased, torrent } = res
          const show = {
@@ -277,11 +281,13 @@ export default class Cli extends BaseCli {
 
            return showProvider.getContent(show)
          })
-       }).then(() => process.exit(0))
-     }).catch(err => {
-       console.error(`An error occurred: '${err}'`)
-       return process.exit(1)
-     })
+       })
+     }).then(() => this._database.disconnect())
+       .then(() => process.exit(0))
+       .catch(err => {
+         console.error(`An error occurred: '${err}'`)
+         return process.exit(1)
+       })
    }
 
   /**

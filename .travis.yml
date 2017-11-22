@@ -67,5 +67,4 @@ notifications:
   email:
     recipients:
     - chrisalderson@protonmail.com
-    on_success: always
     on_failure: always
