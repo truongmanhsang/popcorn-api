@@ -3,7 +3,6 @@
 import { join } from 'path'
 import { existsSync } from 'fs'
 import type {
-  $Application,
   $Request,
   $Response,
   NextFunction
@@ -20,11 +19,12 @@ export default class ExportController extends IController {
 
   /**
    * Register the routes for the export controller to the Express instance.
-   * @param {!Express} app - The Express instance to register the routes to.
+   * @param {!Object} router - The express router to register the routes to.
+   * @param {?PopApi} [PopApi] - The PopApi instance.
    * @returns {undefined}
    */
-  registerRoutes(app: $Application): void {
-    app.get('/exports/:collection', this.getExport)
+  registerRoutes(router: any, PopApi?: any): void {
+    router.get('/exports/:collection', this.getExport)
   }
 
   /**

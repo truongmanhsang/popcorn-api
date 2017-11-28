@@ -8,7 +8,6 @@ import {
   utils
 } from 'pop-api'
 import type {
-  $Application,
   $Request,
   $Response,
   NextFunction
@@ -41,12 +40,13 @@ export default class IndexController extends IController {
 
   /**
    * Register the routes for the index controller to the Express instance.
-   * @param {!Express} app - The Express instance to register the routes to.
-   * @returns { undefined}
+   * @param {!Object} router - The express router to register the routes to.
+   * @param {?PopApi} [PopApi] - The PopApi instance.
+   * @returns {undefined}
    */
-  registerRoutes(app: $Application): void {
-    app.get('/status', this.getIndex)
-    app.get('/logs/error', this.getErrorLog)
+  registerRoutes(router: any, PopApi?: any): void {
+    router.get('/status', this.getIndex)
+    router.get('/logs/error', this.getErrorLog)
   }
 
   /**

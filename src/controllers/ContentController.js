@@ -1,7 +1,6 @@
 // Import the necessary modules.
 // @flow
 import type {
-  $Application,
   $Request,
   $Response,
   NextFunction
@@ -28,18 +27,17 @@ export default class ContentController extends BaseContentController {
 
   /**
    * Register the default methods to the default routes.
-   * @param {!Express} app - The express instance to register the routes to.
+   * @param {!Object} router - The express router to register the routes to.
    * @param {?PopApi} [PopApi] - The PopApi instance.
-   * @throws {Error} - Using default method: 'registerRoutes'
    * @returns {undefined}
    */
-  registerRoutes(app: $Application, PopApi?: any): void {
-    const t = this._service.itemType
+  registerRoutes(router: any, PopApi?: any): void {
+    const t = this._service.basePath
 
-    app.get(`/${t}s`, this.getContents.bind(this))
-    app.get(`/${t}s/:page`, this.getPage.bind(this))
-    app.get(`/${t}/:id`, this.getContent.bind(this))
-    app.get(`/random/${t}`, this.getRandomContent.bind(this))
+    router.get(`/${t}s`, this.getContents.bind(this))
+    router.get(`/${t}s/:page`, this.getPage.bind(this))
+    router.get(`/${t}/:id`, this.getContent.bind(this))
+    router.get(`/random/${t}`, this.getRandomContent.bind(this))
   }
 
   /**

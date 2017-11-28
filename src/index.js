@@ -71,8 +71,7 @@ async function init({
   controllers,
   name,
   version,
-  pretty,
-  quiet,
+  logDir = process.env.TEMP_DIR || defaultTempDir,
   hosts = ['localhost'],
   dbPort = 27017,
   username,
@@ -80,9 +79,7 @@ async function init({
   serverPort = process.env.PORT,
   workers = 2
 }: Object): Object {
-
   const { app } = PopApi
-  const logDir = process.env.TEMPDIR || defaultTempDir
 
   if (isMaster) {
     await utils.createTemp(logDir)
@@ -97,8 +94,6 @@ async function init({
   const loggerOpts = {
     name,
     logDir,
-    pretty,
-    quiet,
     ...PopApi.loggerArgs
   }
   PopApi.use(Logger, loggerOpts)
@@ -107,12 +102,12 @@ async function init({
     hosts,
     username,
     password,
-    port: dbPort
+    dbPort
   })
   PopApi.use(HttpServer, {
     app,
     workers,
-    port: serverPort
+    serverPort
   })
   PopApi.use(Routes, {
     app,

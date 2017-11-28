@@ -71,11 +71,10 @@ function testContentController(
       contentController = new ContentController({
         service: new ContentService({
           Model,
-          itemType: content,
+          basePath: content,
           projection: {
             imdb_id: 1
-          },
-          query: {}
+          }
         })
       })
       contentController.registerRoutes(app)

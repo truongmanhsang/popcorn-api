@@ -91,7 +91,7 @@ export default [{
   args: {
     service: new ContentService({
       Model: Anime,
-      itemType: 'anime',
+      basePath: 'anime',
       projection: animeProjection,
       query
     })
@@ -101,7 +101,7 @@ export default [{
   args: {
     service: new ContentService({
       Model: Movie,
-      itemType: 'movie',
+      basePath: 'movie',
       projection: movieProjection,
       query
     })
@@ -111,7 +111,7 @@ export default [{
   args: {
     service: new ContentService({
       Model: Show,
-      itemType: 'show',
+      basePath: 'show',
       projection: showProjection,
       query
     })
