@@ -2,14 +2,13 @@
 // @flow
 import { Schema } from 'mongoose'
 
-import contentSchema from '../content/contentSchema'
+import { contentSchema } from '../content/contentSchema'
 
 /**
- * The movie schema used by mongoose.
+ * The schema object for the movie model.
  * @type {Object}
- * @see http://mongoosejs.com/docs/guide.html
  */
-export default new Schema({
+export const movieSchema: Object = {
   ...contentSchema,
   language: String,
   released: Number,
@@ -19,4 +18,13 @@ export default new Schema({
   },
   certification: String,
   torrents: {}
+}
+
+/**
+ * The movie schema used by mongoose.
+ * @type {Object}
+ * @see http://mongoosejs.com/docs/guide.html
+ */
+export default new Schema(movieSchema, {
+  collection: 'movies'
 })

@@ -5,7 +5,7 @@
  * @type {Object}
  * @see http://mongoosejs.com/docs/guide.html
  */
-export default {
+export const contentSchema: Object = {
   _id: {
     type: String,
     required: true,

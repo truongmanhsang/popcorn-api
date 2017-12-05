@@ -1,11 +1,11 @@
 // Import the necessary modules.
+// @flow
 import ContentModel from '../content/ContentModel'
 
 /**
  * Class for movie attributes and methods.
  * @extends {ContentModel}
  * @type {MovieModel}
- * @flow
  */
 export default class MovieModel extends ContentModel {
 

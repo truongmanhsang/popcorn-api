@@ -50,7 +50,7 @@ export function testEmptyContentAttributes(
   contentEmpty: ContentModel,
   type: string
 ): void {
-  expect(contentEmpty.id).to.be.undefined
+  expect(contentEmpty.id).to.be.null
   expect(contentEmpty.genres).to.be.undefined
   // expect(contentEmpty.images).to.be.undefined
   expect(contentEmpty.imdb_id).to.be.undefined

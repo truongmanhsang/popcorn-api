@@ -1,4 +1,5 @@
 // Import the necessary modules.
+// @flow
 import ShowModel from '../show/ShowModel'
 
 /**

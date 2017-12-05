@@ -2,14 +2,13 @@
 // @flow
 import { Schema } from 'mongoose'
 
-import contentSchema from '../content/contentSchema'
+import { contentSchema } from '../content/contentSchema'
 
 /**
- * The show schema used by mongoose.
+ * The schema object for the show model.
  * @type {Object}
- * @see http://mongoosejs.com/docs/guide.html
  */
-export default new Schema({
+export const showSchema: Object = {
   ...contentSchema,
   tvdb_id: Number,
   country: String,
@@ -35,4 +34,13 @@ export default new Schema({
       torrents: {}
     }]
   }
+}
+
+/**
+ * The show schema used by mongoose.
+ * @type {Object}
+ * @see http://mongoosejs.com/docs/guide.html
+ */
+export default new Schema(showSchema, {
+  collection: 'shows'
 })

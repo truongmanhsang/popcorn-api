@@ -1,4 +1,5 @@
 // Import the necessary modules.
+// @flow
 import mongoose from 'mongoose'
 
 import AnimeShowModel from './AnimeShowModel'
@@ -12,4 +13,4 @@ animeShowSchema.loadClass(AnimeShowModel)
  * @ignore
  * @type {AhimeShow}
  */
-export default mongoose.model(AnimeShowModel, animeShowSchema, 'animes')
+export default mongoose.model(AnimeShowModel, animeShowSchema)

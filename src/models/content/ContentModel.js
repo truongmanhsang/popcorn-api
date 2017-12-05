@@ -1,4 +1,5 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable camelcase */
 /**
  * MongoDB object modeling designed to work in an asynchronous environment.
@@ -7,10 +8,35 @@
 import { Model } from 'mongoose'
 
 /**
+ * The images model type.
+ * @typedef {Object} Rating
+ * @property {!number} votes The votes of the rating.
+ * @property {!number} watching The watching of the rating.
+ * @property {!number} percentage The percentage of the rating.
+ */
+type Rating = {
+  votes: number,
+  watching: number,
+  percentage: number
+}
+
+/**
+ * The images model type.
+ * @typedef {Object} Images
+ * @property {!string} banner The banner of the images.
+ * @property {!string} fanart The fanart of the images.
+ * @property {!string} poster The poster of the images.
+ */
+type Images = {
+  banner: string,
+  fanart: string,
+  poster: string
+}
+
+/**
  * The Content model.
  * @extends {Model}
  * @type {ContentModel}
- * @flow
  */
 export default class ContentModel extends Model {
 
@@ -18,7 +44,7 @@ export default class ContentModel extends Model {
    * The id of the content.
    * @type {string}
    */
-  _id: string
+  _id: any
 
   /**
    * The imdb id of the content.
@@ -163,14 +189,6 @@ export default class ContentModel extends Model {
      * @type {string}
      */
     this.type = type
-  }
-
-  /**
-   * Getter for the id of the content.
-   * @return {string} - The id of the content.
-   */
-  get id(): string {
-    return this._id
   }
 
 }

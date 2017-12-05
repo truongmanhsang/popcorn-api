@@ -1,4 +1,5 @@
 // Import the necessary modules.
+// @flow
 import mongoose from 'mongoose'
 
 import ShowModel from './ShowModel'
@@ -12,4 +13,4 @@ showSchema.loadClass(ShowModel)
  * @ignore
  * @type {Show}
  */
-export default mongoose.model(ShowModel, showSchema, 'shows')
+export default mongoose.model(ShowModel, showSchema)

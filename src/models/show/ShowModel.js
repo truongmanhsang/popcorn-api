@@ -1,12 +1,35 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable camelcase */
 import ContentModel from '../content/ContentModel'
+
+/**
+ * The episode model type.
+ * @typedef {Object} Episode
+ * @property {!string} tvdb_id The tvdb_id of the episode.
+ * @property {!number} season The season of the episode.
+ * @property {!number} episode The episode of the episode.
+ * @property {!string} title The title of the episode.
+ * @property {!string} overview The overview of the episode.
+ * @property {!boolean} date_based The date based of the episode.
+ * @property {!number} first_aired The first aired time of the episode.
+ * @property {!Object} torrents The torrents of the episode.
+ */
+type Episode = {
+  tvdb_id: string,
+  season: number,
+  episode: number,
+  title: string,
+  overview: string,
+  date_based: boolean,
+  first_aired: number,
+  torrents: Object
+}
 
 /**
  * Class for show attributes and methods.
  * @extends {ContentModel}
  * @type {ShowModel}
- * @flow
  */
 export default class ShowModel extends ContentModel {
 
@@ -90,7 +113,7 @@ export default class ShowModel extends ContentModel {
    * @param {!number} air_time - The air time of the show.
    * @param {!string} status - The status of the show.
    * @param {!number} num_seasons - The number of seasons of the show.
-   * @param {!number} last_updated - The time the show was last updated.
+   * @param {!number} last_updated=0 - The time the show was last updated.
    * @param {!number} latest_episode - The latest episode of the show.
    * @param {!Array<Episode>} episodes - The episodes of the show.
    */
@@ -113,7 +136,7 @@ export default class ShowModel extends ContentModel {
     status,
     num_seasons,
     last_updated,
-    latest_episode,
+    latest_episode = 0,
     episodes
   }: Object = {}): void {
     super({
@@ -173,7 +196,7 @@ export default class ShowModel extends ContentModel {
      * The latest episode of the show.
      * @type {number}
      */
-    this.lastest_episode = latest_episode
+    this.latest_episode = latest_episode
     /**
      * The episodes of the show.
      * @type {Array<Object>}
