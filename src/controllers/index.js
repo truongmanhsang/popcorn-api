@@ -89,9 +89,9 @@ export default [{
 }, {
   Controller: ContentController,
   args: {
+    basePath: 'anime',
     service: new ContentService({
       Model: Anime,
-      basePath: 'anime',
       projection: animeProjection,
       query
     })
@@ -99,9 +99,9 @@ export default [{
 }, {
   Controller: ContentController,
   args: {
+    basePath: 'movie',
     service: new ContentService({
       Model: Movie,
-      basePath: 'movie',
       projection: movieProjection,
       query
     })
@@ -109,9 +109,9 @@ export default [{
 }, {
   Controller: ContentController,
   args: {
+    basePath: 'show',
     service: new ContentService({
       Model: Show,
-      basePath: 'show',
       projection: showProjection,
       query
     })

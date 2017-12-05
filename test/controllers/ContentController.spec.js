@@ -69,9 +69,9 @@ function testContentController(
       app = Express()
 
       contentController = new ContentController({
+        basePath: content,
         service: new ContentService({
           Model,
-          basePath: content,
           projection: {
             imdb_id: 1
           }
