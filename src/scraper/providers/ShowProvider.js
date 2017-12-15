@@ -21,9 +21,10 @@ export default class ShowProvider extends BaseProvider {
    * information.
    * @param {!Object} options.regex - The regex object to extract the content
    * information.
-   * @returns {Object} - Information about the content from the torrent.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
-  extractContent({torrent, regex}: Object): Object {
+  extractContent({torrent, regex}: Object): Object | void {
     let episode
     let season
     let slug

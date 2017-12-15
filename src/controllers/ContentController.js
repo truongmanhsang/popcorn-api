@@ -23,13 +23,13 @@ export default class ContentController extends BaseContentController {
    * The base path for the routes.
    * @type {string}
    */
-  _basePath: string
+  basePath: string
 
   /**
    * The service of the content controller.
    * @type {ContentService}
    */
-  _service: ContentService
+  service: ContentService
 
   /**
    * Register the default methods to the default routes.
@@ -38,7 +38,7 @@ export default class ContentController extends BaseContentController {
    * @returns {undefined}
    */
   registerRoutes(router: any, PopApi?: any): void {
-    const t = this._basePath
+    const t = this.basePath
 
     router.get(`/${t}s`, this.getContents.bind(this))
     router.get(`/${t}s/:page`, this.getPage.bind(this))
@@ -108,7 +108,7 @@ export default class ContentController extends BaseContentController {
     const s = typeof sort === 'string' ? this.sortContent(sort, o) : ''
 
     const query = {
-      ...this._service.query
+      ...this.service.query
     }
 
     if (typeof genre === 'string' && genre.toLowerCase() !== 'all') {
@@ -136,13 +136,9 @@ export default class ContentController extends BaseContentController {
       }
     }
 
-    return this._service.getPage(s, Number(page), query).then(content => {
-      if (content.length === 0) {
-        return res.status(204).json()
-      }
-
-      return res.json(content)
-    }).catch(err => next(err))
+    return this.service.getPage(s, Number(page), query)
+      .then(content => this.checkEmptyContent(content, res))
+      .catch(err => next(err))
   }
 
 }

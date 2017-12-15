@@ -44,20 +44,24 @@ describe('ShowProvider', () => {
 
   /**
    * Test the attributes of an object returned by the `_extractContent method.
-   * @param {!Object} content - The content object to test.
+   * @param {!Object|undefined} content - The content object to test.
    * @param {!string} type - The type of the season and episode.
    * @returns {void}
    */
-  function testContentAttributes(content: Object, type: string): void {
-    expect(content).to.be.an('object')
-    expect(content.showTitle).to.be.a('string')
-    expect(content.slug).to.be.a('string')
-    expect(content.season).to.be.a(type)
-    expect(content.episode).to.be.a(type)
-    expect(content.quality).to.be.a('string')
-    expect(content.dateBased).to.be.a('boolean')
-    expect(content.episodes).to.be.an('object')
-    expect(content.type).to.be.a('string')
+  function testContentAttributes(content: Object | void, type: string): void {
+    if (content) {
+      expect(content).to.be.an('object')
+      expect(content.showTitle).to.be.a('string')
+      expect(content.slug).to.be.a('string')
+      expect(content.season).to.be.a(type)
+      expect(content.episode).to.be.a(type)
+      expect(content.quality).to.be.a('string')
+      expect(content.dateBased).to.be.a('boolean')
+      expect(content.episodes).to.be.an('object')
+      expect(content.type).to.be.a('string')
+    } else {
+      expect(true).to.be.false
+    }
   }
 
   /** @test {ShowProvider#extractContent} */
@@ -186,10 +190,14 @@ describe('ShowProvider', () => {
     stub.resolves(1)
 
     showProvider.scrapeConfig(nyaaCommieConfig).then(res => {
-      expect(res).to.be.an('array')
-      expect(res.length).to.be.at.least(1)
-      stub.restore()
+      if (res) {
+        expect(res).to.be.an('array')
+        expect(res.length).to.be.at.least(1)
+      } else {
+        expect(true).to.be.false
+      }
 
+      stub.restore()
       done()
     }).catch(done)
   })

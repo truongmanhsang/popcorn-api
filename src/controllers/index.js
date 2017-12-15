@@ -85,7 +85,9 @@ export default [{
   args: {}
 }, {
   Controller: ExportController,
-  args: {}
+  args: {
+    basePath: 'export'
+  }
 }, {
   Controller: ContentController,
   args: {

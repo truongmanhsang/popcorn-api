@@ -59,7 +59,7 @@ export default class MovieModel extends ContentModel {
    * @param {!Object} torrents - The torrents of the movie.
    */
   constructor({
-    imdb_id,
+    imdb_id, // eslint-disable-line camelcase
     title,
     year,
     slug,
@@ -87,7 +87,6 @@ export default class MovieModel extends ContentModel {
       genres,
       type
     })
-    // console.log(this.rating)
 
     /**
      * The language of the movie.

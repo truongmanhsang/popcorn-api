@@ -17,10 +17,10 @@ export default class YtsProvider extends MovieProvider {
    * @param {!Object} options.torrent - The torrent to extract the content
    * information.
    * @param {?string} [lang] - The language of the torrent.
-   * @returns {Object} - Information about the content from the
+   * @returns {Object|undefined} - Information about the content from the
    * torrent.
    */
-  extractContent({torrent, lang}: Object): Object {
+  extractContent({torrent, lang}: Object): Object | void {
     const movie = {
       movieTitle: torrent.title,
       slug: torrent.imdb_code,
@@ -31,6 +31,7 @@ export default class YtsProvider extends MovieProvider {
     }
 
     torrent.torrents.map(t => {
+      // eslint-disable-next-line camelcase
       const { hash, peers, quality, seeds, size, size_bytes } = t
 
       const torrentObj = {
@@ -61,9 +62,10 @@ export default class YtsProvider extends MovieProvider {
    * @param {!Object} options.torrent - A torrent object to extract content
    * information from.
    * @param {!string} [optiosn.lang=en] - The language of the torrent.
-   * @returns {Object} - Information about the content from the torrent.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
-  getContentData({torrent, lang = 'en'}: Object): Object {
+  getContentData({torrent, lang = 'en'}: Object): Object | void {
     if (
       torrent && torrent.torrents &&
       torrent.imdb_code &&

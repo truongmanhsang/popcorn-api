@@ -23,9 +23,10 @@ export default class MovieProvider extends BaseProvider {
    * @param {!Object} options.regex - The regex object to extract the content
    * information.
    * @param {?string} [lang] - The language of the torrent.
-   * @returns {Object} - Information about the content from the torrent.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
-  extractContent({torrent, regex, lang}: Object): Object {
+  extractContent({torrent, regex, lang}: Object): Object | void {
     let movieTitle
     let slug
 

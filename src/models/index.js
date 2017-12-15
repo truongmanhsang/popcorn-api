@@ -1,14 +1,6 @@
 // Import the necessary modules.
-import AnimeMovie from './animemovie'
-import AnimeShow from './animeshow'
-import ProviderConfig from './providerconfig'
-import Movie from './movie'
-import Show from './show'
-
-export {
-  AnimeMovie,
-  AnimeShow,
-  ProviderConfig,
-  Movie,
-  Show
-}
+export AnimeMovie from './animemovie'
+export AnimeShow from './animeshow'
+export ProviderConfig from './providerconfig'
+export Movie from './movie'
+export Show from './show'

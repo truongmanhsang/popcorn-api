@@ -135,9 +135,10 @@ export default class BaseProvider extends AbstractProvider {
    * information.
    * @param {?string} [lang] - The language of the torrent.
    * @throws {Error} - Using default method: 'extractContent'
-   * @returns {Object} - Information about the content from the torrent.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
-  extractContent({torrent, regex, lang}: Object): Object {
+  extractContent({torrent, regex, lang}: Object): Object | void {
     throw new Error('Using default method: \'extractContent\'')
   }
 
@@ -148,9 +149,10 @@ export default class BaseProvider extends AbstractProvider {
    * @param {!Object} options.torrent - A torrent object to extract content
    * information from.
    * @param {!string} [optiosn.lang=en] - The language of the torrent.
-   * @returns {Object} - Information about the content from the torrent.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
-  getContentData({torrent, lang = 'en'}: Object): Object {
+  getContentData({torrent, lang = 'en'}: Object): Object | void {
     const regex = this.regexps.find(
       r => r.regex.test(torrent.title) || r.regex.test(torrent.name)
     )
@@ -320,7 +322,7 @@ export default class BaseProvider extends AbstractProvider {
     Helper,
     query,
     regexps
-  }: Object): Promise<Array<Object>> {
+  }: Object): Promise<Array<Object> | void> {
     try {
       this.setConfig({name, api, contentType, Model, Helper, query, regexps})
 

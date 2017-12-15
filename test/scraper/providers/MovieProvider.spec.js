@@ -55,15 +55,19 @@ describe('MovieProvider', () => {
       lang: 'en'
     })
 
-    expect(content).to.be.an('object')
-    expect(content.movieTitle).to.be.a('string')
-    expect(content.slug).to.be.a('string')
-    expect(content.slugYear).to.be.a('string')
-    expect(content.year).to.be.a('number')
-    expect(content.quality).to.be.a('string')
-    expect(content.language).to.be.a('string')
-    expect(content.type).to.be.a('string')
-    expect(content.torrents).to.be.an('object')
+    if (content) {
+      expect(content).to.be.an('object')
+      expect(content.movieTitle).to.be.a('string')
+      expect(content.slug).to.be.a('string')
+      expect(content.slugYear).to.be.a('string')
+      expect(content.year).to.be.a('number')
+      expect(content.quality).to.be.a('string')
+      expect(content.language).to.be.a('string')
+      expect(content.type).to.be.a('string')
+      expect(content.torrents).to.be.an('object')
+    } else {
+      expect(true).to.be.false
+    }
   })
 
   /** @test {MovieProvider#attachTorrent} */
