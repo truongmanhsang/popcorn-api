@@ -17,7 +17,7 @@
     "p-map": "^1.2.0",
     "p-times": "^1.0.1",
     "parse-torrent": "^5.8.3",
-    "pop-api": "file:../pop-api/pop-api-0.2.0.tgz",
+    "pop-api": "^0.3.1",
     "pop-api-scraper": "git+https://github.com/ChrisAlderson/pop-api-scraper.git",
     "tmdbapi": "^1.0.2",
     "trakt.tv": "^6.0.2",
@@ -55,7 +55,7 @@
     "husky": "^0.14.3",
     "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
-    "nyc": "^11.4.0",
+    "nyc": "^11.4.1",
     "sinon": "^4.1.3"
   },
   "license": "MIT",
@@ -75,7 +75,7 @@
     "providers": "babel-node ./src/index.js --providers",
     "start": "cross-env NODE_ENV=production node ./build/index.js -m pretty",
     "test": "npm run test-dredd && npm run test-mocha",
-    "test-dredd": "cross-env NODE_ENV=test babel-node dredd",
+    "test-dredd": "cross-env NODE_ENV=test babel-node ./node_modules/.bin/dredd",
     "test-mocha": "cross-env NODE_ENV=test nyc -r=lcov -r=text mocha --recursive --exit --timeout 10000"
   },
   "bin": {

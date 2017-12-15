@@ -1,15 +1,13 @@
 // Import the necessary modules.
 // @flow
 import 'dotenv/config'
-import { isMaster } from 'cluster'
 import { join } from 'path'
 import {
   Database,
   HttpServer,
   Logger,
   Routes,
-  PopApi,
-  utils
+  PopApi
 } from 'pop-api'
 import {
   Cron,
@@ -22,7 +20,7 @@ import { Cli } from './middleware'
 import {
   name,
   version
-} from '../package'
+} from '../package.json'
 
 // The default temporary directory for the API.
 const defaultTempDir = join(...[
@@ -32,97 +30,43 @@ const defaultTempDir = join(...[
 ])
 
 /**
- * Attach the scraper to the PopApi instance.
- * @returns {Object} - The PopApi instance with a scraper attached.
- */
-function initScraper(): Object {
-  process.env.TEMP_DIR = process.env.TEMP_DIR || defaultTempDir
-  const tempDir = process.env.TEMP_DIR
-
-  PopApi.use(PopApiScraper, {
-    statusPath: join(...[
-      tempDir,
-      'status.json'
-    ]),
-    updatedPath: join(...[
-      tempDir,
-      'updated.json'
-    ])
-  })
-
-  // Register the provider to the PopApiScraper instance.
-  providers.map(p => {
-    const { Provider, constructor } = p
-    PopApiScraper.use(Provider, constructor)
-  })
-
-  if (isMaster && PopApi.startScraper) {
-    PopApi.scraper.scrape()
-  }
-
-  return PopApi
-}
-
-/**
  * Setup the api.
  * @returns {PopApi} - The PopApi instance.
  */
-async function init({
-  controllers,
-  name,
-  version,
-  logDir = process.env.TEMP_DIR || defaultTempDir,
-  hosts = ['localhost'],
-  dbPort = 27017,
-  username,
-  password,
-  serverPort = process.env.PORT,
-  workers = 2
-}: Object): Object {
-  const { app } = PopApi
+;(async () => {
+  try {
+    process.env.TEMP_DIR = process.env.TEMP_DIR || defaultTempDir
+    const logDir = process.env.TEMP_DIR
 
-  if (isMaster) {
-    await utils.createTemp(logDir)
+    await PopApi.init({
+      controllers,
+      name,
+      logDir,
+      version
+    }, [
+      Cli,
+      Logger,
+      Database,
+      Routes,
+      HttpServer
+    ])
+
+    providers.map(p => {
+      const { Provider, args } = p
+      PopApiScraper.use(Provider, args)
+    })
+
+    PopApi.use(PopApiScraper, {
+      statusPath: join(...[logDir, 'status.json']),
+      updatedPath: join(...[logDir, 'updated.json'])
+    })
+
+    PopApi.use(Cron, {
+      start: PopApi.startScraper
+    })
+
+    return PopApi
+  } catch (err) {
+    throw err
   }
-
-  PopApi.use(Cli, {
-    argv: process.argv,
-    name,
-    version
-  })
-
-  const loggerOpts = {
-    name,
-    logDir,
-    ...PopApi.loggerArgs
-  }
-  PopApi.use(Logger, loggerOpts)
-  PopApi.use(Database, {
-    database: name,
-    hosts,
-    username,
-    password,
-    dbPort
-  })
-  PopApi.use(HttpServer, {
-    app,
-    workers,
-    serverPort
-  })
-  PopApi.use(Routes, {
-    app,
-    controllers
-  })
-  PopApi.use(Cron)
-
-  await PopApi.database.connect()
-
-  initScraper()
-  return PopApi
-}
-
-init({
-  controllers,
-  name,
-  version
-})
+})()

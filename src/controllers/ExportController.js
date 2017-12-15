@@ -24,7 +24,7 @@ export default class ExportController extends IController {
    * @returns {undefined}
    */
   registerRoutes(router: any, PopApi?: any): void {
-    router.get(`/${this.basePath}s/:collection`, this.getExport)
+    router.get('/exports/:collection', this.getExport)
   }
 
   /**

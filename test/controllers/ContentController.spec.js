@@ -61,6 +61,12 @@ function testContentController(
     let database: Database
 
     /**
+     * The content service for the controller.
+     * @type {ContentService}
+     */
+    let service: ContentService
+
+    /**
       * Hook for setting up the Controller tests.
       * @type {Function}
       */
@@ -68,14 +74,15 @@ function testContentController(
       chai.use(chaiHttp)
       app = Express()
 
+      service = new ContentService({
+        Model,
+        projection: {
+          imdb_id: 1
+        }
+      })
       contentController = new ContentController({
         basePath: content,
-        service: new ContentService({
-          Model,
-          projection: {
-            imdb_id: 1
-          }
-        })
+        service
       })
       contentController.registerRoutes(app)
 
@@ -89,7 +96,10 @@ function testContentController(
 
     /** @test {ContentController#constructor} */
     it('should check the attributes of the ContentController', () => {
-      expect(contentController._service).to.be.an('object')
+      expect(contentController.basePath).to.be.a('string')
+      expect(contentController.basePath).to.equal(content)
+      expect(contentController.service).to.be.an('object')
+      expect(contentController.service).to.equal(service)
     })
 
     /** @test {ContentController#registerRoutes} */

@@ -25,25 +25,25 @@ const maxWebRequests: number = 2
  */
 export default [{
   Provider: BulkProvider,
-  constructor: {
+  args: {
     maxWebRequests,
     configs: bulkConfigs
   }
 }, {
   Provider: MovieProvider,
-  constructor: {
+  args: {
     maxWebRequests,
     configs: movieConfigs
   }
 }, {
   Provider: ShowProvider,
-  constructor: {
+  args: {
     maxWebRequests,
     configs: showConfigs
   }
 }, {
   Provider: YtsProvider,
-  constructor: {
+  args: {
     maxWebRequests,
     configs: ytsConfigs
   }

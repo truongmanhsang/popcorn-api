@@ -137,7 +137,7 @@ export default class ContentController extends BaseContentController {
     }
 
     return this.service.getPage(s, Number(page), query)
-      .then(content => this.checkEmptyContent(content, res))
+      .then(content => this.checkEmptyContent(res, content))
       .catch(err => next(err))
   }
 

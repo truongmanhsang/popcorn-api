@@ -99,10 +99,10 @@ describe('Cli', () => {
   it('should check the attributes of the Cli', () => {
     expect(cli.program).to.exist
     expect(cli.program).to.be.an('object')
-    expect(cli._name).to.exist
-    expect(cli._name).to.be.a('string')
-    expect(cli._database).to.exist
-    expect(cli._database).to.be.an('object')
+    expect(cli.name).to.exist
+    expect(cli.name).to.be.a('string')
+    expect(cli.database).to.exist
+    expect(cli.database).to.be.an('object')
   })
 
   /** @test {Cli#initOptions} */
@@ -293,7 +293,7 @@ describe('Cli', () => {
 
   /** @test {CLI#_export} */
   it('should run the --export option and reject the result', done => {
-    const stub = sinon.stub(cli._database, 'exportCollection')
+    const stub = sinon.stub(cli.database, 'exportCollection')
     stub.rejects()
 
     const e = join(...[
@@ -371,7 +371,7 @@ describe('Cli', () => {
     const stub = sinon.stub(inquirer, 'prompt')
     stub.resolves()
 
-    cli._run({}, [
+    cli.run({}, [
       '',
       '',
       '--content',
@@ -387,10 +387,10 @@ describe('Cli', () => {
 
   /** @test {Cli#_run} */
   it('should invoke the --export', done => {
-    const stub = sinon.stub(cli._database, 'exportCollection')
+    const stub = sinon.stub(cli.database, 'exportCollection')
     stub.resolves()
 
-    cli._run({}, [
+    cli.run({}, [
       '',
       '',
       '--export',
@@ -409,7 +409,7 @@ describe('Cli', () => {
     const stub = sinon.stub(inquirer, 'prompt')
     stub.resolves()
 
-    cli._run({}, [
+    cli.run({}, [
       '',
       '',
       '--import',
@@ -428,7 +428,7 @@ describe('Cli', () => {
 
   /** @test {Cli#_run} */
   it('should invoke the --start option', () => {
-    const res = cli._run({}, [
+    const res = cli.run({}, [
       '',
       '',
       '--start'
@@ -442,7 +442,7 @@ describe('Cli', () => {
   it('should not parse the arguments since there are none', () => {
     const stub = sinon.stub(cli.program, 'outputHelp')
 
-    const res = cli._run({})
+    const res = cli.run({})
     expect(res).to.be.undefined
 
     stub.restore()
