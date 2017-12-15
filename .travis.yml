@@ -45,7 +45,7 @@ jobs:
     - flow-typed install
     script:
     - npm run lint
-    # - npm run flow
+    - npm run flow
   - stage: test
     node_js: '7'
     script: npm run test
