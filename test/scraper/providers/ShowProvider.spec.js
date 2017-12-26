@@ -3,7 +3,11 @@
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
 import { expect } from 'chai'
-import { Database } from 'pop-api'
+import {
+  Database,
+  PopApi
+} from 'pop-api'
+import { PopApiScraper } from 'pop-api-scraper'
 
 import ShowProvider from '../../../src/scraper/providers/ShowProvider'
 import showMap from '../../../src/scraper/providers/maps/showMap'
@@ -29,12 +33,12 @@ describe('ShowProvider', () => {
    * @type {Function}
    */
   before(done => {
-    showProvider = new ShowProvider({}, {
+    showProvider = new ShowProvider(PopApiScraper, {
       configs: [nyaaCommieConfig]
     })
     showProvider.setConfig(nyaaCommieConfig)
 
-    database = new Database({}, {
+    database = new Database(PopApi, {
       database: name
     })
     database.connect()

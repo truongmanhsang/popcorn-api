@@ -134,7 +134,7 @@ export default class ShowProvider extends BaseProvider {
    * content information extracted from the torrents.
    */
   getAllContent({torrents}: Object): Promise<Array<Object>> {
-    const shows = []
+    const shows = new Map()
 
     return pMap(torrents, t => {
       if (!t) {
@@ -148,18 +148,10 @@ export default class ShowProvider extends BaseProvider {
         return
       }
 
-      const { showTitle, slug, season, episode, quality } = show
-
-      const matching = shows.find(
-        s => s.showTitle.toLowerCase() === showTitle.toLowerCase() &&
-          s.slug.toLowerCase() === slug.toLowerCase() &&
-          s.type.toLowerCase() === this.contentType.toLowerCase()
-      )
-      if (!matching) {
-        return shows.push(show)
+      const { slug, season, episode, quality } = show
+      if (!shows.has(slug)) {
+        return shows.set(slug, show)
       }
-
-      const index = shows.indexOf(matching)
 
       const torrent = show.episodes[season][episode][quality]
       const created = this.attachTorrent({
@@ -167,13 +159,13 @@ export default class ShowProvider extends BaseProvider {
         season,
         episode,
         quality,
-        show: matching
+        show
       })
 
-      shows.splice(index, 1, created)
+      return shows.set(slug, created)
     }, {
       concurrency: 1
-    }).then(() => shows)
+    }).then(() => Array.from(shows.values()))
   }
 
 }

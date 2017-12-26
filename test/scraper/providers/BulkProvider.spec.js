@@ -3,7 +3,11 @@
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
 import { expect } from 'chai'
-import { Database } from 'pop-api'
+import {
+  Database,
+  PopApi
+} from 'pop-api'
+import { PopApiScraper } from 'pop-api-scraper'
 
 import BulkProvider from '../../../src/scraper/providers/BulkProvider'
 import { eztvConfig } from '../../../src/scraper/configs/bulkConfigs'
@@ -28,11 +32,11 @@ describe('BulkProvider', () => {
    * @type {Function}
    */
   before(done => {
-    bulkProvider = new BulkProvider({}, {
+    bulkProvider = new BulkProvider(PopApiScraper, {
       configs: [eztvConfig]
     })
 
-    database = new Database({}, {
+    database = new Database(PopApi, {
       database: name
     })
     database.connect()

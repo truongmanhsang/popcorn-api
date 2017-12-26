@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
 import { expect } from 'chai'
+import { PopApiScraper } from 'pop-api-scraper'
 
 import BaseProvider from '../../../src/scraper/providers/BaseProvider'
 import { katMovieConfig } from '../../../src/scraper/configs/movieConfigs'
@@ -22,7 +23,7 @@ describe('BaseProvider', () => {
    * @type {Function}
    */
   before(() => {
-    baseProvider = new BaseProvider({}, {
+    baseProvider = new BaseProvider(PopApiScraper, {
       configs: [ytsConfig]
     })
   })
@@ -113,7 +114,7 @@ describe('BaseProvider', () => {
   function executeTotalPages(config: Object): void {
     /** @test {BaseProvider#getTotalPages} */
     it('should return a the number of the total pages to scrape', done => {
-      baseProvider = new BaseProvider({}, {
+      baseProvider = new BaseProvider(PopApiScraper, {
         configs: [config]
       })
       baseProvider.setConfig(config)

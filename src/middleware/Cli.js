@@ -80,7 +80,7 @@ export default class Cli extends BaseCli {
       * The database middleware from `pop-api`.
       * @type {Database}
       */
-    this.database = new Database({}, {
+    this.database = new Database(PopApi, {
       database: name
     })
 
@@ -330,7 +330,7 @@ export default class Cli extends BaseCli {
     ])
     const tempDir = process.env.TEMP_DIR
 
-    return this.database.exportCollection(e, path.join(...[
+    return this.database.exportFile(e, path.join(...[
       tempDir,
       `${e}s.json`
     ]))
@@ -357,7 +357,7 @@ export default class Cli extends BaseCli {
     const { confirm } = promptSchemas
     return inquirer.prompt([confirm]).then(({ confirm }) => {
       if (confirm) {
-        return this.database.importCollection(path.basename(i, '.json'), i)
+        return this.database.importFile(path.basename(i, '.json'), i)
       }
 
       return process.exit(0)

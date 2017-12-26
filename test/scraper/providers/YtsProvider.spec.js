@@ -2,11 +2,15 @@
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
 import { expect } from 'chai'
-import { Database } from 'pop-api'
+import {
+  Database,
+  PopApi
+} from 'pop-api'
+import { PopApiScraper } from 'pop-api-scraper'
 
 import YtsProvider from '../../../src/scraper/providers/YtsProvider'
 import { ytsConfig } from '../../../src/scraper/configs/ytsConfigs'
-import { name } from '../../../package'
+import { name } from '../../../package.json'
 // @flow
 
 /** @test {YtsProvider} */
@@ -34,7 +38,7 @@ describe('YtsProvider', () => {
    * @type {Function}
    */
   before(done => {
-    ytsProvider = new YtsProvider({}, {
+    ytsProvider = new YtsProvider(PopApiScraper, {
       configs: [ytsConfig]
     })
     torrent = {
@@ -44,7 +48,7 @@ describe('YtsProvider', () => {
       size_bytes: 123456789
     }
 
-    database = new Database({}, {
+    database = new Database(PopApi, {
       database: name
     })
     database.connect()

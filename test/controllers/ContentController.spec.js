@@ -7,7 +7,8 @@ import Express from 'express'
 import sinon from 'sinon'
 import {
   ContentService,
-  Database
+  Database,
+  PopApi
 } from 'pop-api'
 import type { MongooseModel } from 'mongoose'
 
@@ -86,7 +87,7 @@ function testContentController(
       })
       contentController.registerRoutes(app)
 
-      database = new Database({}, {
+      database = new Database(PopApi, {
         database: name
       })
       database.connect()

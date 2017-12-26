@@ -3,7 +3,11 @@
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
 import { expect } from 'chai'
-import { Database } from 'pop-api'
+import {
+  Database,
+  PopApi
+} from 'pop-api'
+import { PopApiScraper } from 'pop-api-scraper'
 
 import MovieProvider from '../../../src/scraper/providers/MovieProvider'
 import movieMap from '../../../src/scraper/providers/maps/movieMap'
@@ -29,12 +33,12 @@ describe('MovieProvider', () => {
    * @type {Function}
    */
   before(done => {
-    movieProvider = new MovieProvider({}, {
+    movieProvider = new MovieProvider(PopApiScraper, {
       configs: [katMovieConfig]
     })
     movieProvider.setConfig(katMovieConfig)
 
-    database = new Database({}, {
+    database = new Database(PopApi, {
       database: name
     })
     database.connect()

@@ -6,6 +6,7 @@ import mkdirp from 'mkdirp'
 import sinon from 'sinon'
 import { expect } from 'chai'
 import { join } from 'path'
+import { PopApi } from 'pop-api'
 
 import { Cli } from '../../src/middleware'
 import {
@@ -73,7 +74,7 @@ describe('Cli', () => {
     tempDir = process.env.TEMP_DIR
     mkdirp.sync(tempDir)
 
-    cli = new Cli({}, {
+    cli = new Cli(PopApi, {
       argv: ['', '', '-m', 'pretty'],
       name,
       version
@@ -88,7 +89,7 @@ describe('Cli', () => {
 
   /** @test {Cli#constructor} */
   it('should create a new Cli instance without arguments to parse', () => {
-    const cli = new Cli({}, {
+    const cli = new Cli(PopApi, {
       name,
       version
     })
@@ -293,7 +294,7 @@ describe('Cli', () => {
 
   /** @test {CLI#_export} */
   it('should run the --export option and reject the result', done => {
-    const stub = sinon.stub(cli.database, 'exportCollection')
+    const stub = sinon.stub(cli.database, 'exportFile')
     stub.rejects()
 
     const e = join(...[
@@ -387,7 +388,7 @@ describe('Cli', () => {
 
   /** @test {Cli#_run} */
   it('should invoke the --export', done => {
-    const stub = sinon.stub(cli.database, 'exportCollection')
+    const stub = sinon.stub(cli.database, 'exportFile')
     stub.resolves()
 
     cli.run({}, [

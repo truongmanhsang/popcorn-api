@@ -7,7 +7,10 @@ import Express from 'express'
 import fs from 'fs'
 import mkdirp from 'mkdirp'
 import sinon from 'sinon'
-import { Database } from 'pop-api'
+import {
+  Database,
+  PopApi
+} from 'pop-api'
 import { join } from 'path'
 
 import IndexController from '../../src/controllers/IndexController'
@@ -67,7 +70,7 @@ describe('IndexController', () => {
       `${name}.log`
     ])).end()
 
-    database = new Database({}, {
+    database = new Database(PopApi, {
       database: name
     })
     database.connect()

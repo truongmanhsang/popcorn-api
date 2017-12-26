@@ -115,7 +115,7 @@ export default class MovieProvider extends BaseProvider {
     torrents,
     lang = 'en'
   }: Object): Promise<Array<Object>> {
-    const movies = []
+    const movies = new Map()
 
     return pMap(torrents, t => {
       if (!t) {
@@ -131,31 +131,23 @@ export default class MovieProvider extends BaseProvider {
         return
       }
 
-      const { movieTitle, slug, language, quality } = movie
-
-      const matching = movies.find(
-        m => m.movieTitle.toLowerCase() === movieTitle.toLowerCase() &&
-          m.slug.toLowerCase() === slug.toLowerCase() &&
-          m.type.toLowerCase() === this.contentType.toLowerCase()
-      )
-      if (!matching) {
-        return movies.push(movie)
+      const { slug, language, quality } = movie
+      if (!movies.has(slug)) {
+        return movies.set(slug, movie)
       }
-
-      const index = movies.indexOf(matching)
 
       const torrent = movie.torrents[language][quality]
       const created = this.attachTorrent({
         torrent,
         quality,
         language,
-        movie: matching
+        movie
       })
 
-      movies.splice(index, 1, created)
+      return movies.set(slug, created)
     }, {
       concurrency: 1
-    }).then(() => movies)
+    }).then(() => Array.from(movies.values()))
   }
 
 }
