@@ -85,7 +85,7 @@
     "providers": "babel-node ./src/index.js --providers",
     "start": "cross-env NODE_ENV=production node ./build/popcorn-api.js",
     "test": "npm run test-dredd && npm run test-mocha",
-    "test-dredd": "cross-env NODE_ENV=test babel-node ./node_modules/.bin/dredd",
+    "test-dredd": "cross-env NODE_ENV=test babel-node ./node_modules/dredd/bin/dredd",
     "test-mocha": "cross-env NODE_ENV=test nyc -r=lcov -r=text mocha --exit --recursive --timeout 10000"
   },
   "bin": {

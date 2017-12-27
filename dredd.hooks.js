@@ -1,10 +1,8 @@
 // Import the neccesary modules.
 // @flow
-import del from 'del'
-import dotenv from 'dotenv'
+import 'dotenv/config'
 // @flow-ignore
 import hooks from 'hooks'
-import mkdirp from 'mkdirp'
 import pMap from 'p-map'
 import { createWriteStream } from 'fs'
 import {
@@ -25,11 +23,22 @@ import {
 } from './src/models'
 import { name } from './package'
 
-dotenv.config()
 process.env.TEMP_DIR = process.env.TEMP_DIR || join(...['tmp'])
 
 const tempDir = process.env.TEMP_DIR
-const models = []
+const models = [{
+  c: AnimeMovie,
+  m: new AnimeMovie(testAnimeMovie)
+}, {
+  c: AnimeShow,
+  m: new AnimeShow(testAnimeShow)
+}, {
+  c: Movie,
+  m: new Movie(testMovie)
+}, {
+  c: Show,
+  m: new Show(testShow)
+}]
 
 /**
  * The database middleware to connect to MongoDb.
@@ -41,42 +50,25 @@ hooks.beforeAll((t, done) => {
   database = new Database(PopApi, {
     database: name
   })
-
-  del.sync([tempDir])
-  mkdirp.sync(tempDir)
   createWriteStream(join(...[
     tempDir,
     `${name}.log`
   ])).end()
 
   return database.connect().then(() => {
-    models.push({
-      c: AnimeMovie,
-      m: new AnimeMovie(testAnimeMovie)
-    }, {
-      c: AnimeShow,
-      m: new AnimeShow(testAnimeShow)
-    }, {
-      c: Movie,
-      m: new Movie(testMovie)
-    }, {
-      c: Show,
-      m: new Show(testShow)
-    })
-
     return pMap(models, model => {
       return model.c.findOneAndUpdate({
         _id: model.m.id
       }, model.m, {
         upsert: true,
         new: true
-      }).exec()
-        .then(res => hooks.log(`Inserted content: '${res.id}'`))
+      }).then(res => hooks.log(`Inserted content: '${res.id}'`))
     })
   }).then(() => database.disconnect())
+    .then(() => hooks.log('beforeAll: ok'))
     .then(() => done())
     .catch(err => {
-      hooks.error(`Uhoh an error occurred during the beforeAll hook: '${err}'`)
+      hooks.error(`beforeAll: '${err}'`)
       done()
     })
 })
@@ -86,14 +78,13 @@ hooks.afterAll((t, done) => {
     return pMap(models, model => {
       return model.c.findOneAndRemove({
         _id: model.m.id
-      }, model.model).exec()
-        .then(res => hooks.log(`Removed content: '${res.id}'`))
+      }).then(res => hooks.log(`Removed content: '${res.id}'`))
     })
   }).then(() => database.disconnect())
-    .then(del.sync([tempDir]))
-    .then(done)
+    .then(() => hooks.log('afterAll: ok'))
+    .then(() => done())
     .catch(err => {
-      hooks.error(`Uhoh an error occurred during the afterAll hook: '${err}'`)
+      hooks.error(`afterAll: '${err}'`)
       done()
     })
 })
