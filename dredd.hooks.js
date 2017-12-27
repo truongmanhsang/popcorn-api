@@ -7,7 +7,10 @@ import hooks from 'hooks'
 import mkdirp from 'mkdirp'
 import pMap from 'p-map'
 import { createWriteStream } from 'fs'
-import { Database } from 'pop-api'
+import {
+  Database,
+  PopApi
+} from 'pop-api'
 import { join } from 'path'
 
 import testAnimeMovie from './test/data/animemovie'
@@ -35,7 +38,7 @@ const models = []
 let database: Database
 
 hooks.beforeAll((t, done) => {
-  database = new Database({}, {
+  database = new Database(PopApi, {
     database: name
   })
 
