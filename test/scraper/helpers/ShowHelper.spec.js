@@ -11,7 +11,7 @@ import {
   trakt,
   tmdb
 } from '../../../src/scraper/apiModules'
-import * as baseHelperTests from './AbstractHelper.spec'
+import * as abstractHelperTests from './AbstractHelper.spec'
 
 /** @test {ShowHelper} */
 describe('ShowHelper', () => {
@@ -85,48 +85,32 @@ describe('ShowHelper', () => {
   /** @test {ShowHelper#_getTvdbImages} */
   it.skip('should get show images from TVDB', done => {
     showHelper._getTvdbImages(296762)
-      .then(res => baseHelperTests.testImages(res, done))
+      .then(res => abstractHelperTests.testImages(res, done))
       .catch(done)
   })
 
   /** @test {ShowHelper#_getFanartImages} */
   it('should get show images from Fanart', done => {
     showHelper._getFanartImages(75682)
-      .then(res => baseHelperTests.testImages(res, done))
+      .then(res => abstractHelperTests.testImages(res, done))
       .catch(done)
   })
 
-  // TODO: merge function with the one in the moviehelper spec and put it in
-  // the basehelper spec.
-  /**
-   * Test the failures of the `_getFanartImages`.
-   * @param {!Object} resolves - The object the stub will resolve.
-   * @param {!Function} done - The done function of mocha.
-   * @returns {undefined}
-   */
-  function testGetFanartImages(resolves: Object): void {
-    /** @test {showHelper#_getFanartImages} */
-    it('should fail to get show images from Fanart', done => {
-      const stub = sinon.stub(fanart, 'getShowImages')
-      stub.resolves(resolves)
+  /** @test {ShowHelper#_getFanartImages} */
+  it(`should fail to get show images from Fanart`, done => {
+    abstractHelperTests.testGetFanartImages({
+      hdmovieclearart: [{
+        url: 'url'
+      }]
+    }, 'show', fanart, showHelper, done)
+  })
 
-      showHelper._getFanartImages()
-        .then(done)
-        .catch(err => {
-          expect(err).to.be.an('Error')
-
-          stub.restore()
-          done()
-        })
-    })
-  }
-
-  // Execute the tests.
-  [{}, {
-    clearart: [{
-      url: 'url'
-    }]
-  }].map(testGetFanartImages)
+  /** @test {ShowHelper#_getFanartImages} */
+  it(`should fail to get show images from Fanart`, done => {
+    abstractHelperTests.testGetFanartImages(
+      {}, 'show', fanart, showHelper, done
+    )
+  })
 
   /** @test {ShowHelper#_getImages} */
   it.skip('should get show images from various sources', () => {

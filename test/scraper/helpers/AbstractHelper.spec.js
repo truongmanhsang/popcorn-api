@@ -2,6 +2,7 @@
 // @flow
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
+import sinon from 'sinon'
 import type { MongooseModel } from 'mongoose'
 
 import AbstractHelper from '../../../src/scraper/helpers/AbstractHelper'
@@ -37,6 +38,35 @@ export function testImages(images: Object, done: Function): void {
   expect(images.fanart).to.be.a('string')
   expect(images.poster).to.be.a('string')
   done()
+}
+
+/**
+ * Test the failures of the `_getFanartImages`.
+ * @param {!Object} resolves - The object the stub will resolve.
+ * @param {!string} type - The type of images to get.
+ * @param {!Fanart} fanart - The fanart api service.
+ * @param {!AbstractHelper} helper - The helper to test.
+ * @param {!Function} done - The mocha done function.
+ * @returns {undefined}
+ */
+export function testGetFanartImages(
+  resolves: Object,
+  type: string,
+  fanart: Object,
+  helper: Object,
+  done: Function
+): void {
+  const cap = `${type.charAt(0).toUpperCase()}${type.slice(1)}`
+  const stub = sinon.stub(fanart, `get${cap}Images`)
+  stub.resolves(resolves)
+
+  helper._getFanartImages()
+    .then(done)
+    .catch(err => {
+      expect(err).to.be.an('Error')
+      stub.restore()
+      done()
+    })
 }
 
 /** @test {AbstractHelper} */

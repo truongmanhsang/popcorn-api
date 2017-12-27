@@ -89,35 +89,21 @@ describe('MovieHelper', () => {
       .catch(done)
   })
 
-  /**
-   * Test the failures of the `_getFanartImages`.
-   * @param {!Object} resolves - The object the stub will resolve.
-   * @param {!Function} done - The done function of mocha.
-   * @returns {undefined}
-   */
-  function testGetFanartImages(resolves: Object): void {
-    /** @test {MovieHelper#_getFanartImages} */
-    it('should fail to get movie images from Fanart', done => {
-      const stub = sinon.stub(fanart, 'getMovieImages')
-      stub.resolves(resolves)
+  /** @test {MovieHelper#_getFanartImages} */
+  it(`should fail to get movie images from Fanart`, done => {
+    abstractHelperTests.testGetFanartImages({
+      hdmovieclearart: [{
+        url: 'url'
+      }]
+    }, 'movie', fanart, movieHelper, done)
+  })
 
-      movieHelper._getFanartImages()
-        .then(done)
-        .catch(err => {
-          expect(err).to.be.an('Error')
-
-          stub.restore()
-          done()
-        })
-    })
-  }
-
-  // Execute the tests.
-  [{}, {
-    hdmovieclearart: [{
-      url: 'url'
-    }]
-  }].map(testGetFanartImages)
+  /** @test {MovieHelper#_getFanartImages} */
+  it(`should fail to get movie images from Fanart`, done => {
+    abstractHelperTests.testGetFanartImages(
+      {}, 'movie', fanart, movieHelper, done
+    )
+  })
 
   /** @test {MovieHelper#_getImages} */
   it.skip('should get movie images from various sources', done => {
