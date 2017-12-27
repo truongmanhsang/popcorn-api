@@ -62,8 +62,8 @@
   "scripts": {
     "build": "babel src --out-dir build",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "debug": "npm rundev --inspect-brk",
-    "dev": "cross-env NODE_ENV=development DEBUG=popcorn-api:* node --require babel-register ./src/index.js",
+    "debug": "npm run dev --inspect-brk",
+    "dev": "cross-env NODE_ENV=development node --require babel-register ./src/index.js",
     "docs": "esdoc -c .esdoc.json",
     "flow": "flow",
     "flow-typed": "flow-typed install",
@@ -74,9 +74,9 @@
     "pretest": "npm run build",
     "providers": "babel-node ./src/index.js --providers",
     "start": "cross-env NODE_ENV=production node ./build/index.js -m pretty",
-    "test": "npm run test-dredd && npm run test-mocha",
-    "test-dredd": "cross-env NODE_ENV=test babel-node ./node_modules/.bin/dredd",
-    "test-mocha": "cross-env NODE_ENV=test nyc -r=lcov -r=text mocha --recursive --exit --timeout 10000"
+    "test": "cross-env NODE_ENV=test npm run test-dredd && npm run test-mocha",
+    "test-dredd": "babel-node ./node_modules/.bin/dredd",
+    "test-mocha": "nyc -r=lcov -r=text mocha --recursive --exit --timeout 10000"
   },
   "bin": {
     "popcorn-api": "./build/index.js"
@@ -88,11 +88,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/popcorn-official/popcorn-api.git"
-  },
-  "eslintConfig": {
-    "extends": "vixo",
-    "globals": {
-      "logger": true
-    }
   }
 }
