@@ -6,7 +6,7 @@ import { expect } from 'chai'
 import { PopApiScraper } from 'pop-api-scraper'
 
 import BaseProvider from '../../../src/scraper/providers/BaseProvider'
-import { katMovieConfig } from '../../../src/scraper/configs/movieConfigs'
+// import { katMovieConfig } from '../../../src/scraper/configs/movieConfigs'
 import { nyaaCommieConfig } from '../../../src/scraper/configs/showConfigs'
 import { ytsConfig } from '../../../src/scraper/configs/ytsConfigs'
 
@@ -128,7 +128,7 @@ describe('BaseProvider', () => {
 
   [
     nyaaCommieConfig,
-    katMovieConfig,
+    // katMovieConfig,
     ytsConfig
   ].map(executeTotalPages)
 

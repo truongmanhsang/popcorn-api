@@ -12,7 +12,7 @@ import { PopApiScraper } from 'pop-api-scraper'
 import MovieProvider from '../../../src/scraper/providers/MovieProvider'
 import movieMap from '../../../src/scraper/providers/maps/movieMap'
 import { katMovieConfig } from '../../../src/scraper/configs/movieConfigs'
-import { name } from '../../../package'
+import { name } from '../../../package.json'
 
 /** @test {MovieProvider} */
 describe('MovieProvider', () => {

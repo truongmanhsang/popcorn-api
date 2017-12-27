@@ -1,5 +1,6 @@
 // Import the necessary modules.
 /* eslint-disable no-unused-expressions */
+import 'dotenv/config'
 import chai, { expect } from 'chai'
 // @flow
 import chaiHttp from 'chai-http'
@@ -21,7 +22,7 @@ import {
   Movie,
   Show
 } from '../../src/models'
-import { name } from '../../package'
+import { name } from '../../package.json'
 
 /**
   * Test suite for fetching content from the database.

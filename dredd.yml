@@ -6,7 +6,7 @@ dry-run: null
 hookfiles: ./dredd.hooks.js
 language: nodejs
 sandbox: false
-server: node ./build/index.js -m quiet
+server: node ./build/popcorn-api.js -m quiet
 server-wait: 10
 init: false
 names: false

@@ -23,7 +23,7 @@ import {
   name,
   repository,
   version
-} from '../../package'
+} from '../../package.json'
 
 /**
  * Class for displaying information about the server the API is running on.

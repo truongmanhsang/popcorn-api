@@ -12,7 +12,7 @@ import { PopApiScraper } from 'pop-api-scraper'
 import ShowProvider from '../../../src/scraper/providers/ShowProvider'
 import showMap from '../../../src/scraper/providers/maps/showMap'
 import { nyaaCommieConfig } from '../../../src/scraper/configs/showConfigs'
-import { name } from '../../../package'
+import { name } from '../../../package.json'
 
 /** @test {ShowProvider} */
 describe('ShowProvider', () => {

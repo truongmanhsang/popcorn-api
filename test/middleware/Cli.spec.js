@@ -12,7 +12,7 @@ import { Cli } from '../../src/middleware'
 import {
   name,
   version
-} from '../../package'
+} from '../../package.json'
 
 /** @test {Cli} */
 describe('Cli', () => {

@@ -1,5 +1,5 @@
 // Export the necessary modules.
-export bulkProviders from './bulkConfigs'
-export movieProviders from './movieConfigs'
-export showProviders from './showConfigs'
-export ytsProviders from './ytsConfigs'
+export bulkConfigs from './bulkConfigs'
+export movieConfigs from './movieConfigs'
+export showConfigs from './showConfigs'
+export ytsConfigs from './ytsConfigs'
