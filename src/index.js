@@ -1,6 +1,7 @@
 // Import the necessary modules.
 // @flow
 import 'dotenv/config'
+import { isMaster } from 'cluster'
 import { join } from 'path'
 import {
   Database,
@@ -22,50 +23,41 @@ import {
   version
 } from '../package.json'
 
-// The default temporary directory for the API.
-const defaultTempDir = join(...[
-  __dirname,
-  '..',
-  'tmp'
-])
-
-/**
- * Setup the api.
- * @returns {PopApi} - The PopApi instance.
- */
-;(async () => {
+/** Setup the api. */
+(async () => {
   try {
-    process.env.TEMP_DIR = process.env.TEMP_DIR || defaultTempDir
-    const logDir = process.env.TEMP_DIR
-
-    await PopApi.init({
-      controllers,
-      name,
-      logDir,
-      version
-    }, [
-      Cli,
-      Logger,
-      Database,
-      Routes,
-      HttpServer
-    ])
-
     providers.map(p => {
       const { Provider, args } = p
       PopApiScraper.use(Provider, args)
     })
 
-    PopApi.use(PopApiScraper, {
+    process.env.TEMP_DIR = process.env.TEMP_DIR || join(...[
+      __dirname,
+      '..',
+      'tmp'
+    ])
+    const logDir = process.env.TEMP_DIR
+    await PopApi.init({
+      name,
+      version,
+      logDir,
+      controllers,
       statusPath: join(...[logDir, 'status.json']),
       updatedPath: join(...[logDir, 'updated.json'])
-    })
+    }, [
+      Cli,
+      Logger,
+      Database,
+      Routes,
+      HttpServer,
+      PopApiScraper,
+      Cron
+    ])
 
-    PopApi.use(Cron, {
-      start: PopApi.startScraper
-    })
-
-    return PopApi
+    // TODO: make scraping start wth 'start' param in 'init'.
+    if (isMaster && PopApi.startScraper) {
+      PopApi.scraper.scrape()
+    }
   } catch (err) {
     throw err
   }
