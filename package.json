@@ -17,7 +17,7 @@
     "p-map": "^1.2.0",
     "p-times": "^1.0.1",
     "parse-torrent": "^5.8.3",
-    "pop-api": "file:../pop-api/pop-api-0.5.0.tgz",
+    "pop-api": "^0.5.1",
     "pop-api-scraper": "git+https://github.com/ChrisAlderson/pop-api-scraper.git",
     "rollup": "^0.53.0",
     "rollup-plugin-babel": "^3.0.3",
