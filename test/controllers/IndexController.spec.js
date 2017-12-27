@@ -11,6 +11,7 @@ import {
   Database,
   PopApi
 } from 'pop-api'
+import { PopApiScraper } from 'pop-api-scraper'
 import { join } from 'path'
 
 import IndexController from '../../src/controllers/IndexController'
@@ -41,7 +42,7 @@ describe('IndexController', () => {
    * The temporary directory to hold the logs.
    * @type {string}
    */
-  let tempDir
+  let tempDir: string
 
   /**
    * Hook for setting up the IndexController tests.
@@ -49,9 +50,6 @@ describe('IndexController', () => {
    */
   before(done => {
     app = express()
-
-    indexController = new IndexController()
-    indexController.registerRoutes(app)
 
     process.env.TEMP_DIR = process.env.TEMP_DIR || join(...[
       __dirname,
@@ -68,6 +66,14 @@ describe('IndexController', () => {
       tempDir,
       `${name}.log`
     ])).end()
+
+    PopApi.use(PopApiScraper, {
+      statusPath: join(...[tempDir, 'status.json']),
+      updatedPath: join(...[tempDir, 'updated.json'])
+    })
+
+    indexController = new IndexController()
+    indexController.registerRoutes(app)
 
     database = new Database(PopApi, {
       database: name
@@ -123,11 +129,11 @@ describe('IndexController', () => {
           expect(body).to.exist
           expect(body.repo).to.exist
           expect(body.server).to.exist
-          // expect(body.status).to.exist
+          expect(body.status).to.exist
           expect(body.totalAnimes).to.exist
           expect(body.totalMovies).to.exist
           expect(body.totalShows).to.exist
-          // expect(body.updated).to.exist
+          expect(body.updated).to.exist
           expect(body.uptime).to.exist
           expect(body.version).to.exist
           expect(body.commit).to.exist
@@ -142,13 +148,7 @@ describe('IndexController', () => {
      */
     after(() => {
       const file = `${name}.log`
-      process.env.TEMP_DIR = process.env.TEMPDIR || join(...[
-        __dirname,
-        '..',
-        '..',
-        'tmp'
-      ])
-      const filePath = join(...[process.env.TEMP_DIR, file])
+      const filePath = join(...[tempDir, file])
 
       fs.unlinkSync(filePath)
     })

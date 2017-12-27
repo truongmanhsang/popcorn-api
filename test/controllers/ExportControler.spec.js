@@ -46,7 +46,7 @@ describe('ExportController', () => {
      * The temporary directory to hold the logs.
      * @type {string}
      */
-    let tempDir
+    let tempDir: string
 
     /**
      * Hook for setting up the ExportController tests.

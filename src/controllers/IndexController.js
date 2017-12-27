@@ -3,8 +3,9 @@
 import fs from 'fs'
 import { join } from 'path'
 import {
+  ApiError,
   IController,
-  // PopApi,
+  PopApi,
   utils
 } from 'pop-api'
 import type {
@@ -76,11 +77,11 @@ export default class IndexController extends IController {
       return res.json({
         repo: repository.url,
         server: IndexController._Server,
-        // status: await PopApi.scraper.getStatus(),
+        status: await PopApi.scraper.getStatus(),
         totalAnimes,
         totalMovies,
         totalShows,
-        // updated: await PopApi.scraper.getUpdated(),
+        updated: await PopApi.scraper.getUpdated(),
         uptime: process.uptime() | 0, // eslint-disable-line no-bitwise
         version,
         commit
@@ -127,7 +128,9 @@ export default class IndexController extends IController {
       })
     }
 
-    return next(new Error(`Could not find file: '${filePath}'`))
+    return next(new ApiError({
+      message: `Could not find file: '${filePath}'`
+    }))
   }
 
 }
