@@ -1,40 +1,52 @@
+// Import the necessary modules.
+// @flow
+import type ContentModel from '../../models/content/ContentModel'
+
 /**
  * Interface for saving content.
  * @interface
  * @type {IHelper}
- * @flow
  */
 export default class IHelper {
 
   /**
-   * Default method to check images.
+   * Method to check the given images against the default ones.
    * @abstract
-   * @protected
-   * @throws {Error} - Using default method: '_checkImages'.
-   * @returns {Error} - Error suggesting to implement this method.
+   * @param {Object} images - The images to check.
+   * @throws {Error} - An image could not been found!
+   * @returns {Object|undefined} - Throws an error if the given images are the
+   * same, otherwise it will return the given images.
    */
-  _checkImages(): Error {
-    throw new Error('Using default method: \'_checkImages\'')
+  checkImages(images: Object): Object | void {
+    throw new Error('Using default method: \'checkImages\'')
   }
 
   /**
-   * Default method to get images.
+   * Get images for the content you want.
    * @abstract
    * @protected
+   * @param {!number} tmdbId - The tmdb id of the content you want the images
+   * from.
+   * @param {!string} imdbId - The imdb id of the content you want the images
+   * from.
+   * @param {!number} tvdbId - The tvdb id of the content you want the images
+   * from.
    * @throws {Error} - Using default method: '_getImages'.
-   * @returns {Error} - Error suggesting to implement this method.
+   * @returns {Promise<Object>} - Object with banner, fanart and poster
+   * images.
    */
-  _getImages(): Error {
-    throw new Error('Using default method: \'_getImages\'')
+  getImages({tmdbId, imdbId, tvdbId}: Object): Promise<Object> {
+    throw new Error('Using default method: \'getImages\'')
   }
 
   /**
-   * Default method to get images.
+   * Get info from Trakt and make a new content object.
    * @abstract
+   * @param {!string} slug - The slug to query trakt.tv.
    * @throws {Error} - Using default method: 'getTraktInfo'.
-   * @returns {Error} - Error suggesting to implement this method.
+   * @returns {Promise<ContentModel, Error>} - A new content model.
    */
-  getTraktInfo(): Error {
+  getTraktInfo(slug: string): Promise<ContentModel | Error> {
     throw new Error('Using default method: \'getTraktInfo\'')
   }
 

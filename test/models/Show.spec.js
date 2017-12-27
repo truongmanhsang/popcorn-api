@@ -1,21 +1,20 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
-import { ItemType } from 'butter-provider'
 
-import Show from '../../src/models/Show'
-import testShow from '../data/show.json'
+import testShow from '../data/show'
+import { Show } from '../../src/models'
 import * as contentTests from './Content.spec'
 
 /**
  * It should check the attributes of a show.
- * @flow
  * @param {Show} show - The show to test.
  * @param {Object} testShow - The movie to test against.
  * @returns {undefined}
  */
 export function testShowAttributes(show: Show, testShow: Object): void {
-  contentTests.testContentAttributes(show, testShow, ItemType.TVSHOW)
+  contentTests.testContentAttributes(show, testShow, 'tvshow')
 
   expect(show.air_day).to.be.a('string')
   expect(show.air_day).to.equal(testShow.air_day)
@@ -44,7 +43,7 @@ export function testShowAttributes(show: Show, testShow: Object): void {
  * @returns {undefined}
  */
 export function testEmptyShowAttributes(showEmpty: Show): void {
-  contentTests.testEmptyContentAttributes(showEmpty, ItemType.TVSHOW)
+  contentTests.testEmptyContentAttributes(showEmpty, 'tvshow')
 
   expect(showEmpty.air_date).to.be.undefined
   expect(showEmpty.air_time).to.be.undefined
@@ -58,10 +57,7 @@ export function testEmptyShowAttributes(showEmpty: Show): void {
   expect(showEmpty.tvdb_id).to.be.undefined
 }
 
-/**
- * @test {Show}
- * @flow
- */
+/** @test {Show} */
 describe('Show', () => {
   /**
    * The show object to test.

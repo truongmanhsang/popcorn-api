@@ -8,9 +8,10 @@
 <PROJECT_ROOT>/tmp/.*
 
 [include]
-<PROJECT_ROOT>/dredd.hooks.js/.*
-<PROJECT_ROOT>/src/.*
-<PROJECT_ROOT>/test/.*
+./coverage.js
+./dredd.hooks.js/.*
+./src/.*
+./test/.*
 
 [libs]
 

@@ -1,17 +1,18 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
+import type ContentModel from '../../src/models/content/ContentModel'
 
 /**
  * It should check the attributes of a content object.
- * @flow
- * @param {Content} content - The content to test with.
+ * @param {ContentModel} content - The content to test with.
  * @param {Object} testContent - The content to test against.
  * @param {string} type - The type of content to check for.
  * @returns {undefined}
  */
 export function testContentAttributes(
-  content: Content,
+  content: ContentModel,
   testContent: Object,
   type: string
 ): void {
@@ -41,19 +42,19 @@ export function testContentAttributes(
 
 /**
  * It should check the attributes of an empty content object.
- * @param {Content} contentEmpty - The content to test with.
+ * @param {ContentModel} contentEmpty - The content to test with.
  * @param {string} type - The type of content to check for.
  * @returns {undefined}
  */
 export function testEmptyContentAttributes(
-  contentEmpty: Content,
+  contentEmpty: ContentModel,
   type: string
 ): void {
-  expect(contentEmpty.id).to.be.undefined
+  expect(contentEmpty.id).to.be.null
   expect(contentEmpty.genres).to.be.undefined
-  expect(contentEmpty.images).to.be.undefined
+  // expect(contentEmpty.images).to.be.undefined
   expect(contentEmpty.imdb_id).to.be.undefined
-  expect(contentEmpty.rating).to.be.undefined
+  // expect(contentEmpty.rating).to.be.undefined
   expect(contentEmpty.runtime).to.be.undefined
   expect(contentEmpty.slug).to.be.undefined
   expect(contentEmpty.synopsis).to.be.undefined

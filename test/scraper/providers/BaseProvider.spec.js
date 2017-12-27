@@ -1,37 +1,16 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
 import { expect } from 'chai'
+import { PopApiScraper } from 'pop-api-scraper'
 
 import BaseProvider from '../../../src/scraper/providers/BaseProvider'
-import katConfig from '../../../src/scraper/configs/katmovies.json'
-import nyaaConfig from '../../../src/scraper/configs/nyaaanime.json'
-import ytsConfig from '../../../src/scraper/configs/ytsmovies.json'
+// import { katMovieConfig } from '../../../src/scraper/configs/movieConfigs'
+import { nyaaCommieConfig } from '../../../src/scraper/configs/showConfigs'
+import { ytsConfig } from '../../../src/scraper/configs/ytsConfigs'
 
-/**
- * Check the constructor of the base provider.
- * @param {!BaseProvider} provider - The base provider to test.
- * @param {!string} name - The name to check for.
- * @returns {undefined}
- */
-export function checkProviderAttributes(
-  provider: BaseProvider,
-  name: string
-): void {
-  expect(provider._api).to.exist
-  expect(provider._api).to.be.an('object')
-  expect(provider._name).to.be.an('string')
-  expect(provider._name).to.equal(name)
-  expect(provider._query).to.exist
-  expect(provider._query).to.be.an('object')
-  expect(provider._type).to.exist
-  expect(provider._type).to.be.a('string')
-}
-
-/**
- * @test {BaseProvider}
- * @flow
- */
+/** @test {BaseProvider} */
 describe('BaseProvider', () => {
   /**
    * The base provider to test.
@@ -44,43 +23,31 @@ describe('BaseProvider', () => {
    * @type {Function}
    */
   before(() => {
-    nyaaConfig[0].query.limit = 1
-    baseProvider = new BaseProvider(nyaaConfig[0])
-  })
-
-  /** @test {BaseProvider.ModelTypes} */
-  it('should check if BaseProvider has a static ModelTypes', () => {
-    expect(BaseProvider.ModelTypes).to.exist
-    expect(BaseProvider.ModelTypes).to.be.an('object')
+    baseProvider = new BaseProvider(PopApiScraper, {
+      configs: [ytsConfig]
+    })
   })
 
   /** @test {BaseProvider.Types} */
-  it('should check if BaseProvider has a static Types', () => {
-    expect(BaseProvider.Types).to.exist
-    expect(BaseProvider.Types).to.be.an('object')
+  it('should check if BaseProvider has a static ContentTypes attributes', () => {
+    expect(BaseProvider.ContentTypes).to.exist
+    expect(BaseProvider.ContentTypes).to.be.an('object')
   })
 
-  /** @test {BaseProvider._MaxWebRequest} */
-  it('should check if BaseProvider has a static _MaxWebRequest', () => {
-    expect(BaseProvider.Types).to.exist
-    expect(BaseProvider._MaxWebRequest).to.be.a('number')
+  /** @test {BaseProvider#_getMovieContent} */
+  it.skip('should get the movie content', done => {
+    done()
   })
 
-  /** @test {BaseProvider#constructor} */
-  it('should check the attributes of the BaseProvider', () => {
-    checkProviderAttributes(baseProvider, nyaaConfig[0].name)
+  /** @test {BaseProvider#_getShowContent} */
+  it.skip('should get the show content', done => {
+    done()
   })
 
-  /** @test {BaseProvider#name} */
-  it('should get the name of the provider', () => {
-    const providerName = baseProvider.name
-    expect(providerName).to.equal(nyaaConfig[0].name)
-  })
-
-  /** @test {BaseProvider#getConcent} */
+  /** @test {BaseProvider#getContent} */
   it('should return an error ', done => {
-    baseProvider._type = 'faulty'
-    baseProvider.getContent()
+    baseProvider.contentType = 'faulty'
+    baseProvider.getContent({})
       .then(done)
       .catch(err => {
         expect(err).to.be.an('Error')
@@ -88,91 +55,125 @@ describe('BaseProvider', () => {
       })
   })
 
-  /** @test {BaseProvider#_getContentData} */
+  /** @test {BaseProvider#extractContent} */
+  it('should throw an error when calling the extractContent method', () => {
+    expect(baseProvider.extractContent.bind({}, {})).to
+      .throw('Using default method: \'extractContent\'')
+  })
+
+  /** @test {BaseProvider#getContentData} */
   it('should not get info from a given torrent object', () => {
-    baseProvider._regexps = [{
+    baseProvider.regexps = [{
       regex: /\d+/g
     }]
-    const contentData = baseProvider._getContentData({
-      title: 'faulty'
+    const contentData = baseProvider.getContentData({
+      torrent: {
+        title: 'faulty'
+      }
     })
 
     expect(contentData).to.be.undefined
   })
 
-  /** @test {BaseProvider#_getAllTorrents} */
+  /** @test {BaseProvider#attachtTorrent} */
+  it('should throw an error when calling the attachTorrent method', () => {
+    expect(baseProvider.attachTorrent.bind({}, {})).to
+      .throw('Using default method: \'attachTorrent\'')
+  })
+
+  /** @test {BaseProvider#getAllContent} */
+  it('should throw an error when calling the getAllContent method', () => {
+    expect(baseProvider.getAllContent.bind({}, {})).to
+      .throw('Using default method: \'getAllContent\'')
+    expect(baseProvider.getAllContent.bind({}, {
+      lang: 'de'
+    })).to.throw('Using default method: \'getAllContent\'')
+  })
+
+  /** @test {BaseProvider#getAllTorrents} */
   it('should get no torrents to concatenate', done => {
-    const stub = sinon.stub(baseProvider._api, 'search')
+    baseProvider.setConfig(ytsConfig)
+    const stub = sinon.stub(baseProvider.api, 'search')
     stub.resolves([])
 
-    baseProvider._getAllTorrents(1)
-      .then(res => {
-        expect(res).to.be.an('array')
-        expect(res.length).to.equal(0)
-
-        stub.restore()
-        done()
-      })
-      .catch(done)
-  })
-
-  /**
-   * Helper function to test the `_getTotalPages` method with different
-   * providers.
-   * @param {!Function} done - The done function from mocha.
-   * @returns {undefined}
-   */
-  function executeTotalPages(done): void {
-    baseProvider._getTotalPages()
-      .then(res => {
-        expect(res).to.be.a('number')
-        done()
-      })
-      .catch(done)
-  }
-
-  /** @test {BaseProvider#_getTotalPages} */
-  it('should return a the number of the total pages to scrape for nyaa', done => {
-    baseProvider = new BaseProvider(nyaaConfig[0])
-    executeTotalPages(done)
-  })
-
-  /** @test {BaseProvider#_getTotalPages} */
-  it('should return a the number of the total pages to scrape for kat', done => {
-    baseProvider = new BaseProvider(katConfig[0])
-    executeTotalPages(done)
-  })
-
-  /** @test {BaseProvider#_getTotalPages} */
-  it('should return a the number of the total pages to scrape for YTS', done => {
-    baseProvider = new BaseProvider(ytsConfig[0])
-    executeTotalPages(done)
-  })
-
-  /** @test {BaseProvider#search} */
-  it('should not be able to get the total pages to scrape', done => {
-    const stub = sinon.stub(baseProvider, '_getTotalPages')
-    stub.resolves(null)
-
-    baseProvider.search().then(res => {
-      expect(res).to.be.undefined
-
+    baseProvider.getAllTorrents(1).then(res => {
+      expect(res).to.be.an('array')
+      expect(res.length).to.equal(0)
       stub.restore()
+
       done()
     }).catch(done)
   })
 
-  /** @test {BaseProvider#search} */
+  /**
+   * Helper function to test the `getTotalPages` method with different
+   * providers.
+   * @param {!Object} config - The config to test with.
+   * @returns {undefined}
+   */
+  function executeTotalPages(config: Object): void {
+    /** @test {BaseProvider#getTotalPages} */
+    it('should return a the number of the total pages to scrape', done => {
+      baseProvider = new BaseProvider(PopApiScraper, {
+        configs: [config]
+      })
+      baseProvider.setConfig(config)
+
+      baseProvider.getTotalPages().then(res => {
+        expect(res).to.be.a('number')
+        done()
+      }).catch(done)
+    })
+  }
+
+  [
+    nyaaCommieConfig,
+    // katMovieConfig,
+    ytsConfig
+  ].map(executeTotalPages)
+
+  /** @test {BaseProvider#setConfig} */
+  it('should set the configuration to scrape', () => {
+    baseProvider.setConfig(ytsConfig)
+
+    expect(baseProvider.api).to.exist
+    expect(baseProvider.api).to.be.an('object')
+    expect(baseProvider.name).to.exist
+    expect(baseProvider.name).to.be.a('string')
+    expect(baseProvider.contentType).to.exist
+    expect(baseProvider.contentType).to.be.a('string')
+    expect(baseProvider.helper).to.exist
+    expect(baseProvider.helper).to.be.an('object')
+    // expect(baseProvider.query).to.exist
+    // expect(baseProvider.query).to.be.an('object')
+    // expect(baseProvider.regexps).to.exist
+    // expect(baseProvider.regexps).to.be.an('array')
+  })
+
+  /** @test {BaseProvider#scrapeConfig} */
+  it('should not be able to get the total pages to scrape', done => {
+    const stub = sinon.stub(baseProvider, 'getTotalPages')
+    stub.resolves(null)
+
+    baseProvider.scrapeConfig(ytsConfig).then(res => {
+      expect(res).to.be.undefined
+      stub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {BaseProvider#scrapeConfig} */
   it('should throw and catch an error to continue', done => {
-    const stub = sinon.stub(baseProvider, '_getTotalPages')
+    const stub = sinon.stub(baseProvider, 'getTotalPages')
     stub.rejects()
 
-    baseProvider.search()
+    baseProvider.scrapeConfig(ytsConfig)
       .then(done)
       .catch(err => {
         expect(err).to.be.undefined
-
         stub.restore()
+
         done()
       })
   })

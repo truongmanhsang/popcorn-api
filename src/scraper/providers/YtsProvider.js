@@ -1,38 +1,26 @@
 // Import the necessary modules.
+// @flow
 import MovieProvider from './MovieProvider'
 
 /**
  * Class for scraping content from YTS.ag.
  * @extends {MovieProvider}
  * @type {YtsProvider}
- * @flow
  */
 export default class YtsProvider extends MovieProvider {
 
   /**
-   * Create a YtsProvider class.
-   * @param {!Object} config - The configuration object for the torrent
-   * provider.
-   * @param {!Object} config.api - The name of api for the torrent provider.
-   * @param {!String} config.name - The name of the torrent provider.
-   * @param {!String} config.modelType - The model type for the helper.
-   * @param {!Object} config.query - The query object for the api.
-   * @param {!String} config.type - The type of content to scrape.
-   */
-  constructor({api, name, modelType, query, type}: Object): void {
-    super({api, name, modelType, query, type})
-  }
-
-  /**
-   * Extract movie information based from a YTS object.
+   * Extract content information based on a regex.
    * @override
    * @protected
-   * @param {!Object} torrent - The torrent to extract the movie information
-   * from.
-   * @param {!String} [lang] - The language of the torrent.
-   * @returns {Object} - Information about a movie from the torrent.
+   * @param {!Object} options - The options to extract content information.
+   * @param {!Object} options.torrent - The torrent to extract the content
+   * information.
+   * @param {?string} [lang] - The language of the torrent.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
-  _extractContent(torrent: Object, lang: string): Object {
+  extractContent({torrent, lang}: Object): Object | void {
     const movie = {
       movieTitle: torrent.title,
       slug: torrent.imdb_code,
@@ -43,6 +31,7 @@ export default class YtsProvider extends MovieProvider {
     }
 
     torrent.torrents.map(t => {
+      // eslint-disable-next-line camelcase
       const { hash, peers, quality, seeds, size, size_bytes } = t
 
       const torrentObj = {
@@ -51,34 +40,44 @@ export default class YtsProvider extends MovieProvider {
         peers: peers || 0,
         size: size_bytes,
         filesize: size,
-        provider: this._name
+        provider: this.name
       }
 
-      return this.attachTorrent(...[movie, torrentObj, quality, lang])
+      return this.attachTorrent({
+        movie,
+        quality,
+        lang,
+        torrent: torrentObj
+      })
     })
 
     return movie
   }
 
   /**
-   * Get movie info from a given torrent.
+   * Get content info from a given torrent.
    * @override
    * @protected
-   * @param {!Object} torrent - A torrent object to extract movie information
-   * from.
-   * @param {!String} [lang=en] - The language of the torrent.
-   * @returns {Object|undefined} - Information about a movie from the torrent.
+   * @param {!Object} options - The options to get content info from a torrent.
+   * @param {!Object} options.torrent - A torrent object to extract content
+   * information from.
+   * @param {!string} [optiosn.lang=en] - The language of the torrent.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
-  _getContentData(torrent: Object, lang: string = 'en'): Object | void {
+  getContentData({torrent, lang = 'en'}: Object): Object | void {
     if (
       torrent && torrent.torrents &&
       torrent.imdb_code &&
       torrent.language.match(/english/i)
     ) {
-      return this._extractContent(torrent, lang)
+      return this.extractContent({
+        torrent,
+        lang
+      })
     }
 
-    logger.warn(`${this._name}: Could not find data from torrent: '${torrent.title}'`)
+    logger.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`)
   }
 
 }

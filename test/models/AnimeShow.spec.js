@@ -1,13 +1,11 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
-import AnimeShow from '../../src/models/AnimeShow'
-import testAnimeShow from '../data/animeshow.json'
+import testAnimeShow from '../data/animeshow'
+import { AnimeShow } from '../../src/models'
 import * as showTests from './Show.spec'
 
-/**
- * @test {AnimeShow}
- * @flow
- */
+/** @test {AnimeShow} */
 describe('AnimeShow', () => {
   /**
    * The anime show object to test.
@@ -26,6 +24,7 @@ describe('AnimeShow', () => {
    * @type {Function}
    */
   before(() => {
+    // console.log(new AnimeShow())
     animeShow = new AnimeShow(testAnimeShow)
     animeShowEmpty = new AnimeShow()
   })

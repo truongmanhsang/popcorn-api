@@ -1,13 +1,11 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
-import AnimeMovie from '../../src/models/AnimeMovie'
-import testAnimeMovie from '../data/animemovie.json'
+import testAnimeMovie from '../data/animemovie'
+import { AnimeMovie } from '../../src/models'
 import * as movieTests from './Movie.spec'
 
-/**
- * @test {AnimeMovie}
- * @flow
- */
+/** @test {AnimeMovie} */
 describe('AnimeMovie', () => {
   /**
    * The anime movie object to test.

@@ -1,92 +1,58 @@
 // Import the necessary modules.
+// @flow
 import pMap from 'p-map'
 
 import BaseProvider from './BaseProvider'
-import showmap from './maps/showmap.json'
+import showMap from './maps/showMap'
 
 /**
  * Class for scraping show content from various sources.
  * @extends {BaseProvider}
  * @type {ShowProvider}
- * @flow
  */
 export default class ShowProvider extends BaseProvider {
 
   /**
-   * The regular expressions used to extract information about shows.
-   * @type {Array<Object>}
-   */
-  _regexps: Array<Object>
-
-  /**
-   * Create a ShowProvider class.
-   * @param {!Object} config - The configuration object for the torrent
-   * provider.
-   * @param {?Object} config.api - The name of api for the torrent provider.
-   * @param {!String} config.name - The name of the torrent provider.
-   * @param {!String} config.modelType - The model type for the helper.
-   * @param {?Object} config.query - The query object for the api.
-   * @param {!String} config.type - The type of content to scrape.
-   */
-  constructor({api, name, modelType, query, type}) {
-    super({api, name, modelType, query, type})
-
-    /**
-     * The regular expressions used to extract information about shows.
-     * @type {Array<Object>}
-     */
-    this._regexps = [{
-      regex: /(.*).[sS](\d{2})[eE](\d{2})/i,
-      dateBased: false
-    }, {
-      regex: /(.*).(\d{1,2})[x](\d{2})/i,
-      dateBased: false
-    }, {
-      regex: /(.*).(\d{4}).(\d{2}.\d{2})/i,
-      dateBased: true
-    }, {
-      regex: /\[.*\].(\D+).S(\d+)...(\d{2,3}).*\.mkv/i,
-      dateBased: false
-    }, {
-      regex: /\[.*\].(\D+)...(\d{2,3}).*\.mkv/i,
-      dateBased: false
-    }]
-  }
-
-  /**
-   * Extract show information based on a regex.
+   * Extract content information based on a regex.
    * @override
    * @protected
-   * @param {!Object} torrent - The torrent to extract the show information
-   * from.
-   * @param {!RegExp} r - The regex to extract the show information.
-   * @returns {Object} - Information about a show from the torrent.
+   * @param {!Object} options - The options to extract content information.
+   * @param {!Object} options.torrent - The torrent to extract the content
+   * information.
+   * @param {!Object} options.regex - The regex object to extract the content
+   * information.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
-  _extractContent(torrent: Object, r: RegExp): Object {
+  extractContent({torrent, regex}: Object): Object | void {
     let episode
     let season
     let slug
 
     const { title, name } = torrent
-    const t = r.regex.test(title) ? title : r.regex.test(name) ? name : null
+    const t = regex.regex.test(title)
+      ? title
+      : regex.regex.test(name)
+        ? name
+        : null
     if (!t) {
       return
     }
-    const match = t.match(r.regex)
+    const match = t.match(regex.regex)
 
     const showTitle = match[1].replace(/\./g, ' ')
     slug = showTitle.replace(/[^a-zA-Z0-9\- ]/gi, '')
       .replace(/\s+/g, '-')
       .toLowerCase()
-    slug = slug in showmap ? showmap[slug] : slug
+    slug = slug in showMap ? showMap[slug] : slug
 
     season = 1
-    season = r.dateBased ? parseInt(match[2], 10) : match[2]
+    season = regex.dateBased ? parseInt(match[2], 10) : match[2]
 
     episode = match.length >= 4
       ? parseInt(match[3], 10)
       : parseInt(match[2], 10)
-    episode = r.dateBased ? parseInt(match[3], 10) : match[3]
+    episode = regex.dateBased ? parseInt(match[3], 10) : match[3]
 
     const quality = t.match(/(\d{3,4})p/) !== null
       ? t.match(/(\d{3,4})p/)[0]
@@ -96,7 +62,7 @@ export default class ShowProvider extends BaseProvider {
       url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
       seeds: torrent.seeds ? torrent.seeds : 0,
       peers: torrent.peers ? torrent.peers : 0,
-      provider: this._name
+      provider: this.name
     }
 
     const show = {
@@ -105,31 +71,40 @@ export default class ShowProvider extends BaseProvider {
       season,
       episode,
       quality,
-      dateBased: r.dateBased,
+      dateBased: regex.dateBased,
       episodes: {},
-      type: this._type
+      type: this.contentType
     }
 
-    return this.attachTorrent(...[show, torrentObj, season, episode, quality])
+    return this.attachTorrent({
+      show,
+      season,
+      episode,
+      quality,
+      torrent: torrentObj
+    })
   }
 
   /**
-   * Create a new show object with a torrent attached.
+   * Attach the torrent object to the content.
    * @override
-   * @param {!Object} show - The show to attach a torrent to.
-   * @param {!Object} torrent - The torrent object.
-   * @param {!number} season - The season number for the torrent.
-   * @param {!number} episode - The episode number for the torrent.
-   * @param {!string} quality - The quality of the episode.
-   * @returns {Object} - The show with the newly attached torrent.
+   * @protected
+   * @param {!Object} options - The options to attach a torrent to the content.
+   * @param {!Object} options.show - The content to attach a torrent to.
+   * @param {!Object} options.torrent - The torrent object ot attach.
+   * @param {!string} options.quality - The quality of the torrent.
+   * @param {?number} options.season - The season number for the torrent.
+   * @param {?number} options.episode - The episode number for the torrent.
+   * @throws {Error} - Using default method: 'attachTorrent'
+   * @returns {Object} - The content with the newly attached torrent.
    */
-  attachTorrent(
-    show: Object,
-    torrent: Object,
-    season: number,
-    episode: number,
-    quality: string
-  ): Object {
+  attachTorrent({
+    show,
+    torrent,
+    season,
+    episode,
+    quality
+  }: Object): Object {
     if (!show.episodes[season]) {
       show.episodes[season] = {}
     }
@@ -149,48 +124,48 @@ export default class ShowProvider extends BaseProvider {
   }
 
   /**
-   * Puts all the found shows from the torrents in an array.
+   * Put all the found content from the torrents in an array.
    * @override
    * @protected
-   * @param {!Array<Object>} torrents - A list of torrents to extract show
-   * information.
-   * @returns {Promise<Array<Object>, undefined>} - A list of objects with show
-   * information extracted from the torrents.
+   * @param {!Object} options - The options to get the content.
+   * @param {!Array<Object>} options.torrents - A list of torrents to extract
+   * content information from.
+   * @returns {Promise<Array<Object>, Error>} - A list of object with
+   * content information extracted from the torrents.
    */
-  _getAllContent(torrents: Array<Object>): Promise<Array<Object>, void> {
-    const shows = []
+  getAllContent({torrents}: Object): Promise<Array<Object>> {
+    const shows = new Map()
 
-    return pMap(torrents, torrent => {
-      if (!torrent) {
+    return pMap(torrents, t => {
+      if (!t) {
         return
       }
 
-      const show = this._getContentData(torrent)
+      const show = this.getContentData({
+        torrent: t
+      })
       if (!show) {
         return
       }
 
-      const { showTitle, slug, season, episode, quality } = show
-
-      const matching = shows.find(
-        s => s.showTitle.toLowerCase() === showTitle.toLowerCase() &&
-          s.slug.toLowerCase() === slug.toLowerCase() &&
-          s.type.toLowerCase() === this._type.toLowerCase()
-      )
-      if (!matching) {
-        return shows.push(show)
+      const { slug, season, episode, quality } = show
+      if (!shows.has(slug)) {
+        return shows.set(slug, show)
       }
 
-      const index = shows.indexOf(matching)
+      const torrent = show.episodes[season][episode][quality]
+      const created = this.attachTorrent({
+        torrent,
+        season,
+        episode,
+        quality,
+        show
+      })
 
-      const torrentObj = show.episodes[season][episode][quality]
-      const args = [matching, torrentObj, season, episode, quality]
-      const created = this.attachTorrent(...args)
-
-      shows.splice(index, 1, created)
+      return shows.set(slug, created)
     }, {
       concurrency: 1
-    }).then(() => shows)
+    }).then(() => Array.from(shows.values()))
   }
 
 }

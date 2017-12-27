@@ -1,61 +1,32 @@
 // Import the necessary modules.
+// @flow
 import pMap from 'p-map'
 import bytes from 'bytes'
 
 import BaseProvider from './BaseProvider'
-import moviemap from './maps/moviemap.json'
+import movieMap from './maps/movieMap'
 
 /**
  * Class for scraping movie content from various sources.
  * @extends {BaseProvider}
  * @type {MovieProvider}
- * @flow
  */
 export default class MovieProvider extends BaseProvider {
 
   /**
-   * The regular expressions used to extract information about movies.
-   * @type {Array<Object>}
-   */
-  _regexps: Array<Object>
-
-  /**
-   * Create a MovieProvider class.
-   * @param {!Object} config - The configuration object for the torrent
-   * provider.
-   * @param {?Object} config.api - The name of api for the torrent provider.
-   * @param {!string} config.name - The name of the torrent provider.
-   * @param {!string} config.modelType - The model type for the helper.
-   * @param {?Object} config.query - The query object for the api.
-   * @param {!string} config.type - The type of content to scrape.
-   */
-  constructor({api, name, modelType, query, type}: Object): void {
-    super({api, name, modelType, query, type})
-
-    /**
-     * The regular expressions used to extract information about movies.
-     * @type {Array<Object>}
-     */
-    this._regexps = [{
-      regex: /(.*).(\d{4}).[3Dd]\D+(\d{3,4}p)/i
-    }, {
-      regex: /(.*).(\d{4}).[4k]\D+(\d{3,4}p)/i
-    }, {
-      regex: /(.*).(\d{4})\D+(\d{3,4}p)/i
-    }]
-  }
-
-  /**
-   * Extract movie information based on a regex.
+   * Extract content information based on a regex.
    * @override
    * @protected
-   * @param {!Object} torrent - The torrent to extract the movie information
-   * from.
-   * @param {!RegExp} r - The regex to extract the movie information.
-   * @param {!string} [lang] - The language of the torrent.
-   * @returns {Object} - Information about a movie from the torrent.
+   * @param {!Object} options - The options to extract content information.
+   * @param {!Object} options.torrent - The torrent to extract the content
+   * information.
+   * @param {!Object} options.regex - The regex object to extract the content
+   * information.
+   * @param {?string} [lang] - The language of the torrent.
+   * @returns {Object|undefined} - Information about the content from the
+   * torrent.
    */
-  _extractContent(torrent: Object, r: RegExp, lang: string): Object {
+  extractContent({torrent, regex, lang}: Object): Object | void {
     let movieTitle
     let slug
 
@@ -63,7 +34,7 @@ export default class MovieProvider extends BaseProvider {
       title, size, seeds, peers, magnet, torrentLink, fileSize
     } = torrent
 
-    movieTitle = title.match(r.regex)[1]
+    movieTitle = title.match(regex.regex)[1]
     if (movieTitle.endsWith(' ')) {
       movieTitle = movieTitle.substring(0, movieTitle.length - 1)
     }
@@ -75,10 +46,10 @@ export default class MovieProvider extends BaseProvider {
     if (slug.endsWith('-')) {
       slug = slug.substring(0, slug.length - 1)
     }
-    slug = slug in moviemap ? moviemap[slug] : slug
+    slug = slug in movieMap ? movieMap[slug] : slug
 
-    const year = parseInt(title.match(r.regex)[2], 10)
-    const quality = title.match(r.regex)[3]
+    const year = parseInt(title.match(regex.regex)[2], 10)
+    const quality = title.match(regex.regex)[3]
 
     const torrentObj = {
       url: magnet || torrentLink,
@@ -86,7 +57,7 @@ export default class MovieProvider extends BaseProvider {
       peers: peers || 0,
       size: bytes(size),
       filesize: size || fileSize,
-      provider: this._name
+      provider: this.name
     }
     const movie = {
       movieTitle,
@@ -95,28 +66,30 @@ export default class MovieProvider extends BaseProvider {
       year,
       quality,
       language: lang,
-      type: this._type,
+      type: this.contentType,
       torrents: {}
     }
 
-    return this.attachTorrent(...[movie, torrentObj, quality, lang])
+    return this.attachTorrent({
+      movie,
+      quality,
+      lang,
+      torrent: torrentObj
+    })
   }
 
   /**
-   * Create a new movie object with a torrent attached.
-   * @override
-   * @param {!Object} movie - The movie to attach a torrent to.
-   * @param {!Object} torrent - The torrent object.
-   * @param {!string} quality - The quality of the torrent.
-   * @param {!string} [lang] - The language of the torrent
-   * @returns {Object} - The movie with the newly attached torrent.
+   * Attach the torrent object to the content.
+   * @overridd
+   * @protected
+   * @param {!Object} options - The options to attach a torrent to the content.
+   * @param {!Object} options.movie - The content to attach a torrent to.
+   * @param {!Object} options.torrent - The torrent object ot attach.
+   * @param {!string} options.quality - The quality of the torrent.
+   * @param {!string} [options.lang] - The language of the torrent.
+   * @returns {Object} - The content with the newly attached torrent.
    */
-  attachTorrent(
-    movie: Object,
-    torrent: Object,
-    quality: string,
-    lang: string
-  ): Object {
+  attachTorrent({movie, torrent, quality, lang}: Object): Object {
     if (!movie.torrents[lang]) {
       movie.torrents[lang] = {}
     }
@@ -128,53 +101,53 @@ export default class MovieProvider extends BaseProvider {
   }
 
   /**
-   * Puts all the found movies from the torrents in an array.
+   * Put all the found content from the torrents in an array.
    * @override
    * @protected
-   * @param {!Array<Object>} torrents - A list of torrents to extract movie
-   * information.
-   * @param {!string} [lang=en] - The language of the torrent.
-   * @returns {Promise<Array<Object>, undefined>} - A list of objects with
-   * movie information extracted from the torrents.
+   * @param {!Object} options - The options to get the content.
+   * @param {!Array<Object>} options.torrents - A list of torrents to extract
+   * content information from.
+   * @param {!string} [options.lang=en] - The language of the torrents.
+   * @returns {Promise<Array<Object>, Error>} - A list of object with
+   * content information extracted from the torrents.
    */
-  _getAllContent(
-    torrents: Array<Object>,
-    lang: string = 'en'
-  ): Promise<Array<Object>, void> {
-    const movies = []
+  getAllContent({
+    torrents,
+    lang = 'en'
+  }: Object): Promise<Array<Object>> {
+    const movies = new Map()
 
-    return pMap(torrents, torrent => {
-      if (!torrent) {
+    return pMap(torrents, t => {
+      if (!t) {
         return
       }
 
-      const movie = this._getContentData(torrent, lang)
+      const movie = this.getContentData({
+        lang,
+        torrent: t
+      })
 
       if (!movie) {
         return
       }
 
-      const { movieTitle, slug, language, quality } = movie
-
-      const matching = movies.find(
-        m => m.movieTitle.toLowerCase() === movieTitle.toLowerCase() &&
-          m.slug.toLowerCase() === slug.toLowerCase() &&
-          m.type.toLowerCase() === this._type.toLowerCase()
-      )
-      if (!matching) {
-        return movies.push(movie)
+      const { slug, language, quality } = movie
+      if (!movies.has(slug)) {
+        return movies.set(slug, movie)
       }
 
-      const index = movies.indexOf(matching)
+      const torrent = movie.torrents[language][quality]
+      const created = this.attachTorrent({
+        torrent,
+        quality,
+        language,
+        movie
+      })
 
-      const torrentObj = movie.torrents[language][quality]
-      const args = [matching, torrentObj, quality, language]
-      const created = this.attachTorrent(...args)
-
-      movies.splice(index, 1, created)
+      return movies.set(slug, created)
     }, {
       concurrency: 1
-    }).then(() => movies)
+    }).then(() => Array.from(movies.values()))
   }
 
 }

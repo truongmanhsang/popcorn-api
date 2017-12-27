@@ -1,13 +1,11 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 
 import IHelper from '../../../src/scraper/helpers/IHelper'
 
-/**
- * @test {IHelper}
- * @flow
- */
+/** @test {IHelper} */
 describe('IHelper', () => {
   /**
    * The IHelper object to be tested.
@@ -29,15 +27,15 @@ describe('IHelper', () => {
       .throw('Using default method: \'getTraktInfo\'')
   })
 
-  /** @test {IHelper#_checkImages} */
-  it('should throw an error when calling the _checkImages method', () => {
-    expect(iHelper._checkImages).to
-      .throw('Using default method: \'_checkImages\'')
+  /** @test {IHelper#checkImages} */
+  it('should throw an error when calling the checkImages method', () => {
+    expect(iHelper.checkImages).to
+      .throw('Using default method: \'checkImages\'')
   })
 
-  /** @test {IHelper#_getImages} */
-  it('should throw an error when calling the _getImages method', () => {
-    expect(iHelper._getImages).to
-      .throw('Using default method: \'_getImages\'')
+  /** @test {IHelper#getImages} */
+  it('should throw an error when calling the getImages method', () => {
+    expect(iHelper.getImages.bind({}, {})).to
+      .throw('Using default method: \'getImages\'')
   })
 })

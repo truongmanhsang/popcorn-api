@@ -1,24 +1,49 @@
 {
-  "presets": [
-    "es2015",
-    "flow"
-  ],
-  "env": {
-    "test": {
-      "plugins": ["istanbul"]
-    }
-  },
   "plugins": [
-    "dynamic-import-node",
-    "syntax-dynamic-import",
     "transform-class-properties",
-    "transform-object-rest-spread",
-    "transform-strict-mode",
-    "transform-regenerator", [
-      "transform-runtime", {
-        "polyfill": false,
-        "regenerator": true
-      }
-    ]
-  ]
+    "transform-export-extensions",
+    ["transform-object-rest-spread", {
+      "useBuiltIns": true
+    }],
+    "transform-strict-mode"
+  ],
+  "presets": ["flow"],
+  "env": {
+    "development": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "7.10.1"
+          }
+        }]
+      ]
+    },
+    "production": {
+      "plugins": [
+        "external-helpers",
+        "transform-class-properties"
+      ],
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "7.10.1"
+          },
+          "modules": false
+        }]
+      ]
+    },
+    "test": {
+      "plugins": [
+        "istanbul",
+        "transform-class-properties"
+      ],
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "7.10.1"
+          }
+        }]
+      ]
+    }
+  }
 }

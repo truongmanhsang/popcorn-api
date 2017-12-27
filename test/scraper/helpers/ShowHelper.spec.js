@@ -1,16 +1,19 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import sinon from 'sinon'
 
-import Show from '../../../src/models/Show'
-import ShowHelper from '../../../src/scraper/helpers/ShowHelper'
-import * as baseHelperTests from './BaseHelper.spec'
+import { Show } from '../../../src/models'
+import { ShowHelper } from '../../../src/scraper/helpers'
+import {
+  fanart,
+  trakt,
+  tmdb
+} from '../../../src/scraper/apiModules'
+import * as abstractHelperTests from './AbstractHelper.spec'
 
-/**
- * @test {ShowHelper}
- * @flow
- */
+/** @test {ShowHelper} */
 describe('ShowHelper', () => {
   /**
    * The show helper to test.
@@ -23,14 +26,10 @@ describe('ShowHelper', () => {
    * @type {Function}
    */
   before(() => {
-    showHelper = new ShowHelper('ShowHelper', Show)
-  })
-
-  /** @test {ShowHelper#constructor} */
-  it('should check the attributes of the ShowHelper', () => {
-    baseHelperTests.checkHelperAttributes(showHelper, 'ShowHelper', Show)
-    expect(showHelper._tvdb).to.exist
-    expect(showHelper._tvdb).to.be.an('object')
+    showHelper = new ShowHelper({
+      name: 'ShowHelper',
+      Model: Show
+    })
   })
 
   /** @test {ShowHelper#_updateNumSeasons} */
@@ -69,7 +68,7 @@ describe('ShowHelper', () => {
       iso_639_1: null,
       file_path: null
     }]
-    const stub = sinon.stub(showHelper._tmdb.tv, 'images')
+    const stub = sinon.stub(tmdb.tv, 'images')
     stub.resolves({
       posters: image,
       backdrops: image
@@ -86,48 +85,31 @@ describe('ShowHelper', () => {
   /** @test {ShowHelper#_getTvdbImages} */
   it.skip('should get show images from TVDB', done => {
     showHelper._getTvdbImages(296762)
-      .then(res => baseHelperTests.testImages(res, done))
+      .then(res => abstractHelperTests.testImages(res, done))
       .catch(done)
   })
 
   /** @test {ShowHelper#_getFanartImages} */
   it('should get show images from Fanart', done => {
     showHelper._getFanartImages(75682)
-      .then(res => baseHelperTests.testImages(res, done))
+      .then(res => abstractHelperTests.testImages(res, done))
       .catch(done)
   })
 
-  // TODO: merge function with the one in the moviehelper spec and put it in
-  // the basehelper spec.
-  /**
-   * Test the failures of the `_getFanartImages`.
-   * @param {!Object} resolves - The object the stub will resolve.
-   * @param {!Function} done - The done function of mocha.
-   * @returns {undefined}
-   */
-  function testGetFanartImages(resolves: Object, done: Function): void {
-    /** @test {showHelper#_getFanartImages} */
-    it('should fail to get show images from Fanart', done => {
-      const stub = sinon.stub(showHelper._fanart, 'getShowImages')
-      stub.resolves(resolves)
+  /** @test {ShowHelper#_getFanartImages} */
+  it(`should fail to get show images from Fanart`, done => {
+    abstractHelperTests.testGetFanartImages({
+      hdmovieclearart: [{
+        url: 'url'
+      }]
+    }, 'show', fanart, showHelper, done)
+  })
 
-      showHelper._getFanartImages()
-        .then(done)
-        .catch(err => {
-          expect(err).to.be.an('Error')
-
-          stub.restore()
-          done()
-        })
-    })
-  }
-
-  // Execute the tests.
-  testGetFanartImages({})
-  testGetFanartImages({
-    clearart: [{
-      url: 'url'
-    }]
+  /** @test {ShowHelper#_getFanartImages} */
+  it(`should fail to get show images from Fanart`, done => {
+    abstractHelperTests.testGetFanartImages(
+      {}, 'show', fanart, showHelper, done
+    )
   })
 
   /** @test {ShowHelper#_getImages} */
@@ -145,7 +127,7 @@ describe('ShowHelper', () => {
 
   /** @test {ShowHelper#getTraktInfo} */
   it('should get info from Trakt and make a new show object with 0 watching', done => {
-    const stub = sinon.stub(showHelper._trakt.shows, 'watching')
+    const stub = sinon.stub(trakt.shows, 'watching')
     stub.resolves()
 
     showHelper.getTraktInfo('westworld').then(res => {
@@ -158,7 +140,7 @@ describe('ShowHelper', () => {
 
   /** @test {ShowHelper#getTraktInfo} */
   it('should get info from Trakt and make a new shows object with no genres', done => {
-    const stub = sinon.stub(showHelper._trakt.shows, 'summary')
+    const stub = sinon.stub(trakt.shows, 'summary')
     stub.returns(Promise.resolve({
       ids: {
         imdb: 'imdb',
@@ -183,7 +165,7 @@ describe('ShowHelper', () => {
 
   /** @test {ShowHelper#getTraktInfo} */
   it('should not get info from Trakt', done => {
-    const stub = sinon.stub(showHelper._trakt.shows, 'summary')
+    const stub = sinon.stub(trakt.shows, 'summary')
     stub.resolves(null)
 
     showHelper.getTraktInfo('westworld').then(res => {

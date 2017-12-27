@@ -1,38 +1,25 @@
 // Import the necessary modules.
+// @flow
 import pMap from 'p-map'
 
-import BaseHelper from './BaseHelper'
+import AbstractHelper from './AbstractHelper'
+import {
+  fanart,
+  omdb,
+  tmdb,
+  trakt
+} from '../apiModules'
+import type {
+  AnimeMovie,
+  Movie
+} from '../../models'
 
 /**
  * Class for saving movies.
- * @extends {BaseHelper}
+ * @extends {AbstractHelper}
  * @type {MovieHelper}
- * @flow
  */
-export default class MovieHelper extends BaseHelper {
-
-  /**
-   * A configured Omdb API.
-   * @type {Omdb}
-   * @see https://github.com/ChrisAlderson/omdb-api-pt
-   */
-  _omdb: Omdb
-
-  /**
-   * Create a movie helper class for content.
-   * @param {!string} name - The name of the content provider.
-   * @param {!AnimeMovie|Movie} model - The model to help fill.
-   */
-  constructor(name, model): void {
-    super(name, model)
-
-    /**
-     * A configured Omdb API.
-     * @type {Omdb}
-     * @see https://github.com/ChrisAlderson/omdb-api-pt
-     */
-    this._omdb = this._apiFactory.getApi('omdb')
-  }
+export default class MovieHelper extends AbstractHelper {
 
   /**
    * Update the torrents for an existing movie.
@@ -87,12 +74,12 @@ export default class MovieHelper extends BaseHelper {
   async _updateMovie(movie: AnimeMovie | Movie): AnimeMovie | Movie {
     try {
       let m = movie
-      const found = await this._model.findOne({
+      const found = await this.Model.findOne({
         imdb_id: m._id
       }).exec()
 
       if (found) {
-        logger.info(`${this._name}: '${found.title}' is an existing movie.`)
+        logger.info(`${this.name}: '${found.title}' is an existing movie.`)
 
         if (found.torrents) {
           Object.keys(found.torrents).map(language => {
@@ -101,13 +88,13 @@ export default class MovieHelper extends BaseHelper {
           })
         }
 
-        return await this._model.findOneAndUpdate({
+        return await this.Model.findOneAndUpdate({
           _id: m._id
         }, m).exec()
       }
 
-      logger.info(`${this._name}: '${m.title}' is a new movie!`)
-      return await new this._model(m).save()
+      logger.info(`${this.name}: '${m.title}' is a new movie!`)
+      return await new this.Model(m).save()
     } catch (err) {
       logger.error(err)
     }
@@ -133,12 +120,13 @@ export default class MovieHelper extends BaseHelper {
 
   /**
    * Get movie images from TMDB.
-   * @param {!number} tmdb - The tmdb id of the movie you want the images from.
+   * @param {!string} tmdbId - The tmdb id of the movie you want the images
+   * from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getTmdbImages(tmdb: number): Object {
-    return this._tmdb.movie.images({
-      movie_id: tmdb
+  _getTmdbImages(tmdbId: string): Promise<Object | Error> {
+    return tmdb.movie.images({
+      movie_id: tmdbId
     }).then(i => {
       const baseUrl = 'http://image.tmdb.org/t/p/w500'
 
@@ -149,54 +137,59 @@ export default class MovieHelper extends BaseHelper {
         backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null
       )[0].file_path
 
+      const { Holder } = AbstractHelper
       const images = {
-        banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper._Holder,
-        fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : BaseHelper._Holder,
-        poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : BaseHelper._Holder
+        banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : Holder,
+        fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : Holder,
+        poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : Holder
       }
 
-      return this._checkImages(images)
+      return this.checkImages(images)
     })
   }
 
   /**
    * Get movie images from OMDB.
-   * @param {!string} imdb - The imdb id of the movie you want the images from.
+   * @param {!string} imdbId - The imdb id of the movie you want the images
+   * from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getOmdbImages(imdb: string): Object {
-    return this._omdb.byId({
-      imdb,
+  _getOmdbImages(imdbId: string): Promise<Object | Error> {
+    return omdb.byId({
+      imdb: imdbId,
       type: 'movie'
     }).then(i => {
+      const { Holder } = AbstractHelper
       const images = {
-        banner: i.Poster ? i.Poster : BaseHelper._Holder,
-        fanart: i.Poster ? i.Poster : BaseHelper._Holder,
-        poster: i.Poster ? i.Poster : BaseHelper._Holder
+        banner: i.Poster ? i.Poster : Holder,
+        fanart: i.Poster ? i.Poster : Holder,
+        poster: i.Poster ? i.Poster : Holder
       }
 
-      return this._checkImages(images)
+      return this.checkImages(images)
     })
   }
 
   /**
    * Get movie images from Fanart.
-   * @param {!number} tmdb - The tvdb id of the movie you want the images from.
+   * @param {!number} tmdbId - The tvdb id of the movie you want the images
+   * from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getFanartImages(tmdb: number): Object {
-    return this._fanart.getMovieImages(tmdb).then(i => {
+  _getFanartImages(tmdbId: number): Promise<Object | Error> {
+    return fanart.getMovieImages(tmdbId).then(i => {
+      const { Holder } = AbstractHelper
       const images = {
-        banner: i.moviebanner ? i.moviebanner[0].url : BaseHelper._Holder,
+        banner: i.moviebanner ? i.moviebanner[0].url : Holder,
         fanart: i.moviebackground
           ? i.moviebackground[0].url
           : i.hdmovieclearart
             ? i.hdmovieclearart[0].url
-            : BaseHelper._Holder,
-        poster: i.movieposter ? i.movieposter[0].url : BaseHelper._Holder
+            : Holder,
+        poster: i.movieposter ? i.movieposter[0].url : Holder
       }
 
-      return this._checkImages(images)
+      return this.checkImages(images)
     })
   }
 
@@ -204,15 +197,17 @@ export default class MovieHelper extends BaseHelper {
    * Get movie images.
    * @override
    * @protected
-   * @param {!number} tmdb - The tmdb id of the movie you want the images from.
-   * @param {!string} imdb - The imdb id of the movie you want the images from.
-   * @returns {Object} - Object with banner, fanart and poster images.
+   * @param {!number} tmdbId - The tmdb id of the movie you want the images
+   * from.
+   * @param {!string} imdbId - The imdb id of the movie you want the images
+   * from.
+   * @returns {Promise<Object>} - Object with banner, fanart and poster images.
    */
-  _getImages(tmdb: number, imdb: string): Object {
-    return this._getTmdbImages(imdb)
-      .catch(() => this._getOmdbImages(tmdb))
-      .catch(() => this._getFanartImages(tmdb))
-      .catch(() => this._defaultImages)
+  getImages({tmdbId, imdbId}: Object): Promise<Object> {
+    return this._getTmdbImages(imdbId)
+      .catch(() => this._getOmdbImages(tmdbId))
+      .catch(() => this._getFanartImages(tmdbId))
+      .catch(() => AbstractHelper.DefaultImages)
   }
 
   /**
@@ -221,16 +216,22 @@ export default class MovieHelper extends BaseHelper {
    * @param {!string} slug - The slug to query trakt.tv.
    * @returns {AnimeMovie|Movie} - A new movie.
    */
-  async getTraktInfo(slug: string): AnimeMovie | Movie {
+  async getTraktInfo(slug: string): Promise<AnimeMovie | Movie | Error> {
     try {
-      const traktMovie = await this._trakt.movies.summary({
+      const traktMovie = await trakt.movies.summary({
         id: slug,
         extended: 'full'
       })
-      const traktWatchers = await this._trakt.movies.watching({ id: slug })
+      const traktWatchers = await trakt.movies.watching({
+        id: slug
+      })
 
       if (traktMovie && traktMovie.ids.imdb && traktMovie.ids.tmdb) {
         const { imdb, slug, tmdb } = traktMovie.ids
+        const images = this.getImages({
+          imdbId: imdb,
+          tmdbId: tmdb
+        })
 
         return {
           imdb_id: imdb,
@@ -244,7 +245,7 @@ export default class MovieHelper extends BaseHelper {
             watching: traktWatchers ? traktWatchers.length : 0,
             percentage: Math.round(traktMovie.rating * 10)
           },
-          images: await this._getImages(tmdb, imdb),
+          images,
           genres: traktMovie.genres ? traktMovie.genres : ['unknown'],
           language: traktMovie.language,
           released: new Date(traktMovie.released).getTime() / 1000.0,

@@ -2,22 +2,30 @@
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
 import { expect } from 'chai'
+import {
+  Database,
+  PopApi
+} from 'pop-api'
+import { PopApiScraper } from 'pop-api-scraper'
 
-import Setup from '../../../src/config/Setup'
 import YtsProvider from '../../../src/scraper/providers/YtsProvider'
-import ytsConfig from '../../../src/scraper/configs/ytsmovies.json'
-import * as baseProviderTests from './BaseProvider.spec'
+import { ytsConfig } from '../../../src/scraper/configs/ytsConfigs'
+import { name } from '../../../package.json'
+// @flow
 
-/**
- * @test {BulkProvider}
- * @flow
- */
+/** @test {YtsProvider} */
 describe('YtsProvider', () => {
   /**
    * The yts provider to test.
    * @type {YtsProvider}
    */
   let ytsProvider: YtsProvider
+
+  /**
+   * The database middleware from 'pop-api'.
+   * @type {Database}
+   */
+  let database: Database
 
   /**
    * The torrent object to test with.
@@ -30,8 +38,9 @@ describe('YtsProvider', () => {
    * @type {Function}
    */
   before(done => {
-    ytsConfig[0].query.limit = 1
-    ytsProvider = new YtsProvider(ytsConfig[0])
+    ytsProvider = new YtsProvider(PopApiScraper, {
+      configs: [ytsConfig]
+    })
     torrent = {
       hash: 'hash',
       quality: '720p',
@@ -39,54 +48,63 @@ describe('YtsProvider', () => {
       size_bytes: 123456789
     }
 
-    Setup.connectMongoDb()
+    database = new Database(PopApi, {
+      database: name
+    })
+    database.connect()
       .then(() => done())
       .catch(done)
   })
 
-  /** @test {YtsProvider#constructor} */
-  it('should check the attributes of the YtsProvider', () => {
-    baseProviderTests.checkProviderAttributes(ytsProvider, ytsConfig[0].name)
-  })
-
-  /** @test {YtsProvider#_extractContent} */
+  /** @test {YtsProvider#extractContent} */
   it('should extract movie information form a YTS object', () => {
-    const movie = ytsProvider._extractContent({
-      title: 'title',
-      imdb_code: 'tt123456',
-      year: 1234,
-      torrents: [torrent]
+    const movie = ytsProvider.extractContent({
+      torrent: {
+        title: 'title',
+        imdb_code: 'tt123456',
+        year: 1234,
+        torrents: [torrent]
+      }
     })
     expect(movie).to.be.an('object')
   })
 
-  /** @test {YtsProvider#_getContentData} */
+  /** @test {YtsProvider#getContentData} */
   it('should get movie data from a given torrent', () => {
-    let data = ytsProvider._getContentData({
-      torrents: [torrent],
-      imdb_code: 'tt123456',
-      language: 'english'
-    }, 'de')
+    let data = ytsProvider.getContentData({
+      torrent: {
+        torrents: [torrent],
+        imdb_code: 'tt123456',
+        language: 'english'
+      },
+      lang: 'de'
+    })
     expect(data).to.be.an('object')
 
-    data = ytsProvider._getContentData({
-      torrents: [torrent],
-      imdb_code: 'tt123456',
-      language: 'faulty'
+    data = ytsProvider.getContentData({
+      torrent: {
+        torrents: [torrent],
+        imdb_code: 'tt123456',
+        language: 'faulty'
+      }
     })
     expect(data).to.be.undefined
   })
 
-  /** @test {YtsProvider#search} */
+  /** @test {YtsProvider#scrapeConfig} */
   it('should return a list of all the inserted torrents', done => {
-    const stub = sinon.stub(ytsProvider, '_getTotalPages')
+    const stub = sinon.stub(ytsProvider, 'getTotalPages')
     stub.resolves(1)
 
-    ytsProvider.search().then(res => {
+    // const apiStub = sinon.stub(ytsProvider.api, 'search')
+    // stub.resolves()
+
+    ytsProvider.scrapeConfig(ytsConfig).then(res => {
       expect(res).to.be.an('array')
       expect(res.length).to.be.at.least(1)
-
       stub.restore()
+      // apiStub.restore()
+
       done()
     }).catch(done)
   })
@@ -96,7 +114,7 @@ describe('YtsProvider', () => {
    * @type {Function}
    */
   after(done => {
-    Setup.disconnectMongoDb()
+    database.disconnect()
       .then(() => done())
       .catch(done)
   })

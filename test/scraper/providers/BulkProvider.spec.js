@@ -1,17 +1,19 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
 import { expect } from 'chai'
+import {
+  Database,
+  PopApi
+} from 'pop-api'
+import { PopApiScraper } from 'pop-api-scraper'
 
 import BulkProvider from '../../../src/scraper/providers/BulkProvider'
-import eztvConfig from '../../../src/scraper/configs/eztvshows.json'
-import Setup from '../../../src/config/Setup'
-import * as baseProviderTests from './BaseProvider.spec'
+import { eztvConfig } from '../../../src/scraper/configs/bulkConfigs'
+import { name } from '../../../package.json'
 
-/**
- * @test {BulkProvider}
- * @flow
- */
+/** @test {BulkProvider} */
 describe('BulkProvider', () => {
   /**
    * The bulk provider to test.
@@ -20,32 +22,39 @@ describe('BulkProvider', () => {
   let bulkProvider: BulkProvider
 
   /**
+   * The database middleware from 'pop-api'.
+   * @type {Database}
+   */
+  let database: Database
+
+  /**
    * Hook for setting up the BulkProvider tests.
    * @type {Function}
    */
   before(done => {
-    bulkProvider = new BulkProvider(eztvConfig[0])
+    bulkProvider = new BulkProvider(PopApiScraper, {
+      configs: [eztvConfig]
+    })
 
-    Setup.connectMongoDb()
+    database = new Database(PopApi, {
+      database: name
+    })
+    database.connect()
       .then(() => done())
       .catch(done)
   })
 
-  /** @test {BulkProvider#constructor} */
-  it('should check the attributes of the BulkProvider', () => {
-    baseProviderTests.checkProviderAttributes(bulkProvider, eztvConfig[0].name)
-  })
-
-  /** @test {BulkProvider#search} */
+  /** @test {BulkProvider#scrapeConfig} */
   it('should return a list of all the inserted torrents', done => {
-    const stub = sinon.stub(bulkProvider._api, 'getAll')
+    bulkProvider.setConfig(eztvConfig)
+    const stub = sinon.stub(bulkProvider.api, 'getAll')
     stub.resolves([{
       show: 'Westworld',
       id: 1913,
       slug: 'westworld'
     }])
 
-    bulkProvider.search().then(res => {
+    bulkProvider.scrapeConfig(eztvConfig).then(res => {
       expect(res).to.be.an('array')
       expect(res.length).to.be.at.least(1)
 
@@ -54,15 +63,17 @@ describe('BulkProvider', () => {
     }).catch(done)
   })
 
-  /** @test {BulkProvider#search} */
+  /** @test {BulkProvider#scrapeConfig} */
   it('should throw and catch an error while scraping', done => {
-    const stub = sinon.stub(bulkProvider._api, 'getAll')
-    stub.rejects()
+    bulkProvider.setConfig(eztvConfig)
+    const stub = sinon.stub(bulkProvider.api, 'getAll')
+    stub.resolves([{}])
 
-    bulkProvider.search().then(res => {
-      expect(res).to.be.undefined
-
+    bulkProvider.scrapeConfig(eztvConfig).then(res => {
+      expect(res).to.be.an('array')
+      expect(res[0]).to.be.undefined
       stub.restore()
+
       done()
     }).catch(done)
   })
@@ -72,7 +83,7 @@ describe('BulkProvider', () => {
    * @type {Function}
    */
   after(done => {
-    Setup.disconnectMongoDb()
+    database.disconnect()
       .then(() => done())
       .catch(done)
   })
