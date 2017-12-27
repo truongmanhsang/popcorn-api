@@ -1,11 +1,10 @@
 // Import the necessary modules.
-/* eslint-disable no-unused-expressions */
-import chai, { expect } from 'chai'
 // @flow
-import chaiHttp from 'chai-http'
-import Express from 'express'
+/* eslint-disable no-unused-expressions */
+import express, { type $Application } from 'express'
 import fs from 'fs'
 import mkdirp from 'mkdirp'
+import request from 'supertest'
 import { join } from 'path'
 
 import ExportController from '../../src/controllers/ExportController'
@@ -29,8 +28,7 @@ describe('ExportController', () => {
    * @type {Function}
    */
   before(() => {
-    chai.use(chaiHttp)
-    app = Express()
+    app = express()
 
     exportController = new ExportController()
     exportController.registerRoutes(app)
@@ -75,24 +73,21 @@ describe('ExportController', () => {
 
     /**
      * Helper function to test the `/exports/:collection` route.
-     * @param {!string} tempDir - The value for the temporary directory.
+     * @param {!boolean} tempDir - Whenever the temporary directory needs to
+     * exists.
      * @returns {undefined}
      */
-    function testExportCollection(tempDir: string): void {
+    function testExportCollection(tempDir: boolean): void {
       /** @test {ExportController#getExport} */
       it('should get a 200 status from the GET [/exports/:collection] route', done => {
         if (tempDir) {
           delete process.env.TEMP_DIR
         }
 
-        chai.request(app).get('/exports/anime')
-          .then(res => {
-            expect(res).to.have.status(200)
-            expect(res).to.be.json
-            expect(res).to.not.redirect
-
-            done()
-          }).catch(done)
+        request(app).get('/exports/anime')
+          .expect(200)
+          .then(() => done())
+          .catch(done)
       })
     }
 
@@ -101,14 +96,10 @@ describe('ExportController', () => {
 
     /** @test {ExportController#getExport} */
     it('should get a 200 status from the GET [/exports/:collection] route', done => {
-      chai.request(app).get('/exports/animes')
-        .then(res => {
-          expect(res).to.have.status(200)
-          expect(res).to.be.json
-          expect(res).to.not.redirect
-
-          done()
-        }).catch(done)
+      request(app).get('/exports/animes')
+        .expect(200)
+        .then(() => done())
+        .catch(done)
     })
 
     /**
@@ -130,26 +121,18 @@ describe('ExportController', () => {
   describe('will throw errors', () => {
     /** @test {ExportController#getExport} */
     it('should get a 500 status from the GET [/exports/:collection] route', done => {
-      chai.request(app).get('/exports/anime')
-        .then(done)
-        .catch(err => {
-          expect(err).to.have.status(500)
-          expect(err).to.not.redirect
-
-          done()
-        })
+      request(app).get('/exports/anime')
+        .expect(500)
+        .then(() => done())
+        .catch(done)
     })
 
     /** @test {ExportController#getExport} */
     it('should get a 500 status form the GET [/exports/:collection] route', done => {
-      chai.request(app).get('/exports/faulty')
-        .then(done)
-        .catch(err => {
-          expect(err).to.have.status(500)
-          expect(err).to.not.redirect
-
-          done()
-        })
+      request(app).get('/exports/faulty')
+        .expect(500)
+        .then(() => done())
+        .catch(done)
     })
   })
 })

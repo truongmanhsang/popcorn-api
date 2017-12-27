@@ -1,11 +1,11 @@
 // Import the necessary modules.
-/* eslint-disable no-unused-expressions */
-import chai, { expect } from 'chai'
 // @flow
-import chaiHttp from 'chai-http'
-import Express from 'express'
+/* eslint-disable no-unused-expressions */
+import { expect } from 'chai'
+import express, { type $Application } from 'express'
 import fs from 'fs'
 import mkdirp from 'mkdirp'
+import request from 'supertest'
 import sinon from 'sinon'
 import {
   Database,
@@ -48,8 +48,7 @@ describe('IndexController', () => {
    * @type {Function}
    */
   before(done => {
-    chai.use(chaiHttp)
-    app = Express()
+    app = express()
 
     indexController = new IndexController()
     indexController.registerRoutes(app)
@@ -94,24 +93,21 @@ describe('IndexController', () => {
   describe('will work as expected', () => {
     /**
      * Helper function to test the `/logs/error` route.
-     * @param {!string} tempDir - The value for the temporary directory.
+     * @param {!boolean} tempDir - Whenever the temporary directory needs to
+     * exists.
      * @returns {undefined}
      */
-    function testLogsError(tempDir: string): void {
+    function testLogsError(tempDir: boolean): void {
       /** @test {IndexController#getErrorLog} */
       it('should get a 200 status from the GET [/logs/error] route', done => {
         if (tempDir) {
           delete process.env.TEMP_DIR
         }
 
-        chai.request(app).get('/logs/error')
-          .then(res => {
-            expect(res).to.have.status(200)
-            expect(res).to.be.text
-            expect(res).to.not.redirect
-
-            done()
-          }).catch(done)
+        request(app).get('/logs/error')
+          .expect(200)
+          .then(() => done())
+          .catch(done)
       })
     }
 
@@ -120,26 +116,24 @@ describe('IndexController', () => {
 
     /** @test {IndexController#getIndex} */
     it('should get a 200 status from the GET [/status] route', done => {
-      chai.request(app).get('/status').then(res => {
-        expect(res).to.have.status(200)
-        expect(res).to.be.json
-        expect(res).to.not.redirect
+      request(app).get('/status')
+        .expect(200)
+        .then(res => {
+          const { body } = res
+          expect(body).to.exist
+          expect(body.repo).to.exist
+          expect(body.server).to.exist
+          // expect(body.status).to.exist
+          expect(body.totalAnimes).to.exist
+          expect(body.totalMovies).to.exist
+          expect(body.totalShows).to.exist
+          // expect(body.updated).to.exist
+          expect(body.uptime).to.exist
+          expect(body.version).to.exist
+          expect(body.commit).to.exist
 
-        const { body } = res
-        expect(body).to.exist
-        expect(body.repo).to.exist
-        expect(body.server).to.exist
-        // expect(body.status).to.exist
-        expect(body.totalAnimes).to.exist
-        expect(body.totalMovies).to.exist
-        expect(body.totalShows).to.exist
-        // expect(body.updated).to.exist
-        expect(body.uptime).to.exist
-        expect(body.version).to.exist
-        expect(body.commit).to.exist
-
-        done()
-      }).catch(done)
+          done()
+        }).catch(done)
     })
 
     /**
@@ -148,7 +142,13 @@ describe('IndexController', () => {
      */
     after(() => {
       const file = `${name}.log`
-      const filePath = join(process.env.TEMP_DIR, file)
+      process.env.TEMP_DIR = process.env.TEMPDIR || join(...[
+        __dirname,
+        '..',
+        '..',
+        'tmp'
+      ])
+      const filePath = join(...[process.env.TEMP_DIR, file])
 
       fs.unlinkSync(filePath)
     })
@@ -158,14 +158,10 @@ describe('IndexController', () => {
   describe('will throw errors', () => {
     /** @test {IndexController#getErrorLog} */
     it('should get a 500 status from the GET [/logs/error] route', done => {
-      chai.request(app).get('/logs/error')
-        .then(done)
-        .catch(err => {
-          expect(err).to.have.status(500)
-          expect(err).to.not.redirect
-
-          done()
-        })
+      request(app).get('/logs/error')
+        .expect(500)
+        .then(() => done())
+        .catch(done)
     })
 
     /** @test {IndexController#getIndex} */
@@ -178,15 +174,13 @@ describe('IndexController', () => {
       const stub = sinon.stub(Show, 'count')
       stub.returns(exec)
 
-      chai.request(app).get('/status')
-        .then(done)
-        .catch(err => {
-          expect(err).to.have.status(500)
-          expect(err).to.not.redirect
-
+      request(app).get('/status')
+        .expect(500)
+        .then(() => {
           stub.restore()
           done()
         })
+        .catch(done)
     })
   })
 

@@ -1,10 +1,10 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import 'dotenv/config'
-import chai, { expect } from 'chai'
-// @flow
-import chaiHttp from 'chai-http'
-import Express from 'express'
+import { expect } from 'chai'
+import express, { type $Application } from 'express'
+import request from 'supertest'
 import sinon from 'sinon'
 import {
   ContentService,
@@ -73,8 +73,7 @@ function testContentController(
       * @type {Function}
       */
     before(done => {
-      chai.use(chaiHttp)
-      app = Express()
+      app = express()
 
       service = new ContentService({
         Model,
@@ -117,49 +116,40 @@ function testContentController(
         * @type {Function}
         */
       before(done => {
-        Model.remove({}).exec()
+        Model.remove({})
           .then(() => done())
           .catch(done)
       })
 
-      /**
-       * Expectations for a no content (204) result.
-       * @param {!Object} res - The result to test.
-       * @param {!Function} done - The done function of Mocha.
-       * @returns {undefined}
-       */
-      function expectNoContent(res: Object, done: Function): void {
-        expect(res).to.have.status(204)
-        expect(res).to.not.redirect
-
-        done()
-      }
-
       /** @test {ContentController#getContents} */
       it(`should get a 204 status from the GET [/${content}s] route`, done => {
-        chai.request(app).get(`/${content}s`)
-          .then(res => expectNoContent(res, done))
+        request(app).get(`/${content}s`)
+          .expect(204)
+          .then(() => done())
           .catch(done)
       })
 
       /** @test {ContentController#getPage} */
       it(`should get a 204 status from the GET [/${content}s/:page] route`, done => {
-        chai.request(app).get(`/${content}s/1`)
-          .then(res => expectNoContent(res, done))
+        request(app).get(`/${content}s/1`)
+          .expect(204)
+          .then(() => done())
           .catch(done)
       })
 
       /** @test {ContentController#getContent} */
       it(`should get a 204 status from the GET [/${content}/:id] route`, done => {
-        chai.request(app).get(`/${content}/${id}`)
-          .then(res => expectNoContent(res, done))
+        request(app).get(`/${content}/${id}`)
+          .expect(204)
+          .then(() => done())
           .catch(done)
       })
 
       /** @test {ContentController#getRandomContent} */
       it(`should get a 204 status from the GET [/random/${content}] route`, done => {
-        chai.request(app).get(`/random/${content}`)
-          .then(res => expectNoContent(res, done))
+        request(app).get(`/random/${content}`)
+          .expect(204)
+          .then(() => done())
           .catch(done)
       })
     })
@@ -188,39 +178,25 @@ function testContentController(
           .catch(done)
       })
 
-      /**
-       * Expectations for a ok result.
-       * @param {!Object} res - The result to test.
-       * @param {!Function} [done=() => {}] - The done function of Mocha.
-       * @returns {undefined}
-       */
-      function expectOk(res, done = () => {}): void {
-        expect(res).to.have.status(200)
-        expect(res).to.be.json
-        expect(res).to.not.redirect
-
-        done()
-      }
-
       /** @test {ContentController#getContents} */
       it(`should get a 200 status from the GET [/${content}] route`, done => {
-        chai.request(app).get(`/${content}s`)
-          .then(res => expectOk(res, done))
+        request(app).get(`/${content}s`)
+          .expect(200)
+          .then(() => done())
           .catch(done)
       })
 
       /** @test {ContentController#getPage} */
       it(`should get a 200 status from the GET [/${content}s/:page] route`, done => {
-        chai.request(app).get(`/${content}s/1`).query({
+        request(app).get(`/${content}s/1`).query({
           genre: 'sci-fi'
-        }).then(res => {
-          expectOk(res)
+        }).expect(200)
+          .then(res => {
+            const random = Math.floor(Math.random() * res.body.length)
+            id = res.body[random].imdb_id
 
-          const random = Math.floor(Math.random() * res.body.length)
-          id = res.body[random].imdb_id
-
-          done()
-        }).catch(done)
+            done()
+          }).catch(done)
       })
 
       /**
@@ -231,11 +207,12 @@ function testContentController(
       function testGetPage(sort: string): void {
         /** @test {ContentController#getPage} */
         it(`should get a 200 status from the GET [/${content}s/:page] route`, done => {
-          chai.request(app).get(`/${content}s/1`).query({
+          request(app).get(`/${content}s/1`).query({
             ...query,
             genre: 'string',
             sort
-          }).then(res => expectOk(res, done))
+          }).expect(200)
+            .then(() => done())
             .catch(done)
         })
       }
@@ -252,44 +229,35 @@ function testContentController(
 
       /** @test {ContentController#getContent} */
       it(`should get a 200 status from the GET [/${content}/:id] route`, done => {
-        chai.request(app).get(`/${content}/${id}`)
-          .then(res => expectOk(res, done))
+        request(app).get(`/${content}/${id}`)
+          .expect(200)
+          .then(() => done())
           .catch(done)
       })
 
       /** @test {ContentController#getRandomContent} */
       it(`should get a 200 status from the GET [/random/${content}] route`, done => {
-        chai.request(app).get(`/random/${content}`)
-          .then(res => expectOk(res, done))
+        request(app).get(`/random/${content}`)
+          .expect(200)
+          .then(() => done())
           .catch(done)
       })
     })
 
     /** @test {ContentController} */
     describe('will throw errors', () => {
-      /**
-        * Expectations for an internal server error result.
-        * @param {!Object} err - The result to test.
-        * @param {!Object} stub - The stub which made the internal server error.
-        * @param {!Function} done - The done function of Mocha.
-        * @returns {undefined}
-        */
-      function expectInternalError(err, stub, done): void {
-        expect(err).to.have.status(500)
-        expect(err).to.not.redirect
-
-        stub.restore()
-        done()
-      }
-
       /** @test {ContentController#getContents} */
       it(`should get a 500 status from the GET [/${content}s] route`, done => {
         const stub = sinon.stub(Model, 'count')
         stub.rejects()
 
-        chai.request(app).get(`/${content}s`)
-          .then(done)
-          .catch(err => expectInternalError(err, stub, done))
+        request(app).get(`/${content}s`)
+          .expect(500)
+          .then(() => {
+            stub.restore()
+            done()
+          })
+          .catch(done)
       })
 
       /** @test {ContentController#getPage} */
@@ -297,9 +265,13 @@ function testContentController(
         const stub = sinon.stub(Model, 'aggregate')
         stub.rejects()
 
-        chai.request(app).get(`/${content}s/1`)
-          .then(done)
-          .catch(err => expectInternalError(err, stub, done))
+        request(app).get(`/${content}s/1`)
+          .expect(500)
+          .then(() => {
+            stub.restore()
+            done()
+          })
+          .catch(done)
       })
 
       /** @test {ContentController#getContent} */
@@ -307,9 +279,13 @@ function testContentController(
         const stub = sinon.stub(Model, 'findOne')
         stub.rejects()
 
-        chai.request(app).get(`/${content}/${id}`)
-          .then(done)
-          .catch(err => expectInternalError(err, stub, done))
+        request(app).get(`/${content}/${id}`)
+          .expect(500)
+          .then(() => {
+            stub.restore()
+            done()
+          })
+          .catch(done)
       })
 
       /** @test {ContentController#getRandomContent} */
@@ -317,9 +293,13 @@ function testContentController(
         const stub = sinon.stub(Model, 'aggregate')
         stub.rejects()
 
-        chai.request(app).get(`/random/${content}`)
-          .then(done)
-          .catch(err => expectInternalError(err, stub, done))
+        request(app).get(`/random/${content}`)
+          .expect(500)
+          .then(() => {
+            stub.restore()
+            done()
+          })
+          .catch(done)
       })
     })
 
