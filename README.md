@@ -1,7 +1,7 @@
 # Popcorn API
 
 [![Build Status](https://travis-ci.org/popcorn-official/popcorn-api.svg?branch=development)](https://travis-ci.org/popcorn-official/popcorn-api)
-[![Windows Build](https://img.shields.io/appveyor/ci/chrisalderson/popcorn-api/master.svg?label=windows)](https://ci.appveyor.com/project/ChrisAlderson/popcorn-api)
+[![Windows Build](https://img.shields.io/appveyor/ci/chrisalderson/popcorn-api/3.0.0.svg?label=windows)](https://ci.appveyor.com/project/ChrisAlderson/popcorn-api)
 [![Coverage Status](https://coveralls.io/repos/github/popcorn-official/popcorn-api/badge.svg?branch=3.0.0)](https://coveralls.io/github/popcorn-official/popcorn-api?branch=3.0.0)
 [![Dependency Status](https://david-dm.org/popcorn-official/popcorn-api.svg)](https://david-dm.org/popcorn-official/popcorn-api)
 [![devDependency Status](https://david-dm.org/popcorn-official/popcorn-api/dev-status.svg)](https://david-dm.org/popcorn-official/popcorn-api?type=dev)
