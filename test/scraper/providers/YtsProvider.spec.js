@@ -10,7 +10,7 @@ import {
 import { PopApiScraper } from 'pop-api-scraper'
 
 import YtsProvider from '../../../src/scraper/providers/YtsProvider'
-import { logger } from '.'
+import { logger } from '..'
 import { ytsConfig } from '../../../src/scraper/configs/ytsConfigs'
 import { name } from '../../../package.json'
 
@@ -105,8 +105,12 @@ describe('YtsProvider', () => {
     // stub.resolves()
 
     ytsProvider.scrapeConfig(ytsConfig).then(res => {
-      expect(res).to.be.an('array')
-      expect(res.length).to.be.at.least(1)
+      if (res) {
+        expect(res).to.be.an('array')
+        expect(res.length).to.be.at.least(1)
+      } else {
+        expect(true).to.be.false
+      }
       stub.restore()
       // apiStub.restore()
 

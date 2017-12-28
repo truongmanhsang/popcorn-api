@@ -11,7 +11,7 @@ import { PopApiScraper } from 'pop-api-scraper'
 
 import BulkProvider from '../../../src/scraper/providers/BulkProvider'
 import { eztvConfig } from '../../../src/scraper/configs/bulkConfigs'
-import { logger } from '.'
+import { logger } from '..'
 import { name } from '../../../package.json'
 
 /** @test {BulkProvider} */

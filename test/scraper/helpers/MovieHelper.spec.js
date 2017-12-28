@@ -2,15 +2,23 @@
 // @flow
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
+import {
+  Database,
+  PopApi
+} from 'pop-api'
 import { expect } from 'chai'
 
+import testMovie from '../../data/movie.json'
+import { logger } from '..'
 import { Movie } from '../../../src/models'
 import { MovieHelper } from '../../../src/scraper/helpers'
 import {
   fanart,
+  omdb,
   tmdb,
   trakt
 } from '../../../src/scraper/apiModules'
+import { name } from '../../../package.json'
 import * as abstractHelperTests from './AbstractHelper.spec'
 
 /** @test {MovieHelper} */
@@ -22,30 +30,191 @@ describe('MovieHelper', () => {
   let movieHelper: MovieHelper
 
   /**
+   * The database middleware to connect to MongoDB.
+   * @type {Database}
+   */
+  let database: Database
+
+  /**
    * Hook for setting up the MovieHelper tests.
    * @type {Function}
    */
-  before(() => {
+  before(done => {
+    if (!global.logger) {
+      global.logger = logger
+    }
+
     movieHelper = new MovieHelper({
       name: 'MovieHelper',
       Model: Movie
     })
+
+    database = new Database(PopApi, {
+      database: name
+    })
+    database.connect()
+      .then(() => Movie.remove({}))
+      .then(() => done())
+      .catch(done)
   })
 
   /** @test {MovieHelper#_updateTorrent} */
-  it.skip('should update the torrent for an existing movie', () => {
-    expect(true).to.be.true
+  it('should update the torrent for an existing movie', () => {
+    const movie = JSON.parse(JSON.stringify(testMovie))
+    const found = JSON.parse(JSON.stringify(testMovie))
+
+    const res = movieHelper._updateTorrent(movie, found, 'en', '720p')
+    expect(res).to.be.an('object')
+  })
+
+  /** @test {MovieHelper#_updateTorrent} */
+  it('should update the torrent for an existing movie', () => {
+    const movie = JSON.parse(JSON.stringify(testMovie))
+    const found = JSON.parse(JSON.stringify(testMovie))
+
+    found.torrents.en['720p'] = {
+      seeds: 2,
+      url: 'url'
+    }
+    const res = movieHelper._updateTorrent(movie, found, 'en', '720p')
+    expect(res).to.be.an('object')
+  })
+
+  /** @test {MovieHelper#_updateTorrent} */
+  it('should update the torrent for an existing movie', () => {
+    const movie = JSON.parse(JSON.stringify(testMovie))
+    const found = JSON.parse(JSON.stringify(testMovie))
+
+    movie.torrents.en = {}
+    const res = movieHelper._updateTorrent(movie, found, 'en', '720p')
+    expect(res).to.be.an('object')
+  })
+
+  /** @test {MovieHelper#_updateTorrent} */
+  it('should update the torrent for an existing movie', () => {
+    const movie = JSON.parse(JSON.stringify(testMovie))
+    const found = JSON.parse(JSON.stringify(testMovie))
+
+    found.torrents.en = {}
+    const res = movieHelper._updateTorrent(movie, found, 'en', '720p')
+    expect(res).to.be.an('object')
+  })
+
+  /** @test {MovieHelper#_updateTorrent} */
+  it('should update the torrent for an existing movie', () => {
+    const movie = JSON.parse(JSON.stringify(testMovie))
+    const found = JSON.parse(JSON.stringify(testMovie))
+
+    movie.torrents.en = null
+    const res = movieHelper._updateTorrent(movie, found, 'en', '720p')
+    expect(res).to.be.an('object')
+  })
+
+  /** @test {MovieHelper#_updateTorrent} */
+  it('should update the torrent for an existing movie', () => {
+    const movie = JSON.parse(JSON.stringify(testMovie))
+    const found = JSON.parse(JSON.stringify(testMovie))
+
+    found.torrents.en = null
+    const res = movieHelper._updateTorrent(movie, found, 'en', '720p')
+    expect(res).to.be.an('object')
+  })
+
+  /** @test {MovieHelper#_updateTorrent} */
+  it('should update the torrent for an existing movie', () => {
+    const movie = JSON.parse(JSON.stringify(testMovie))
+    const found = JSON.parse(JSON.stringify(testMovie))
+
+    movie.torrents.en = null
+    found.torrents.en = {}
+    const res = movieHelper._updateTorrent(movie, found, 'en', '720p')
+    expect(res).to.be.an('object')
   })
 
   /** @test {MovieHelper#_updateMovie} */
-  it.skip('should update a given movie', done => {
-    expect(true).to.be.true
-    done()
+  it('should save a given movie', done => {
+    const foundStub = sinon.stub(movieHelper.Model, 'findOne')
+    foundStub.returns(null)
+
+    movieHelper._updateMovie(testMovie).then(res => {
+      expect(res).to.be.an('object')
+      foundStub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {MovieHelper#_updateMovie} */
+  it('should update a given movie', done => {
+    const foundStub = sinon.stub(movieHelper.Model, 'findOne')
+    foundStub.returns(testMovie)
+    const updateStub = sinon.stub(movieHelper.Model, 'findOneAndUpdate')
+    updateStub.returns(testMovie)
+
+    movieHelper._updateMovie(testMovie).then(res => {
+      expect(res).to.be.an('object')
+      foundStub.restore()
+      updateStub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {MovieHelper#_updateMovie} */
+  it('should update a given movie', done => {
+    const foundStub = sinon.stub(movieHelper.Model, 'findOne')
+    foundStub.returns(testMovie)
+    const updateStub = sinon.stub(movieHelper.Model, 'findOneAndUpdate')
+    delete testMovie.torrents
+    updateStub.returns(testMovie)
+
+    movieHelper._updateMovie(testMovie).then(res => {
+      expect(res).to.be.an('object')
+      foundStub.restore()
+      updateStub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {MovieHelper#_updateMovie} */
+  it('should catch and print an error', done => {
+    const foundStub = sinon.stub(movieHelper.Model, 'findOne')
+    foundStub.throws()
+
+    movieHelper._updateMovie(testMovie).then(res => {
+      expect(res).to.be.undefined
+      foundStub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {MovieHelper#addTorrents} */
-  it.skip('should add torrents to a movie', () => {
-    expect(true).to.be.true
+  it('should add torrents to a movie', done => {
+    const torrent = {
+      url: 'test url',
+      peers: 0,
+      seeds: 0,
+      provider: 'test'
+    }
+    const torrents = {
+      en: {
+        '720p': torrent,
+        '1080p': torrent
+      }
+    }
+
+    const foundStub = sinon.stub(movieHelper.Model, 'findOne')
+    foundStub.returns(testMovie)
+
+    testMovie.torrents = {}
+    movieHelper.addTorrents(testMovie, torrents).then(res => {
+      expect(res).to.be.an('object')
+      foundStub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {MovieHelper#_getTmdbImages} */
@@ -64,12 +233,14 @@ describe('MovieHelper', () => {
       .then(done)
       .catch(err => {
         expect(err).to.be.an('Error')
+        stub.restore()
+
         done()
       })
   })
 
   /** @test {MovieHelper#_getTmdbImages} */
-  it.skip('should get movie images from TMDB', done => {
+  it('should get movie images from TMDB', done => {
     movieHelper._getTmdbImages(10195)
       .then(res => abstractHelperTests.testImages(res, done))
       .catch(done)
@@ -80,6 +251,24 @@ describe('MovieHelper', () => {
     movieHelper._getOmdbImages('tt1431045')
       .then(res => abstractHelperTests.testImages(res, done))
       .catch(done)
+  })
+
+  /** @test {MovieHelper#_getOmdbImages} */
+  it('should fail to get movie images from OMDB', done => {
+    const images = {
+      Poster: null
+    }
+    const stub = sinon.stub(omdb, 'byId')
+    stub.resolves(images)
+
+    movieHelper._getOmdbImages('')
+      .then(done)
+      .catch(err => {
+        expect(err).to.be.an('Error')
+        stub.restore()
+
+        done()
+      })
   })
 
   /** @test {MovieHelper#_getFanartImages} */
@@ -105,17 +294,26 @@ describe('MovieHelper', () => {
     )
   })
 
-  /** @test {MovieHelper#_getImages} */
-  it.skip('should get movie images from various sources', done => {
-    expect(true).to.be.true
-    done()
+  /** @test {MovieHelper#getImages} */
+  it('should get movie images from various sources', done => {
+    movieHelper.getImages({
+      imdbId: 'tt1431045',
+      tmdbId: 10195
+    }).then(res => abstractHelperTests.testImages(res, done))
+      .catch(done)
   })
 
-  /** @test {MovieHelper#getTraktInfo} */
-  it('should get info from Trakt and make a new movie object', done => {
-    movieHelper.getTraktInfo('deadpool-2016').then(res => {
-      expect(res).to.be.an('object')
-      done()
+  /** @test {MovieHelper#getImages} */
+  it('should get movie images from various sources', done => {
+    const stub = sinon.stub(omdb, 'byId')
+    stub.throws()
+
+    movieHelper.getImages({
+      imdbId: 'tt1431045',
+      tmdbId: 10195
+    }).then(res => {
+      stub.restore()
+      return abstractHelperTests.testImages(res, done)
     }).catch(done)
   })
 
@@ -163,5 +361,28 @@ describe('MovieHelper', () => {
 
       done()
     }).catch(done)
+  })
+
+  /** @test {MovieHelper#getTraktInfo} */
+  it('should not get info from Trakt', done => {
+    const stub = sinon.stub(trakt.movies, 'summary')
+    stub.throws()
+
+    movieHelper.getTraktInfo('deadpool-2016').then(res => {
+      expect(res).to.be.undefined
+      stub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /**
+   * Hook for tearing down the MovieHelper tests.
+   * @type {Function}
+   */
+  after(done => {
+    database.disconnect()
+      .then(() => done())
+      .catch(done)
   })
 })

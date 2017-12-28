@@ -11,7 +11,7 @@ import { PopApiScraper } from 'pop-api-scraper'
 
 import MovieProvider from '../../../src/scraper/providers/MovieProvider'
 import movieMap from '../../../src/scraper/providers/maps/movieMap'
-import { logger } from '.'
+import { logger } from '..'
 import { katMovieConfig } from '../../../src/scraper/configs/movieConfigs'
 import { name } from '../../../package.json'
 
@@ -151,8 +151,12 @@ describe('MovieProvider', () => {
     stub.resolves(1)
 
     movieProvider.scrapeConfig(katMovieConfig).then(res => {
-      expect(res).to.be.an('array')
-      expect(res.length).to.be.at.least(1)
+      if (res) {
+        expect(res).to.be.an('array')
+        expect(res.length).to.be.at.least(1)
+      } else {
+        expect(true).to.be.false
+      }
       stub.restore()
 
       done()

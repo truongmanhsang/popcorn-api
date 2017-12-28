@@ -4,6 +4,7 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
 
+import { logger } from '..'
 import { Show } from '../../../src/models'
 import { ShowHelper } from '../../../src/scraper/helpers'
 import {
@@ -26,6 +27,10 @@ describe('ShowHelper', () => {
    * @type {Function}
    */
   before(() => {
+    if (!global.logger) {
+      global.logger = logger
+    }
+
     showHelper = new ShowHelper({
       name: 'ShowHelper',
       Model: Show
@@ -89,6 +94,13 @@ describe('ShowHelper', () => {
       .catch(done)
   })
 
+  /** @test {ShowHelper#_getTvdbImages} */
+  it.skip('should get show images from TVDB', done => {
+    showHelper._getTvdbImages(296762)
+      .then(res => abstractHelperTests.testImages(res, done))
+      .catch(done)
+  })
+
   /** @test {ShowHelper#_getFanartImages} */
   it('should get show images from Fanart', done => {
     showHelper._getFanartImages(75682)
@@ -99,7 +111,7 @@ describe('ShowHelper', () => {
   /** @test {ShowHelper#_getFanartImages} */
   it(`should fail to get show images from Fanart`, done => {
     abstractHelperTests.testGetFanartImages({
-      hdmovieclearart: [{
+      clearart: [{
         url: 'url'
       }]
     }, 'show', fanart, showHelper, done)
@@ -157,6 +169,36 @@ describe('ShowHelper', () => {
 
     showHelper.getTraktInfo('westworld').then(res => {
       expect(res).to.be.an('object')
+
+      stub.restore()
+      done()
+    }).catch(done)
+  })
+
+  /** @test {ShowHelper#getTraktInfo} */
+  it('should not get info from Trakt', done => {
+    const stub = sinon.stub(trakt.shows, 'summary')
+    stub.throws()
+
+    showHelper.getTraktInfo('westworld').then(res => {
+      expect(res).to.be.undefined
+
+      stub.restore()
+      done()
+    }).catch(done)
+  })
+
+  /** @test {ShowHelper#getTraktInfo} */
+  it('should not get info from Trakt', done => {
+    const stub = sinon.stub(trakt.shows, 'summary')
+    stub.resolves({
+      ids: {
+        imdb: null
+      }
+    })
+
+    showHelper.getTraktInfo('westworld').then(res => {
+      expect(res).to.be.undefined
 
       stub.restore()
       done()

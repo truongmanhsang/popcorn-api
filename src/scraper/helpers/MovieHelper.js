@@ -76,7 +76,7 @@ export default class MovieHelper extends AbstractHelper {
       let m = movie
       const found = await this.Model.findOne({
         imdb_id: m._id
-      }).exec()
+      })
 
       if (found) {
         logger.info(`${this.name}: '${found.title}' is an existing movie.`)
@@ -90,7 +90,10 @@ export default class MovieHelper extends AbstractHelper {
 
         return await this.Model.findOneAndUpdate({
           _id: m._id
-        }, m).exec()
+        }, m, {
+          upsert: true,
+          new: true
+        })
       }
 
       logger.info(`${this.name}: '${m.title}' is a new movie!`)

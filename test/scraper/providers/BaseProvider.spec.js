@@ -7,7 +7,7 @@ import { PopApiScraper } from 'pop-api-scraper'
 
 import BaseProvider from '../../../src/scraper/providers/BaseProvider'
 // import { katMovieConfig } from '../../../src/scraper/configs/movieConfigs'
-import { logger } from '.'
+import { logger } from '..'
 import { nyaaCommieConfig } from '../../../src/scraper/configs/showConfigs'
 import { ytsConfig } from '../../../src/scraper/configs/ytsConfigs'
 
@@ -40,13 +40,36 @@ describe('BaseProvider', () => {
   })
 
   /** @test {BaseProvider#_getMovieContent} */
-  it.skip('should get the movie content', done => {
-    done()
+  it('should not get any movie content', done => {
+    baseProvider.setConfig(nyaaCommieConfig)
+    const stub = sinon.stub(baseProvider.helper, 'getTraktInfo')
+    stub.resolves(null)
+
+    baseProvider._getMovieContent({
+      episodes: {
+        // @flow-ignore
+        0: {}
+      }
+    }).then(res => {
+      expect(res).to.be.undefined
+      stub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {BaseProvider#_getShowContent} */
-  it.skip('should get the show content', done => {
-    done()
+  it('should not get any show content', done => {
+    baseProvider.setConfig(nyaaCommieConfig)
+    const stub = sinon.stub(baseProvider.helper, 'getTraktInfo')
+    stub.resolves(null)
+
+    baseProvider._getShowContent({}).then(res => {
+      expect(res).to.be.undefined
+      stub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {BaseProvider#getContent} */
@@ -96,6 +119,23 @@ describe('BaseProvider', () => {
   })
 
   /** @test {BaseProvider#getAllTorrents} */
+  it('should get the results of all the torrents', done => {
+    baseProvider.setConfig(ytsConfig)
+    const stub = sinon.stub(baseProvider.api, 'search')
+    stub.resolves({
+      results: [{}]
+    })
+
+    baseProvider.getAllTorrents(1).then(res => {
+      expect(res).to.be.an('array')
+      expect(res.length).to.equal(1)
+      stub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {BaseProvider#getAllTorrents} */
   it('should get no torrents to concatenate', done => {
     baseProvider.setConfig(ytsConfig)
     const stub = sinon.stub(baseProvider.api, 'search')
@@ -136,6 +176,21 @@ describe('BaseProvider', () => {
     // katMovieConfig,
     ytsConfig
   ].map(executeTotalPages)
+
+  /** @test {BaseProvider#getTotalPages} */
+  it('should return a the number of the total pages to scrape', done => {
+    const stub = sinon.stub(baseProvider.api, 'search')
+    stub.resolves({
+      total_pages: 1
+    })
+
+    baseProvider.getTotalPages().then(res => {
+      expect(res).to.be.a('number')
+      stub.restore()
+
+      done()
+    }).catch(done)
+  })
 
   /** @test {BaseProvider#setConfig} */
   it('should set the configuration to scrape', () => {
