@@ -11,6 +11,7 @@ import { PopApiScraper } from 'pop-api-scraper'
 
 import BulkProvider from '../../../src/scraper/providers/BulkProvider'
 import { eztvConfig } from '../../../src/scraper/configs/bulkConfigs'
+import { logger } from '.'
 import { name } from '../../../package.json'
 
 /** @test {BulkProvider} */
@@ -32,6 +33,10 @@ describe('BulkProvider', () => {
    * @type {Function}
    */
   before(done => {
+    if (!global.logger) {
+      global.logger = logger
+    }
+
     bulkProvider = new BulkProvider(PopApiScraper, {
       configs: [eztvConfig]
     })

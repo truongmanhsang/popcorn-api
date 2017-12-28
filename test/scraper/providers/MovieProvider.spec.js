@@ -11,6 +11,7 @@ import { PopApiScraper } from 'pop-api-scraper'
 
 import MovieProvider from '../../../src/scraper/providers/MovieProvider'
 import movieMap from '../../../src/scraper/providers/maps/movieMap'
+import { logger } from '.'
 import { katMovieConfig } from '../../../src/scraper/configs/movieConfigs'
 import { name } from '../../../package.json'
 
@@ -33,6 +34,10 @@ describe('MovieProvider', () => {
    * @type {Function}
    */
   before(done => {
+    if (!global.logger) {
+      global.logger = logger
+    }
+
     movieProvider = new MovieProvider(PopApiScraper, {
       configs: [katMovieConfig]
     })
@@ -75,8 +80,27 @@ describe('MovieProvider', () => {
   })
 
   /** @test {MovieProvider#attachTorrent} */
-  it.skip('should create a new movie object with a torrent attached', () => {
-    expect(true).to.be.true
+  it('should create a new movie object with a torrent attached', () => {
+    let movie = {
+      torrents: {}
+    }
+
+    movie = movieProvider.attachTorrent({
+      movie,
+      torrent: {},
+      quality: '720p',
+      lang: 'en'
+    })
+    expect(movie.torrents.en).to.exist
+    expect(movie.torrents.en['720p']).to.exist
+    movie = movieProvider.attachTorrent({
+      movie,
+      torrent: {},
+      quality: '720p',
+      lang: 'en'
+    })
+    expect(movie.torrents.en).to.exist
+    expect(movie.torrents.en['720p']).to.exist
   })
 
   /** @test {MovieProvider#getAllContent} */
@@ -122,13 +146,13 @@ describe('MovieProvider', () => {
   })
 
   /** @test {MovieProvider#scrapeConfig} */
-  it('should return a list of all the inserted torrents', done => {
+  it.skip('should return a list of all the inserted torrents', done => {
     const stub = sinon.stub(movieProvider, 'getTotalPages')
     stub.resolves(1)
 
     movieProvider.scrapeConfig(katMovieConfig).then(res => {
       expect(res).to.be.an('array')
-      // expect(res.length).to.be.at.least(1)
+      expect(res.length).to.be.at.least(1)
       stub.restore()
 
       done()

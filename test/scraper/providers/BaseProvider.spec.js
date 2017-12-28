@@ -7,6 +7,7 @@ import { PopApiScraper } from 'pop-api-scraper'
 
 import BaseProvider from '../../../src/scraper/providers/BaseProvider'
 // import { katMovieConfig } from '../../../src/scraper/configs/movieConfigs'
+import { logger } from '.'
 import { nyaaCommieConfig } from '../../../src/scraper/configs/showConfigs'
 import { ytsConfig } from '../../../src/scraper/configs/ytsConfigs'
 
@@ -23,6 +24,10 @@ describe('BaseProvider', () => {
    * @type {Function}
    */
   before(() => {
+    if (!global.logger) {
+      global.logger = logger
+    }
+
     baseProvider = new BaseProvider(PopApiScraper, {
       configs: [ytsConfig]
     })

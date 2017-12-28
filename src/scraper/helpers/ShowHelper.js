@@ -163,7 +163,7 @@ export default class ShowHelper extends AbstractHelper {
         }
 
         const episode = {
-          tvdb_id: e.ids['tvdb'],
+          tvdb_id: parseInt(e.ids['tvdb'], 10),
           season: parseInt(e.season, 10),
           episode: parseInt(e.number, 10),
           title: e.title,
@@ -219,7 +219,7 @@ export default class ShowHelper extends AbstractHelper {
           }
 
           const episode = {
-            tvdb_id: tvdbEpisode.id,
+            tvdb_id: parseInt(tvdbEpisode.id, 10),
             season: parseInt(tvdbEpisode.seasonNumber, 10),
             episode: parseInt(tvdbEpisode.episodeNumber, 10),
             title: tvdbEpisode.episodeName,

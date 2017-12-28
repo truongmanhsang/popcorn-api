@@ -11,6 +11,7 @@ import { PopApiScraper } from 'pop-api-scraper'
 
 import ShowProvider from '../../../src/scraper/providers/ShowProvider'
 import showMap from '../../../src/scraper/providers/maps/showMap'
+import { logger } from '.'
 import { nyaaCommieConfig } from '../../../src/scraper/configs/showConfigs'
 import { name } from '../../../package.json'
 
@@ -33,6 +34,10 @@ describe('ShowProvider', () => {
    * @type {Function}
    */
   before(done => {
+    if (!global.logger) {
+      global.logger = logger
+    }
+
     showProvider = new ShowProvider(PopApiScraper, {
       configs: [nyaaCommieConfig]
     })

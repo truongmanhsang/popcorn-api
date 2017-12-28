@@ -1,4 +1,5 @@
 // Import the necessary modules.
+// @flow
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon'
 import { expect } from 'chai'
@@ -9,9 +10,9 @@ import {
 import { PopApiScraper } from 'pop-api-scraper'
 
 import YtsProvider from '../../../src/scraper/providers/YtsProvider'
+import { logger } from '.'
 import { ytsConfig } from '../../../src/scraper/configs/ytsConfigs'
 import { name } from '../../../package.json'
-// @flow
 
 /** @test {YtsProvider} */
 describe('YtsProvider', () => {
@@ -38,6 +39,10 @@ describe('YtsProvider', () => {
    * @type {Function}
    */
   before(done => {
+    if (!global.logger) {
+      global.logger = logger
+    }
+
     ytsProvider = new YtsProvider(PopApiScraper, {
       configs: [ytsConfig]
     })
