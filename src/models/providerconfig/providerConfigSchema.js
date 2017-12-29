@@ -10,9 +10,7 @@ import { Schema } from 'mongoose'
 export default new Schema({
   _id: {
     type: String,
-    index: {
-      unique: true
-    }
+    required: true
   },
   api: {
     type: String,

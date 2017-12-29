@@ -8,10 +8,7 @@
 export const contentSchema: Object = {
   _id: {
     type: String,
-    required: true,
-    index: {
-      unique: true
-    }
+    required: true
   },
   imdb_id: String,
   title: String,
