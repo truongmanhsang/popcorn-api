@@ -32,7 +32,7 @@ export default class ShowHelper extends AbstractHelper {
     }, new this.Model(show), {
       new: true,
       upsert: true
-    }).exec()
+    })
 
     const distinct = await this.Model.distinct('episodes.season', {
       _id: saved.imdb_id
@@ -44,7 +44,7 @@ export default class ShowHelper extends AbstractHelper {
     }, new this.Model(saved), {
       new: true,
       upsert: true
-    }).exec()
+    })
   }
 
   /**
@@ -105,7 +105,7 @@ export default class ShowHelper extends AbstractHelper {
       let s = show
       const found = await this.Model.findOne({
         _id: s.imdb_id
-      }).exec()
+      })
       if (!found) {
         logger.info(`${this.name}: '${s.title}' is a new show!`)
         const newShow = await new this.Model(s).save()
@@ -258,7 +258,7 @@ export default class ShowHelper extends AbstractHelper {
    */
   addEpisodes(
     show: AnimeShow | Show,
-    episodes: Object = {},
+    episodes: Object,
     slug: string
   ): Show {
     let { dateBased } = episodes
@@ -318,8 +318,8 @@ export default class ShowHelper extends AbstractHelper {
       const { Holder } = AbstractHelper
       const images = {
         banner: i.banner ? `${baseUrl}${i.banner}` : Holder,
-        fanart: i.fanart ? `${baseUrl}${i.fanart}` : Holder,
-        poster: i.poster ? `${baseUrl}${i.poster}` : Holder
+        fanart: i.banner ? `${baseUrl}${i.banner}` : Holder,
+        poster: i.banner ? `${baseUrl}${i.banner}` : Holder
       }
 
       return this.checkImages(images)

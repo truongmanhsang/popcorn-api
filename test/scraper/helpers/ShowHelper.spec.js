@@ -2,20 +2,46 @@
 // @flow
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
+import {
+  Database,
+  PopApi
+} from 'pop-api'
 import sinon from 'sinon'
 
+import testShow from '../../data/show.json'
 import { logger } from '..'
 import { Show } from '../../../src/models'
 import { ShowHelper } from '../../../src/scraper/helpers'
 import {
   fanart,
   trakt,
-  tmdb
+  tmdb,
+  tvdb
 } from '../../../src/scraper/apiModules'
+import { name } from '../../../package.json'
 import * as abstractHelperTests from './AbstractHelper.spec'
+
+/* eslint-disable quote-props */
 
 /** @test {ShowHelper} */
 describe('ShowHelper', () => {
+  /**
+   * A mock torrent object.
+   * @type {Object}
+   */
+  const torrent: Object = {
+    '480p': {
+      '1': {
+        '1': {
+          url: 'url',
+          seeds: 0,
+          peers: 0,
+          provider: 'test'
+        }
+      }
+    }
+  }
+
   /**
    * The show helper to test.
    * @type {ShowHelper}
@@ -23,10 +49,16 @@ describe('ShowHelper', () => {
   let showHelper: ShowHelper
 
   /**
+   * The database middleware to connect to MongoDB.
+   * @type {Database}
+   */
+  let database: Database
+
+  /**
    * Hook for setting up the ShowHelper tests.
    * @type {Function}
    */
-  before(() => {
+  before(done => {
     if (!global.logger) {
       global.logger = logger
     }
@@ -35,6 +67,14 @@ describe('ShowHelper', () => {
       name: 'ShowHelper',
       Model: Show
     })
+
+    database = new Database(PopApi, {
+      database: name
+    })
+    database.connect()
+      .then(() => Show.remove({}))
+      .then(() => done())
+      .catch(done)
   })
 
   /** @test {ShowHelper#_updateNumSeasons} */
@@ -42,14 +82,66 @@ describe('ShowHelper', () => {
     expect(true).to.be.true
   })
 
-  /** @test {ShowHelper#_updateEpisode} */
-  it.skip('should update an episode of a show', () => {
-    expect(true).to.be.true
+  /** @test {ShowHelper#_updateEpisodes} */
+  it('should save a given show', done => {
+    const foundStub = sinon.stub(showHelper.Model, 'findOne')
+    foundStub.returns(null)
+
+    showHelper._updateEpisodes(testShow).then(res => {
+      expect(res).to.be.an('object')
+      foundStub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {ShowHelper#_updateEpisodes} */
-  it.skip('should update a show with episodes', () => {
-    expect(true).to.be.true
+  it('should update a given show', done => {
+    const foundStub = sinon.stub(showHelper.Model, 'findOne')
+    foundStub.returns(testShow)
+    const updateStub = sinon.stub(showHelper.Model, 'findOneAndUpdate')
+    updateStub.returns(testShow)
+
+    showHelper._updateEpisodes(testShow).then(res => {
+      expect(res).to.be.an('object')
+      foundStub.restore()
+      updateStub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {ShowHelper#_updateEpisodes} */
+  it('should update a given show', done => {
+    const found = JSON.parse(JSON.stringify(testShow))
+    found.episodes[0].first_aired = Date.now()
+    found.episodes[0].episode = 10
+
+    const foundStub = sinon.stub(showHelper.Model, 'findOne')
+    foundStub.returns(found)
+    const updateStub = sinon.stub(showHelper.Model, 'findOneAndUpdate')
+    updateStub.returns(testShow)
+
+    showHelper._updateEpisodes(testShow).then(res => {
+      expect(res).to.be.an('object')
+      foundStub.restore()
+      updateStub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {ShowHelper#_updateEpisodes} */
+  it('should catch and print an error', done => {
+    const foundStub = sinon.stub(showHelper.Model, 'findOne')
+    foundStub.throws()
+
+    showHelper._updateEpisodes(testShow).then(res => {
+      expect(res).to.be.undefined
+      foundStub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {ShowHelper#_addSeasonalSeason} */
@@ -63,8 +155,45 @@ describe('ShowHelper', () => {
   })
 
   /** @test {ShowHelper#addEpisodes} */
-  it.skip('should add episodes to a show', () => {
-    expect(true).to.be.true
+  it('should add episodes to a seasonal show', done => {
+    const stub = sinon.stub(showHelper, '_updateEpisodes')
+    stub.resolves()
+
+    showHelper.addEpisodes(testShow, {
+      'dateBased': true,
+      ...torrent
+    }, testShow.slug).then(res => {
+      expect(true).to.be.true
+      stub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {ShowHelper#addEpisodes} */
+  it('should add episodes to a datebased show', done => {
+    const stub = sinon.stub(showHelper, '_updateEpisodes')
+    stub.resolves()
+
+    showHelper.addEpisodes(testShow, torrent, testShow.slug).then(res => {
+      expect(true).to.be.true
+      stub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {ShowHelper#addEpisodes} */
+  it('should throw an error when adding episodes', done => {
+    const stub = sinon.stub(showHelper, '_addSeasonalSeason')
+    stub.throws()
+
+    showHelper.addEpisodes(testShow, torrent, testShow.slug).then(res => {
+      expect(res).to.be.undefined
+      stub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {ShowHelper#_getTmdbImages} */
@@ -83,22 +212,34 @@ describe('ShowHelper', () => {
       .then(done)
       .catch(err => {
         expect(err).to.be.an('Error')
+        stub.restore()
+
         done()
       })
   })
 
   /** @test {ShowHelper#_getTvdbImages} */
-  it.skip('should get show images from TVDB', done => {
+  it('should get show images from TVDB', done => {
     showHelper._getTvdbImages(296762)
       .then(res => abstractHelperTests.testImages(res, done))
       .catch(done)
   })
 
   /** @test {ShowHelper#_getTvdbImages} */
-  it.skip('should get show images from TVDB', done => {
+  it('should fail to get show images from TVDB', done => {
+    const stub = sinon.stub(tvdb, 'getSeriesById')
+    stub.resolves({
+      banner: null
+    })
+
     showHelper._getTvdbImages(296762)
-      .then(res => abstractHelperTests.testImages(res, done))
-      .catch(done)
+      .then(done)
+      .catch(err => {
+        expect(err).to.be.an('Error')
+        stub.restore()
+
+        done()
+      })
   })
 
   /** @test {ShowHelper#_getFanartImages} */
@@ -216,5 +357,15 @@ describe('ShowHelper', () => {
       stub.restore()
       done()
     }).catch(done)
+  })
+
+  /**
+   * Hook for tearing down the ShowHelper tests.
+   * @type {Function}
+   */
+  after(done => {
+    database.disconnect()
+      .then(() => done())
+      .catch(done)
   })
 })
