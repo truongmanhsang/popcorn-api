@@ -21,6 +21,7 @@ const baseProjection: Object = {
   title: 1,
   year: 1,
   slug: 1,
+  synopsis: 1,
   genres: 1,
   images: 1,
   rating: 1,

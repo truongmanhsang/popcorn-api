@@ -81,6 +81,9 @@ export default class ContentController extends BaseContentController {
         }
       default:
         return {
+          'score': {
+            $meta: 'textScore'
+          },
           'rating.votes': order,
           'rating.precentage': order,
           'rating.watching': order
@@ -120,20 +123,23 @@ export default class ContentController extends BaseContentController {
     }
 
     if (typeof keywords === 'string') {
-      const words = keywords.split(' ')
-      let regex = '^'
-
-      words.forEach(w => {
-        w.replace(/[^a-zA-Z0-9]/g, '')
-          .replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
-          .toLowerCase()
-        regex += `(?=.*\\b${w}\\b)`
-      })
-
-      query.title = {
-        $regex: new RegExp(`${regex}.*`),
-        $options: 'gi'
+      query.$text = {
+        $search: keywords
       }
+      // const words = keywords.split(' ')
+      // let regex = '^'
+      //
+      // words.forEach(w => {
+      //   w.replace(/[^a-zA-Z0-9]/g, '')
+      //     .replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
+      //     .toLowerCase()
+      //   regex += `(?=.*\\b${w}\\b)`
+      // })
+      //
+      // query.title = {
+      //   $regex: new RegExp(`${regex}.*`),
+      //   $options: 'gi'
+      // }
     }
 
     return this.service.getPage(s, Number(page), query)
