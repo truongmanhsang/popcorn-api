@@ -16,7 +16,7 @@
     "poster": "String"
   },
   "genres": ["string", "science-fiction"],
-  "language": "String",
+  "language": "en",
   "released": 0,
   "trailer": "String",
   "certification": "String",
