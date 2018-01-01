@@ -1,6 +1,6 @@
 {
   "name": "popcorn-api",
-  "version": "4.0.0",
+  "version": "3.0.0",
   "description": "Popcorn Time API is developed to make it easier for anyone to create their own version of Popcorn Time.",
   "dependencies": {
     "bytes": "^3.0.0",
@@ -55,7 +55,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^4.1.0",
     "nyc": "^11.4.1",
-    "rollup": "^0.53.1",
+    "rollup": "^0.53.2",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-json": "^2.3.0",
@@ -64,7 +64,7 @@
     "sinon": "^4.1.3",
     "standard-version": "^4.2.0",
     "supertest": "^3.0.0",
-    "uglify-es": "^3.3.3"
+    "uglify-es": "^3.3.4"
   },
   "license": "MIT",
   "scripts": {
