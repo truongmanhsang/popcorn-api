@@ -5,4 +5,5 @@
 3. Clone the repository with: `git clone https://github.com/popcorn-official/popcorn-api.git`.
 4. Install `gulp` globally with `[sudo] npm install -g gulp`.
 5. Install dependencies of Popcorn API with `cd popcorn-api` and `npm install`.
-6. Build the ES5 code with `gulp build`.
+6. Install the flow-typed modules with `npm run flow-typed install`.
+7. Build the ES5 code with `gulp build`.

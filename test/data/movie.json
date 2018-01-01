@@ -1,0 +1,43 @@
+{
+  "imdb_id": "movie",
+  "title": "String",
+  "year": 0,
+  "slug": "String",
+  "synopsis": "String",
+  "runtime": 0,
+  "rating": {
+    "percentage": 0,
+    "watching": 0,
+    "votes": 0
+  },
+  "images": {
+    "banner": "String",
+    "fanart": "String",
+    "poster": "String"
+  },
+  "genres": ["string", "science-fiction"],
+  "language": "en",
+  "released": 0,
+  "trailer": "String",
+  "certification": "String",
+  "torrents": {
+    "en": {
+      "1080p": {
+        "provider": "String",
+        "filesize": "String",
+        "size": 0,
+        "peer": 0,
+        "seed": 0,
+        "url": "String"
+      },
+      "720p": {
+        "provider": "String",
+        "filesize": "String",
+        "size": 0,
+        "peer": 0,
+        "seed": 0,
+        "url": "String"
+      }
+    }
+  }
+}

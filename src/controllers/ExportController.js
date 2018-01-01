@@ -1,44 +1,79 @@
-// Import the neccesary modules.
-import fs from "fs";
-import path from "path";
+// Import the necessary modules.
+// @flow
+import { join } from 'path'
+import { existsSync } from 'fs'
+import type {
+  $Request,
+  $Response,
+  NextFunction
+} from 'express'
 
-import Util from "../Util";
-import { tempDir } from "../config/constants";
+import { IController } from 'pop-api'
 
-/** Class for getting anime data from the MongoDB. */
-export default class ExportController {
+/**
+ * Class for downloading export collections.
+ * @type {ExportController}
+ * @implements {IController}
+ */
+export default class ExportController extends IController {
 
-  /** Create an export controller object. */
-  constructor() {
-    /**
-     * The util object with general functions.
-     * @type {Util}
-     */
-    this._util = new Util();
+  /**
+   * Register the routes for the export controller to the Express instance.
+   * @param {!Object} router - The express router to register the routes to.
+   * @param {?PopApi} [PopApi] - The PopApi instance.
+   * @returns {undefined}
+   */
+  registerRoutes(router: any, PopApi?: any): void {
+    router.get('/exports/:collection', this.getExport)
   }
 
   /**
    * Download the export of a collection.
-   * @param {Request} req - The express request object.
-   * @param {Response} res - The express response object.
-   * @returns {Download} - The download of an export of a collection.
+   * @param {!Object} req - The ExpressJS request object.
+   * @param {!Object} res - The ExpressJS response object.
+   * @param {!Function} next - The ExpressJS next function.
+   * @returns {Object|Error} - The download request of an export of a
+   * collection.
    */
-  getExport(req, res) {
-    const collection = req.params.collection;
-    let err;
+  getExport(
+    req: $Request,
+    res: $Response,
+    next: NextFunction
+  ): Object | mixed {
+    const { collection } = req.params
 
-    if (collection.match(/(anime)$|(movie)$|(show)$/i)) {
-      const jsonFile = path.join(tempDir, `${collection}s.json`);
-      if (!fs.existsSync(jsonFile)) {
-        err = {error: `Error: no such file found for '${jsonFile}'`};
-        return res.status(500).json(err);
-      } else {
-        return res.status(201).download(jsonFile);
+    if (collection.match(/(anime|movie|show)s?/i)) {
+      process.env.TEMP_DIR = process.env.TEMP_DIR
+        ? process.env.TEMP_DIR
+        : join(...[
+          __dirname,
+          '..',
+          '..',
+          'tmp'
+        ])
+
+      const tempDir = process.env.TEMP_DIR
+      let jsonFile = join(...[
+        tempDir,
+        `${collection}.json`
+      ])
+      if (existsSync(jsonFile)) {
+        return res.download(jsonFile)
       }
-    } else {
-      err = {error: `Error: '${collection}' is not a valid collection to export.`};
-      res.status(500).json(err);
+
+      jsonFile = join(...[
+        tempDir,
+        `${collection}s.json`
+      ])
+      if (existsSync(jsonFile)) {
+        return res.download(jsonFile)
+      }
+
+      return next(new Error(`Error: no such file found for '${jsonFile}'`))
     }
+
+    const msg = `Error: '${collection}' is not a valid collection to export.`
+    return next(new Error(msg))
   }
 
 }

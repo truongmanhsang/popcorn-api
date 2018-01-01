@@ -74,10 +74,10 @@ All three types of content can be scraped from [extratorrent.cc](https://extrato
 **An example of an ExtraTorrent provider:**
 ```javascript
 {
-  name: "ETTV LOL",
+  name: 'ETTV LOL',
   query: {
-    with_words: "ettv hdtv x264 lol",
-    without: "720p 1080p"
+    with_words: 'ettv hdtv x264 lol',
+    without: '720p 1080p'
   }
 }
 ```
@@ -94,13 +94,13 @@ This method returns a list of all the available shows listed [here](https://eztv
 
 ```javascript
 [{
-    show: "10 O\"Clock Live",
-    id: "449",
-    slug: "10-o-clock-live"
+    show: '10 O\'Clock Live',
+    id: '449',
+    slug: '10-o-clock-live'
   }, {
-    show: "10 Things I Hate About You",
-    id: "308",
-    slug: "10-things-i-hate-about-you"
+    show: '10 Things I Hate About You',
+    id: '308',
+    slug: '10-things-i-hate-about-you'
   },
   ...
 ]
@@ -111,18 +111,18 @@ This method returns a list of all the available shows listed [here](https://eztv
 Each show from the `getAllShows` can be passed into the `getShowData` method to get more data on the individual show. Through this process the slug can change to another slug or imdb id which is compatible with [Trakt.tv](https://trakt.tv/). Torrents are being added to the `episodes` property which is compatible with the [`Helper`](#helpers) class to insert the torrents into the MongoDB database. Nested within the `episodes` property there is the `season number` within the `season number` is the `episode number` and within the `episode number` are the different `qualities` of the torrent.
 
 ```javascript
-{ show: "10 O\'Clock Live",
-  id: "449",
-  slug: "tt1811399",
+{ show: '10 O\'Clock Live',
+  id: '449',
+  slug: 'tt1811399',
   episodes:
     dateBased: false,
-    { "1":
-      { "1":
-         { "480p":
-            { url: "magnet:?xt=urn:btih:LMJXHHNOW33Z3YGXJLCTJZ23WK2D6VO4&dn=10.OClock.Live.S01E01.WS.PDTV.XviD-PVR&tr=udp://tracker.openbittorrent.com:80&tr=udp://open.demonii.com:80&tr=udp://tracker.coppersurfer.tk:80&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://exodus.desync.com:6969",
+    { '1':
+      { '1':
+         { '480p':
+            { url: 'magnet:?xt=urn:btih:LMJXHHNOW33Z3YGXJLCTJZ23WK2D6VO4&dn=10.OClock.Live.S01E01.WS.PDTV.XviD-PVR&tr=udp://tracker.openbittorrent.com:80&tr=udp://open.demonii.com:80&tr=udp://tracker.coppersurfer.tk:80&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://exodus.desync.com:6969',
               seeds: 0,
               peers: 0,
-              provider: "EZTV" } },
+              provider: 'EZTV' } },
         ...
       }
     }
@@ -139,13 +139,13 @@ This method returns a list of all the available shows listed [here](http://horri
 
 ```javascript
 [{
-  link: "/shows/91-days",
-  slug: "91-days",
-  title: "91 Days"
+  link: '/shows/91-days',
+  slug: '91-days',
+  title: '91 Days'
 }, {
-  link: "/shows/absolute-duo",
-  slug: "absolute-duo",
-  title: "Absolute Duo"
+  link: '/shows/absolute-duo',
+  slug: 'absolute-duo',
+  title: 'Absolute Duo'
 }, ...]
 ```
 
@@ -154,18 +154,18 @@ This method returns a list of all the available shows listed [here](http://horri
 Each anime from the `getAllAnime` can be passed into the `getAnimeData` method to get more data on the individual anime. Through this process the slug can change to another slug which is compatible with [Hummingbird.me](https://hummingbird.me). The `hs_showid` is added and torrents are being added to the `episodes` property which is compatible with the [`Helper`](#helpers) class to insert the torrents into the MongoDB database. Nested within the `episodes` property there is the `season number` within the `season number` is the `episode number` and within the `episode number` are the different `qualities` of the torrent.
 
 ```javascript
-{ link: "/shows/91-days",
-  slug: "ninety-one-days",
-  title: "91 Days",
-  hs_showid: "731",
+{ link: '/shows/91-days',
+  slug: 'ninety-one-days',
+  title: '91 Days',
+  hs_showid: '731',
   episodes:
-   { "1":
-      { "1":
-        { "480":
-          { url: "magnet:?xt=urn:btih:AYIJKPLP5WVVF36O25JBB3FFPNJEBBPQ&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://tracker.openbittorrent.com:80/announce&tr=udp://tracker.coppersurfer.tk:6969/announce",
+   { '1':
+      { '1':
+        { '480':
+          { url: 'magnet:?xt=urn:btih:AYIJKPLP5WVVF36O25JBB3FFPNJEBBPQ&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://tracker.openbittorrent.com:80/announce&tr=udp://tracker.coppersurfer.tk:6969/announce',
           seeds: 0,
           peers: 0,
-          provider: "HorribleSubs" } },
+          provider: 'HorribleSubs' } },
         ...
       }
     }
@@ -202,9 +202,9 @@ All three types of content can be scraped from [kat.cr](https://kat.cr/) through
 **An example of a provider:**
 ```javascript
 {
-  name: "ZonerLOL",
+  name: 'ZonerLOL',
   query: {
-    query: "x264-LOL",
+    query: 'x264-LOL',
     min_seeds: 3
   }
 }
@@ -233,11 +233,11 @@ Only anime will be scraped on [nyaa.se](https://nyaa.se/), this is because [nyaa
 **An example of a provider:**
 ```javascript
 {
-  name: "Commie",
+  name: 'Commie',
   query: {
-    term: "mkv",
+    term: 'mkv',
     user: 76430,
-    filter: "trusted_only"
+    filter: 'trusted_only'
   }
 }
 ```
@@ -345,13 +345,13 @@ The episodes are structured in a particular way. In the episodes object you firs
 
 ```javascript
 {
-  "1": {
-    "1": {
-      "480p": {
-        url: "magnet:?xt=urn:btih:LMJXHHNOW33Z3YGXJLCTJZ23WK2D6VO4&dn=10.OClock.Live.S01E01.WS.PDTV.XviD-PVR&tr=udp://tracker.openbittorrent.com:80&tr=udp://open.demonii.com:80&tr=udp://tracker.coppersurfer.tk:80&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://exodus.desync.com:6969",
+  '1': {
+    '1': {
+      '480p': {
+        url: 'magnet:?xt=urn:btih:LMJXHHNOW33Z3YGXJLCTJZ23WK2D6VO4&dn=10.OClock.Live.S01E01.WS.PDTV.XviD-PVR&tr=udp://tracker.openbittorrent.com:80&tr=udp://open.demonii.com:80&tr=udp://tracker.coppersurfer.tk:80&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://exodus.desync.com:6969',
         seeds: 0,
         peers: 0,
-        provider: "EZTV"
+        provider: 'EZTV'
       }
     }
   }
@@ -376,14 +376,14 @@ The torrents are structured in a particular way. In the torrents object you firs
 
 ```javascipt
 {
-  "en": {
-    "720p": {
-      url: "magnet:?xt=urn:btih:1BEA4C992D1F7A765F3C943E627E881AC7FDAA35&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337",
+  'en': {
+    '720p': {
+      url: 'magnet:?xt=urn:btih:1BEA4C992D1F7A765F3C943E627E881AC7FDAA35&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337',
       seed: 156,
       peer: 44,
       size: 819829146,
-      filesize: "781.85 MB",
-      provider: "YTS"
+      filesize: '781.85 MB',
+      provider: 'YTS'
     }
   }
 }
@@ -397,7 +397,7 @@ Metadata providers are providers which get data on a movie or get seasonal infor
 [Trakt.tv](https://trakt.tv/) is the metadata provider for movies and shows. It uses a module from [Jean van Kasteel](https://github.com/vankasteelj) called [trakt.tv](https://github.com/vankasteelj/trakt.tv). For more information about the Trakt API you can click [here](http://docs.trakt.apiary.io/).
 
 ### [TheTVDB.com](https://thetvdb.com/)
-[TheTVDB.com](https://thetvdb.com/) is the metadata provider for shows which have are datebased like '@Midnight'. It uses a module from [Ed Wellbrook](https://github.com/edwellbrook) called [node-tvdb](https://github.com/edwellbrook/node-tvdb). For more information about the TVBDB API you can click [here](https://www.thetvdb.com/wiki/index.php/Programmers_API).
+[TheTVDB.com](https://thetvdb.com/) is the metadata provider for shows which have are datebased like '@Midnight'. It uses a module from [Ed Wellbrook](https://github.com/edwellbrook) called [node-tvdb](https://github.com/edwellbrook/node-tvdb). For more information about the TVDB API you can click [here](https://www.thetvdb.com/wiki/index.php/Programmers_API).
 
 ### [Hummingbird.me](https://hummingbird.me)
 [Hummingbird.me](https://hummingbird.me) is the metadata provider for anime. It uses the [hummingbird-api](https://github.com/ChrisAlderson/hummingbird-api) module. For more information about the Hummingbird API you can click [here](https://github.com/hummingbird-me/hummingbird/wiki).

@@ -1,0 +1,63 @@
+{
+  "imdb_id": "show",
+  "title": "String",
+  "year": 0,
+  "slug": "String",
+  "synopsis": "String",
+  "runtime": 0,
+  "rating": {
+    "percentage": 0,
+    "watching": 0,
+    "votes": 0
+  },
+  "images": {
+    "banner": "String",
+    "fanart": "String",
+    "poster": "String"
+  },
+  "genres": ["string", "science-fiction"],
+  "tvdb_id": 0,
+  "country": "String",
+  "network": "String",
+  "air_day": "String",
+  "air_time": "String",
+  "status": "String",
+  "num_seasons": 1,
+  "last_updated": 0,
+  "latest_episode": 0,
+  "episodes": [{
+    "tvdb_id": 0,
+    "season": 0,
+    "episode": 0,
+    "title": "String",
+    "overview": "String",
+    "date_based": false,
+    "first_aired": 0,
+    "torrents": {
+      "0": {
+        "provider": "String",
+        "peers": 0,
+        "seeds": 0,
+        "url": "String"
+      },
+      "480p": {
+        "provider": "String",
+        "peers": 0,
+        "seeds": 0,
+        "url": "String"
+      },
+      "720p": {
+        "provider": "String",
+        "peers": 0,
+        "seeds": 0,
+        "url": "String"
+      },
+      "1080p": {
+        "provider": "String",
+        "peers": 0,
+        "seeds": 0,
+        "url": "String"
+      }
+    }
+  }]
+}
