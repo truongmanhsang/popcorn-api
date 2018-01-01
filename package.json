@@ -18,7 +18,7 @@
     "p-times": "^1.0.1",
     "parse-torrent": "^5.8.3",
     "pop-api": "^0.6.1",
-    "pop-api-scraper": "^0.1.0",
+    "pop-api-scraper": "^0.1.1",
     "tmdbapi": "^1.0.2",
     "trakt.tv": "^6.0.2",
     "webtorrent-health": "^1.1.1",
