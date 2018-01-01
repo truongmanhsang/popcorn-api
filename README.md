@@ -1,4 +1,4 @@
-# Popcorn API
+# popcorn-api
 
 [![Build Status](https://travis-ci.org/popcorn-official/popcorn-api.svg?branch=development)](https://travis-ci.org/popcorn-official/popcorn-api)
 [![Windows Build](https://img.shields.io/appveyor/ci/chrisalderson/popcorn-api/3.0.0.svg?label=windows)](https://ci.appveyor.com/project/ChrisAlderson/popcorn-api)
@@ -16,7 +16,7 @@ version of [Popcorn Time](http://popcorntime.sh). It contains:
 - Ability to easily filter content to the user's content.
 - Add content manually through the CLI.
 
-# Installation
+## Installation
 
 To setup your local machine to start working on the project you can follow
 these steps:
@@ -26,15 +26,14 @@ these steps:
 3. Clone the repository with: `git clone https://github.com/popcorn-official/popcorn-api.git`
 4. Install dependencies `npm i`
 5. Install the flow-typed libraries with `npm run flow-typed`
-6. Start the api with `npm start` and go to 'http://localhost:5000`
 
-# Documentation
+## Documentation
 
-Checkout the
-[manual](https://popcorn-official.github.io/popcorn-api/manual/index.html) to
-find out more about this project. Or checkout the documentation for the API
-routes [here](http://docs.popcornofficial.apiary.io/).
+ - [General documentation](https://popcorn-official.github.io/popcorn-api/manual/index.html)
+ - [Route Api docs](http://docs.popcornofficial.apiary.io/).
+ - [Api docs](https://popcorn-official.github.io/popcorn-api/identifiers.html)
+ - TODO: Add more documentation links.
 
-# License
+## License
 
 MIT License
