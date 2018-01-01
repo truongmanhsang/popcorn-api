@@ -193,23 +193,21 @@ export default class ShowHelper extends AbstractHelper {
    * @param {!AnimeShow|Show} show - The show to add the torrents to.
    * @param {!Object} episodes - The episodes containing the torrents.
    * @param {!number} season - The season number.
-   * @returns {undefined}
+   * @returns {Promise<AnimeShow|Show|undefined>} - The show with a datebased
+   * season attached.
    */
-  _addDateBasedSeason(
+  async _addDateBasedSeason(
     show: AnimeShow | Show,
     episodes: Object,
     season: number
-  ): void {
-    if (!show.tvdb_id) {
-      return
-    }
+  ): Promise<AnimeShow | Show | void> {
+    try {
+      if (!show.tvdb_id || !episodes[season]) {
+        return
+      }
 
-    return tvdb.getSeriesAllById(show.tvdb_id).then(tvdbShow => {
+      const tvdbShow = await tvdb.getSeriesAllById(show.tvdb_id)
       tvdbShow.episodes.map(tvdbEpisode => {
-        if (!episodes[season]) {
-          return
-        }
-
         Object.keys(episodes[season]).map(e => {
           const d = new Date(tvdbEpisode.firstAired)
             .toISOString()
@@ -220,8 +218,8 @@ export default class ShowHelper extends AbstractHelper {
 
           const episode = {
             tvdb_id: parseInt(tvdbEpisode.id, 10),
-            season: parseInt(tvdbEpisode.seasonNumber, 10),
-            episode: parseInt(tvdbEpisode.episodeNumber, 10),
+            season: parseInt(tvdbEpisode.airedEpisodeNumber, 10),
+            episode: parseInt(tvdbEpisode.airedSeason, 10),
             title: tvdbEpisode.episodeName,
             overview: tvdbEpisode.overview,
             date_based: true,
@@ -233,7 +231,7 @@ export default class ShowHelper extends AbstractHelper {
             show.latest_episode = episode.first_aired
           }
 
-          if (episode.season === 0) {
+          if (!episode.season) {
             return
           }
 
@@ -244,9 +242,9 @@ export default class ShowHelper extends AbstractHelper {
           show.episodes.push(episode)
         })
       })
-    }).catch(err =>
+    } catch (err) {
       logger.error(`TVDB: Could not find any data on: ${err.path || err} with tvdb_id: '${show.tvdb_id}'`)
-    )
+    }
   }
 
   /**

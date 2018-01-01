@@ -1,6 +1,7 @@
 // Import the necessary modules.
 // @flow
 /* eslint-disable no-unused-expressions */
+/* eslint-disable quote-props */
 import { expect } from 'chai'
 import {
   Database,
@@ -21,8 +22,6 @@ import {
 import { name } from '../../../package.json'
 import * as abstractHelperTests from './AbstractHelper.spec'
 
-/* eslint-disable quote-props */
-
 /** @test {ShowHelper} */
 describe('ShowHelper', () => {
   /**
@@ -30,9 +29,42 @@ describe('ShowHelper', () => {
    * @type {Object}
    */
   const torrent: Object = {
-    '480p': {
+    '1': {
       '1': {
-        '1': {
+        '480p': {
+          url: 'url',
+          seeds: 0,
+          peers: 0,
+          provider: 'test'
+        }
+      },
+      '2': {
+        '720p': {
+          url: 'url',
+          seeds: 0,
+          peers: 0,
+          provider: 'test'
+        }
+      }
+    }
+  }
+
+  /**
+   * A mock datebased torrent object.
+   * @type {Object}
+   */
+  const torrentDatebased: Object = {
+    '2016': {
+      '10-02': {
+        '480p': {
+          url: 'url',
+          seeds: 0,
+          peers: 0,
+          provider: 'test'
+        }
+      },
+      '10-09': {
+        '720p': {
           url: 'url',
           seeds: 0,
           peers: 0,
@@ -80,6 +112,56 @@ describe('ShowHelper', () => {
   /** @test {ShowHelper#_updateNumSeasons} */
   it.skip('should update the number of seasons for a show', () => {
     expect(true).to.be.true
+  })
+
+  /** @test {ShowHelper#_updateEpisode} */
+  it('should update an episode for an existing ', () => {
+    const matching = JSON.parse(JSON.stringify(testShow.episodes[0]))
+    const episode = JSON.parse(JSON.stringify(testShow.episodes[0]))
+    const show = JSON.parse(JSON.stringify(testShow))
+
+    let res = showHelper._updateEpisode(matching, episode, show, '480p')
+    expect(res).to.be.an('object')
+    res = showHelper._updateEpisode(matching, episode, show, '720p')
+    expect(res).to.be.an('object')
+  })
+
+  /** @test {ShowHelper#_updateEpisode} */
+  it('should update an episode for an existing ', () => {
+    const matching = JSON.parse(JSON.stringify(testShow.episodes[0]))
+    const episode = JSON.parse(JSON.stringify(testShow.episodes[0]))
+    const show = JSON.parse(JSON.stringify(testShow))
+
+    episode.torrents['480p'] = {
+      seeds: 0,
+      url: 'test'
+    }
+    const res = showHelper._updateEpisode(matching, episode, show, '480p')
+    expect(res).to.be.an('object')
+  })
+
+  /** @test {ShowHelper#_updateEpisode} */
+  it('should update an episode for an existing ', () => {
+    const matching = JSON.parse(JSON.stringify(testShow.episodes[0]))
+    const episode = JSON.parse(JSON.stringify(testShow.episodes[0]))
+    const show = JSON.parse(JSON.stringify(testShow))
+
+    matching.torrents = {}
+    let res = showHelper._updateEpisode(matching, episode, show, '480p')
+    expect(res).to.be.an('object')
+    res = showHelper._updateEpisode(matching, episode, show, '720p')
+    expect(res).to.be.an('object')
+  })
+
+  /** @test {ShowHelper#_updateEpisode} */
+  it('should update an episode for an existing ', () => {
+    const matching = JSON.parse(JSON.stringify(testShow.episodes[0]))
+    const episode = JSON.parse(JSON.stringify(testShow.episodes[0]))
+    const show = JSON.parse(JSON.stringify(testShow))
+
+    episode.torrents = {}
+    const res = showHelper._updateEpisode(matching, episode, show, '480p')
+    expect(res).to.be.an('object')
   })
 
   /** @test {ShowHelper#_updateEpisodes} */
@@ -145,13 +227,102 @@ describe('ShowHelper', () => {
   })
 
   /** @test {ShowHelper#_addSeasonalSeason} */
-  it.skip('should add a seasonal season to a show', () => {
-    expect(true).to.be.true
+  it('should add a seasonal season to a show', done => {
+    const show = JSON.parse(JSON.stringify(testShow))
+    show.latest_episode = 0
+
+    showHelper._addSeasonalSeason(show, torrent, 1, 'westworld').then(res => {
+      expect(res).to.be.undefined
+      done()
+    }).catch(done)
+  })
+
+  /** @test {ShowHelper#_addSeasonalSeason} */
+  it('should add a seasonal season to a show', done => {
+    const show = JSON.parse(JSON.stringify(testShow))
+
+    showHelper._addSeasonalSeason(show, torrent, 1, 'westworld').then(res => {
+      expect(res).to.be.undefined
+      done()
+    }).catch(done)
+  })
+
+  /** @test {ShowHelper#_addSeasonalSeason} */
+  it('should add a seasonal season to a show', done => {
+    const show = JSON.parse(JSON.stringify(testShow))
+    const stub = sinon.stub(trakt.seasons, 'season')
+    stub.rejects()
+
+    showHelper._addSeasonalSeason(show, torrent, 1, 'westworld').then(res => {
+      expect(res).to.be.undefined
+      stub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {ShowHelper#_addDateBasedSeason} */
-  it.skip('should add a date based season to a show', () => {
-    expect(true).to.be.true
+  it('should add a date based season to a show', done => {
+    const show = JSON.parse(JSON.stringify(testShow))
+    show.latest_episode = 0
+    show.tvdb_id = 296762
+
+    showHelper._addDateBasedSeason(show, {
+      'dateBased': true,
+      ...torrentDatebased
+    }, 2016).then(res => {
+      expect(res).to.be.undefined
+      done()
+    }).catch(done)
+  })
+
+  /** @test {ShowHelper#_addDateBasedSeason} */
+  it('should not add a datebased season of episode 0', done => {
+    const show = JSON.parse(JSON.stringify(testShow))
+    show.tvdb_id = 296762
+
+    const stub = sinon.stub(tvdb, 'getSeriesAllById')
+    const tvdbShow = {
+      firstAired: '2016-10-02',
+      episodes: [{
+        airedEpisodeNumber: 0,
+        airedSeason: 1,
+        episodeName: 'Chestnut',
+        firstAired: '2016-10-09',
+        id: 5748834,
+        overview: 'A pair of guests â first-timer William, and repeat visitor Logan â arrive at Westworld with different expectations and agendas. Bernard  and Quality Assurance head Theresa Cullen debate whether a recent host anomaly is contagious. Meanwhile, behavior engineer Elsie Hughes tweaks the emotions of Maeve, a madam in Sweetwaterâs brothel, in order to avoid a recall. Cocky programmer Lee Sizemore pitches his latest narrative to the team, but Dr. Ford has other ideas. The Man in Black conscripts a condemned man, Lawrence, to help him uncover Westworldâs deepest secrets.'
+      }]
+    }
+    stub.resolves(tvdbShow)
+
+    showHelper._addDateBasedSeason(show, {
+      'dateBased': true,
+      ...torrentDatebased
+    }, 2016).then(res => {
+      expect(res).to.be.undefined
+      stub.restore()
+
+      done()
+    }).catch(done)
+  })
+
+  /** @test {ShowHelper#_addDateBasedSeason} */
+  it('should catch an error when adding a datebased season', done => {
+    const show = JSON.parse(JSON.stringify(testShow))
+    show.tvdb_id = 296762
+
+    const stub = sinon.stub(tvdb, 'getSeriesAllById')
+    stub.throws()
+
+    showHelper._addDateBasedSeason(show, {
+      'dateBased': true,
+      ...torrentDatebased
+    }, 2016).then(res => {
+      expect(res).to.be.undefined
+      stub.restore()
+
+      done()
+    }).catch(done)
   })
 
   /** @test {ShowHelper#addEpisodes} */
@@ -265,9 +436,13 @@ describe('ShowHelper', () => {
     )
   })
 
-  /** @test {ShowHelper#_getImages} */
-  it.skip('should get show images from various sources', () => {
-    expect(true).to.be.true
+  /** @test {ShowHelper#getImages} */
+  it('should get show images from various sources', done => {
+    showHelper.getImages({
+      tmdbId: 75682,
+      tvdbId: 296762
+    }).then(res => abstractHelperTests.testImages(res, done))
+      .catch(done)
   })
 
   /** @test {ShowHelper#getTraktInfo} */
