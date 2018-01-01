@@ -10,7 +10,7 @@ showSchema.loadClass(ShowModel)
 
 /**
  * The show model.
- * @ignore
  * @type {Show}
+ * @ignore
  */
 export default mongoose.model(ShowModel, showSchema)

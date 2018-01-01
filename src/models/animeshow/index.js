@@ -3,14 +3,14 @@
 import mongoose from 'mongoose'
 
 import AnimeShowModel from './AnimeShowModel'
-import animeShowSchema from '../show/showSchema'
+import animeShowSchema from './animeShowSchema'
 
 // Attach the functions from the classes to the schemas.
 animeShowSchema.loadClass(AnimeShowModel)
 
 /**
  * The anime show model.
- * @ignore
  * @type {AhimeShow}
+ * @ignore
  */
 export default mongoose.model(AnimeShowModel, animeShowSchema)

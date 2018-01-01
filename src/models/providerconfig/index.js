@@ -1,4 +1,5 @@
 // Import the necessary modules.
+// @flow
 import mongoose from 'mongoose'
 
 import ProviderConfigModel from './ProviderConfigModel'
@@ -9,8 +10,8 @@ providerConfigSchema.loadClass(ProviderConfigModel)
 
 /**
  * The provider configuration model.
- * @ignore
  * @type {ProviderConfig}
+ * @ignore
  */
 export default mongoose.model(
   ProviderConfigModel, providerConfigSchema, 'providerconfigs'

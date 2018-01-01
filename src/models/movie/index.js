@@ -10,7 +10,7 @@ movieSchema.loadClass(MovieModel)
 
 /**
  * The movie model.
- * @ignore
  * @type {Movie}
+ * @ignore
  */
 export default mongoose.model(MovieModel, movieSchema)

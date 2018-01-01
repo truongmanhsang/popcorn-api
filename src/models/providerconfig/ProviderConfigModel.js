@@ -1,11 +1,11 @@
 // Import the necessary modules.
+// @flow
 import { Model } from 'mongoose'
 
 /**
  * Class for provider configuration attributes and methods.
  * @extends {Model}
  * @type {ProviderConfigModel}
- * @flow
  */
 export default class ProviderConfigModel extends Model {
 
