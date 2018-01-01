@@ -6,12 +6,8 @@ for commit guidelines.
 
 
 
-TODO: Add links to commits for versions.
-
-
-
 <a name="2.2.4"></a>
-## [2.2.4]() (17-12-2016)
+## [2.2.4](https://github.com/popcorn-official/popcorn-api/commit/83ca4a24f77ea749f827a7d623db48e2ca821ed0) (17-12-2016)
 
 ### Features
  * Testing with [Dredd](https://github.com/apiaryio/dredd) in favor of mocha.
@@ -24,7 +20,7 @@ TODO: Add links to commits for versions.
 
 
 <a name="2.2.3"></a>
-## [2.2.3]() (19-11-2016)
+## [2.2.3](https://github.com/popcorn-official/popcorn-api/commit/e7537765cf91e16ed81999325e06657e7ebcfbf6) (19-11-2016)
 
 ### Features
  * Added `themoviedbclient` as a provider for images.
@@ -38,7 +34,7 @@ TODO: Add links to commits for versions.
 
 
 <a name="2.2.2"></a>
-## [2.2.2]() (26-10-2016)
+## [2.2.2](https://github.com/popcorn-official/popcorn-api/commit/528abcbe1e4dca514647ff23881a2baf23c7df8b) (26-10-2016)
 
 ### Features
  * Movie images are now coming from Fanart.tv or OMDB.
@@ -51,7 +47,7 @@ TODO: Add links to commits for versions.
 
 
 <a name="2.2.1"></a>
-## [2.2.1]() (23-08-2016)
+## [2.2.1](https://github.com/popcorn-official/popcorn-api/commit/3d4c99b1fc9ce8455542b427017ccd6cc74833f6) (23-08-2016)
 
 ### Bug Fixes
  * Fixed an issue where the API could return an anime with the type `movie`.
@@ -61,7 +57,7 @@ TODO: Add links to commits for versions.
 
 
 <a name="2.2.0"></a>
-## [2.2.0]() (11-08-2016)
+## [2.2.0](https://github.com/popcorn-official/popcorn-api/commit/1fcf1f130ba3f2eeb167b2d115b9ae5c1e32ed04) (11-08-2016)
 
 ### Features
  * Added extractors to extract torrents and content data from content providers.
@@ -74,7 +70,7 @@ TODO: Add links to commits for versions.
 
 
 <a name="2.1.0"></a>
-## [2.1.0]() (02-08-2016)
+## [2.1.0](https://github.com/popcorn-official/popcorn-api/commit/3c94446e39fad43a744cfb30134f26b433dc8e67) (02-08-2016)
 
 ### Features
  * Anime! For all you weeaboos.
@@ -93,7 +89,7 @@ TODO: Add links to commits for versions.
 
 
 <a name="2.0.0"></a>
-## [2.0.0]() (20-06-2016)
+## [2.0.0](https://github.com/popcorn-official/popcorn-api/commit/c773837a3932261618db33b2bcbd25474c86cc9a) (20-06-2016)
 
 ### Features
  * Get a random movie at `/random/movie`.
@@ -125,7 +121,7 @@ TODO: Add links to commits for versions.
 
 
 <a name="1.1.0"></a>
-## [1.1.0]() (20-03-2016)
+## [1.1.0](https://github.com/popcorn-official/popcorn-api/commit/433dc80daad41228c000a86d607abfb1d092c18b) (20-03-2016)
 
 ### Features
  * Movies!
@@ -146,7 +142,7 @@ TODO: Add links to commits for versions.
 
 
 
-## [1.0.2]() (14-03-2016)
+## [1.0.2](https://github.com/popcorn-official/popcorn-api/commit/cb89f8a0d5d8baf1b87d606b334b125d7ae2cfba) (14-03-2016)
 
 ### Features
  * Resets the log files on each scrape.
@@ -161,7 +157,7 @@ TODO: Add links to commits for versions.
 
 
 <a name="1.0.1"></a>
-## [1.0.1]() (06-03-2016)
+## [1.0.1](https://github.com/popcorn-official/popcorn-api/commit/3280e84bdf7def38c24c2012215cec0be3aceaf9) (06-03-2016)
 
 ### Bug Fixes
  * Sort by trending.
@@ -169,7 +165,7 @@ TODO: Add links to commits for versions.
 
 
 <a name="1.0.0"></a>
-## [1.0.0]() (01-03-2016)
+## [1.0.0](https://github.com/popcorn-official/popcorn-api/commit/75bb4c9a958cadcf906d3eb25edd3c7650ea349f) (01-03-2016)
 
 ### Features
  * Scraping EZTV.ag just like the old API.
