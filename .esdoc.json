@@ -9,9 +9,9 @@
     "option": {
       "brand": {
         "logo": "./logo.png",
-        "title": "pop-api",
-        "description": "The base modules for popcorn-api",
-        "repository": "https://github.com/popcorn-official/pop-api",
+        "title": "popcorn-api",
+        "description": "Popcorn Time API is developed to make it easier for anyone to create their own version of Popcorn Time.",
+        "repository": "https://github.com/popcorn-official/popcorn-api",
         "site": "https://popcorntime.sh",
         "author": "https://twitter.com/popcorntimetv",
         "image": "https://avatars2.githubusercontent.com/u/7267937"
